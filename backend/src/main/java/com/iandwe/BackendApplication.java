@@ -1,4 +1,4 @@
-package com.iandwe.backend;
+package com.iandwe;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
