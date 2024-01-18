@@ -76,3 +76,4 @@
 
 # 기록 화면정의서 작성
 ![image.png](./image.png)
+![image.png](병원기록.PNG)
