@@ -72,4 +72,7 @@
 [chore] 빌드 업무 수정, 패키지 매니저 수정
 
 # Entity Relationship Diagram
-![image-1.png](./image-1.png)
+![image-1.png](./image-1.png)  
+
+# 기록 화면정의서 작성
+![image.png](./image.png)
