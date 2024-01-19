@@ -75,7 +75,9 @@
 ![image-1.png](./image-1.png)  
 
 # 기록 화면정의서 작성
-![image.png](./image.png)
 ![image.png](병원기록.PNG)
 ![image.png](체중기록.PNG)
 ![image.png](/접종기록.PNG)
+
+# 로그인 화면정의서 작성
+![image](/uploads/5913d766364d26d02e94cff71fcea454/image.png)
