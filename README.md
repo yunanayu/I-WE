@@ -78,3 +78,4 @@
 ![image.png](./image.png)
 ![image.png](병원기록.PNG)
 ![image.png](체중기록.PNG)
+![image.png](/접종기록.PNG)
