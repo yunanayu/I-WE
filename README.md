@@ -63,8 +63,7 @@
 
 # Commit Convention
 
-
-## [태그] 제목의 형태이며, [태그]뒤에만 space가 있음에 유의한다.
+#### [태그] 제목의 형태이며, [태그]뒤에만 space가 있음에 유의한다.
 > [feat] 새로운 기능 추가  
 > [fix] 버그 수정  
 [docs] 문서 수정  
@@ -72,7 +71,11 @@
 [refactor] 코드 리펙토링  
 [test] 테스트 코드, 리펙토링 테스트 코드 추가  
 [chore] 빌드 업무 수정, 패키지 매니저 수정
-
+  
+# Jira Convention
+#### 머릿말에 [BE], [FE], [Design], [Extra]를 달아서 분류한다.
+#### Story Point를 꼭 달기!!  
+  
 # Entity Relationship Diagram
 ![image-1.png](./image-1.png)  
 
