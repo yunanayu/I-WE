@@ -161,7 +161,7 @@ dependencies {
 
     implementation("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.20")
-
+    testAnnotationProcessor('org.projectlombok:lombok')
     // ASM 라이브러리의 최신 버전
 //    implementation 'org.ow2.asm:asm:9.2'
 
