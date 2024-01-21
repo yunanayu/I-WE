@@ -47,9 +47,9 @@ public class MemberRepositoryTests {
     @Test
     public void testRead() {
 
-        Long num = 9L;
+        String memberId = "user9";
 
-        Member member = memberRepository.getWithNum(num);
+        Member member = memberRepository.getWithStatus(memberId);
 
         log.info("-----------------");
         log.info(member);

@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     //    @EntityGraph(attributePaths = {"memberStatusList"})
-    @Query("select m from Member m where m.num = :num")
-    Member getWithNum(@Param("num") Long num);
+    @Query("select m from Member m where m.memberId = :memberId")
+    Member getWithStatus(@Param("memberId") String memberId);
 }

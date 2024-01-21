@@ -34,7 +34,7 @@ public class MemberDto extends User {
     public MemberDto(Long num, String memberId, String name, String password, String salt, String emailId, String emailDomain, LocalDate birth,
                      String phone, String address, boolean loginType, boolean parentType, String profileImage, LocalDateTime joinDate, MemberStatus status) {
 
-        super(String.valueOf(num), password, Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + status)));
+        super(memberId, password, Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + status)));
 
         this.num = num;
         this.memberId = memberId;
