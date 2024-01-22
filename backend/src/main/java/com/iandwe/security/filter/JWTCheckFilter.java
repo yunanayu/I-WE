@@ -3,7 +3,7 @@ package com.iandwe.security.filter;
 import com.google.gson.Gson;
 import com.iandwe.member.domain.MemberStatus;
 import com.iandwe.member.dto.MemberDto;
-import com.iandwe.util.JWTUtil;
+import com.iandwe.security.util.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.iandwe.util;
+package com.iandwe.security.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

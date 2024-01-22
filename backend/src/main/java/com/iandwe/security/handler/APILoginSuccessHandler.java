@@ -2,7 +2,7 @@ package com.iandwe.security.handler;
 
 import com.google.gson.Gson;
 import com.iandwe.member.dto.MemberDto;
-import com.iandwe.util.JWTUtil;
+import com.iandwe.security.util.JWTUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

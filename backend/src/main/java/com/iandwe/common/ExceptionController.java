@@ -3,7 +3,7 @@ package com.iandwe.common;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import com.iandwe.util.CustomJWTException;
+import com.iandwe.security.util.CustomJWTException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 @RestControllerAdvice
-public class CustomControllerAdvice {
+public class ExceptionController {
 
     @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<?> notExist(NoSuchElementException e) {

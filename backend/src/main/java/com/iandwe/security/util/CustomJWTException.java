@@ -1,4 +1,4 @@
-package com.iandwe.util;
+package com.iandwe.security.util;
 
 public class CustomJWTException extends RuntimeException {
 

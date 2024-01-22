@@ -3,8 +3,8 @@ package com.iandwe.member.controller;
 import java.util.Date;
 import java.util.Map;
 
-import com.iandwe.util.CustomJWTException;
-import com.iandwe.util.JWTUtil;
+import com.iandwe.security.util.CustomJWTException;
+import com.iandwe.security.util.JWTUtil;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
