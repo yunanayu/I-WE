@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import ResponsiveAppBar from './component/ResponsiveAppBar';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import ResponsiveAppBar from "./component/ResponsiveAppBar";
+import RecordBaby from "./component/RecordBaby";
+import RecordMom from "./component/RecordMom";
+
+function Home() {
+  return (
+    <div>
+      <h1>HOME</h1>
+    </div>
+  );
+}
 
 function App() {
   return (
     <div className="App">
       <ResponsiveAppBar />
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/recordmom" element={<RecordMom />} />
+        <Route path="/recordbaby" element={<RecordBaby />} />
+      </Routes>
     </div>
   );
 }
