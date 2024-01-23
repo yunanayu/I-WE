@@ -3,19 +3,23 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from 'moment'
 
-const HeathRecordPage = () => {
+const RecordCalendar = () => {
   
   const curDate = new Date()
 
   const [value, onChange] = useState(curDate)
   
+  // 해당하는 데이터 넣으면 됨.
   const dayList = [
     '2024-01-10',
     '2024-01-21',
     '2024-01-02',
     '2024-01-14',
     '2024-01-27',
+    '2024-02-27',
+    '2024-03-27',
   ];
+
   // const activeDate = moment(value).format('YYYY-MM-DD')
   // const monthOfActiveDate = moment(value).format('YYYY-MM')
   // const [activeMonth, setActiveMonth] = useState(monthOfActiveDate)
@@ -24,27 +28,7 @@ const HeathRecordPage = () => {
   //   setActiveMonth(newActiveMonth)
   // }
 
-  // const addContent = ({date} : any) => {
-  //   const contents = []
-
-  //   if (dayList.find((day) => day === moment(date).format('YYYY-MM-DD'))) {
-  //     contents.push(
-  //       <>
-  //         <div className="dot"></div>
-  //         {/* <Image
-  //           src="icons/baby-face-icon.svg"
-  //           className="diaryImg"
-  //           width="26"
-  //           height="26"
-  //           alt="today is..."
-  //         />
-  //         <img src={img1} width='50px'/> */}
-  //       </>
-  //     )
-  //   }
-  //   return <div>{contents}</div>
-  // }
-
+  
   return (
     <div>
       <Calendar 
@@ -56,23 +40,22 @@ const HeathRecordPage = () => {
       formatDay={(locale, date) => moment(date).format('D')}
       showNeighboringMonth={false}  // 앞 뒤 달 이어지는 날짜 보여주는 여부
       // tileContent={addContent}
-      tileContent = {({date, view}) => {
-        const contents = []
-        if (dayList.find((d) => d === moment(date).format('YYYY-MM-DD'))) {
-          contents.push(<div className='dot'></div>)
-        }
-        return (
+      tileContent = {({date}) => {
+        const isToday = dayList.find((d) => d === moment(date).format('YYYY-MM-DD'))
+        return ( isToday ?
           <>
-            <div>
-              {contents}
-            </div>
+         <div className='box'>
+           <div className="dot"></div>
+         </div>
           </>
+          : <></>
         )
       }}
       // onActiveStartDateChange={({ activeStartDate }) => 
       //   getActiveMonth(activeStartDate)}
 
       />
+      {/* 현재 클릭한 날짜 */}
       <div className="text-gray-500 mt-4">
         {moment(value).format("YYYY년 MM월 DD일")} 
       </div>
@@ -80,4 +63,4 @@ const HeathRecordPage = () => {
   );
 };
 
-export default HeathRecordPage;
+export default RecordCalendar;
