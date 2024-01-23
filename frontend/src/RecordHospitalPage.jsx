@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import RecordCalendar from '../components/RecordCalendar';
+import RecordCalendar from './RecordCalendar';
 
 const HealthRecordPage = () => {
   return(
