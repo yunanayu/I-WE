@@ -6,6 +6,7 @@ import com.iandwe.baby.exception.NoBabyExistException;
 import com.iandwe.baby.repository.BabyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class BabyServiceImpl implements BabyService {
 
     @Override
     public List<BabyReadResponseDto> findAllByUserNum(long userNum) {
-        List<Baby> babies = babyRepository.findAllByUserNum(userNum);
+        List<Baby> babies = babyRepository.findByMotherNumAndFatherNum(userNum);
         if (babies == null || babies.isEmpty()) {
             throw new NoBabyExistException();
         }
@@ -34,6 +35,7 @@ public class BabyServiceImpl implements BabyService {
     }
 
     @Override
+    @Transactional
     public void share(BabyShareRequestDto dto) {
         Baby baby = babyRepository.findByNum(dto.getBabyNum())
                 .orElseThrow(NoBabyExistException::new);
@@ -41,6 +43,7 @@ public class BabyServiceImpl implements BabyService {
     }
 
     @Override
+    @Transactional
     public BabyReadResponseDto update(BabyUpdateRequestDto dto) {
         Baby baby = babyRepository.findByNum(dto.getBabyNum())
                 .orElseThrow(NoBabyExistException::new);
