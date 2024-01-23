@@ -37,4 +37,5 @@ public class BabyController {
     public ResponseEntity<BabyReadResponseDto> update(@RequestBody BabyUpdateRequestDto requestDto) {
         return new ResponseEntity<>(babyService.update(requestDto), HttpStatus.OK);
     }
+
 }

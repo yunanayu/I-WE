@@ -22,7 +22,7 @@ public class BabyCreateRequestDto {
 
     private LocalDate birth;
 
-    public Baby toEntity(){
+    public Baby toEntity() {
         return Baby.builder()
                 .motherNum(motherNum)
                 .name(name)

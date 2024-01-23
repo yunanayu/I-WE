@@ -18,7 +18,7 @@ public class BabyCreateResponseDto {
 
     private LocalDate birth;
 
-    public static BabyCreateResponseDto from(Baby baby){
+    public static BabyCreateResponseDto from(Baby baby) {
         return BabyCreateResponseDto.builder()
                 .motherNum(baby.getMotherNum())
                 .name(baby.getName())
