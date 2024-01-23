@@ -39,10 +39,9 @@ public class MemberServiceImpl implements MemberService {
         log.info("nickname: " + nickname);
 
         // 기존에 DB에 회원 정보가 있는 경우 / 없는 경우
-        // 현재 데이터베이스와 처리
-        Optional<Member> result = memberRepository.findById(nickname);  //??????????????
+        Optional<Member> result = memberRepository.findByMemberId(nickname);  //??????????????
 
-        // 기존의 회원
+        // 기존의 회원이라면
         if (result.isPresent()) {
             MemberDto memberDto = entityToDto(result.get());
             log.info("existed................." + memberDto);
@@ -50,7 +49,7 @@ public class MemberServiceImpl implements MemberService {
             return memberDto;
         }
 
-        // 회원이 아니었다면
+        // 기존의 회원이 아니라면
         // 닉네임은 '소셜회원'으로, 패스워드는 임의로 생성
         Member socialMember = makeSocialMember(nickname);
         memberRepository.save(socialMember);
@@ -67,6 +66,7 @@ public class MemberServiceImpl implements MemberService {
 //        if(accessToken == null){
 //            throw new RuntimeException("Access Token is null");
 //        }
+
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
