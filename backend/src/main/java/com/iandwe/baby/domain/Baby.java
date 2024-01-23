@@ -20,7 +20,7 @@ import java.time.LocalDate;
 public class Baby {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long num;
 
     private Long motherNum;
@@ -42,23 +42,23 @@ public class Baby {
     }
 
     public void update(BabyUpdateRequestDto dto) {
-        if(dto.getName() != null) {
+        if (dto.getName() != null) {
             this.name = dto.getName();
         }
 
-        if(dto.getGender() != null) {
+        if (dto.getGender() != null) {
             this.gender = dto.getGender();
         }
 
-        if(dto.getPregnancyDate() != null) {
+        if (dto.getPregnancyDate() != null) {
             this.pregnancyDate = dto.getPregnancyDate();
         }
 
-        if(dto.isStatus()) {
+        if (dto.isStatus()) {
             this.status = true;
         }
 
-        if(dto.getBirth() != null) {
+        if (dto.getBirth() != null) {
             this.birth = dto.getBirth();
         }
     }
