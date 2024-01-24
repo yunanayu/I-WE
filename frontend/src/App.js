@@ -8,13 +8,6 @@ import root from "./router/root";
 function App() {
   return (
     <RouterProvider router={root}></RouterProvider>
-    // <Routes>
-    //   <Route path="/" element={<MainPage />} />
-    //   <Route path="/login" element={<LoginPage />} />
-    //   <Route path="/authkakao" element={<KakaoRedirect />} />
-    //   <Route path="/authgoogle" element={<GoogleRedirect />} />
-    //   <Route path="/authnaver" element={<NaverRedirect />} 
-    // </Routes>
   );
 }
 export default App;
