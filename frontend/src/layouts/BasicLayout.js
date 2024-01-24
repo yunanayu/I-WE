@@ -1,11 +1,11 @@
-import BasicMenu from "../components/menus/BasicMenu";
+import Basic from "../components/navbar/Basic";
 
 const BasicLayout = ({children}) => {
   return ( 
   <>
 
     {/* 기존 헤더 대신 BasicMenu*/ }
-    <BasicMenu/> 
+    <Basic/> 
 
     {/* 상단 여백 my-5 제거 */}
     <div 
@@ -19,7 +19,7 @@ const BasicLayout = ({children}) => {
       <aside 
       className="bg-green-300 md:w-1/5 lg:w-1/4 px-5 flex py-5"> {/* 상단 여백 py-40 제거 flex 제거 */}
         
-        <h1 className="text-2xl md:text-4xl">Sidebar</h1>
+        <h1 className="text-2xl md:text-4xl">사이드바인데 할까말까 고민중입니다링</h1>
 
       </aside>
 

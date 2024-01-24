@@ -23,7 +23,11 @@ function NaverLogin() {
   };
 
   return (
-    <img src={naverLogin} alt="naverLogin" onClick={handleLogin} className="h-20" />
+    <div>
+      <button onClick={handleLogin} style={{ width: '100%', border: 'none', background: 'none' }}>
+        <img src={naverLogin} alt="naverLogin" style={{ width: '80px', height: '80px' }} />
+      </button>
+    </div>
   );
 }
 

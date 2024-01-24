@@ -22,7 +22,11 @@ function GoogleLogin() {
   };
 
   return (
-    <img src={googlelogin} alt="googlelogin" onClick={handleLogin} className="w-full h-20" />
+    <div>
+    <button onClick={handleLogin} style={{ width: '100%', border: 'none', background: 'none' }}>
+      <img src={googlelogin} alt="googlelogin" style={{ width: '80px', height: '80px' }} />
+    </button>
+  </div>
   );
 }
 
