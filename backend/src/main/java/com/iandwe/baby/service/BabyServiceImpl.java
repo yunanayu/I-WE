@@ -25,7 +25,7 @@ public class BabyServiceImpl implements BabyService {
 
     @Override
     public List<BabyReadResponseDto> findAllByUserNum(long userNum) {
-        List<Baby> babies = babyRepository.findByMotherNumAndFatherNum(userNum);
+        List<Baby> babies = babyRepository.findByMotherNumOrFatherNum(userNum);
         if (babies == null || babies.isEmpty()) {
             throw new NoBabyExistException();
         }

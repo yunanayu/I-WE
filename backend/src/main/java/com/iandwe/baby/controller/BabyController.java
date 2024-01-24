@@ -23,7 +23,7 @@ public class BabyController {
     }
 
     @GetMapping("/{userNum}")
-    public ResponseEntity<List<BabyReadResponseDto>> findMyBabies(@PathVariable long userNum) {
+    public ResponseEntity<List<BabyReadResponseDto>> findAllByUserNum(@PathVariable long userNum) {
         return new ResponseEntity<>(babyService.findAllByUserNum(userNum), HttpStatus.OK);
     }
 

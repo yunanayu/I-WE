@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface BabyRepository extends JpaRepository<Baby, Long> {
 
     @Query("SELECT b FROM Baby b WHERE b.motherNum = :num OR b.fatherNum = :num")
-    List<Baby> findByMotherNumAndFatherNum(@Param("num") long num);
+    List<Baby> findByMotherNumOrFatherNum(@Param("num") long num);
 
     Optional<Baby> findByNum(Long num);
 }
