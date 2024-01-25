@@ -1,7 +1,7 @@
 package com.iandwe.member.service;
 
 import com.iandwe.member.domain.Member;
-import com.iandwe.member.dto.request.RegisterDto;
+import com.iandwe.member.dto.request.MemberRegisterDto;
 import com.iandwe.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,12 +26,12 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Member save(RegisterDto registerDto) {
+    public Member save(MemberRegisterDto memberRegisterDto) {
         // 이메일로 회원을 조회해서 이미 있다면 예외발생
-        memberRepository.findByEmail(registerDto.getEmail())
+        memberRepository.findByEmail(memberRegisterDto.getEmail())
                 .ifPresent(member -> {throw new IllegalArgumentException("이미 존재하는 회원입니다.");});
 
-        Member member = registerDto.toEntity();
+        Member member = memberRegisterDto.toEntity();
 
         // 회원을 저장한다.
         Member savedMember = memberRepository.save(member);

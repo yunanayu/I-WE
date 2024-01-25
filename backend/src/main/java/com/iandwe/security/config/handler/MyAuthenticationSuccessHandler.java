@@ -3,6 +3,8 @@ package com.iandwe.security.config.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.iandwe.member.domain.Member;
+import com.iandwe.member.domain.MemberRole;
+import com.iandwe.member.domain.PlatformType;
 import com.iandwe.member.repository.MemberRepository;
 import com.iandwe.security.dto.GeneratedToken;
 import com.iandwe.security.service.JwtUtil;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
@@ -53,6 +56,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
         String role = oAuth2User.getAuthorities().stream().findFirst() // 첫번째 Role을 찾아옴
                 .orElseThrow(IllegalAccessError::new) // 존재하지 않을 시 예외를 던짐
                 .getAuthority(); // Role을 가져옴
+
 
         // 회원이 존재할경우
         if (isExist) {
@@ -91,13 +95,14 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
                     .email(email)
 //                    .password(passwordEncoder.encode("1111"))
                     .password("1111")
-                    .platform(provider)
-                    .userRole(role)
+                    .platform(PlatformType.valueOf(provider.toUpperCase(Locale.ROOT)))
+                    .role(MemberRole.valueOf(role.substring(5)))
                     .build();
             log.info("temp register");
             memberRepository.save(member);
 
             // jwt token 발행 시작
+            log.info("Role : " + role);
             GeneratedToken token = jwtUtil.generateToken(email, role);
             log.info("jwtToken = {}", token.getAccessToken());
             String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")

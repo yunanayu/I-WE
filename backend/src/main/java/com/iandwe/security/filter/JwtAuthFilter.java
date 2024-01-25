@@ -59,10 +59,10 @@ public class JwtAuthFilter extends OncePerRequestFilter { // OncePerRequestFilte
 
             // SecurityContext에 등록할 User 객체를 만들어줌
             SecurityUserDto userDto = SecurityUserDto.builder()
-                    .memberNo(findMember.getMemberNo())
+                    .num(findMember.getNum())
                     .email(findMember.getEmail())
-                    .role("ROLE_".concat(findMember.getUserRole()))
-                    .nickname(findMember.getNickname())
+                    .role(String.valueOf(findMember.getRole()))
+                    .nickname(findMember.getName())
                     .build();
 
             // SecurityContext에 인증 객체를 등록해줌

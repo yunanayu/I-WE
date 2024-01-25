@@ -8,10 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class SecurityUserDto {
+    private Long num;
     private String email;
     private String nickname;
     private String picture;
     private String role;
-    private Long memberNo;
 
 }

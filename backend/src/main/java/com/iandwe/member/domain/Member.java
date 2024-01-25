@@ -16,24 +16,30 @@ import java.time.LocalDateTime;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberNo;
+    private Long num;
 
     private String email;
 
-    private String nickname;
+    private String memberId;
+
+    private String name;
 
     private String password;
 
-    private String userRole; // ROLE_USER, ROLE_ADMIN
+    @Enumerated(EnumType.STRING)
+    private MemberRole role; // ROLE_USER, ROLE_ADMIN
 
-    private String platform;
+    @Enumerated(EnumType.STRING)
+    private PlatformType platform; // KAKAO, NAVER, GOOGLE
 
-    private String profile;
+    @Enumerated(EnumType.STRING)
+    private ParentType parentType; // MOTHER, FATHER
+
+    private Long familyNum;
+
+    private String profileImage;
 
     @CreationTimestamp
-    private LocalDateTime regDate;
-
-//    @CreationTimestamp
-//    private Timestamp createDate;
+    private LocalDateTime joinDate;
 
 }

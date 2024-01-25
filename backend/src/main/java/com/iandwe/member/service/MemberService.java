@@ -1,9 +1,8 @@
 package com.iandwe.member.service;
 
 import com.iandwe.member.domain.Member;
-import com.iandwe.member.dto.request.RegisterDto;
+import com.iandwe.member.dto.request.MemberRegisterDto;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -11,5 +10,5 @@ import java.util.Optional;
 public interface MemberService {
     Optional<Member> findByEmail(String email);
 
-    Member save(RegisterDto registerDto);
+    Member save(MemberRegisterDto memberRegisterDto);
 }

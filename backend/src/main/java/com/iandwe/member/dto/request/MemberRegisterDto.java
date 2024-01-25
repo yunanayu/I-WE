@@ -1,26 +1,25 @@
 package com.iandwe.member.dto.request;
 
 import com.iandwe.member.domain.Member;
+import com.iandwe.member.domain.PlatformType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Getter
 @Builder
 @AllArgsConstructor
-public class RegisterDto {
+public class MemberRegisterDto {
 
     @NotBlank
     private String email;
 //    @NotBlank
 //    private String address;
     @NotBlank
-    private String nickname;
+    private String name;
     @NotBlank
     private String provider;
 //    private Integer imgNo;
@@ -29,9 +28,8 @@ public class RegisterDto {
     public Member toEntity() {
         return Member.builder()
                 .email(email)
-                .nickname(nickname)
-                .platform(provider)
-                .regDate(LocalDateTime.now())
+                .name(name)
+                .platform(PlatformType.valueOf(provider))
                 .build();
     }
 
