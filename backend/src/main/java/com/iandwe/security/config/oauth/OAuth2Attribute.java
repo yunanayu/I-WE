@@ -1,4 +1,4 @@
-package com.iandwe.security.oauth;
+package com.iandwe.security.config.oauth;
 
 import lombok.AccessLevel;
 import lombok.Builder;

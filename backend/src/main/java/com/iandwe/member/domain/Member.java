@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,21 +16,24 @@ import java.sql.Timestamp;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long num;
-
-    private String username;
-
-    private String password;
+    private Long memberNo;
 
     private String email;
 
-    private String role; //ROLE_USER, ROLE_ADMIN
+    private String nickname;
+
+    private String password;
+
+    private String userRole; // ROLE_USER, ROLE_ADMIN
+
+    private String platform;
+
+    private String profile;
 
     @CreationTimestamp
-    private Timestamp createDate;
-//    private String provider; // google
-//    private String providerId; // sub=111114578118192654593
+    private LocalDateTime regDate;
 
-
+//    @CreationTimestamp
+//    private Timestamp createDate;
 
 }

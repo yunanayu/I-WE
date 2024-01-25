@@ -1,6 +1,10 @@
-package com.iandwe.config;
+package com.iandwe.security.config;
 
-import com.iandwe.security.oauth.CustomOAuth2UserService;
+import com.iandwe.security.filter.JwtAuthFilter;
+import com.iandwe.security.config.handler.MyAuthenticationFailureHandler;
+import com.iandwe.security.config.handler.MyAuthenticationSuccessHandler;
+import com.iandwe.security.config.oauth.CustomOAuth2UserService;
+import com.iandwe.security.filter.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +28,7 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final MyAuthenticationSuccessHandler oAuth2LoginSuccessHandler;
     private final MyAuthenticationFailureHandler oAuth2LoginFailureHandler;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,7 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(config -> config
                         .requestMatchers("/token/**").permitAll() // 접근 권한 검사 x(인증 필요 없다는 뜻은 x). 토큰 발급을 위한 경로는 모두 허용
                         .requestMatchers("/mypage/**").hasAnyRole("USER", "ADMIN") // 마이페이지는 회원, 관리자 권한디 있어야 접근 가능
-                        .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll()
+//                        .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll()
                         .anyRequest().authenticated() // 그 외의 모든 요청은 인증이 필요
                 )
                 // OAuth2 로그인 설정
@@ -48,8 +53,8 @@ public class SecurityConfig {
                         .successHandler(oAuth2LoginSuccessHandler) // OAuth2 로그인 성공시 처리할 핸들러를 지정
                 )
                 // JWT 인증 필터를 UsernamePasswordAuthenticationFilter 앞에 추가
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
         return http.build();
     }
 }

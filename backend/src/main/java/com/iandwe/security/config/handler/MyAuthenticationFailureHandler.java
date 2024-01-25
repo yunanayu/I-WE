@@ -1,4 +1,4 @@
-package com.iandwe.security.handler;
+package com.iandwe.security.config.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
