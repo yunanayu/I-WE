@@ -4,6 +4,7 @@ import com.iandwe.baby.domain.Baby;
 import com.iandwe.baby.dto.*;
 import com.iandwe.baby.exception.NoBabyExistException;
 import com.iandwe.baby.repository.BabyRepository;
+import com.iandwe.checker.service.generator.CheckerGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +17,14 @@ public class BabyServiceImpl implements BabyService {
 
     private final BabyRepository babyRepository;
 
+    private final CheckerGenerator checkerGenerator;
+
+    @Transactional
     @Override
     public BabyCreateResponseDto create(BabyCreateRequestDto dto) {
         Baby baby = dto.toEntity();
         babyRepository.save(baby);
+        checkerGenerator.generateBabyCheckerData(baby.getNum());
         return BabyCreateResponseDto.from(baby);
     }
 
