@@ -55,6 +55,7 @@ function Info() {
 }
 
 // props 설정, form 전송 객체, 차트 데이터 입력 필요 
+// 전송 후 배열에 입력, 디비에 저장
 function RecordMom() {
   return (
     <>

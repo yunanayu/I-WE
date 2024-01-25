@@ -20,6 +20,7 @@ const pages = [
   { name: "커뮤니티", link: "/community" },
   { name: "정보제공", link: "/info" },
   { name: "엄마기록", link: "/recordmom" },
+  { name: "아기기록", link: "/recordbaby" },
 ];
 const settings = ["마이페이지", "로그아웃"];
 
