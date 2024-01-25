@@ -4,6 +4,8 @@ const Loading = <div>Loading....</div>
 const Main = lazy(() => import("../pages/MainPage"))
 // const Login = lazy(() => import("../pages/LoginPage"))
 const Auth = lazy(() => import("../pages/AuthPage"))
+const Record = lazy(() => import("../pages/RecordPage"))
+
 
 
 
@@ -19,6 +21,10 @@ const root = createBrowserRouter([
     {
         path: "auth",
         element: <Suspense fallback={Loading}><Auth/></Suspense>
+    },
+    {
+        path: "record",
+        element: <Suspense fallback={Loading}><Record/></Suspense>
     },
     
 ])

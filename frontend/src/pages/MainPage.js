@@ -1,22 +1,36 @@
 import React, { useState } from 'react';
-import BasicLayout from "../layouts/BasicLayout";
-import Basic from "../components/navbar/Basic";
 import icon from "../images/icon.png";
 import logo from "../images/logo.png";
 import { Box, Typography } from '@mui/material';
 import GoogleLogin from "./GoogleLoginPage";
 import KakaoLogin from "./KakaoLoginPage";
 import NaverLogin from "./NaverLoginPage";
+import Basic from '../components/navbar/Basic';
+import mainprofile from '../images/mainprofile.png';
 
 const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <>
-      {isLoggedIn ? (
-        <BasicLayout>
+      { !isLoggedIn ? (
+        <>
           <Basic />
-        </BasicLayout>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+              <Box sx={{ flexDirection: 'column', width: '50%', height:'50%', borderRadius:'50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
+                <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+              </Box>
+              <Typography variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                oo님의 oo이는
+              </Typography>
+              <Typography variant="h4" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                oo주차에요
+              </Typography>
+            </Box>
+          </Box>
+
+        </>
       ) : (
         <>
           <Box sx={{ display: 'flex', justifyContent: 'flex-bottom', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', height: '100vh' }}>
