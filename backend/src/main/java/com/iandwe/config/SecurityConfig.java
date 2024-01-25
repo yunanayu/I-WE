@@ -1,6 +1,6 @@
 package com.iandwe.config;
 
-import com.iandwe.oauth.CustomOAuth2UserService;
+import com.iandwe.security.oauth.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.iandwe.oauth;
+package com.iandwe.security.oauth;
 
 import com.iandwe.member.domain.Member;
 import com.iandwe.member.service.MemberService;
@@ -55,15 +55,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         Optional<Member> findMember = memberService.findByEmail(email);
 
         if (findMember.isEmpty()) {
-            // 회원이 존재하지 않을경우, memberAttribute의 exist 값을 false로 넣어줌
+            // 회원이 존재하지 않을경우 => SuccessHandler에서 exist 변수의 값에 따라서 회원가입을 여부를 확인하고 처리
             memberAttribute.put("exist", false);
-            // 회원의 권한(회원이 존재하지 않으므로 기본권한인 ROLE_USER를 넣어줌), 회원속성, 속성이름을 이용해 DefaultOAuth2User 객체를 생성해 반환
+            // 회원의 권한(DB에 권한이 없으므로, 기본권한인 ROLE_USER를 넣어줌), 회원속성, 속성이름을 이용해 DefaultOAuth2User 객체를 생성해 반환
             return new DefaultOAuth2User(
                     Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
                     memberAttribute, "email");
         }
 
-        // 회원이 존재할경우, memberAttribute의 exist 값을 true로 넣어줌
+        // 회원이 존재할경우 => SuccessHandler에서 exist 변수의 값에 따라서 회원가입을 여부를 확인하고 처리
         memberAttribute.put("exist", true);
         // 회원의 권한, 회원속성, 속성이름을 이용해 DefaultOAuth2User 객체를 생성해 반환
         return new DefaultOAuth2User(
