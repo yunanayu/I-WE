@@ -21,12 +21,25 @@ const Main = () => {
               <Box sx={{ flexDirection: 'column', width: '50%', height:'50%', borderRadius:'50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
                 <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               </Box>
-              <Typography variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                oo님의 oo이는
-              </Typography>
-              <Typography variant="h4" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                oo주차에요
-              </Typography>
+              <Box sx={{display:'flex', justifyContent: 'center', alignItems: 'baseline',}}>
+                <Typography variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                  oo님의 oo이는
+                </Typography>
+                <Typography variant="h4" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                  oo주차에요
+                </Typography>
+              </Box>
+              <Box sx={{display:'flex', justifyContent: 'center'}}>
+                <Box>
+                  병원찾기
+                </Box>
+                <Box>
+                  다이어리
+                </Box>
+                <Box>
+                  커뮤니티
+                </Box>
+              </Box>
             </Box>
           </Box>
 
