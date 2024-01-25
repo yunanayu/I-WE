@@ -72,5 +72,4 @@ public class CheckerService {
         return result == null || result.isEmpty();
     }
 
-    // TODO : 가입시 산모, 아이 생성시 아기의 data를 추가해주는 메소드 작성 필요
 }
