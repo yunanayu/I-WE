@@ -1,6 +1,6 @@
 import React from "react";
 
-function recordBaby() {
+function RecordBaby() {
   return (
     <div>
       <h1>baby</h1>
@@ -8,4 +8,4 @@ function recordBaby() {
   );
 }
 
-export default recordBaby;
+export default RecordBaby;

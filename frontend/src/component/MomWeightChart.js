@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { BarPlot } from "@mui/x-charts/BarChart";
 import { LinePlot, MarkPlot } from "@mui/x-charts/LineChart";
-import { ChartsXAxis } from "@mui/x-charts/ChartsXAxis";
-import { LineChart } from "@mui/x-charts/LineChart";
+import { ChartsXAxis, ChartsYAxis } from "@mui/x-charts";
+import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
+import { Typography } from "@mui/material";
 
 // 엄마 주차별 몸무게 막대 그래프
 function WeeklyWeightChart() {
@@ -35,38 +35,70 @@ function WeeklyWeightChart() {
 
   useEffect(() => {
     // Call generateData when the component mounts
-    setChartData(generateData(selectedInterval));
+    const newData = generateData(selectedInterval);
+    setChartData(newData);
+    console.log(newData);
+    console.log(chartData);
   }, [selectedInterval]);
 
   return (
-    <div>
+    <Box sx={{ width: "90%", }}>
+      <Box sx={{ mt: 3, textAlign: 'center'}}>
+        <Typography fontSize={34}> 날짜별 체중 </Typography>
+      </Box>
       <ToggleButtonGroup
         size="small"
         value={selectedInterval}
         exclusive
         onChange={handleToggleInterval}
         aria-label="select-interval"
-        sx={{ mt: 5 }}
+        sx={{ mb: 3 }}
       >
         <ToggleButton value={2}>일별</ToggleButton>
         <ToggleButton value={3}>주별</ToggleButton>
         <ToggleButton value={4}>월별</ToggleButton>
       </ToggleButtonGroup>
-      <ResponsiveChartContainer series={}>
-        <LineChart
-          data={chartData}
-          xAxis={[{ dataKey: "x" }]}
-          series={[{ dataKey: "y" }]}
-        />
-      </ResponsiveChartContainer>
-    </div>
+
+      <Paper sx={{ width: "100%", height: 300 }}>
+        {/* @ts-ignore */}
+        {chartData.length > 0 && ( // Render only if there is data
+            <ResponsiveChartContainer
+              series={[
+                {
+                  type: 'line',
+                  data: chartData.map((dataPoint) => (dataPoint.y )),
+                  yAxisKey : 'y-axis-id',
+                },
+              ]}
+              xAxis={[
+                {
+                  data: chartData.map((dataPoint) => dataPoint.x),
+                  scaleType: 'band',
+                  id: 'x-axis-id',
+                },
+              ]}
+              yAxis={[{
+                id: 'y-axis-id'
+              }]}
+            >
+              <LinePlot />
+          <MarkPlot />
+              <ChartsXAxis label="X axis" position="bottom" axisId="x-axis-id" />
+              <ChartsYAxis label="Y axis" position="left" axisId="y-axis-id" />
+            </ResponsiveChartContainer>
+          )}
+        </Paper>
+    </Box>
   );
 }
 
 // 엄마 변화율 선 그래프 + 평균 변화율 막대 그래프
 function ChangeChart(props) {
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "90%" }}>
+      <Box sx={{ mt: 3, textAlign: 'center'}}>
+        <Typography fontSize={34}> 체중 증가율 </Typography>
+      </Box>
       <Paper sx={{ width: "100%", height: 300 }}>
         {/* @ts-ignore */}
         <ResponsiveChartContainer
@@ -74,10 +106,12 @@ function ChangeChart(props) {
             {
               type: "bar",
               data: [1, 2, 3, 2, 1],
+              label: '평균 증가율'
             },
             {
               type: "line",
               data: [4, 3, 1, 3, 4],
+              label: '현재 증가율'
             },
           ]}
           xAxis={[
@@ -87,11 +121,16 @@ function ChangeChart(props) {
               id: "x-axis-id",
             },
           ]}
+          yAxis={[{
+            id: 'y-axis-id'
+          }]}
         >
           <BarPlot />
           <LinePlot />
           <MarkPlot />
-          <ChartsXAxis label="X axis" position="bottom" axisId="x-axis-id" />
+          <ChartsXAxis label="임신 주차" position="bottom" axisId="x-axis-id" />
+          <ChartsYAxis label="Y axis" position="left" axisId="y-axis-id" />
+          <ChartsLegend/>
         </ResponsiveChartContainer>
       </Paper>
     </Box>
