@@ -1,6 +1,7 @@
 package com.iandwe.oauth;
 
 import com.iandwe.member.domain.Member;
+import com.iandwe.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -66,7 +67,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         memberAttribute.put("exist", true);
         // 회원의 권한, 회원속성, 속성이름을 이용해 DefaultOAuth2User 객체를 생성해 반환
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_".concat(findMember.get().getUserRole()))),
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_".concat(findMember.get().getRole()))),
                 memberAttribute, "email");
 
     }
