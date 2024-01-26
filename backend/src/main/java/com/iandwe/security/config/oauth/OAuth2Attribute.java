@@ -20,16 +20,16 @@ import java.util.Map;
 public class OAuth2Attribute {
     private Map<String, Object> attributes; // 사용자 속성 정보를 담는 Map
     private String attributeKey; // 사용자 속성의 키 값
-    private String email; // 이메일 정보
-    private String name; // 이름 정보
-    private String picture; // 프로필 사진 정보
+    private String email;
+    private String name;
+    private String profileImage;
     private String provider; // 제공자 정보
 
     // 서비스에 따라 OAuth2Attribute 객체를 생성하는 메서드
     static OAuth2Attribute of(String provider, String attributeKey, Map<String, Object> attributes) {
         switch (provider) {
             case "google":
-                return ofGoogle(provider, attributeKey, attributes);
+                return ofGoogle(provider, attributeKey, attributes); // attributeKey : sub
             case "kakao":
                 return ofKakao(provider,"email", attributes);
             case "naver":
@@ -53,19 +53,20 @@ public class OAuth2Attribute {
     }
 
     /*
-     *   Kakao 로그인일 경우 사용하는 메서드, 필요한 사용자 정보가 kakaoAccount -> kakaoProfile 두번 감싸져 있어서,
+     *   Kakao 로그인일 경우 사용하는 메서드, 필요한 사용자 정보가 kakao_acount -> profile 두번 감싸져 있어서,
      *   두번 get() 메서드를 이용해 사용자 정보를 담고있는 Map을 꺼내야함
      * */
     private static OAuth2Attribute ofKakao(String provider, String attributeKey, Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
-        log.debug("kakaoProfile 키 정보들 : " + kakaoProfile.keySet().toString());
 
         return OAuth2Attribute.builder()
                 .email((String) kakaoAccount.get("email"))
                 .provider(provider)
                 .attributes(kakaoAccount)
                 .attributeKey(attributeKey)
+                .name((String) kakaoProfile.get("nickname"))
+                .profileImage((String) kakaoProfile.get("profile_image_url"))
                 .build();
     }
 
@@ -78,9 +79,11 @@ public class OAuth2Attribute {
 
         return OAuth2Attribute.builder()
                 .email((String) response.get("email"))
-                .attributes(response)
                 .provider(provider)
+                .attributes(response)
                 .attributeKey(attributeKey)
+                .name((String) response.get("name"))
+                .profileImage((String) response.get("profile_image"))
                 .build();
     }
 
@@ -88,9 +91,11 @@ public class OAuth2Attribute {
     // OAuth2User 객체에 넣어주기 위해서 Map으로 값들을 반환해준다.
     Map<String, Object> convertToMap() {
         Map<String, Object> map = new HashMap<>();
-        map.put("id", attributeKey);
+//        map.put("id", attributeKey);
         map.put("key", attributeKey);
         map.put("email", email);
+        map.put("name", name);
+        map.put("profileImage", profileImage);
         map.put("provider", provider);
 
         return map;

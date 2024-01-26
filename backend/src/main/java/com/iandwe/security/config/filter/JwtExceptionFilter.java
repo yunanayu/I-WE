@@ -1,4 +1,4 @@
-package com.iandwe.security.filter;
+package com.iandwe.security.config.filter;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

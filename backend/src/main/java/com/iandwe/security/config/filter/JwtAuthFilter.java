@@ -1,8 +1,9 @@
-package com.iandwe.security.filter;
+package com.iandwe.security.config.filter;
 
 import com.iandwe.member.domain.Member;
 import com.iandwe.member.repository.MemberRepository;
-import com.iandwe.security.dto.SecurityUserDto;
+import com.iandwe.security.dto.SecurityMemberDto;
+import com.iandwe.security.dto.SecurityMemberDto;
 import com.iandwe.security.service.JwtUtil;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -33,7 +34,6 @@ public class JwtAuthFilter extends OncePerRequestFilter { // OncePerRequestFilte
     private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
@@ -58,7 +58,7 @@ public class JwtAuthFilter extends OncePerRequestFilter { // OncePerRequestFilte
                     .orElseThrow(IllegalStateException::new);
 
             // SecurityContext에 등록할 User 객체를 만들어줌
-            SecurityUserDto userDto = SecurityUserDto.builder()
+            SecurityMemberDto userDto = SecurityMemberDto.builder()
                     .num(findMember.getNum())
                     .email(findMember.getEmail())
                     .role(String.valueOf(findMember.getRole()))
@@ -74,7 +74,7 @@ public class JwtAuthFilter extends OncePerRequestFilter { // OncePerRequestFilte
     }
 
     // Authentication 객체로 변환
-    public Authentication getAuthentication(SecurityUserDto member) {
+    public Authentication getAuthentication(SecurityMemberDto member) {
         return new UsernamePasswordAuthenticationToken(member, "",
                 List.of(new SimpleGrantedAuthority(member.getRole())));
     }

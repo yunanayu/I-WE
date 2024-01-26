@@ -1,7 +1,10 @@
 package com.iandwe.member.dto.request;
 
 import com.iandwe.member.domain.Member;
+import com.iandwe.member.domain.MemberRole;
+import com.iandwe.member.domain.ParentType;
 import com.iandwe.member.domain.PlatformType;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,21 +18,32 @@ import java.time.LocalDateTime;
 public class MemberRegisterDto {
 
     @NotBlank
+    @Email
     private String email;
-//    @NotBlank
-//    private String address;
-    @NotBlank
+
+    private String memberId;
+
     private String name;
-    @NotBlank
-    private String provider;
-//    private Integer imgNo;
-//    private String imgUrl;
+
+    private String password;
+
+    private String profileImage;
+
+    private ParentType parentType;
+
+    private Long familyNum;
 
     public Member toEntity() {
         return Member.builder()
                 .email(email)
+                .memberId(memberId)
                 .name(name)
-                .platform(PlatformType.valueOf(provider))
+                .password(password)
+                .role(MemberRole.USER)
+                .platform(PlatformType.NONE)
+                .parentType(parentType)
+                .familyNum(familyNum)
+                .profileImage(profileImage)
                 .build();
     }
 

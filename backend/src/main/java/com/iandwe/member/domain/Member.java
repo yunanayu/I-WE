@@ -30,7 +30,7 @@ public class Member {
     private MemberRole role; // ROLE_USER, ROLE_ADMIN
 
     @Enumerated(EnumType.STRING)
-    private PlatformType platform; // KAKAO, NAVER, GOOGLE
+    private PlatformType platform; // NONE, KAKAO, NAVER, GOOGLE
 
     @Enumerated(EnumType.STRING)
     private ParentType parentType; // MOTHER, FATHER

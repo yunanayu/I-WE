@@ -33,7 +33,7 @@ public class MemberServiceImpl implements MemberService{
 
         Member member = memberRegisterDto.toEntity();
 
-        // 회원을 저장한다.
+        // 회원을 저장함
         Member savedMember = memberRepository.save(member);
 
         return savedMember;

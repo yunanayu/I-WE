@@ -26,6 +26,7 @@ import java.util.Optional;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberService memberService;
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         // 기본 OAuth2UserService 객체 생성
@@ -33,16 +34,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // OAuth2UserService를 사용하여 OAuth2User 정보를 가져옴
         OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
-        log.debug("OAuth2User 정보 : " + oAuth2User);
-        log.debug("OAuth2User.getAttributes() 정보 : " + oAuth2User.getAttributes());
 
-        // 클라이언트 등록 ID(google, naver, kakao)와 사용자 이름 속성을 가져옴
-        log.debug("userRequest.getClientRegistration() 정보 : " + userRequest.getClientRegistration());
+        // 클라이언트 등록 ID(google, naver, kakao)와 사용자 이름 속성(키가 되는 필드 값. 구글:sub, 카카오:email, 네이버:id)을 가져옴
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration()
                 .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
-        // OAuth2UserService를 사용하여 가져온 OAuth2User 정보로 OAuth2Attribute 객체를 만듦
+        // 가져온 OAuth2User 정보로 OAuth2Attribute 객체를 만듦
         OAuth2Attribute oAuth2Attribute =
                 OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 

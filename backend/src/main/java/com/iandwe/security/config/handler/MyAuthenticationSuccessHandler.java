@@ -56,7 +56,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
         String role = oAuth2User.getAuthorities().stream().findFirst() // 첫번째 Role을 찾아옴
                 .orElseThrow(IllegalAccessError::new) // 존재하지 않을 시 예외를 던짐
                 .getAuthority(); // Role을 가져옴
-
+        log.info("Role : " + role);
 
         // 회원이 존재할경우
         if (isExist) {
@@ -64,44 +64,20 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             GeneratedToken token = jwtUtil.generateToken(email, role);
             log.info("jwtToken = {}", token.getAccessToken());
 
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("accessToken", token.getAccessToken());
-
-            // accessToken을 쿼리스트링에 담는 url을 만들어준다.
-            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/")
+            // accessToken을 쿼리스트링에 담는 url을 만들어줌
+            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")
                     .queryParam("accessToken", token.getAccessToken())
                     .build()
                     .encode(StandardCharsets.UTF_8)
                     .toUriString();
+            log.info("move login check page");
 
-            // 로그인 확인 페이지로 리다이렉트 시킨다.
+            // 로그인 확인 페이지로 리다이렉트 시킴
             getRedirectStrategy().sendRedirect(request, response, targetUrl);
-
-//            Gson gson = new Gson();
-//
-//            String jsonStr = gson.toJson(claims);
-//
-//            response.setContentType("application/json; charset=UTF-8");
-//            response.getWriter().write(jsonStr);
-
-//            PrintWriter printWriter = response.getWriter();
-//            printWriter.println(jsonStr);
-//            printWriter.close();
-
-//            // accessToken을 쿼리스트링에 담는 url을 만들어준다.
-//            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")
-//                    .queryParam("accessToken", token.getAccessToken())
-//                    .build()
-//                    .encode(StandardCharsets.UTF_8)
-//                    .toUriString();
-//
-//
-//            log.info("login completed redirect go~~~");
-//            // 로그인 확인 페이지로 리다이렉트 시킨다.
-//            getRedirectStrategy().sendRedirect(request, response, targetUrl);
         }
         // 회원이 존재하지 않을경우
         else {
+            // 임의로 회원가입 처리 => 이 부분 나중에 수정해야!!
             Member member = Member.builder()
                     .email(email)
 //                    .password(passwordEncoder.encode("1111"))
@@ -109,35 +85,23 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
                     .platform(PlatformType.valueOf(provider.toUpperCase(Locale.ROOT)))
                     .role(MemberRole.valueOf(role.substring(5)))
                     .build();
-            log.info("temp register");
             memberRepository.save(member);
+            log.info("temperary register" + member);
 
             // jwt token 발행 시작
-            log.info("Role : " + role);
             GeneratedToken token = jwtUtil.generateToken(email, role);
             log.info("jwtToken = {}", token.getAccessToken());
+
+            // accessToken을 쿼리스트링에 담는 url을 만들어줌
             String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")
                     .queryParam("accessToken", token.getAccessToken())
                     .build()
                     .encode(StandardCharsets.UTF_8)
                     .toUriString();
             log.info("move login check page");
-            // 로그인 확인 페이지로 리다이렉트 시킨다.
+            
+            // 로그인 확인 페이지로 리다이렉트 시킴
             getRedirectStrategy().sendRedirect(request, response, targetUrl);
-
-
-
-
-//            // 서비스 제공자와 email을 쿼리스트링으로 전달하는 url을 만들어줌
-//            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")
-//                    .queryParam("email", (String) oAuth2User.getAttribute("email"))
-//                    .queryParam("provider", provider)
-//                    .build()
-//                    .encode(StandardCharsets.UTF_8)
-//                    .toUriString();
-//            log.info("회원가입 redirect 준비");
-//            // 회원가입 페이지로 리다이렉트 시킴
-//            getRedirectStrategy().sendRedirect(request, response, targetUrl);
         }
     }
 

@@ -41,7 +41,8 @@ public class SecurityConfig {
         http
                 .httpBasic(config -> config.disable()) // HTTP 기본 인증을 비활성화
 //                .cors(Customizer.withDefaults()) // CORS 활성화
-                .cors(config -> config.configurationSource(corsConfigurationSource())) // CORS 활성화
+//                .cors(config -> config.configurationSource(corsConfigurationSource())) // CORS 활성화
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable())
                 .csrf(config -> config.disable()) // CSRF 보호 기능 비활성화
                 .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션관리 정책을 STATELESS(세션이 있으면 쓰지도 않고, 없으면 만들지도 않음)
                 // 요청에 대한 인증 설정
@@ -70,10 +71,10 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
+        configuration.addAllowedOrigin("http://localhost:3000");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
         return source;
     }
 

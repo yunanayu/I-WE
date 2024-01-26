@@ -1,6 +1,6 @@
 package com.iandwe.security;
 
-import com.iandwe.security.dto.SecurityUserDto;
+import com.iandwe.security.dto.SecurityMemberDto;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /*
@@ -8,11 +8,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * */
 public abstract class SecurityUtils {
 
-    public static String getUserId() {
-        return ((SecurityUserDto)(SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getEmail();
+    public static String getUserEmail() {
+        return ((SecurityMemberDto)(SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getEmail();
     }
 
-    public static SecurityUserDto getUser() {
-        return (SecurityUserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public static SecurityMemberDto getUser() {
+        return (SecurityMemberDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
