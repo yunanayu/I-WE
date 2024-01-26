@@ -67,12 +67,22 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             Map<String, Object> claims = new HashMap<>();
             claims.put("accessToken", token.getAccessToken());
 
-            Gson gson = new Gson();
+            // accessToken을 쿼리스트링에 담는 url을 만들어준다.
+            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/")
+                    .queryParam("accessToken", token.getAccessToken())
+                    .build()
+                    .encode(StandardCharsets.UTF_8)
+                    .toUriString();
 
-            String jsonStr = gson.toJson(claims);
+            // 로그인 확인 페이지로 리다이렉트 시킨다.
+            getRedirectStrategy().sendRedirect(request, response, targetUrl);
 
-            response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().write(jsonStr);
+//            Gson gson = new Gson();
+//
+//            String jsonStr = gson.toJson(claims);
+//
+//            response.setContentType("application/json; charset=UTF-8");
+//            response.getWriter().write(jsonStr);
 
 //            PrintWriter printWriter = response.getWriter();
 //            printWriter.println(jsonStr);
