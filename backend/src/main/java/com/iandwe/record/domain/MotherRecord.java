@@ -20,7 +20,6 @@ public class MotherRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long num;
 
-
     // Todo : join
     // 엄마번호
     @JoinColumn(name = "")
