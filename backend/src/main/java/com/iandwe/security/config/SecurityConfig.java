@@ -1,10 +1,10 @@
 package com.iandwe.security.config;
 
-import com.iandwe.security.filter.JwtAuthFilter;
+import com.iandwe.security.config.filter.JwtAuthFilter;
 import com.iandwe.security.config.handler.MyAuthenticationFailureHandler;
 import com.iandwe.security.config.handler.MyAuthenticationSuccessHandler;
 import com.iandwe.security.config.oauth.CustomOAuth2UserService;
-import com.iandwe.security.filter.JwtExceptionFilter;
+import com.iandwe.security.config.filter.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +15,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 /**
  * Spring Security 기능을 활성화시키고, OAuth 2.0과 JWT 로그인을 활용하기 위한 설정 클래스
@@ -32,11 +37,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        log.debug("----------SecurityConfig의 filterChain 함수----------");
 
         http
                 .httpBasic(config -> config.disable()) // HTTP 기본 인증을 비활성화
-                .cors(Customizer.withDefaults()) // CORS 활성화
+//                .cors(Customizer.withDefaults()) // CORS 활성화
+                .cors(config -> config.configurationSource(corsConfigurationSource())) // CORS 활성화
                 .csrf(config -> config.disable()) // CSRF 보호 기능 비활성화
                 .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션관리 정책을 STATELESS(세션이 있으면 쓰지도 않고, 없으면 만들지도 않음)
                 // 요청에 대한 인증 설정
@@ -57,4 +62,19 @@ public class SecurityConfig {
                 .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
         return http.build();
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration  = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
+
 }
