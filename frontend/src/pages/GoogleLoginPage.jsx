@@ -3,7 +3,7 @@ import googlelogin from "../images/googlelogin.png";
 
 function GoogleLogin() {
   const clientId = "705885514408-e3nf4pp0ctb7cm4etp5jvirl63jf5t83.apps.googleusercontent.com";
-  const redirect_uri = "http://localhost:3000/auth";
+  const redirect_uri = "http://localhost:8080/oauth2/authorization/google";
   const GoogleURL = `https://accounts.google.com/o/oauth2/v2/auth?scope=email%20openid&response_type=code&redirect_uri=${redirect_uri}&client_id=${clientId}`;
 
   const handleLogin = () => {

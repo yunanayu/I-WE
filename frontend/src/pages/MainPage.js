@@ -13,7 +13,7 @@ const Main = () => {
 
   return (
     <>
-      { !isLoggedIn ? (
+      { isLoggedIn ? (
         <>
           <Basic />
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>

@@ -3,7 +3,7 @@ import naverLogin from "../images/naverlogin.png";
 
 function NaverLogin() {
   const Rest_api_key = "Ms3dTzEKxVT4uW7mI3vC";
-  const redirect_uri = "http://localhost:3000/auth";
+  const redirect_uri = "http://localhost:8080/oauth2/authorization/naver";
   const state = "AZ4ZyeTrwO";
   const NaverURL = `https://nid.naver.com/oauth2.0/authorize?client_id=${Rest_api_key}&response_type=code&redirect_uri=${redirect_uri}&state=${state}`;
 
