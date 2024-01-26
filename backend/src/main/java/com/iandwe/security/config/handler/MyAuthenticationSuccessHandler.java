@@ -72,10 +72,11 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             String jsonStr = gson.toJson(claims);
 
             response.setContentType("application/json; charset=UTF-8");
+            response.getWriter().write(jsonStr);
 
-            PrintWriter printWriter = response.getWriter();
-            printWriter.println(jsonStr);
-            printWriter.close();
+//            PrintWriter printWriter = response.getWriter();
+//            printWriter.println(jsonStr);
+//            printWriter.close();
 
 //            // accessToken을 쿼리스트링에 담는 url을 만들어준다.
 //            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")
