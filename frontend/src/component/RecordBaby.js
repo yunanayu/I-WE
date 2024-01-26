@@ -3,6 +3,10 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { ChangeChart, WeeklyWeightChart } from "./MomWeightChart";
 import { Button, Divider, Modal, Stack, Typography } from "@mui/material";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import "dayjs/locale/ko";
 
 // 주차별 몸무게, 머리둘레, 키
 const weight = [];
@@ -127,14 +131,23 @@ function RecordBaby() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <Box sx={style}>
-              <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
-                Text in a modal
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-              </Typography>
-            </Box>
+            <LocalizationProvider  izationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+              <Box sx={style}>
+                <Typography
+                  id="modal-modal-title"
+                  variant="h6"
+                  component="h2"
+                  sx={setCenter}
+                >
+                  <DatePicker />
+                  Text in a modal
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  Duis mollis, est non commodo luctus, nisi erat porttitor
+                  ligula.
+                </Typography>
+              </Box>
+            </LocalizationProvider>
           </Modal>
 
           {/* 사진용 모달 */}
@@ -153,7 +166,6 @@ function RecordBaby() {
               </Typography>
             </Box>
           </Modal>
-
         </Box>
         <Box
           maxWidth="md"
