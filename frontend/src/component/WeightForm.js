@@ -5,7 +5,7 @@ function MomForm() {
   return (
     <>
       <Box component="form" sx={{ mt: 3 }}>
-        <Typography fontSize={34}> 오늘의 체중은? </Typography>
+        <Typography fontSize={28}> 오늘의 체중은? </Typography>
         <TextField
           name="momweight"
           fullWidth
@@ -29,7 +29,7 @@ function BabyForm() {
   return (
     <div>
       <Box component="form" sx={{ mt: 3 }}>
-        <Typography fontSize={34}> 오늘의 체중은? </Typography>
+        <Typography fontSize={28}> 오늘의 체중은? </Typography>
         <TextField
           name="momweight"
           fullWidth

@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { ChangeChart, WeeklyWeightChart } from "./MomWeightChart";
-import { BabyForm } from "./WeightForm";
-import { Typography } from "@mui/material";
+import { Button, Divider, Modal, Stack, Typography } from "@mui/material";
 
 // 주차별 몸무게, 머리둘레, 키
 const weight = [];
@@ -36,6 +35,18 @@ const commonStyles = {
   width: "66vw",
 };
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "60vw",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 // 평균과 비교하여 메세지 출력
 function Info() {
   // 주차 비교
@@ -44,28 +55,105 @@ function Info() {
   return (
     <>
       <Box sx={{ mt: 3, mb: 3 }}>
-        <Typography fontSize={34}>123 </Typography>
+        <Typography fontSize={28}> 통계 문구 </Typography>
       </Box>
     </>
   );
 }
 
-// props 설정, form 전송 객체, 차트 데이터 입력 필요 
-function RecordMom() {
+// props 설정, form 전송 객체, 차트 데이터 입력 필요
+function RecordBaby() {
+  const [picture, setPicture] = useState(false);
+  const pictureOpen = () => setPicture(true);
+  const pictureClose = () => setPicture(false);
+  const [record, setRecord] = useState(false);
+  const recordOpen = () => setRecord(true);
+  const recordClose = () => setRecord(false);
+
   return (
     <>
       <Container maxWidth="lg" sx={{ ...setCenter, background: "skyblue" }}>
+        <Box sx={{ ...setCenter, m: 3 }}>
+          <Typography fontSize={34}>{pregWeek} 주차</Typography>
+          <Typography fontSize={24} color={"hotpink"}>
+            {pregWeek} D-???
+          </Typography>
+        </Box>
         <Box
           maxWidth="md"
           sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
         >
           {<Info />}
         </Box>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
-          123
+        <Box maxWidth="md" sx={{ ...setCenter }}>
+          <Stack
+            direction={"row"}
+            spacing={2}
+            divider={<Divider orientation="vertical" flexItem />}
+          >
+            <Button
+              variant="outlined"
+              onClick={recordOpen}
+              sx={{
+                ...setCenter,
+                width: "28vw",
+                boxShadow: 3,
+                borderRadius: 5,
+                backgroundColor: "background.paper",
+                color: "black",
+              }}
+            >
+              오늘의 OO이 기록하기
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={pictureOpen}
+              sx={{
+                ...setCenter,
+                width: "28vw",
+                boxShadow: 3,
+                borderRadius: 5,
+                backgroundColor: "background.paper",
+                color: "black",
+              }}
+            >
+              OO이 사진보기
+            </Button>
+          </Stack>
+          {/* 기록용 모달 */}
+          <Modal
+            open={record}
+            onClose={recordClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
+                Text in a modal
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              </Typography>
+            </Box>
+          </Modal>
+
+          {/* 사진용 모달 */}
+          <Modal
+            open={picture}
+            onClose={pictureClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Text in a modal
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              </Typography>
+            </Box>
+          </Modal>
+
         </Box>
         <Box
           maxWidth="md"
@@ -84,4 +172,4 @@ function RecordMom() {
   );
 }
 
-export default RecordMom;
+export default RecordBaby;
