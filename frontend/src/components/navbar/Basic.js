@@ -1,59 +1,170 @@
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import icon1 from "../../images/icon1.png";
+import { FormControl, Select, MenuItem } from '@mui/material';
 
-const Basic = () => {
 
-  const loginState = useSelector(state => state.loginSlice)
+const pages = [
+  { name: '다이어리', href: '/diary' },
+  { name: '기록', href: '/record' },
+  { name: '서비스찾기', href: '/service' },
+  { name: '커뮤니티', href: '/community' }
+];
+const settings = ['마이페이지', '로그아웃'];
 
-  return (  
-  <nav id='navbar' className=" flex  bg-blue-300">
+function Basic() {
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    <div className="w-4/5 bg-gray-500" >
-      <ul className="flex p-4 text-white font-bold">
-        <li className="pr-6 text-2xl">
-          <Link to={'/'}>Main</Link>
-        </li>
-        <li className="pr-6 text-2xl">
-          <Link to={'/about'}>About</Link>
-        </li>
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
 
-        {loginState.email ?  //로그인한 사용자만 출력되는 메뉴 
-        
-        <>
-        <li className="pr-6 text-2xl">
-          <Link to={'/todo/'}>Todo</Link>
-        </li>
-        <li className="pr-6 text-2xl">
-          <Link to={'/products/'}>Products</Link>
-        </li>
-        </>
-        
-        :
-        <></>
-        }
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
 
-      </ul>
-    </div>
-    
-    <div className="w-1/5 flex justify-end bg-orange-300 p-4 font-medium">
-    { ! loginState.email ?
-      
-      <div className="text-white text-sm m-1 rounded" >
-        <Link to={'/member/login'}>Login</Link>
-        |
-        <Link to={'/member/signup'}>Signup</Link>
-      </div>
-      
-    : 
-    
-      <div className="text-white text-sm m-1 rounded" >
-        <Link to={'/member/logout'}>Logout</Link>
-      </div>
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
-    }
-    </div>
-  </nav>
+  return (
+    <AppBar position="static" sx={{ bgcolor: '#FBBBB8'}}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            <img src={icon1} alt="icon1" style={{ width: '50px', height: '50px' }} />
+          </Typography>
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+              }}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center" component="a" href={page.href}>
+                    {page.name}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: 'flex', md: 'none' },
+              flexGrow: 1,
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            <img src={icon1} alt="icon1" style={{ width: '50px', height: '50px' }} />
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {pages.map((page) => (
+              <Button
+                key={page.name}
+                component="a"
+                href={page.href}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                {page.name}
+              </Button>
+            ))}
+          </Box>
+
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar src="/broken-image.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }
- 
 export default Basic;
