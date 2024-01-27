@@ -1,8 +1,6 @@
 package com.iandwe.record.dto;
 
-import com.iandwe.record.domain.Hospital;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,8 +9,9 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class HospitalCreateRequestDto {
+public class HospitalUpdateRequestDto {
+
+    private Long num;
 
     // 대상 : 산모 or 아이
     private String target;
@@ -24,7 +23,7 @@ public class HospitalCreateRequestDto {
     private String title;
 
     // 진료병원
-    private String hospital;
+    private String hospitalName;
 
     // 담당의
     private String doctor;
@@ -40,17 +39,4 @@ public class HospitalCreateRequestDto {
 
     // 의사소견
     private String comment;
-
-    public Hospital toEntity() {
-        return Hospital.builder()
-                .target(target)
-                .targetNum(targetNum)
-                .title(title)
-                .hospitalName(hospital)
-                .hospitalDate(hospitalDate)
-                .content(content)
-                .result(result)
-                .comment(comment)
-                .build();
-    }
 }

@@ -33,7 +33,7 @@ public class Hospital {
     private String title;
 
     // 진료병원
-    private String hospital;
+    private String hospitalName;
 
     // 담당의
     private String doctor;

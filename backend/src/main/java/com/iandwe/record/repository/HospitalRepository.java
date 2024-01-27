@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
-    List<Hospital> findBy
+    List<Hospital> findAllByTargetNum(Long num);
+
+    Hospital findByNum(Long num);
 }
