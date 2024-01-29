@@ -165,6 +165,7 @@ dependencies {
     // javax.persistence 의존성 추가
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
+<<<<<<< backend/build.gradle
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     //////////////////////////////
@@ -188,6 +189,15 @@ dependencies {
 
     // redis
     implementation group: 'org.springframework.data', name: 'spring-data-redis', version: '3.2.2'
+
+
+    // spring batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation group: 'org.springframework.batch', name: 'spring-batch-integration', version: '5.0.1'
+    testImplementation 'org.springframework.batch:spring-batch-test'
+
+    // spring mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 }
 
