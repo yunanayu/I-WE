@@ -1,10 +1,19 @@
 package com.iandwe.alarm.service;
 
 import com.iandwe.alarm.email.dto.EmailDto;
-import com.iandwe.alarm.email.util.EmailGenerator;
+import com.iandwe.alarm.fcm.dto.FCMDto;
+import com.iandwe.alarm.fcm.util.FCMSender;
+import com.iandwe.baby.domain.Baby;
+import com.iandwe.baby.exception.NoBabyExistException;
+import com.iandwe.baby.repository.BabyRepository;
 import com.iandwe.checker.domain.BabyChecker;
-import com.iandwe.essential.dto.EssentialResponseDto;
-import com.iandwe.essential.service.EssentialService;
+import com.iandwe.checker.domain.MotherChecker;
+import com.iandwe.essential.domain.Essential;
+import com.iandwe.essential.exception.NoEssentialExistException;
+import com.iandwe.essential.repository.EssentialRepository;
+import com.iandwe.member.domain.Member;
+import com.iandwe.member.exception.NoMemberExistException;
+import com.iandwe.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -17,28 +26,46 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class AlarmService {
 
-    private final EssentialService essentialService;
+    private final BabyRepository babyRepository;
+
+    private final MemberRepository memberRepository;
+
+    private final EssentialRepository essentialRepository;
 
     private final JavaMailSender emailSender;
 
+    private final FCMSender fcmSender;
+
     @Transactional
-    public void sendEmailAlarm(BabyChecker babyChecker) {
-        EssentialResponseDto essential = essentialService.findByNum(babyChecker.getEssentialNum());
-        EmailDto dto = EmailDto.builder()
-                .email("306yyy@naver.com") // # TODO BabyChecker -> Member 의 email 가져오기 member.getEmail() + @ + getDomain();
-                .title(EmailGenerator.generateSubject("준성"))
-                .content(EmailGenerator.generateText(essential.getTitle(), essential.getCategory()))
-                .build();
-        sendEmail(dto);
+    public void sendBabyAlarm(BabyChecker babyChecker) {
+        Essential essential = essentialRepository.findByNum(babyChecker.getEssentialNum()).orElseThrow(NoEssentialExistException::new);
+        Baby baby = babyRepository.findByNum(babyChecker.getBabyNum()).orElseThrow(NoBabyExistException::new);
+        Member mother = memberRepository.findByNum(baby.getMotherNum()).orElseThrow(NoMemberExistException::new);
+
+        sendEmail(EmailDto.of(mother, essential));
+        sendFCM(FCMDto.of(mother, essential)); // 필요정보 : token, title, content
     }
+
+    @Transactional
+    public void sendMotherAlarm(MotherChecker motherChecker) {
+        Essential essential = essentialRepository.findByNum(motherChecker.getEssentialNum()).orElseThrow(NoEssentialExistException::new);
+        Member mother = memberRepository.findByNum(motherChecker.getMotherNum()).orElseThrow(NoMemberExistException::new);
+
+        sendEmail(EmailDto.of(mother, essential));
+        sendFCM(FCMDto.of(mother, essential));
+    }
+
 
     private void sendEmail(EmailDto mailDto) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("0833eovy@gmail.com");
         message.setTo(mailDto.getEmail());
-        message.setSubject(mailDto.getTitle());
-        message.setText(mailDto.getContent());
+        message.setSubject(mailDto.getSubject());
+        message.setText(mailDto.getText());
         emailSender.send(message);
     }
 
+    private void sendFCM(FCMDto fcmDto) {
+        fcmSender.sendFCM(fcmDto);
+    }
 }

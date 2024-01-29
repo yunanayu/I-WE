@@ -33,6 +33,8 @@ public class MemberRegisterDto {
 
     private Long familyNum;
 
+    private String fcmToken;
+
     public Member toEntity() {
         return Member.builder()
                 .email(email)
@@ -42,6 +44,7 @@ public class MemberRegisterDto {
                 .role(MemberRole.USER)
                 .platform(PlatformType.NONE)
                 .parentType(parentType)
+                .familyNum(familyNum)
                 .familyNum(familyNum)
                 .profileImage(profileImage)
                 .build();

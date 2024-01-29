@@ -1,5 +1,8 @@
 package com.iandwe.alarm.email.dto;
 
+import com.iandwe.alarm.email.util.EmailGenerator;
+import com.iandwe.essential.domain.Essential;
+import com.iandwe.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,10 +14,17 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EmailDto {
 
-    private String title;
+    private String subject;
 
-    private String content;
+    private String text;
 
     private String email;
 
+    public static EmailDto of(Member mother, Essential essential) {
+        return EmailDto.builder()
+                .email(mother.getEmail())
+                .subject(EmailGenerator.generateSubject(mother.getName()))
+                .text(EmailGenerator.generateText(essential.getTitle(), essential.getCategory()))
+                .build();
+    }
 }
