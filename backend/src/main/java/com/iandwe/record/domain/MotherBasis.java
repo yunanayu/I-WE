@@ -19,8 +19,8 @@ public class MotherBasis {
     private Long num;
 
     // TODO : join
+    // @JoinColumn(name = "")
     // 엄마번호
-    @JoinColumn(name = "")
     private Long motherNum;
 
     // 임신직전몸무게

@@ -19,6 +19,14 @@ public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
 
     @Override
+    @Transactional
+    public Boolean create(HospitalCreateRequestDto dto) {
+        Hospital hospital = dto.toEntity();
+        hospitalRepository.save(hospital);
+        return true;
+    }
+
+    @Override
     public List<HospitalReadResponseDto> findAllByNum(Long num) {
         List<Hospital> hospitals = hospitalRepository.findAllByTargetNum(num);
         if (hospitals == null || hospitals.isEmpty()){
@@ -35,14 +43,6 @@ public class HospitalServiceImpl implements HospitalService {
         Hospital hospital = hospitalRepository.findByNum(dto.getNum())
                 .orElseThrow(NoHospitalExistException::new);
         hospital.update(dto);
-        return true;
-    }
-
-    @Override
-    @Transactional
-    public Boolean create(HospitalCreateRequestDto dto) {
-        Hospital hospital = dto.toEntity();
-        hospitalRepository.save(hospital);
         return true;
     }
 }

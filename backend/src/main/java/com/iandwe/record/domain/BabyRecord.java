@@ -1,5 +1,7 @@
 package com.iandwe.record.domain;
 
+import com.iandwe.record.dto.BabyRecordUpdateRequestDto;
+import com.iandwe.record.dto.MotherRecordUpdateRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,4 +42,15 @@ public class BabyRecord {
 
     // 사진
     private String babyImage;
+    public void update(BabyRecordUpdateRequestDto dto){
+        if(dto.getNum() != null){
+            this.num = dto.getNum();
+        }
+        if(dto.getWeight() != 0.0F){
+            this.weight = dto.getWeight();
+        }
+        if(dto.getRecordDate() != null){
+            this.recordDate = dto.getRecordDate();
+        }
+    }
 }

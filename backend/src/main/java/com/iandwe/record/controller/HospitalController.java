@@ -1,10 +1,8 @@
 package com.iandwe.record.controller;
 
-import com.iandwe.baby.dto.*;
 import com.iandwe.record.dto.HospitalCreateRequestDto;
 import com.iandwe.record.dto.HospitalReadResponseDto;
 import com.iandwe.record.dto.HospitalUpdateRequestDto;
-import com.iandwe.record.repository.HospitalRepository;
 import com.iandwe.record.service.HospitalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

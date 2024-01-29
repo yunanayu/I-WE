@@ -43,7 +43,7 @@ public class HospitalReadResponseDto {
     // 의사소견
     private String comment;
 
-    public  static  HospitalReadResponseDto from(Hospital hospital) {
+    public static HospitalReadResponseDto from(Hospital hospital) {
         return HospitalReadResponseDto.builder()
                 .num(hospital.getNum())
                 .target(hospital.getTarget())
