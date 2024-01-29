@@ -1,6 +1,8 @@
 package com.iandwe.member.service;
 
+import com.iandwe.checker.service.generator.CheckerGenerator;
 import com.iandwe.member.domain.Member;
+import com.iandwe.member.domain.ParentType;
 import com.iandwe.member.dto.request.MemberRegisterDto;
 import com.iandwe.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,8 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
+
+    private final CheckerGenerator checkerGenerator;
 
 //    private final PasswordEncoder passwordEncoder;
 
@@ -36,6 +40,14 @@ public class MemberServiceImpl implements MemberService{
         // 회원을 저장함
         Member savedMember = memberRepository.save(member);
 
+        if(isMother(savedMember.getParentType())) {
+            checkerGenerator.generateMotherCheckerData(savedMember.getNum());
+        }
+
         return savedMember;
+    }
+
+    private static boolean isMother(ParentType type){
+        return type.equals(ParentType.MOTHER);
     }
 }

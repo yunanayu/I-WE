@@ -2,6 +2,7 @@ package com.iandwe.alarm.batch.reader;
 
 import com.iandwe.alarm.batch.job.AlarmJobConfig;
 import com.iandwe.checker.domain.BabyChecker;
+import com.iandwe.checker.domain.MotherChecker;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -28,17 +29,16 @@ public class AlarmReaderConfig {
                 .build();
     }
 
-//    TODO : Member 생성 시 추가 구현 필요
-//    @StepScope
-//    @Bean
-//    public JpaPagingItemReader<MotherChecker> motherAlarmReader() {
-//        String query = ("SELECT m FROM MotherChecker m WHERE m.complete = false");
-//        return new JpaPagingItemReaderBuilder<MotherChecker>()
-//                .entityManagerFactory(emf)
-//                .queryString(query)
-//                .pageSize(AlarmJobConfig.CHUNK_SIZE)
-//                .name("motherAlarmReader")
-//                .build();
-//    }
+    @StepScope
+    @Bean
+    public JpaPagingItemReader<MotherChecker> motherAlarmReader() {
+        String query = ("SELECT m FROM MotherChecker m WHERE m.complete = false");
+        return new JpaPagingItemReaderBuilder<MotherChecker>()
+                .entityManagerFactory(emf)
+                .queryString(query)
+                .pageSize(AlarmJobConfig.CHUNK_SIZE)
+                .name("motherAlarmReader")
+                .build();
+    }
 
 }
