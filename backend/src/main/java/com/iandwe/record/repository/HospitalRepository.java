@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
-    List<Hospital> findAllByTargetNum(Long num);
+    List<Hospital> findAllByTargetNum(long num);
 
-    Optional<Hospital> findByNum(Long num);
+    Optional<Hospital> findByNum(long num);
 }

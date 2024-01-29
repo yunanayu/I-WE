@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @Builder
 public class BabyRecord {
 
-    // 아이신체기록번호
+    // 아이기록번호
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long num;
@@ -43,14 +43,23 @@ public class BabyRecord {
     // 사진
     private String babyImage;
     public void update(BabyRecordUpdateRequestDto dto){
-        if(dto.getNum() != null){
-            this.num = dto.getNum();
+        if(dto.getBabyNum() != null){
+            this.babyNum = dto.getBabyNum();
+        }
+        if(dto.getHeight() != 0.0F){
+            this.height = dto.getHeight();
         }
         if(dto.getWeight() != 0.0F){
             this.weight = dto.getWeight();
         }
+        if(dto.getCircumference() != 0.0F){
+            this.circumference = dto.getCircumference();
+        }
         if(dto.getRecordDate() != null){
             this.recordDate = dto.getRecordDate();
+        }
+        if(dto.getBabyImage() != null){
+            this.babyImage = dto.getBabyImage();
         }
     }
 }

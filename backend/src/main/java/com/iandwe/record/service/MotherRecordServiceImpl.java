@@ -4,7 +4,7 @@ import com.iandwe.record.domain.MotherRecord;
 import com.iandwe.record.dto.MotherRecordCreateRequestDto;
 import com.iandwe.record.dto.MotherRecordReadReponseDto;
 import com.iandwe.record.dto.MotherRecordUpdateRequestDto;
-import com.iandwe.record.exception.NoMotherRecordExistException;
+import com.iandwe.record.exception.NoRecordExistException;
 import com.iandwe.record.repository.MotherRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,10 +27,10 @@ public class MotherRecordServiceImpl implements MotherRecordService{
     }
 
     @Override
-    public List<MotherRecordReadReponseDto> findAllByNum(Long num) {
-        List<MotherRecord> motherRecords = motherRecordRepository.findAllByNum(num);
+    public List<MotherRecordReadReponseDto> findAllByMotherNum(long num) {
+        List<MotherRecord> motherRecords = motherRecordRepository.findAllByMotherNum(num);
         if(motherRecords == null || motherRecords.isEmpty()){
-            throw new NoMotherRecordExistException();
+            throw new NoRecordExistException();
         }
         return motherRecords.stream()
                 .map(MotherRecordReadReponseDto::from)
@@ -41,7 +41,7 @@ public class MotherRecordServiceImpl implements MotherRecordService{
     @Transactional
     public Boolean update(MotherRecordUpdateRequestDto dto) {
         MotherRecord motherRecord = motherRecordRepository.findByNum(dto.getNum())
-                .orElseThrow(NoMotherRecordExistException::new);
+                .orElseThrow(NoRecordExistException::new);
         motherRecord.update(dto);
         return true;
     }

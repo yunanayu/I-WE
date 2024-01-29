@@ -10,7 +10,7 @@ public interface MotherRecordService {
 
     Boolean create(MotherRecordCreateRequestDto dto);
 
-    List<MotherRecordReadReponseDto> findAllByNum(Long num);
+    List<MotherRecordReadReponseDto> findAllByMotherNum(long num);
 
     Boolean update(MotherRecordUpdateRequestDto dto);
 }

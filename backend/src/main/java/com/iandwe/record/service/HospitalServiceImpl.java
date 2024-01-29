@@ -27,7 +27,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public List<HospitalReadResponseDto> findAllByNum(Long num) {
+    public List<HospitalReadResponseDto> findAllByTargetNum(long num) {
         List<Hospital> hospitals = hospitalRepository.findAllByTargetNum(num);
         if (hospitals == null || hospitals.isEmpty()){
             throw new NoHospitalExistException();
