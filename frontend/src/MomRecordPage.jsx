@@ -1,5 +1,5 @@
-import { Box, Typography } from '@mui/material';
-import React, { useState, ChangeEvent } from 'react';
+import { Box, Typography, createTheme } from '@mui/material';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import moment from 'moment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -22,6 +22,8 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import FileUpload from './FileUpload';
+import HealingOutlinedIcon from '@mui/icons-material/HealingOutlined';
+import { ThemeProvider, createTheme } from '@mui/system';
 
 const MomRecordPage = () => {
   const babyList = [
@@ -57,8 +59,15 @@ const MomRecordPage = () => {
     babyHeight:'',
     babyDiameter:'',
   })
+    useEffect(() => {
+      console.log(' 렌더링!')
+    }, [state])
 
-
+    const theme = createTheme({
+      palette: {
+        primary: '#FBBBB8',
+      },
+    });
   
   const handleChange = (event) => {
     setState({...state, [event.target.name] : event.target.value})
@@ -71,9 +80,12 @@ const MomRecordPage = () => {
   // console.log(state.babyName);
   
   return (
-    <Container sx={{pt:10}}>
-      <Typography variant='h3'>기록페이지</Typography>
-      <Box sx={{display:'flex', width:'100%' }}>
+    <Container sx={{pt:10,}}>
+      <Box sx={{display:'flex'}}>
+        <Typography variant='h3'>검진 기록하기 </Typography>
+        <HealingOutlinedIcon fontSize='large'/>
+      </Box>
+      <Box sx={{display:'flex', width:'100%', pt:3 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           {/* <DateCalendar onChange={(e) => setState({...state, checkUpDate : moment(e.$d).format('YYYY-MM-DD')})}/> */}
           <DemoContainer components={['DatePicker']}>
@@ -89,7 +101,7 @@ const MomRecordPage = () => {
               />
           </DemoContainer>
         </LocalizationProvider>
-        <TextField
+        {/* <TextField
           id="outlined-read-only-input"
           label=" 검진 날짜"
           placeholder={state.selectDay == '' ? '검진날짜를 선택해주세요':state.selectDay}
@@ -97,7 +109,7 @@ const MomRecordPage = () => {
           InputProps={{
             readOnly: true,
           }}
-        />
+        /> */}
         <Autocomplete
           disablePortal
           id="combo-box-demo"
@@ -120,43 +132,28 @@ const MomRecordPage = () => {
           <PregnantWomanIcon fontSize='large'/>
           <Typography variant='h4'>산모기록</Typography>
         </Box>
-        <Box sx={{ display:'flex'}}>
-        <Typography variant='h5'>병원이름</Typography>
-        <TextField
-          id="outlined-controlled"
-          name='hospitalName'
-          label={state.hospitalName == '' ? '병원이름을 입력하세요' : '병원이름'}
-          value={state.hospitalName == '' ? '' : state.hospitalName}
-          // onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          //   setState({...state, hospitalName :event.target.value});
-          // }}
-          onChange={handleChange}
-        />
-        <TextField
-          required
-          name='hospitalName'
-          id="outlined-required"
-          label="병원이름"
-          placeholder={state.hospitalName == '' ? '병원이름을 입력하세요' : ''}
-          value={state.hospitalName == '' ? '' : state.hospitalName}
-          onChange={handleChange}
-        />
-        <Typography variant='h5'>담당의사</Typography>
-        <TextField 
-          id="outlined-basic" 
-          name='doctorName'
-          variant="outlined" 
-          label={state.doctorName == '' ? '담당의사를 입력하세요' : '담당의사'}
-          value={state.doctorName == '' ? '' : state.doctorName}
-          // onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          //   setState({...state, doctorName :event.target.value});
-          // }}
-          onChange={handleChange}
-        />
+        <Typography variant='h5'>병원정보</Typography>
+        <Box sx={{ display:'flex', pb:4, width:'100%', pt:5 }}>
+          <TextField
+            id="outlined-controlled"
+            name='hospitalName'
+            label={state.hospitalName == '' ? '병원이름을 입력하세요' : '병원이름'}
+            value={state.hospitalName == '' ? '' : state.hospitalName}
+            onChange={handleChange}
+            sx={{width:'30%', pr:5}}
+          />
+          <TextField 
+            id="outlined-basic" 
+            name='doctorName'
+            variant="outlined" 
+            label={state.doctorName == '' ? '담당의사를 입력하세요' : '담당의사'}
+            value={state.doctorName == '' ? '' : state.doctorName}
+            onChange={handleChange}
+            sx={{width:'30%', pr:5}}
+          />
         </Box>
         <Box>
           <Typography variant='h5'>산모정보</Typography>
-          <Typography variant='h6'>몸무게</Typography>
           <TextField
           label="몸무게"
           id="outlined-start-adornment"
@@ -168,11 +165,21 @@ const MomRecordPage = () => {
         />
         </Box>
         <Box>
-          <Typography>검진사진</Typography>
+          <Typography variant='h5'>검진사진</Typography>
           <FileUpload />
         </Box>
         <Box>
-          검사결과
+          <Typography variant='h5'>검진결과</Typography>
+          <TextField
+          id="outlined-textarea"
+          // label="검진결과"
+          name='doctorOpinion'
+          placeholder="검진결과"
+          multiline
+          sx={{width:'100%'}}
+          >
+
+          </TextField>
         </Box>
       </Box>
       {/* ------------------------------------------------------------------------------------------------------- */}
@@ -202,12 +209,10 @@ const MomRecordPage = () => {
               <MenuItem value={baby.name}>{baby.name}</MenuItem>
             )})}
           </Select>
-          {/* <FormHelperText>With label + helper text</FormHelperText> */}
         </FormControl>
       </Box>
       <Typography variant='h5'>태아 정보</Typography>
       <Box sx={{display:'flex', width:'100%'}}>
-        {/* <Typography>키</Typography> */}
         <TextField
           label="키"
           name='babyHeight'
@@ -219,7 +224,6 @@ const MomRecordPage = () => {
           }}
           onChange={handleChange}
         />
-        {/* <Typography>몸무게</Typography> */}
         <TextField
           label="몸무게"
           name='babyWeight'
@@ -231,7 +235,6 @@ const MomRecordPage = () => {
           }}
           onChange={handleChange}
         />
-        {/* <Typography>머리둘레</Typography> */}
         <TextField
           label="머리둘레"
           name='babyDiameter'
@@ -263,11 +266,12 @@ const MomRecordPage = () => {
         />
       </Box>
       <Box sx={{display:'flex', justifyContent:'right'}}>
-        <Button  variant="outlined" >
-          Submit
+        <Button  variant="outlined" sx={{borderColor:'#FBBBB8', color:'#FBBBB8'}}>
+          등록하기
         </Button>
       </Box>
     </Container>
+
   );
 };
 
