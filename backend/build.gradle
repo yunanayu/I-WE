@@ -100,13 +100,10 @@ processResources {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation("org.springframework.security:spring-security-test")
-
 
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -142,14 +139,14 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.7.1")
     implementation("com.squareup.retrofit2:converter-jackson:2.7.1")
-    implementation("com.squareup.okhttp3:logging-interceptor:3.9.0")
+//    implementation("com.squareup.okhttp3:logging-interceptor:3.9.0")
 
     implementation("com.google.guava:guava:29.0-jre")
     annotationProcessor("com.google.guava:guava:29.0-jre")
 
     testImplementation("com.jayway.jsonpath:json-path:2.4.0")
 
-    implementation("com.auth0:java-jwt:3.10.3")
+//    implementation("com.auth0:java-jwt:3.10.3")
 
 //    implementation("io.springfox:springfox-swagger2:3.0.0")
 //    implementation("io.springfox:springfox-swagger-ui:3.0.0")
@@ -161,12 +158,45 @@ dependencies {
 
     implementation("org.projectlombok:lombok:1.18.20")
     annotationProcessor("org.projectlombok:lombok:1.18.20")
-
+    testAnnotationProcessor('org.projectlombok:lombok')
     // ASM 라이브러리의 최신 버전
 //    implementation 'org.ow2.asm:asm:9.2'
 
     // javax.persistence 의존성 추가
     implementation 'javax.persistence:javax.persistence-api:2.2'
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // spring security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // json
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation group: 'org.json', name: 'json', version: '20231013'
+
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // oauth2
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // redis
+    implementation group: 'org.springframework.data', name: 'spring-data-redis', version: '3.2.2'
+
+
+    // spring batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation group: 'org.springframework.batch', name: 'spring-batch-integration', version: '5.0.1'
+    testImplementation 'org.springframework.batch:spring-batch-test'
+
+    // spring mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 
 test {
