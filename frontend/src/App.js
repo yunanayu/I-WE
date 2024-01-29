@@ -1,4 +1,5 @@
 import React from "react";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Route, Routes } from "react-router-dom";
 import ResponsiveAppBar from "./component/ResponsiveAppBar";
 import RecordBaby from "./component/RecordBaby";
