@@ -165,10 +165,8 @@ dependencies {
     // javax.persistence 의존성 추가
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
-<<<<<<< backend/build.gradle
-
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    //////////////////////////////
+
     // spring security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
