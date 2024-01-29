@@ -21,6 +21,7 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import FileUpload from './FileUpload';
 
 const MomRecordPage = () => {
   const babyList = [
@@ -168,6 +169,7 @@ const MomRecordPage = () => {
         </Box>
         <Box>
           <Typography>검진사진</Typography>
+          <FileUpload />
         </Box>
         <Box>
           검사결과
