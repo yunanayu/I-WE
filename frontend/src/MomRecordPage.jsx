@@ -23,7 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import FileUpload from './FileUpload';
 import HealingOutlinedIcon from '@mui/icons-material/HealingOutlined';
-import { ThemeProvider, createTheme } from '@mui/system';
+import { createTheme } from '@mui/system';
 
 const MomRecordPage = () => {
   const babyList = [
@@ -247,7 +247,10 @@ const MomRecordPage = () => {
           onChange={handleChange}
         />
       </Box>
-
+      <Box>
+        <Typography variant='h5'>초음파 사진</Typography>
+        <FileUpload />
+      </Box>
 
 
 
