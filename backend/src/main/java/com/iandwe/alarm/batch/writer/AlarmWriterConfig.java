@@ -32,12 +32,11 @@ public class AlarmWriterConfig {
         };
     }
 
-    // TODO : Member 완료 시 추가 구현
     @StepScope
     @Bean
     public ItemWriter<MotherChecker> motherAlarmWriter() {
         return chunk -> {
-            for(MotherChecker motherChecker : chunk){
+            for (MotherChecker motherChecker : chunk) {
                 try {
                     log.info("MotherAlarmWriter chunk start");
                     alarmService.sendMotherAlarm(motherChecker);

@@ -27,4 +27,5 @@ public class EmailDto {
                 .text(EmailGenerator.generateText(essential.getTitle(), essential.getCategory()))
                 .build();
     }
+
 }

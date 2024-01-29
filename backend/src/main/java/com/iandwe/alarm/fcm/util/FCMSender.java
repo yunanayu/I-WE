@@ -16,7 +16,7 @@ public class FCMSender {
 
     private final FirebaseMessaging firebaseMessaging;
 
-    public void sendFCM(FCMDto fcmDto){
+    public void sendFCM(FCMDto fcmDto) {
         Notification notification = Notification.builder()
                 .setTitle(fcmDto.getTitle())
                 .setBody(fcmDto.getBody())
@@ -28,7 +28,7 @@ public class FCMSender {
                 .setNotification(notification)
                 .build();
 
-        try{
+        try {
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
             log.info("FCM ERROR : {}", e.getMessage());

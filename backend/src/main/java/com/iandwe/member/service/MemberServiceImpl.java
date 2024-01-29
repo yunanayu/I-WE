@@ -14,7 +14,7 @@ import java.util.Optional;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
@@ -33,21 +33,23 @@ public class MemberServiceImpl implements MemberService{
     public Member save(MemberRegisterDto memberRegisterDto) {
         // 이메일로 회원을 조회해서 이미 있다면 예외발생
         memberRepository.findByEmail(memberRegisterDto.getEmail())
-                .ifPresent(member -> {throw new IllegalArgumentException("이미 존재하는 회원입니다.");});
+                .ifPresent(member -> {
+                    throw new IllegalArgumentException("이미 존재하는 회원입니다.");
+                });
 
         Member member = memberRegisterDto.toEntity();
 
         // 회원을 저장함
         Member savedMember = memberRepository.save(member);
 
-        if(isMother(savedMember.getParentType())) {
+        if (isMother(savedMember.getParentType())) {
             checkerGenerator.generateMotherCheckerData(savedMember.getNum());
         }
 
         return savedMember;
     }
 
-    private static boolean isMother(ParentType type){
+    private static boolean isMother(ParentType type) {
         return type.equals(ParentType.MOTHER);
     }
 }
