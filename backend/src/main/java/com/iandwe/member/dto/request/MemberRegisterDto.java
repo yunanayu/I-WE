@@ -44,7 +44,7 @@ public class MemberRegisterDto {
                 .role(MemberRole.USER)
                 .platform(PlatformType.NONE)
                 .parentType(parentType)
-                .familyNum(familyNum)
+                .fcmToken(fcmToken)
                 .familyNum(familyNum)
                 .profileImage(profileImage)
                 .build();
