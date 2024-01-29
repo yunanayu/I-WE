@@ -24,7 +24,7 @@ public class HospitalCreateRequestDto {
     private String title;
 
     // 진료병원
-    private String hospital;
+    private String hospitalName;
 
     // 담당의
     private String doctor;
@@ -46,7 +46,7 @@ public class HospitalCreateRequestDto {
                 .target(target)
                 .targetNum(targetNum)
                 .title(title)
-                .hospitalName(hospital)
+                .hospitalName(hospitalName)
                 .hospitalDate(hospitalDate)
                 .content(content)
                 .result(result)

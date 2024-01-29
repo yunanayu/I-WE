@@ -8,6 +8,7 @@ import com.iandwe.record.exception.NoHospitalExistException;
 import com.iandwe.record.repository.HospitalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,15 +30,19 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
+    @Transactional
     public Boolean update(HospitalUpdateRequestDto dto) {
         Hospital hospital = hospitalRepository.findByNum(dto.getNum())
                 .orElseThrow(NoHospitalExistException::new);
         hospital.update(dto);
-        return HospitalReadResponseDto.from(hospital);
+        return true;
     }
 
     @Override
+    @Transactional
     public Boolean create(HospitalCreateRequestDto dto) {
-        return null;
+        Hospital hospital = dto.toEntity();
+        hospitalRepository.save(hospital);
+        return true;
     }
 }

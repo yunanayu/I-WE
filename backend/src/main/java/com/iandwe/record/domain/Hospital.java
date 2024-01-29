@@ -1,5 +1,7 @@
 package com.iandwe.record.domain;
 
+import com.iandwe.record.dto.HospitalCreateRequestDto;
+import com.iandwe.record.dto.HospitalUpdateRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -49,4 +51,35 @@ public class Hospital {
 
     // 의사소견
     private String comment;
+
+    public void update(HospitalUpdateRequestDto dto){
+        if(dto.getTarget() != null){
+            this.target = dto.getTarget();
+        }
+        if(dto.getTargetNum() != null){
+            this.targetNum = dto.getTargetNum();
+        }
+        if(dto.getTarget() != null){
+            this.title = dto.getTitle();
+        }
+        if(dto.getHospitalName() != null){
+            this.hospitalName = dto.getHospitalName();
+        }
+        if(dto.getTarget() != null){
+            this.doctor = dto.getTarget();
+        }
+        if(dto.getHospitalDate() != null){
+            this.hospitalDate = dto.getHospitalDate();
+        }
+        if(dto.getContent() != null){
+            this.content = dto.getContent();
+        }
+        if(dto.getResult() != null){
+            this.result = dto.getResult();
+        }
+        if(dto.getComment() != null){
+            this.comment = dto.getComment();
+        }
+
+    }
 }
