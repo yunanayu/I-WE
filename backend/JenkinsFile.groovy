@@ -3,6 +3,14 @@ pipeline {
     tools {
       gradle 'gradle_8.5'
     }
+    environment {
+        DOCKER_IMAGE_NAME = 'jihyeon99/iandwe-backend'
+        DOCKERFILE_PATH = './backend/Dockerfile'
+        CONTAINER_NAME = 'iandwe-backend'
+        REGISTRY_CREDENTIAL = 'dockerhub-IdPwd'
+        DOCKER_IMAGE = ''
+        DOCKER_IMAGE_TAG = 'latest'
+    }
     stages {
         stage('GitLab Clone') {
             steps {
@@ -10,14 +18,14 @@ pipeline {
             }
             post {
                 failure {
-                  echo 'Repository clone failure !'
+                  echo 'GitLab Clone failure !'
                 }
                 success {
-                  echo 'Repository clone success !'
+                  echo 'GitLab Clone success !'
                 }
             }
         }
-        stage('Build') {
+        stage('Gradle Build') {
             steps {
                 echo 'Building..'
                 dir('./backend') {
@@ -27,11 +35,84 @@ pipeline {
             }
             post {
                 failure {
-                    echo 'Gradle jar build failure !'
+                    echo 'Gradle Build failure !'
                 }
                 success {
-                    echo 'Gradle jar build success !'
+                    echo 'Gradle Build success !'
                 }                
+            }
+        }
+        stage('Docker Build Image') {
+            steps {
+                dir('./backend') {
+                    script {
+                        DOCKER_IMAGE = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
+                    }
+                }
+//                script {
+//                    sh '''
+//                        cd ./backend
+//                        ${DOCKER_IMAGE} = docker.build ${DOCKER_IMAGE_NAME} .
+//                    '''
+//                }
+            }
+            post {
+                failure {
+                    echo 'Docker Build failure !'
+                }
+                success {
+                    echo 'Docker Build success !'
+                }
+            }
+        }
+        stage('Push Image to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', REGISTRY_CREDENTIAL) {
+                        DOCKER_IMAGE.push()
+                    }
+                }
+            }
+            post {
+                failure {
+                    echo 'Push Image to Docker Hub failure !'
+                }
+                success {
+                    echo 'Push Image to Docker Hub success !'
+                }
+            }
+        }
+        stage('Delete Previous Docker Container') {
+            steps {
+                script {
+                    sh '''
+                        docker stop ${CONTAINER_NAME}
+                        docker rm ${CONTAINER_NAME}
+                    '''
+                }
+            }
+            post {
+                failure {
+                    echo 'Delete Previous Docker Container failure !'
+                }
+                success {
+                    echo 'Delete Previous Docker Container success !'
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    sh 'docker run -d --name ${CONTAINER_NAME} -p 8081:8080 ${DOCKER_IMAGE_NAME}'
+                }
+            }
+            post {
+                failure {
+                    echo 'Run Docker Container failure !'
+                }
+                success {
+                    echo 'Run Docker Containersuccess !'
+                }
             }
         }
         stage('Test') {
