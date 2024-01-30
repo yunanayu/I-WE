@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { Box, Grid } from "@mui/material"; 
 import ReadRecordCard from './ReadRecordCard';
+import ReadVaccinCard from './ReadVaccinCard';
 
 
 
@@ -97,7 +98,11 @@ export default function BasicTabs() {
           })}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          2222
+        {records.map((record) => {
+            return(
+              <ReadVaccinCard value={value} index={0}/>
+            )
+          })}
         </CustomTabPanel>
 
       </Box>

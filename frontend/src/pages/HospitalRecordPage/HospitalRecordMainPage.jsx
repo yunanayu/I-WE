@@ -14,6 +14,9 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '@mui/material';
 
+// 기록이 있는지 이 페이지에서 확인 후 있으면 prop으로 내려주고 없으면 기록 추가 모달 창
+
+
 const HospitalRecordMainPage = () => {
   const navigate = useNavigate()
 
