@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import icon from "../images/icon.png";
 import logo from "../images/logo.png";
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Card  } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+
 import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
@@ -53,23 +57,44 @@ const Main = ({ onLoginStatusChange }) => {
                 <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
-                <Typography variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                <Typography margin="20px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                   oo님의 oo이는
                 </Typography>
-                <Typography variant="h4" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                <Typography margin="20px" variant="h4" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                   oo주차에요
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Box>
-                  병원찾기
-                </Box>
-                <Box>
-                  다이어리
-                </Box>
-                <Box>
-                  커뮤니티
-                </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Card sx={{ width: 200 }}>
+                  <CardContent>
+                    <Typography variant="h6" component="div">
+                        이 시기에 엄마는!       
+                    </Typography>
+                    <Typography variant="body2">
+                        - 어때요
+                        <br />
+                        - 그리고 어때요
+                    </Typography>
+                    <CardActions>
+                        <Button size="small">Learn More</Button>
+                    </CardActions>
+                  </CardContent>
+                </Card>
+                <Card sx={{ width: 200 }}>
+                  <CardContent>
+                      <Typography variant="h6" component="div">
+                          이 시기에 아기는!       
+                      </Typography>
+                      <Typography variant="body2">
+                          - 어때요
+                          <br />
+                          - 그리고 어때요
+                      </Typography>
+                      <CardActions>
+                          <Button size="small">Learn More</Button>
+                      </CardActions>
+                  </CardContent>
+                </Card>
               </Box>
             </Box>
           </Box>
