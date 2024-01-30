@@ -1,29 +1,31 @@
-import React from "react";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import ResponsiveAppBar from "./component/ResponsiveAppBar";
-import RecordBaby from "./component/RecordBaby";
-import RecordMom from "./component/RecordMom";
-
-function Home() {
-  return (
-    <div>
-      <h1>HOME</h1>
-    </div>
-  );
-}
+import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
+import RecordBaby from "./pages/RecordBaby";
+import RecordMom from "./pages/RecordMom";
+import MainPage from "./pages/MainPage";
 
 function App() {
+
+  const [parentLoggedIn, setParentLoggedIn] = useState(false);
+  const handleLoginStatusChange = (status) => {
+    // Update the parent component state
+    setParentLoggedIn(status);
+  };
+
   return (
     <div className="App">
-      <ResponsiveAppBar />
+        <ResponsiveAppBar />
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route
+          exact
+          path="/"
+          element={<MainPage onLoginStatusChange={handleLoginStatusChange} />}
+        />
         <Route path="/recordmom" element={<RecordMom />} />
         <Route path="/recordbaby" element={<RecordBaby />} />
       </Routes>
     </div>
   );
 }
-
 export default App;

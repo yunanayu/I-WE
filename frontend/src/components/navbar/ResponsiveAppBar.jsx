@@ -12,11 +12,13 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import icon1 from "../../images/icon1.png";
 import { NavLink } from "react-router-dom";
+import { Cookies } from "react-cookie";
 
 const pages = [
   { name: "다이어리", link: "/diary" },
-  { name: "서비스찾기", link: "/services" },
+  { name: "서비스찾기", link: "/service" },
   { name: "커뮤니티", link: "/community" },
   { name: "정보제공", link: "/info" },
   { name: "엄마기록", link: "/recordmom" },
@@ -25,8 +27,10 @@ const pages = [
 const settings = ["마이페이지", "로그아웃"];
 
 function ResponsiveAppBar() {
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const cookies = new Cookies(); // Cookies 객체 생성
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -43,27 +47,41 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  const handleHomeLinkClick = () => {
+    setIsLoggedIn(true); // isLoggedIn 값을 true로 설정
+  };
+
+  const handleLogoutClick = () => {
+    cookies.remove(document.cookie); // 쿠키 삭제
+    window.location.href = "/"; // 로그아웃 시 페이지 이동
+  };
+
   return (
-    <AppBar position="sticky" sx={{ background: "white", width: "100%" }} elevation={4}>
+    <AppBar position="sticky" sx={{ background: "#FBBBB8" }} elevation={4}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
             component={NavLink}
             to="/"
+            onClick={handleHomeLinkClick}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "#646464",
+              // color: "#646464",
+              color: "inherit",
               textDecoration: "none",
             }}
           >
-            I&WE
+            <img
+              src={icon1}
+              alt="icon1"
+              style={{ width: "50px", height: "50px" }}
+            />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -73,7 +91,8 @@ function ResponsiveAppBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="#646464"
+              // color="#646464"
+              color="inherit"
             >
               <MenuIcon />
             </IconButton>
@@ -110,12 +129,12 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
 
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
             component={NavLink}
             to="/"
+            onClick={handleHomeLinkClick}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -123,18 +142,23 @@ function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "#646464",
+              // color: "#646464",
+              color: "inherit",
               textDecoration: "none",
             }}
           >
-            I&WE
+            <img
+              src={icon1}
+              alt="icon1"
+              style={{ width: "50px", height: "50px" }}
+            />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-                key={page.name} 
-                component={NavLink} 
-                to={page.link} 
+                key={page.name}
+                component={NavLink}
+                to={page.link}
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
@@ -171,7 +195,14 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={
+                    setting === "로그아웃"
+                      ? handleLogoutClick
+                      : handleCloseUserMenu
+                  }
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
