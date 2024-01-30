@@ -3,6 +3,11 @@ pipeline {
     tools {
       gradle 'gradle_8.5'
     }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+        repository = "jihyeon99/iandwe-backend"
+        dockerImage = ''
+    }
     stages {
         stage('GitLab Clone') {
             steps {
@@ -17,7 +22,7 @@ pipeline {
                 }
             }
         }
-        stage('Build') {
+        stage('Gradle Build') {
             steps {
                 echo 'Building..'
                 dir('./backend') {
@@ -34,6 +39,13 @@ pipeline {
                 }                
             }
         }
+        stage('Docker Build') {
+        steps {
+            script {
+                dockerImage = docker.build repository + ":$BUILD_NUMBER"
+            }
+        }
+        }        
         stage('Test') {
             steps {
                 echo 'Testing..'
