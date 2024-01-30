@@ -39,6 +39,8 @@ public class Member {
 
     private String profileImage;
 
+    private String fcmToken;
+
     @CreationTimestamp
     private LocalDateTime joinDate;
 

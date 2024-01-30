@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class AlarmJobScheduler {
 
     private final Job alarmJob;
+
     private final JobLauncher jobLauncher;
 
 //    @Scheduled(cron = "10 * * * * ?") // TEST 시 10초 주기로 스케줄링

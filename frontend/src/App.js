@@ -4,6 +4,8 @@ import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
 import RecordBaby from "./pages/RecordBaby";
 import RecordMom from "./pages/RecordMom";
 import MainPage from "./pages/MainPage";
+import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMainPage";
+
 
 function App() {
 
@@ -15,8 +17,12 @@ function App() {
 
   return (
     <div className="App">
+<<<<<<< HEAD
       {/* {parentLoggedIn ? <ResponsiveAppBar /> : <></>} */}
       <ResponsiveAppBar></ResponsiveAppBar>
+=======
+      {parentLoggedIn ? <ResponsiveAppBar /> : <></>}
+>>>>>>> 1d34494bb0f77e61fd45c6058a27a15010a683e2
       <Routes>
         <Route
           exact
@@ -30,6 +36,7 @@ function App() {
         />
         <Route path="/recordmom" element={<RecordMom />} />
         <Route path="/recordbaby" element={<RecordBaby />} />
+        <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />
       </Routes>
     </div>
   );

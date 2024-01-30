@@ -24,7 +24,7 @@ public class AlarmWriterConfig {
             for (BabyChecker babyChecker : chunk.getItems()) {
                 try {
                     log.info("BabyAlarmWriter chunk start");
-                    alarmService.sendEmailAlarm(babyChecker);
+                    alarmService.sendBabyAlarm(babyChecker);
                 } catch (Exception e) {
                     log.info("babyAlarmWriter ERROR {} ", e.getMessage());
                 }
@@ -32,13 +32,18 @@ public class AlarmWriterConfig {
         };
     }
 
-    // TODO : Member 완료 시 추가 구현
     @StepScope
     @Bean
     public ItemWriter<MotherChecker> motherAlarmWriter() {
-        log.info("mother start");
         return chunk -> {
-            log.info("mother chunk start");
+            for (MotherChecker motherChecker : chunk) {
+                try {
+                    log.info("MotherAlarmWriter chunk start");
+                    alarmService.sendMotherAlarm(motherChecker);
+                } catch (Exception e) {
+                    log.info("MotherAlarmWriter ERROR {} ", e.getMessage());
+                }
+            }
         };
     }
 }

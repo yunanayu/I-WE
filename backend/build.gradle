@@ -197,6 +197,8 @@ dependencies {
     // spring mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+    // firebase
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
 }
 
 test {

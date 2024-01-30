@@ -38,7 +38,7 @@ public class AlarmJobConfig {
     public Step babyAlarmStep(JobRepository jobRepository, PlatformTransactionManager transactionManager,
                               ItemReader babyAlarmReader, ItemWriter babyAlarmWriter, TaskExecutor taskExecutor) {
         return new StepBuilder("babyAlarmStep", jobRepository)
-                .<BabyChecker, BabyChecker>chunk(CHUNK_SIZE, transactionManager) // baby check table 을 탐색하고, wrtier
+                .<BabyChecker, BabyChecker>chunk(CHUNK_SIZE, transactionManager)
                 .reader(babyAlarmReader)
                 .writer(babyAlarmWriter)
                 .taskExecutor(taskExecutor)
@@ -56,8 +56,6 @@ public class AlarmJobConfig {
                 .taskExecutor(taskExecutor)
                 .build();
     }
-
-    // step 2. 엄마의 검진, 검사, 접종에 대한 batch
 
     @Bean
     public TaskExecutor taskExecutor() {
