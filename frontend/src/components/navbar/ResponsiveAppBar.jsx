@@ -23,6 +23,7 @@ const pages = [
   { name: "정보제공", link: "/info" },
   { name: "엄마기록", link: "/recordmom" },
   { name: "아기기록", link: "/recordbaby" },
+  { name: "병원기록", link: "/hospitalrecord" },
 ];
 const settings = ["마이페이지", "로그아웃"];
 

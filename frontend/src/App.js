@@ -4,6 +4,8 @@ import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
 import RecordBaby from "./pages/RecordBaby";
 import RecordMom from "./pages/RecordMom";
 import MainPage from "./pages/MainPage";
+import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMainPage";
+
 
 function App() {
 
@@ -29,6 +31,7 @@ function App() {
         />
         <Route path="/recordmom" element={<RecordMom />} />
         <Route path="/recordbaby" element={<RecordBaby />} />
+        <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />
       </Routes>
     </div>
   );
