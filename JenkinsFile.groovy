@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-      gradle 'gradle_7.5.1'
+      gradle 'gradle_8.5'
     }
     stages {
         stage('GitLab Repository Clone') {
