@@ -7,6 +7,8 @@ pipeline {
         DOCKER_IMAGE_NAME = 'jihyeon99/iandwe-backend'
         DOCKERFILE_PATH = './backend/Dockerfile'
         CONTAINER_NAME = 'iandwe-backend'
+        REGISTRY_CREDENTIAL = 'dockerhub-IdPwd'
+        DOCKER_IMAGE = ''
     }
     stages {
         stage('GitLab Clone') {
@@ -44,7 +46,7 @@ pipeline {
                 script {
                     sh '''
                         cd ./backend
-                        docker build -t ${DOCKER_IMAGE_NAME} .
+                        dockerImage = docker.build ${DOCKER_IMAGE_NAME} .
                     '''
                 }
             }
@@ -54,6 +56,23 @@ pipeline {
                 }
                 success {
                     echo 'Docker Build success !'
+                }
+            }
+        }
+        stage('Push Image to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', REGISTRY_CREDENTIAL) {
+                        dockerImage.push("1.0")
+                    }
+                }
+            }
+            post {
+                failure {
+                    echo 'Push Image to Docker Hub failure !'
+                }
+                success {
+                    echo 'Push Image to Docker Hub success !'
                 }
             }
         }
