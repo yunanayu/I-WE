@@ -39,11 +39,13 @@ pipeline {
                 }                
             }
         }
-        stage('Docker Build') {
+        stage('Docker Build Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE_NAME}", "-f Dockerfile .")
-//                    dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
+                    sh '''
+                        cd ./backend
+                        docker build -t ${DOCKER_IMAGE_NAME} .
+                    '''
                 }
             }
             post {
