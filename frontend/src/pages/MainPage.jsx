@@ -5,7 +5,6 @@ import { Box, Typography } from '@mui/material';
 import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
-import Basic from '../components/navbar/Basic';
 import mainprofile from '../images/mainprofile.png';
 
 
@@ -48,7 +47,6 @@ const Main = ({ onLoginStatusChange }) => {
     <>
       {isLoggedIn ? (
         <>
-          <Basic setIsLoggedIn={setIsLoggedIn}/>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
               <Box sx={{ flexDirection: 'column', width: '50%', height: '50%', borderRadius: '50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
