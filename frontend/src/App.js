@@ -15,11 +15,16 @@ function App() {
 
   return (
     <div className="App">
-        <ResponsiveAppBar />
+      {parentLoggedIn ? <ResponsiveAppBar /> : <></>}
       <Routes>
         <Route
           exact
           path="/"
+          element={<MainPage onLoginStatusChange={handleLoginStatusChange} />}
+        />
+        <Route
+          exact
+          path="/loginSuccess"
           element={<MainPage onLoginStatusChange={handleLoginStatusChange} />}
         />
         <Route path="/recordmom" element={<RecordMom />} />
