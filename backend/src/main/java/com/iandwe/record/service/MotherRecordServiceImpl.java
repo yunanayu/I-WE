@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MotherRecordServiceImpl implements MotherRecordService{
+public class MotherRecordServiceImpl implements MotherRecordService {
 
     private final MotherRecordRepository motherRecordRepository;
 
@@ -29,7 +29,7 @@ public class MotherRecordServiceImpl implements MotherRecordService{
     @Override
     public List<MotherRecordReadReponseDto> findAllByMotherNum(long num) {
         List<MotherRecord> motherRecords = motherRecordRepository.findAllByMotherNum(num);
-        if(motherRecords == null || motherRecords.isEmpty()){
+        if (motherRecords == null || motherRecords.isEmpty()) {
             throw new NoRecordExistException();
         }
         return motherRecords.stream()

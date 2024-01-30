@@ -32,14 +32,14 @@ public class MotherRecord {
     // 기록날짜
     private LocalDate recordDate;
 
-    public void update(MotherRecordUpdateRequestDto dto){
-        if(dto.getNum() != null){
+    public void update(MotherRecordUpdateRequestDto dto) {
+        if (dto.getNum() != null) {
             this.num = dto.getNum();
         }
-        if(dto.getWeight() != 0.0F){
+        if (dto.getWeight() != 0.0F) {
             this.weight = dto.getWeight();
         }
-        if(dto.getRecordDate() != null){
+        if (dto.getRecordDate() != null) {
             this.recordDate = dto.getRecordDate();
         }
     }

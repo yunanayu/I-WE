@@ -1,6 +1,5 @@
 package com.iandwe.record.domain;
 
-import com.iandwe.record.dto.HospitalCreateRequestDto;
 import com.iandwe.record.dto.HospitalUpdateRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -52,32 +51,32 @@ public class Hospital {
     // 의사소견
     private String comment;
 
-    public void update(HospitalUpdateRequestDto dto){
-        if(dto.getTarget() != null){
+    public void update(HospitalUpdateRequestDto dto) {
+        if (dto.getTarget() != null) {
             this.target = dto.getTarget();
         }
-        if(dto.getTargetNum() != null){
+        if (dto.getTargetNum() != null) {
             this.targetNum = dto.getTargetNum();
         }
-        if(dto.getTarget() != null){
+        if (dto.getTarget() != null) {
             this.title = dto.getTitle();
         }
-        if(dto.getHospitalName() != null){
+        if (dto.getHospitalName() != null) {
             this.hospitalName = dto.getHospitalName();
         }
-        if(dto.getTarget() != null){
+        if (dto.getTarget() != null) {
             this.doctor = dto.getTarget();
         }
-        if(dto.getHospitalDate() != null){
+        if (dto.getHospitalDate() != null) {
             this.hospitalDate = dto.getHospitalDate();
         }
-        if(dto.getContent() != null){
+        if (dto.getContent() != null) {
             this.content = dto.getContent();
         }
-        if(dto.getResult() != null){
+        if (dto.getResult() != null) {
             this.result = dto.getResult();
         }
-        if(dto.getComment() != null){
+        if (dto.getComment() != null) {
             this.comment = dto.getComment();
         }
 

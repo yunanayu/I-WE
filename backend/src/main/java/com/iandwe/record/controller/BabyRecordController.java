@@ -15,6 +15,7 @@ import java.util.List;
 public class BabyRecordController {
 
     private final BabyRecordService babyRecordService;
+
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody BabyRecordCreateRequestDto dto) {
         babyRecordService.create(dto);

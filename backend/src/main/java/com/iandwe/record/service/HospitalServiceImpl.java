@@ -29,7 +29,7 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public List<HospitalReadResponseDto> findAllByTargetNum(long num) {
         List<Hospital> hospitals = hospitalRepository.findAllByTargetNum(num);
-        if (hospitals == null || hospitals.isEmpty()){
+        if (hospitals == null || hospitals.isEmpty()) {
             throw new NoHospitalExistException();
         }
         return hospitals.stream()

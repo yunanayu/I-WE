@@ -1,9 +1,6 @@
 package com.iandwe.record.dto;
 
 import com.iandwe.record.domain.MotherRecord;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +29,7 @@ public class MotherRecordReadReponseDto {
     // 기록날짜
     private LocalDate recordDate;
 
-    public static MotherRecordReadReponseDto from(MotherRecord motherRecord){
+    public static MotherRecordReadReponseDto from(MotherRecord motherRecord) {
         return MotherRecordReadReponseDto.builder()
                 .motherNum(motherRecord.getMotherNum())
                 .weight(motherRecord.getWeight())

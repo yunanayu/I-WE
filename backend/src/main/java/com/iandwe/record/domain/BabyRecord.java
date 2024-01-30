@@ -42,23 +42,24 @@ public class BabyRecord {
 
     // 사진
     private String babyImage;
-    public void update(BabyRecordUpdateRequestDto dto){
-        if(dto.getBabyNum() != null){
+
+    public void update(BabyRecordUpdateRequestDto dto) {
+        if (dto.getBabyNum() != null) {
             this.babyNum = dto.getBabyNum();
         }
-        if(dto.getHeight() != 0.0F){
+        if (dto.getHeight() != 0.0F) {
             this.height = dto.getHeight();
         }
-        if(dto.getWeight() != 0.0F){
+        if (dto.getWeight() != 0.0F) {
             this.weight = dto.getWeight();
         }
-        if(dto.getCircumference() != 0.0F){
+        if (dto.getCircumference() != 0.0F) {
             this.circumference = dto.getCircumference();
         }
-        if(dto.getRecordDate() != null){
+        if (dto.getRecordDate() != null) {
             this.recordDate = dto.getRecordDate();
         }
-        if(dto.getBabyImage() != null){
+        if (dto.getBabyImage() != null) {
             this.babyImage = dto.getBabyImage();
         }
     }

@@ -35,8 +35,9 @@ public class BabyRecordReadResponseDto {
     // 사진
     private String babyImage;
 
-    public static BabyRecordReadResponseDto from(BabyRecord babyRecord){
+    public static BabyRecordReadResponseDto from(BabyRecord babyRecord) {
         return BabyRecordReadResponseDto.builder()
+                .num(babyRecord.getNum())
                 .babyNum(babyRecord.getBabyNum())
                 .height(babyRecord.getHeight())
                 .weight(babyRecord.getWeight())

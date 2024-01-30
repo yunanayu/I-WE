@@ -11,6 +11,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class BabyRecordUpdateRequestDto {
 
+    // 아이기록번호
+    private Long num;
+
     // 아이번호
     private Long babyNum;
 

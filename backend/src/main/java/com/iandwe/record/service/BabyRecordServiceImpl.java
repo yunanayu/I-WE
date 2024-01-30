@@ -8,15 +8,18 @@ import com.iandwe.record.exception.NoRecordExistException;
 import com.iandwe.record.repository.BabyRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BabyRecordServiceImpl implements BabyRecordService{
+public class BabyRecordServiceImpl implements BabyRecordService {
 
-     private final BabyRecordRepository babyRecordRepository;
+    private final BabyRecordRepository babyRecordRepository;
+
     @Override
+    @Transactional
     public Boolean create(BabyRecordCreateRequestDto dto) {
         BabyRecord babyRecord = dto.toEntity();
         babyRecordRepository.save(babyRecord);
@@ -26,7 +29,7 @@ public class BabyRecordServiceImpl implements BabyRecordService{
     @Override
     public List<BabyRecordReadResponseDto> findAllByBabyNum(long num) {
         List<BabyRecord> babyRecords = babyRecordRepository.findAllByBabyNum(num);
-        if(babyRecords == null || babyRecords.isEmpty()){
+        if (babyRecords == null || babyRecords.isEmpty()) {
             throw new NoRecordExistException();
         }
         return babyRecords.stream()
@@ -35,8 +38,9 @@ public class BabyRecordServiceImpl implements BabyRecordService{
     }
 
     @Override
+    @Transactional
     public Boolean update(BabyRecordUpdateRequestDto dto) {
-        BabyRecord babyRecord = babyRecordRepository.findByNum(dto.getBabyNum())
+        BabyRecord babyRecord = babyRecordRepository.findByNum(dto.getNum())
                 .orElseThrow(NoRecordExistException::new);
         babyRecord.update(dto);
         return true;
