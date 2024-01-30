@@ -4,14 +4,16 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { Box, Grid } from "@mui/material"; 
+import ReadRecordCard from './ReadRecordCard';
 
 
 
+const records = [1, 2, 3]
 
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  
   return (
     <div
       role="tabpanel"
@@ -88,14 +90,16 @@ export default function BasicTabs() {
           {...a11yProps(1)} />
         </Tabs>
         <CustomTabPanel value={value} index={0}>
-          1111
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={0}>
-          1111
+          {records.map((record) => {
+            return(
+              <ReadRecordCard value={value} index={0}/>
+            )
+          })}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           2222
         </CustomTabPanel>
+
       </Box>
     </Box>
   );
