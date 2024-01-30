@@ -4,7 +4,7 @@ pipeline {
       gradle 'gradle_8.5'
     }
     stages {
-        stage('GitLab Repository Clone') {
+        stage('GitLab Clone') {
             steps {
                 git branch : 'develop', credentialsId: 'SSAFYC108', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C108.git'
             }
@@ -22,7 +22,7 @@ pipeline {
                 echo 'Building..'
                 dir('./backend') {
                     sh 'chmod +x gradlew'
-                    sh './gradlew bootjar'
+                    sh './gradlew clean bootjar'
                 }
             }
             post {
