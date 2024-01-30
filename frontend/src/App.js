@@ -5,7 +5,7 @@ import RecordBaby from "./pages/RecordBaby";
 import RecordMom from "./pages/RecordMom";
 import MainPage from "./pages/MainPage";
 import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMainPage";
-
+import './FCM/firebase-messaging-sw'
 
 function App() {
 
