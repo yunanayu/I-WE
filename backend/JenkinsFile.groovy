@@ -4,9 +4,9 @@ pipeline {
       gradle 'gradle_8.5'
     }
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-        repository = "jihyeon99/iandwe-backend"
-        dockerImage = ''
+        DOCKER_IMAGE_NAME = 'jihyeon99/iandwe-backend'
+        DOCKERFILE_PATH = './backend/Dockerfile'
+        // CONTAINER_NAME = 'iandwe-backend'
     }
     stages {
         stage('GitLab Clone') {
@@ -15,10 +15,10 @@ pipeline {
             }
             post {
                 failure {
-                  echo 'Repository clone failure !'
+                  echo 'GitLab Clone failure !'
                 }
                 success {
-                  echo 'Repository clone success !'
+                  echo 'GitLab Clone success !'
                 }
             }
         }
@@ -32,19 +32,28 @@ pipeline {
             }
             post {
                 failure {
-                    echo 'Gradle jar build failure !'
+                    echo 'Gradle Build failure !'
                 }
                 success {
-                    echo 'Gradle jar build success !'
+                    echo 'Gradle Build success !'
                 }                
             }
         }
         stage('Docker Build') {
-        steps {
-            script {
-                dockerImage = docker.build repository + ":$BUILD_NUMBER"
+            steps {
+                script {
+                    dockerImage = docker.build("${DOCKER_IMAGE_NAME}", "-f Dockerfile .")
+//                    dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
+                }
             }
-        }
+            post {
+                failure {
+                    echo 'Docker Build failure !'
+                }
+                success {
+                    echo 'Docker Build success !'
+                }
+            }
         }        
         stage('Test') {
             steps {
