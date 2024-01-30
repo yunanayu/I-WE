@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { ChangeChart, WeeklyWeightChart } from "./MomWeightChart";
+import { ChangeChart, WeeklyWeightChart } from "../components/chart/MomWeightChart";
 import { MomForm } from "./WeightForm";
 import { Typography } from "@mui/material";
 
