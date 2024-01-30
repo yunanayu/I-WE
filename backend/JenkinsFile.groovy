@@ -9,6 +9,7 @@ pipeline {
         CONTAINER_NAME = 'iandwe-backend'
         REGISTRY_CREDENTIAL = 'dockerhub-IdPwd'
         DOCKER_IMAGE = ''
+        DOCKER_IMAGE_TAG = 'latest'
     }
     stages {
         stage('GitLab Clone') {
@@ -43,12 +44,17 @@ pipeline {
         }
         stage('Docker Build Image') {
             steps {
-                script {
-                    sh '''
-                        cd ./backend
-                        ${DOCKER_IMAGE} = docker.build ${DOCKER_IMAGE_NAME} .
-                    '''
+                dir('./backend') {
+                    script {
+                        DOCKER_IMAGE = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
+                    }
                 }
+//                script {
+//                    sh '''
+//                        cd ./backend
+//                        ${DOCKER_IMAGE} = docker.build ${DOCKER_IMAGE_NAME} .
+//                    '''
+//                }
             }
             post {
                 failure {
@@ -63,7 +69,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', REGISTRY_CREDENTIAL) {
-                        dockerImage.push("1.0")
+                        DOCKER_IMAGE.push()
                     }
                 }
             }
