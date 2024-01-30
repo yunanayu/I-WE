@@ -20,6 +20,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                cd './backend'
                 sh 'chmod +x gradlew'
                 sh './gradlew bootjar'
             }
