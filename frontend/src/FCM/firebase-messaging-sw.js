@@ -1,20 +1,18 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken, onMessage, deleteToken } from "firebase/messaging";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 
-
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAJC_FtqavkZ_z_UpZ0lb-nprbuKBwTKho",
+  apiKey: process.env.REACT_APP_API_KEY,
   authDomain: "i-and-we-382f4.firebaseapp.com",
   projectId: "i-and-we-382f4",
   storageBucket: "i-and-we-382f4.appspot.com",
   messagingSenderId: "268481112825",
-  appId: "1:268481112825:web:a5e61ab9c017d14ba1d028"
+  appId: process.env.REACT_APP_APP_ID
 };
 
 // Initialize Firebase
@@ -35,7 +33,7 @@ async function requestPermission() {
   console.log("알림 권한이 허용됨");
 
   const token = await getToken(messaging, {
-    vapidKey: "BH6R89JwPbY6YVdPUEln1vyJ_yLw3tJlPR3yjOLGzxSbGcu7qlIGRfOGuu8Ncp4CZfh5JnPJ_f-Q_y6G18QuTvw",
+    vapidKey: process.env.REACT_APP_VAPID_KEY,
   });
 
   if (token) {
@@ -45,6 +43,16 @@ async function requestPermission() {
   onMessage(messaging, (payload) => {
     console.log("메시지가 도착했습니다.", payload);
     // ...
+  });
+   // 사용자가 구독을 취소할 때마다 토큰 삭제
+   window.addEventListener('beforeunload', async () => {
+    console.log("페이지를 떠날 때 토큰을 삭제합니다.");
+    try {
+      await deleteToken(messaging, token);
+      console.log("토큰 삭제 완료");
+    } catch (error) {
+      console.error("토큰 삭제 중 오류 발생:", error);
+    }
   });
 }
 
