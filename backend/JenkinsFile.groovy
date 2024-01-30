@@ -57,24 +57,24 @@ pipeline {
                 }
             }
         }
-//        stage('Delete Previous Docker Container') {
-//            steps {
-//                script {
-//                    sh '''
-//                        docker stop ${CONTAINER_NAME}
-//                        docker rm ${CONTAINER_NAME}
-//                    '''
-//                }
-//            }
-//            post {
-//                failure {
-//                    echo 'Delete Previous Docker Container failure !'
-//                }
-//                success {
-//                    echo 'Delete Previous Docker Container success !'
-//                }
-//            }
-//        }
+        stage('Delete Previous Docker Container') {
+            steps {
+                script {
+                    sh '''
+                        docker stop ${CONTAINER_NAME}
+                        docker rm ${CONTAINER_NAME}
+                    '''
+                }
+            }
+            post {
+                failure {
+                    echo 'Delete Previous Docker Container failure !'
+                }
+                success {
+                    echo 'Delete Previous Docker Container success !'
+                }
+            }
+        }
         stage('Run Docker Container') {
             steps {
                 script {
