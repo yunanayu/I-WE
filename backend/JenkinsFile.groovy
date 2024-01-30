@@ -46,7 +46,7 @@ pipeline {
                 script {
                     sh '''
                         cd ./backend
-                        dockerImage = docker.build ${DOCKER_IMAGE_NAME} .
+                        DOCKER_IMAGE = docker.build ${DOCKER_IMAGE_NAME} .
                     '''
                 }
             }
