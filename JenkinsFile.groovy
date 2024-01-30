@@ -20,20 +20,17 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                sh 'chmod +x gradlew'
+                sh './gradlew bootjar'
             }
-            // steps {
-            //     echo 'Building..'
-            //     sh 'chmod +x gradlew'
-            //     sh './gradlew bootjar'
-            // }
-            // post {
-            //     failure {
-            //         echo 'Gradle jar build failure !'
-            //     }
-            //     success {
-            //         echo 'Gradle jar build success !'
-            //     }                
-            // }
+            post {
+                failure {
+                    echo 'Gradle jar build failure !'
+                }
+                success {
+                    echo 'Gradle jar build success !'
+                }                
+            }
         }
         stage('Test') {
             steps {
