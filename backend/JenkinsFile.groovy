@@ -82,7 +82,6 @@ pipeline {
                 }
             }
         }
-
         stage('Delete Previous Docker Container') {
             steps {
                 script {
@@ -104,7 +103,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    sh 'docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${DOCKER_IMAGE_NAME}'
+                    sh 'docker run -d --name ${CONTAINER_NAME} -p 3000:3000 ${DOCKER_IMAGE_NAME}'
                 }
             }
             post {
