@@ -94,6 +94,7 @@ function ResponsiveAppBar() {
               onClick={handleOpenNavMenu}
               // color="#646464"
               color="inherit"
+              
             >
               <MenuIcon />
             </IconButton>
@@ -122,6 +123,10 @@ function ResponsiveAppBar() {
                     component={NavLink}
                     to={page.link}
                     textAlign="center"
+                    sx={{
+                      textDecoration: "none",
+                      color: "gray"
+                    }}
                   >
                     {page.name}
                   </Typography>
@@ -163,7 +168,7 @@ function ResponsiveAppBar() {
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: "#646464",
+                  color: "white",
                   display: "block",
                   textDecoration: "none",
                 }}

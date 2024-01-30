@@ -34,8 +34,6 @@ const Main = ({ onLoginStatusChange }) => {
     setIsLoggedIn(false)
   }
 
-  console.log(isLoggedIn)
-
   useEffect(() => {
     if (document.cookie) {
       setIsLoggedIn(true);
@@ -57,9 +55,9 @@ const Main = ({ onLoginStatusChange }) => {
                 <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
-                <Typography margin="20px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                <a margin="20px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                   oo님의 oo이는
-                </Typography>
+                </a>
                 <Typography margin="20px" variant="h4" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                   oo주차에요
                 </Typography>
