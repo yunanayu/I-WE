@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
+import RecordBaby from "./pages/RecordBaby";
+import RecordMom from "./pages/RecordMom";
+import MainPage from "./pages/MainPage";
+import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMainPage";
+
 
 function App() {
+
+  const [parentLoggedIn, setParentLoggedIn] = useState(false);
+  const handleLoginStatusChange = (status) => {
+    // Update the parent component state
+    setParentLoggedIn(status);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {parentLoggedIn ? <ResponsiveAppBar /> : <></>}
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={<MainPage onLoginStatusChange={handleLoginStatusChange} />}
+        />
+        <Route
+          exact
+          path="/loginSuccess"
+          element={<MainPage onLoginStatusChange={handleLoginStatusChange} />}
+        />
+        <Route path="/recordmom" element={<RecordMom />} />
+        <Route path="/recordbaby" element={<RecordBaby />} />
+        <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />
+      </Routes>
     </div>
   );
 }
-
 export default App;

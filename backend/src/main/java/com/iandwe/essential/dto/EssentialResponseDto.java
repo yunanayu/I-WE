@@ -2,8 +2,10 @@ package com.iandwe.essential.dto;
 
 import com.iandwe.essential.domain.Essential;
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class EssentialResponseDto {
 
     private Long num;

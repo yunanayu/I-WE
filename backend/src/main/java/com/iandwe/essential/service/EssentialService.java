@@ -38,4 +38,8 @@ public class EssentialService {
                 .toList();
     }
 
+    public EssentialResponseDto findByNum(long num) {
+        return EssentialResponseDto.from(essentialRepository.findByNum(num)
+                .orElseThrow(NoEssentialExistException::new));
+    }
 }
