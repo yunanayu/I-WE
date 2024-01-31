@@ -6,8 +6,9 @@ import './CalendarStyle.css'
 import { Box, Container, Grid, Typography } from "@mui/material"; 
 
 
-const CalendarPage = () => {
-  
+const CalendarPage = (props) => {
+  // console.log(props)
+  const dayList = props.dayList
   const curDate = new Date()
 
   const cutMonth = moment(curDate).format('YYYY')
@@ -15,15 +16,6 @@ const CalendarPage = () => {
   const [value, onChange] = useState(curDate)
   
   // 해당하는 데이터 넣으면 됨.
-  const dayList = [
-    '2024-01-10',
-    '2024-01-21',
-    '2024-01-02',
-    '2024-01-14',
-    '2024-01-27',
-    '2024-02-27',
-    '2024-03-27',
-  ];
 
   // const activeDate = moment(value).format('YYYY-MM-DD')
   // const monthOfActiveDate = moment(value).format('YYYY-MM')

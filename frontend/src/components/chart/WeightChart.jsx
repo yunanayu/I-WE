@@ -99,14 +99,15 @@ function ChangeChart(props) {
       <Box sx={{ mt: 3, textAlign: 'center'}}>
         <Typography fontSize={28}> 체중 증가율 </Typography>
       </Box>
-      <Paper sx={{ width: "100%", height: 300 }}>
+      <Paper sx={{ width: "100%", height: 350 }}>
         {/* @ts-ignore */}
         <ResponsiveChartContainer
+        margin={{top: 100}}
           series={[
             {
               type: "bar",
               data: [1, 2, 3, 2, 1],
-              label: '평균 증가율'
+              label: '평균 증가율',
             },
             {
               type: "line",
@@ -130,7 +131,7 @@ function ChangeChart(props) {
           <MarkPlot />
           <ChartsXAxis label="임신 주차" position="bottom" axisId="x-axis-id" />
           <ChartsYAxis label="Y axis" position="left" axisId="y-axis-id" />
-          <ChartsLegend/>
+          <ChartsLegend position= {{ vertical: 'top', horizontal: 'right'}}/>
         </ResponsiveChartContainer>
       </Paper>
     </Box>

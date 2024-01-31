@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { ChangeChart, WeeklyWeightChart } from "./MomWeightChart";
+import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart";
 import { MomForm } from "./WeightForm";
 import { Typography } from "@mui/material";
 
@@ -68,7 +68,7 @@ function RecordMom() {
         </Box>
         <Box
           maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3, padding: 2 }}
         >
           <MomForm />
         </Box>

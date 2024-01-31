@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { ChangeChart, WeeklyWeightChart } from "./MomWeightChart";
+import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart";
 import { BabyForm } from "./WeightForm";
-import { Fade } from "./BabyCarousel";
+import { BabyCarousel } from "./BabyCarousel";
 import {
   Button,
   Divider,
@@ -270,7 +270,7 @@ function RecordBaby() {
                     ...commonStyles,
                     ...setCenter,
                     borderRadius: 3,
-                    width: "35vw",
+                    width: "30vw",
                   }}
                 >
                   {<BabyForm />}
@@ -298,7 +298,7 @@ function RecordBaby() {
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 Text in a modal
               </Typography>
-              <Fade></Fade>
+              <BabyCarousel></BabyCarousel>
             </Box>
           </Modal>
         </Box>

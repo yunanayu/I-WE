@@ -1,56 +1,73 @@
-import React, { CSSProperties } from 'react';
-import { action } from '@storybook/addon-actions';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from "react-responsive-carousel";
-import { withKnobs, boolean, number, text } from '@storybook/addon-knobs';
+import React, { useState, useEffect } from "react";
+import Carousel from "react-material-ui-carousel";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
 
-// // carousel styles
-// import '../src/main.scss';
-// import '../src/carousel.scss';
-// import '../src/examples/presentation/presentation.scss';
-    
-const createCarouselItemImage = (index, options = {}) => (
-    <div key={index}>
-        <img src={`/assets/${index}.jpeg`} />
-        <p className="legend">Legend {index}</p>
-    </div>
-);
+const BabyCarousel = () => {
+  const imageData = [
+    {
+      label: "Image 1",
+      alt: "image1",
+      url: "https://picsum.photos/200/300",
+    },
 
-const baseChildren = <div>{[1, 2, 3, 4, 5].map(createCarouselItemImage)}</div>;
+    {
+      label: "Image 2",
+      alt: "image2",
+      url: "https://picsum.photos/200/300",
+    },
 
-const tooglesGroupId = 'Toggles';
-const valuesGroupId = 'Values';
-const mainGroupId = 'Main';
+    {
+      label: "Image 3",
+      alt: "image3",
+      url: "https://picsum.photos/200/300",
+    },
 
-const getConfigurableProps = () => ({
-    showArrows: boolean('showArrows', true, tooglesGroupId),
-    showStatus: boolean('showStatus', true, tooglesGroupId),
-    showIndicators: boolean('showIndicators', true, tooglesGroupId),
-    infiniteLoop: boolean('infiniteLoop', true, tooglesGroupId),
-    showThumbs: boolean('showThumbs', true, tooglesGroupId),
-    useKeyboardArrows: boolean('useKeyboardArrows', true, tooglesGroupId),
-    autoPlay: boolean('autoPlay', true, tooglesGroupId),
-    stopOnHover: boolean('stopOnHover', true, tooglesGroupId),
-    swipeable: boolean('swipeable', true, tooglesGroupId),
-    dynamicHeight: boolean('dynamicHeight', true, tooglesGroupId),
-    emulateTouch: boolean('emulateTouch', true, tooglesGroupId),
-    autoFocus: boolean('autoFocus', false, tooglesGroupId),
-    thumbWidth: number('thumbWidth', 100, {}, valuesGroupId),
-    selectedItem: number('selectedItem', 0, {}, valuesGroupId),
-    interval: number('interval', 2000, {}, valuesGroupId),
-    transitionTime: number('transitionTime', 500, {}, valuesGroupId),
-    swipeScrollTolerance: number('swipeScrollTolerance', 5, {}, valuesGroupId),
-    ariaLabel: text('ariaLabel', undefined),
-});
+    {
+      label: "Image 4",
+      alt: "image4",
+      url: "https://picsum.photos/200/300",
+    },
 
-export default {
-    title: '01 - Basic',
-    decorators: [withKnobs],
-    component: Carousel,
+    {
+      label: "Image 5",
+      alt: "image5",
+      url: "https://picsum.photos/200/300",
+    },
+  ];
+  return (
+    <Box sx={{ width: "30vw", height: "40vh" }}>
+      <Carousel
+        showArrows={true}
+        centerMode={true}
+        centerSlidePercentage={10}
+        showThumbs={false}
+        showStatus={false}
+        autoPlay={false}
+        infiniteLoop={true}
+        swipe={true}
+        sx={{
+          displayplay: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {imageData.map((content) => (
+          <Stack
+            sx={{
+              displayplay: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h5" color="#112b23" mb={3}>
+              {content.label}
+            </Typography>
+            <img src={content.url} width={300} height={210} alt={content.alt} />
+          </Stack>
+        ))}
+      </Carousel>
+    </Box>
+  );
 };
 
-export const Fade = () => (
-    <Carousel {...getConfigurableProps()} animationHandler="fade" swipeable={false}>
-        {baseChildren.props.children}
-    </Carousel>
-);
+export { BabyCarousel };

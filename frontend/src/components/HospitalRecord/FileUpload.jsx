@@ -83,7 +83,7 @@ const FileUpload = () => {
         />
         <Button 
         onClick={uploadFile}
-        sx={{justifySelf:'left f'}}
+        sx={{justifySelf:'left'}}
         >Upload</Button>
       </Box>
 
