@@ -109,21 +109,36 @@ pipeline {
 //                }
 //            }
 //        }
-//        stage('Run Docker Container') {
-//            steps {
-//                script {
-//                    sh 'docker run -d --name ${CONTAINER_NAME} -p 8081:8080 ${DOCKER_IMAGE_NAME}'
-//                }
-//            }
-//            post {
-//                failure {
-//                    echo 'Run Docker Container failure !'
-//                }
-//                success {
-//                    echo 'Run Docker Containersuccess !'
-//                }
-//            }
-//        }
+        stage('Pull from DockerHub') {
+            steps {
+                script {
+                    sh 'docker pull ${DOCKER_IMAGE_NAME}'
+                }
+            }
+            post {
+                failure {
+                    echo 'Pull from DockerHub failure !'
+                }
+                success {
+                    echo 'Pull from DockerHub success !'
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    sh 'docker run -d --name ${CONTAINER_NAME} -p 8081:8080 ${DOCKER_IMAGE_NAME}'
+                }
+            }
+            post {
+                failure {
+                    echo 'Run Docker Container failure !'
+                }
+                success {
+                    echo 'Run Docker Container success !'
+                }
+            }
+        }
         stage('Test') {
             steps {
                 echo 'Testing..'
