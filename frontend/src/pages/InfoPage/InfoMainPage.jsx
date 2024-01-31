@@ -14,12 +14,14 @@ const theme = createTheme({
     fontFamily: 'Nanum Gothic, sans-serif',
   },
 });
+console.log(document.cookie)
 
 function InfoMain() {
   return (
     <>
       <ThemeProvider theme={theme} sx={{display:'flex', justifyContent:'center'}} >
         <Typography>
+          
           정보 제공
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width:"90%"}}>

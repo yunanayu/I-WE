@@ -167,7 +167,7 @@ function ResponsiveAppBar() {
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: "#646464",
+                  color: "white",
                   display: "block",
                   textDecoration: "none",
                 }}

@@ -38,6 +38,7 @@ function App() {
         <Route path="/infomom" element={<InfoMom />} />
         <Route path="/infobaby" element={<InfoBaby />} />
         <Route path="/infodad" element={<InfoDad />} />
+
         <Route path="/recordmom" element={<RecordMom />} />
         <Route path="/recordbaby" element={<RecordBaby />} />
         <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />

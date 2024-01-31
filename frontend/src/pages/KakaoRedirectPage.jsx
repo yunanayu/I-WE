@@ -1,5 +1,3 @@
-// KakaoLogin.jsx
-
 import React, { useEffect } from "react";
 import axios from "axios";
 import kakaologin from "../images/kakaologin.png";

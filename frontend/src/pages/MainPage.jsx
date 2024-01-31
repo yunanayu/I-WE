@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import icon from "../images/icon.png";
 import logo from "../images/logo.png";
-import axios from "axios";
 import { Link } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
 import { Box, Typography, Card } from '@mui/material';
-
 import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
@@ -21,8 +19,6 @@ const theme = createTheme({
 
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState(null); //해당 유저 정보 받아오기
-
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -43,21 +39,9 @@ const Main = ({ onLoginStatusChange }) => {
     setIsLoggedIn(false)
   }
 
-  const fetchUserInfo = async () => {
-    try {
-      // 사용자 정보를 가져오는 API 호출
-      const response = await axios.get('/api/user');
-      // API 호출이 성공하면 사용자 정보를 상태 변수에 저장
-      setUserInfo(response.data);
-    } catch (error) {
-      console.error('사용자 정보를 가져오는데 실패했습니다.', error);
-    }
-  };
-
   console.log(isLoggedIn)
 
   useEffect(() => {
-    fetchUserInfo();
     if (document.cookie) {
       setIsLoggedIn(true);
       onLoginStatusChange(true);
