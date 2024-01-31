@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart";
+import {
+  ChangeChart,
+  WeeklyWeightChart,
+} from "../components/chart/WeightChart";
 import { MomForm } from "./WeightForm";
 import { Typography } from "@mui/material";
+import axios from "axios";
 
 // 주차별 몸무게
 const weightWeekly = [];
@@ -54,9 +58,27 @@ function Info() {
   );
 }
 
-// props 설정, form 전송 객체, 차트 데이터 입력 필요 
+// props 설정, form 전송 객체, 차트 데이터 입력 필요
 // 전송 후 배열에 입력, 디비에 저장
 function RecordMom() {
+  const [todayRecord, setTodayRecord] = useState(null);
+  const [momRecord, setMomRecord] = useState(null);
+
+  useEffect(() => {
+    const init = async () => {
+      await axios
+        .get("/api/motherRecord/1")
+        .then((response) => {
+          console.log(response);
+          setMomRecord(response);
+        })
+        .catch((error) => {
+          console.log("GET MOM RECORD ERROR\n" + error);
+        });
+    };
+    init();
+  }, []);
+
   return (
     <>
       <Container maxWidth="lg" sx={{ ...setCenter, background: "pink" }}>
