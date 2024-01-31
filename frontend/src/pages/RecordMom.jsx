@@ -64,16 +64,22 @@ function RecordMom() {
   const [todayRecord, setTodayRecord] = useState(null);
   const [momRecord, setMomRecord] = useState(null);
 
+  function print() {
+    console.log(momRecord);
+  }
+
   useEffect(() => {
     const init = async () => {
       await axios
         .get("/api/motherRecord/1")
         .then((response) => {
           console.log(response);
-          setMomRecord(response);
+          setMomRecord(response.data);
         })
         .catch((error) => {
           console.log("GET MOM RECORD ERROR\n" + error);
+        }).finally(() => {
+          print();
         });
     };
     init();

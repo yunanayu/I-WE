@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart";
@@ -139,6 +139,22 @@ function RecordBaby() {
     setFile(Array.from(e.target.files));
   };
 
+  const [babyRecord, setBabyRecord] = useState(null);
+
+  useEffect(() => {
+    const init = async () => {
+      await axios
+        .get("/api/motherRecord/1")
+        .then((response) => {
+          setBabyRecord(response.data);
+        })
+        .catch((error) => {
+          console.log("GET BABY RECORD ERROR\n" + error);
+        });
+    };
+    init();
+  }, []);
+
   const uploadFile = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -151,7 +167,7 @@ function RecordBaby() {
 
     // URI 필요
     axios
-      .post("http://localhost:3079/file/uploads", formData, {
+      .post("/file/uploads", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
