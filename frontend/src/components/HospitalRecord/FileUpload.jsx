@@ -5,10 +5,8 @@ import { Input } from '@mui/base';
 
 
 const FileUpload = () => {
-  //
   const [files, setFiles] = useState([])
   const [fileUrlList,setFileUrlList] = useState([])
-  // console.log(files[0]);
 
   // 받아온 파일 데이터 보관, 미리보기 보여줌
   const selectFiles = (e) => {
