@@ -49,12 +49,6 @@ pipeline {
                         DOCKER_IMAGE = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
                     }
                 }
-//                script {
-//                    sh '''
-//                        cd ./backend
-//                        ${DOCKER_IMAGE} = docker.build ${DOCKER_IMAGE_NAME} .
-//                    '''
-//                }
             }
             post {
                 failure {
@@ -65,10 +59,10 @@ pipeline {
                 }
             }
         }
-        stage('Push Image to Docker Hub') {
+        stage('Push Image to DockerHub') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', REGISTRY_CREDENTIAL) {
+                    docker.withRegistry('', REGISTRY_CREDENTIAL) {
                         DOCKER_IMAGE.push()
                     }
                 }
@@ -82,21 +76,51 @@ pipeline {
                 }
             }
         }
-        stage('Delete Previous Docker Container') {
+        stage('Docker Clean Image') {
             steps {
-                script {
-                    sh '''
-                        docker stop ${CONTAINER_NAME}
-                        docker rm ${CONTAINER_NAME}
-                    '''
+                dir('./backend') {
+                    sh 'docker rmi $DOCKER_IMAGE_NAME'
                 }
             }
             post {
                 failure {
-                    echo 'Delete Previous Docker Container failure !'
+                    echo 'Docker Clean Image failure !'
                 }
                 success {
-                    echo 'Delete Previous Docker Container success !'
+                    echo 'Docker Clean Image success !'
+                }
+            }
+        }
+//        stage('Delete Previous Docker Container') {
+//            steps {
+//                script {
+//                    sh '''
+//                        docker stop ${CONTAINER_NAME}
+//                        docker rm ${CONTAINER_NAME}
+//                    '''
+//                }
+//            }
+//            post {
+//                failure {
+//                    echo 'Delete Previous Docker Container failure !'
+//                }
+//                success {
+//                    echo 'Delete Previous Docker Container success !'
+//                }
+//            }
+//        }
+        stage('Pull from DockerHub') {
+            steps {
+                script {
+                    sh 'docker pull ${DOCKER_IMAGE_NAME}'
+                }
+            }
+            post {
+                failure {
+                    echo 'Pull from DockerHub failure !'
+                }
+                success {
+                    echo 'Pull from DockerHub success !'
                 }
             }
         }
@@ -111,7 +135,7 @@ pipeline {
                     echo 'Run Docker Container failure !'
                 }
                 success {
-                    echo 'Run Docker Containersuccess !'
+                    echo 'Run Docker Container success !'
                 }
             }
         }

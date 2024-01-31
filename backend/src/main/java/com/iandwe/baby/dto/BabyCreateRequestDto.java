@@ -12,7 +12,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BabyCreateRequestDto {
+public class
+BabyCreateRequestDto {
 
     private Long motherNum;
 
