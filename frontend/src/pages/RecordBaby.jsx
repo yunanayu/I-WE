@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { ChangeChart, WeeklyWeightChart } from "../components/chart/MomWeightChart";
+import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart";
 import { BabyForm } from "./WeightForm";
 import { BabyCarousel } from "./BabyCarousel";
 import {
