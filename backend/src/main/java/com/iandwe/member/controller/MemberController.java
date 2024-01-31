@@ -4,6 +4,7 @@ import com.iandwe.common.StatusResponseDto;
 import com.iandwe.member.dto.request.MemberRegisterDto;
 import com.iandwe.member.dto.request.MemberUpdateFcmTokenDto;
 import com.iandwe.member.service.MemberService;
+import com.iandwe.security.SecurityUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ public class MemberController {
 
     @PatchMapping
     public ResponseEntity<?> updateFcmToken(@RequestBody MemberUpdateFcmTokenDto memberUpdateFcmTokenDto) {
+        memberUpdateFcmTokenDto.updateEmail(SecurityUtils.getUserEmail());
         memberService.updateFcmToken(memberUpdateFcmTokenDto);
 
         return new ResponseEntity<>(HttpStatus.OK);

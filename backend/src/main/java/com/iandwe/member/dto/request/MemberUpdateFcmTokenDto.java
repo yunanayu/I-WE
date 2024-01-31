@@ -17,4 +17,7 @@ public class MemberUpdateFcmTokenDto {
 
     private String fcmToken;
 
+    public void updateEmail(String email) {
+        this.email = email;
+    }
 }
