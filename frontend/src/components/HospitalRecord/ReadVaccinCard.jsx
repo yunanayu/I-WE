@@ -9,14 +9,15 @@ import CheckIcon from '@mui/icons-material/Check';
 
 
 // 데이터 받아오기
-const initState = {
-  date : '2024-01-04',
-  hospitalName : '싸피 산부인과',
-  vaccinName : 'B형 간염 1차',
-  status : true ,
-}
+// const initState = {
+//   date : '2024-01-04',
+//   hospitalName : '싸피 산부인과',
+//   vaccinName : 'B형 간염 1차',
+//   status : true ,
+// }
 
-const ReadVaccinCard = () => {
+const ReadVaccinCard = (props) => {
+  const initState = props.vaccine
   return (
     <Card sx={{ Width: '70%', }}>
       <CardContent>
@@ -32,7 +33,7 @@ const ReadVaccinCard = () => {
         {initState.status? <CheckIcon />: <></>}
       </CardContent>
       <CardActions>
-        <Button size="small">상세보기</Button>
+        {/* <Button size="small">상세보기</Button> */}
       </CardActions>
     </Card>
   );
