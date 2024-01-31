@@ -22,6 +22,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.5",
     "dayjs": "^1.11.10",
+    "firebase": "^10.7.2",
     "install": "^0.13.0",
     "moment": "^2.30.1",
     "npm": "^10.4.0",
