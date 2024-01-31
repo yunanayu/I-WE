@@ -1,15 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import icon from "../images/icon.png";
 import logo from "../images/logo.png";
-import { Box, Typography } from '@mui/material';
+import axios from "axios";
+import { Link } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import CardContent from '@mui/material/CardContent';
+import { Box, Typography, Card } from '@mui/material';
+
 import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
 import mainprofile from '../images/mainprofile.png';
 
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Nanum Gothic, sans-serif',
+  },
+});
 
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState(null); //해당 유저 정보 받아오기
+
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -30,9 +43,21 @@ const Main = ({ onLoginStatusChange }) => {
     setIsLoggedIn(false)
   }
 
+  const fetchUserInfo = async () => {
+    try {
+      // 사용자 정보를 가져오는 API 호출
+      const response = await axios.get('/api/user');
+      // API 호출이 성공하면 사용자 정보를 상태 변수에 저장
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error('사용자 정보를 가져오는데 실패했습니다.', error);
+    }
+  };
+
   console.log(isLoggedIn)
 
   useEffect(() => {
+    fetchUserInfo();
     if (document.cookie) {
       setIsLoggedIn(true);
       onLoginStatusChange(true);
@@ -47,35 +72,75 @@ const Main = ({ onLoginStatusChange }) => {
     <>
       {isLoggedIn ? (
         <>
+        <ThemeProvider theme={theme}>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
               <Box sx={{ flexDirection: 'column', width: '50%', height: '50%', borderRadius: '50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
                 <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
-                <Typography variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                <Typography margin="10px" variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                   oo님의 oo이는
                 </Typography>
-                <Typography variant="h4" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                   oo주차에요
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Box>
-                  병원찾기
-                </Box>
-                <Box>
-                  다이어리
-                </Box>
-                <Box>
-                  커뮤니티
-                </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', width:"90%"}}>
+                <Card sx={{ width: "50%", margin: "5px 5px 5px 5px" }}>
+                  <CardContent sx={{margin:"5px"}}>
+                    <Typography variant="h6" component="div">
+                      이 시기에 
+                    </Typography>
+                    <Typography variant="h6" component="div" style={{textAlign: 'right'}}>
+                      엄마는요!
+                    </Typography>
+                    < br/>
+                    <Typography variant="body2">
+                      - 어때요
+                      <br />
+                      - 그리고 어때요
+                      <br />
+                      - 정보리스트
+                    </Typography>
+                    <Box style={{textAlign: 'right'}}>
+                      <Link to='/infomom'>
+                        <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>더 궁금해요!</Button>
+                      </Link>
+                    </Box>
+                  </CardContent>
+                </Card>
+                <Card sx={{ width: "50%", margin: "5px 5px 5px 5px" }}>
+                  <CardContent>
+                  <Typography variant="h6" component="div">
+                      이 시기에 
+                    </Typography>
+                    <Typography variant="h6" component="div" style={{textAlign: 'right'}}>
+                      아기는요!
+                    </Typography>
+                    < br/>
+                    <Typography variant="body2">
+                      - 어때요
+                      <br />
+                      - 그리고 어때요
+                      <br />
+                      - 정보리스트
+                    </Typography>
+                    <Box style={{textAlign: 'right'}}>
+                      <Link to='/infobaby'>
+                        <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>더 궁금해요!</Button>
+                      </Link>
+                    </Box>
+                  </CardContent>
+                </Card>
               </Box>
             </Box>
           </Box>
+          </ThemeProvider>
         </>
       ) : (
         <>
+        <ThemeProvider theme={theme}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-bottom', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', height: '100vh' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
               <img src={icon} alt="icon" style={{ width: '300px', height: '270px' }} />
@@ -103,6 +168,7 @@ const Main = ({ onLoginStatusChange }) => {
               </Box>
             </Box>
           </Box>
+          </ThemeProvider>
         </>
       )}
     </>
