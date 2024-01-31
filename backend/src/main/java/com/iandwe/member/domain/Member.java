@@ -44,4 +44,7 @@ public class Member {
     @CreationTimestamp
     private LocalDateTime joinDate;
 
+    public void updateFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 }

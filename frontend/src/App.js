@@ -4,6 +4,11 @@ import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
 import RecordBaby from "./pages/RecordBaby";
 import RecordMom from "./pages/RecordMom";
 import MainPage from "./pages/MainPage";
+import InfoMain from "./pages/InfoPage/InfoMainPage";
+import InfoMom from "./pages/InfoPage/InfoMomPage";
+import InfoBaby from "./pages/InfoPage/InfoBabyPage";
+import InfoDad from "./pages/InfoPage/InfoDadPage";
+
 import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMainPage";
 import AddBabyRecordPage from "./pages/HospitalRecordPage/AddBabyRecordPage";
 import AddMomRecordPage from "./pages/HospitalRecordPage/AddMomRecordPage";
@@ -31,6 +36,11 @@ function App() {
           path="/loginSuccess"
           element={<MainPage onLoginStatusChange={handleLoginStatusChange} />}
         />
+        <Route path="/infomain" element={<InfoMain />} />
+        <Route path="/infomom" element={<InfoMom />} />
+        <Route path="/infobaby" element={<InfoBaby />} />
+        <Route path="/infodad" element={<InfoDad />} />
+
         <Route path="/recordmom" element={<RecordMom />} />
         <Route path="/recordbaby" element={<RecordBaby />} />
         <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />

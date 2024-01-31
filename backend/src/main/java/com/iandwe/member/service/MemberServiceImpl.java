@@ -4,6 +4,8 @@ import com.iandwe.checker.service.generator.CheckerGenerator;
 import com.iandwe.member.domain.Member;
 import com.iandwe.member.domain.ParentType;
 import com.iandwe.member.dto.request.MemberRegisterDto;
+import com.iandwe.member.dto.request.MemberUpdateFcmTokenDto;
+import com.iandwe.member.exception.NoMemberExistException;
 import com.iandwe.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -47,6 +49,22 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return savedMember;
+    }
+
+    @Override
+    public void updateFcmToken(MemberUpdateFcmTokenDto memberUpdateFcmTokenDto) {
+        // 소셜 로그인일 경우(이메일)
+        if(memberUpdateFcmTokenDto.getEmail() != null) {
+            Optional<Member> result = memberRepository.findByEmail(memberUpdateFcmTokenDto.getEmail());
+
+            if(!result.isPresent()) {
+                throw new NoMemberExistException();
+            }
+
+            result.get().updateFcmToken(memberUpdateFcmTokenDto.getFcmToken());
+            memberRepository.save(result.get());
+        }
+
     }
 
     private static boolean isMother(ParentType type) {

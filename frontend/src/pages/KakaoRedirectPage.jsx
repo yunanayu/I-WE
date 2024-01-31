@@ -1,5 +1,3 @@
-// KakaoLogin.jsx
-
 import React, { useEffect } from "react";
 import axios from "axios";
 import kakaologin from "../images/kakaologin.png";
@@ -42,7 +40,7 @@ function KakaoLogin({ setIsLoggedIn }) {
     (config) => {
       const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `${token}`;
       }
       console.log(config.headers.Authorization)
       return config;
