@@ -5,6 +5,7 @@ import axios from "axios";
 import kakaologin from "../images/kakaologin.png";
 import { useNavigate } from "react-router-dom";
 import { requestPermission } from "../FCM/firebase-messaging-sw";
+import { getUserInfo } from "../api/UserApi";
 
 function KakaoLogin({ setIsLoggedIn }) {
   const BackURL = `http://localhost:8080/oauth2/authorization/kakao`;
@@ -26,6 +27,7 @@ function KakaoLogin({ setIsLoggedIn }) {
           document.cookie = `token=${code}`;
           setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정
           requestPermission()
+          getUserInfo(code)
           navigate("/"); // 로그인이 완료되면 '/'로 이동
         }
       } catch (error) {
