@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage, deleteToken } from "firebase/messaging";
+import { goDeviceToken } from "../api/FCMTokenApi";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,12 +17,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 
 
 const messaging = getMessaging(app);
 
-async function requestPermission() {
+export async function requestPermission() {
   console.log("권한 요청 중...");
 
   const permission = await Notification.requestPermission();
@@ -38,6 +39,7 @@ async function requestPermission() {
 
   if (token) {
     console.log("token: ", token)
+    goDeviceToken(token)
   } else console.log("Can not get Token");
 
   onMessage(messaging, (payload) => {
@@ -56,5 +58,5 @@ async function requestPermission() {
   });
 }
 
-requestPermission();
+// requestPermission();
 

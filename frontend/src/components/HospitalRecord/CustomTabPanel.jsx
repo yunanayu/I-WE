@@ -9,10 +9,32 @@ import ReadVaccinCard from './ReadVaccinCard';
 
 
 
-const records = [1, 2, 3]
+const initState = [
+  { checkUpDate : '2024-01-05',
+    checkupItem :'1차 정기검진',
+    vaccinItem :'접조우무무무뭐',
+    hospitalName:'싸피 산부인과',
+    doctorName:'김싸피',
+    momWeight:'80',
+    babyName : '이싸피',
+    babyWeight:'0.8',
+    babyHeight:'40',
+    babyDiameter:'15', },
+  { checkUpDate : '2024-01-07',
+    checkupItem :'2차 정기검진',
+    vaccinItem :'접조우무무무뭐',
+    hospitalName:'싸피 산부인과',
+    doctorName:'김싸피',
+    momWeight:'80',
+    babyName : '이싸피',
+    babyWeight:'0.9',
+    babyHeight:'45',
+    babyDiameter:'16', },
+]
 
 
 function CustomTabPanel(props) {
+  // console.log(props);
   const { children, value, index, ...other } = props;
   
   return (
@@ -47,9 +69,10 @@ function a11yProps(index) {
 
 
 
-export default function BasicTabs() {
+export default function BasicTabs(props) {
+  // console.log(props)
   const [value, setValue] = React.useState(0);
-
+  const [records, setRecords] = React.useState(initState)
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -93,7 +116,7 @@ export default function BasicTabs() {
         <CustomTabPanel value={value} index={0}>
           {records.map((record) => {
             return(
-              <ReadRecordCard value={value} index={0}/>
+              <ReadRecordCard value={value} index={0} record={record}/>
             )
           })}
         </CustomTabPanel>

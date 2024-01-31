@@ -18,7 +18,7 @@ const initState = {
 
 const ReadVaccinCard = () => {
   return (
-    <Card sx={{ minWidth: 500, }}>
+    <Card sx={{ Width: '70%', }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {initState.date}
