@@ -8,7 +8,7 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 
 const CalendarPage = (props) => {
   // console.log(props)
-  const dayList = props.dayList
+  const dayList = props.dayList 
   const curDate = new Date()
 
   const cutMonth = moment(curDate).format('YYYY')
@@ -25,6 +25,15 @@ const CalendarPage = (props) => {
   //   setActiveMonth(newActiveMonth)
   // }
 
+  const addContent = ({date}) => {
+    const isToday = dayList.find((d) => d === moment(date).format('YYYY-MM-DD'))
+    return ( isToday ?
+      <>
+        <div className='box'>
+          <div className="dot"></div>
+        </div> 
+      </> : <></>
+      )}
 
   return (
     <Container sx={{display:'flow', width:'70%',alignContent:'center',justifyContent:'center',border:1,borderRadius:1, borderColor: 'blue',}}>
@@ -38,18 +47,7 @@ const CalendarPage = (props) => {
         prev2Label={null}
         formatDay={(locale, date) => moment(date).format('D')}
         showNeighboringMonth={false}  // 앞 뒤 달 이어지는 날짜 보여주는 여부
-        // tileContent={addContent}
-        tileContent = {({date}) => {
-          const isToday = dayList.find((d) => d === moment(date).format('YYYY-MM-DD'))
-          return ( isToday ?
-            <>
-          <div className='box'>
-            <div className="dot"></div>
-          </div>
-            </>
-            : <></>
-          )
-        }}
+        tileContent = {addContent}
         // onActiveStartDateChange={({ activeStartDate }) => 
         //   getActiveMonth(activeStartDate)}
         />

@@ -20,7 +20,7 @@ const pages = [
   { name: "다이어리", link: "/diary" },
   { name: "서비스찾기", link: "/service" },
   { name: "커뮤니티", link: "/community" },
-  { name: "정보제공", link: "/info" },
+  { name: "정보제공", link: "/infomain" },
   { name: "엄마기록", link: "/recordmom" },
   { name: "아기기록", link: "/recordbaby" },
   { name: "병원기록", link: "/hospitalrecord" },
@@ -122,6 +122,10 @@ function ResponsiveAppBar() {
                     component={NavLink}
                     to={page.link}
                     textAlign="center"
+                    sx={{
+                      textDecoration: "none",
+                      color: "gray"
+                    }}
                   >
                     {page.name}
                   </Typography>
@@ -163,7 +167,7 @@ function ResponsiveAppBar() {
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: "#646464",
+                  color: "white",
                   display: "block",
                   textDecoration: "none",
                 }}
