@@ -10,6 +10,8 @@ import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
 import mainprofile from '../images/mainprofile.png';
+import { getUserInfo } from '../api/UserApi';
+
 
 const theme = createTheme({
   typography: {
@@ -52,6 +54,11 @@ const Main = ({ onLoginStatusChange }) => {
   
   },  [onLoginStatusChange]);
 
+useEffect(() => {
+  getUserInfo()
+  
+}, [])
+
   return (
     <>
       {isLoggedIn ? (
@@ -64,7 +71,7 @@ const Main = ({ onLoginStatusChange }) => {
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
                 <Typography margin="10px" variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                  oo님의 oo이는
+                  쑥쑥이는
                 </Typography>
                 <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                   oo주차에요

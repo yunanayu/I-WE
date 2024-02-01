@@ -12,7 +12,6 @@ const theme = createTheme({
     fontFamily: 'Nanum Gothic, sans-serif',
   },
 });
-console.log(document.cookie)
 
 function InfoMain() {
   return (

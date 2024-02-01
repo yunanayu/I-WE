@@ -26,6 +26,7 @@ function KakaoLogin({ setIsLoggedIn }) {
           setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정
           requestPermission()
           getUserInfo(code)
+          
           navigate("/"); // 로그인이 완료되면 '/'로 이동
         }
       } catch (error) {
