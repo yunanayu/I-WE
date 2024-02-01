@@ -47,15 +47,15 @@ export async function requestPermission() {
     // ...
   });
    // 사용자가 구독을 취소할 때마다 토큰 삭제
-   window.addEventListener('beforeunload', async () => {
-    console.log("페이지를 떠날 때 토큰을 삭제합니다.");
-    try {
-      await deleteToken(messaging, token);
-      console.log("토큰 삭제 완료");
-    } catch (error) {
-      console.error("토큰 삭제 중 오류 발생:", error);
-    }
-  });
+  //  window.addEventListener('beforeunload', async () => {
+  //   console.log("페이지를 떠날 때 토큰을 삭제합니다.");
+  //   try {
+  //     await deleteToken(messaging, token);
+  //     console.log("토큰 삭제 완료");
+  //   } catch (error) {
+  //     console.error("토큰 삭제 중 오류 발생:", error);
+  //   }
+  // });
 }
 
 // requestPermission();

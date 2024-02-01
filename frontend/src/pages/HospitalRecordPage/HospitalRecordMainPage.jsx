@@ -2,13 +2,6 @@ import React, { createContext, useEffect, useState } from 'react';
 import CalendarPage from '../../components/HospitalRecord/CalendarPage';
 import CustomTabPanel from  '../../components/HospitalRecord/CustomTabPanel';
 import Box from '@mui/material/Box';
-// import Tab from '@mui/material/Tab';
-// import TabContext from '@mui/lab/TabContext';
-// import TabList from '@mui/lab/TabList';
-// import TabPanel from '@mui/lab/TabPanel';
-// import PropTypes from 'prop-types';
-// import Tabs from '@mui/material/Tabs';
-// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +20,43 @@ const initState = [
       babyWeight:'0.8',
       babyHeight:'40',
       babyDiameter:'15', },
-    { checkUpDate : '2024-02-07',
+    { checkUpDate : '2024-02-05',
+      checkupItem :'1차 정기검진',
+      hospitalName:'싸피 산부인과',
+      doctorName:'김싸피',
+      momWeight:'80',
+      babyName : '이싸피',
+      babyWeight:'0.8',
+      babyHeight:'40',
+      babyDiameter:'15', },
+    { checkUpDate : '2024-02-06',
+      checkupItem :'1차 정기검진',
+      hospitalName:'싸피 산부인과',
+      doctorName:'김싸피',
+      momWeight:'80',
+      babyName : '이싸피',
+      babyWeight:'0.8',
+      babyHeight:'40',
+      babyDiameter:'15', },
+    { checkUpDate : '2024-02-09',
+      checkupItem :'1차 정기검진',
+      hospitalName:'싸피 산부인과',
+      doctorName:'김싸피',
+      momWeight:'80',
+      babyName : '이싸피',
+      babyWeight:'0.8',
+      babyHeight:'40',
+      babyDiameter:'15', },
+    { checkUpDate : '2024-02-09',
+      checkupItem :'1차 정기검진',
+      hospitalName:'싸피 산부인과',
+      doctorName:'김싸피',
+      momWeight:'80',
+      babyName : '이싸피',
+      babyWeight:'0.8',
+      babyHeight:'40',
+      babyDiameter:'15', },
+    { checkUpDate : '2024-02-18',
       checkupItem :'2차 정기검진',
       hospitalName:'싸피 산부인과',
       doctorName:'김싸피',
@@ -49,25 +78,39 @@ const HospitalRecordMainPage = () => {
   const [dayList,setDayList] = useState([])
 
   const [selectedDay, setSelectedDay] = useState()
-
-
+  console.log(selectedDay);
+  const [recordList, setRecordList] = useState([])
+  console.log(recordList);
   useEffect(()=>{
-    // getMomDate()
+    // const data = getMomDate()
+    // setRecordList(data)
     const dates = initState.map((item) => item.checkUpDate)
     setDayList(dates)
-  },[])
+    
+    
+    if (selectedDay) {
+      // const filteredRecords = initState.filter((item) => item.checkUpDate === selectedDay);
+      // setRecordList(filteredRecords);
+      const data = initState.filter((item) => item.checkUpDate === selectedDay)
+      setRecordList(data)
+    } else {
+      // If no day is selected, display all records
+      setRecordList(initState);
+    }
+
+  },[selectedDay])
 
 
 
   return (
-    <recordContext.Provider value={initState}>
-      <Container>
-        <Container sx={{width:'80%',alignContent:'center',justifyContent:'center'}}>
+    <recordContext.Provider value={recordList}>
+      <Container sx={{width:'100%'}}>
+        <Container sx={{width:'80%',alignContent:'center',justifyContent:'center',}}>
           <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
             <CalendarPage dayList={dayList} setSelectedDay={setSelectedDay}/>
           </Box>
           <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
-            <CustomTabPanel />
+            <CustomTabPanel selectedDay={selectedDay}/>
           </Box>
         </Container>
       </Container>

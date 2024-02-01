@@ -82,6 +82,9 @@ export default function BasicTabs(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  React.useEffect(()=>{
+    setRecords(initState)
+  },[initState])
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
