@@ -2,14 +2,14 @@ import React from "react";
 import Container from "@mui/material/Container";
 
 
-function InfoMom() {
+function InfoBaby() {
   return (
     <>
       <Container >
-        애기
+        아기
       </Container>
     </>
   );
 }
 
-export default InfoMom;
+export default InfoBaby;

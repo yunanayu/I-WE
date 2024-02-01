@@ -24,6 +24,7 @@ const pages = [
   { name: "엄마기록", link: "/recordmom" },
   { name: "아기기록", link: "/recordbaby" },
   { name: "병원기록", link: "/hospitalrecord" },
+  { name: "꿀팁", link: "/tips" },
 ];
 const settings = ["마이페이지", "로그아웃"];
 
@@ -180,7 +181,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar src="/broken-image.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
