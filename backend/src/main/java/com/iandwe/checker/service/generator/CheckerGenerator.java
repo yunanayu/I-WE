@@ -38,7 +38,7 @@ public class CheckerGenerator {
     }
 
     // TODO : Member 에서 산모 가입 시 메소드 연결 필요
-    public void generateMotherCheckerData(long motherNum) {
+    public void generateMotherCheckerData(long motherNum, long babyNum) {
         List<Essential> motherEssentials = essentialRepository.findAll().stream()
                 .filter(e -> e.getTarget().equals("mother"))
                 .toList();
@@ -46,6 +46,7 @@ public class CheckerGenerator {
         List<MotherChecker> motherCheckers = motherEssentials.stream().map(e -> MotherChecker.builder()
                         .motherNum(motherNum)
                         .complete(false)
+                        .babyNum(babyNum)
                         .essentialNum(e.getNum())
                         .build())
                 .toList();

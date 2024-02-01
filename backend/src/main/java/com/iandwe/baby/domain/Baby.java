@@ -9,7 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 @Entity
@@ -17,6 +20,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Builder
+@Slf4j
 public class Baby {
 
     @Id
@@ -63,4 +67,28 @@ public class Baby {
         }
     }
 
+    public String getTargetTime() {
+        long diffSec = 0L;
+        String targetTime = "";
+        try {
+            if (this.status) {
+                targetTime += "A";
+                diffSec = parseDate(LocalDate.now()) - parseDate(birth);
+            } else {
+                targetTime += "B";
+                diffSec = parseDate(LocalDate.now()) - parseDate(pregnancyDate);
+            }
+        } catch (ParseException e){
+            log.info("Baby Parse Exception : {}", e.getMessage());
+        }
+        return targetTime + parseSecToDay(diffSec);
+    }
+
+    private long parseDate(LocalDate date) throws ParseException {
+        return new SimpleDateFormat("yyyy-mm-dd").parse(String.valueOf(date)).getTime() / 1000;
+    }
+
+    private long parseSecToDay(long diffSec) {
+        return diffSec / (24 * 60 * 60);
+    }
 }

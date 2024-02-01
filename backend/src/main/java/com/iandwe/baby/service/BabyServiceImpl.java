@@ -35,7 +35,7 @@ public class BabyServiceImpl implements BabyService {
         Member savedMember = memberRepository.findByNum(dto.getMotherNum()).orElseThrow();
 
         if (isMother(savedMember.getParentType())) {
-            checkerGenerator.generateMotherCheckerData(savedMember.getNum());
+            checkerGenerator.generateMotherCheckerData(savedMember.getNum(), baby.getNum());
         }
 
         return BabyCreateResponseDto.from(baby);
