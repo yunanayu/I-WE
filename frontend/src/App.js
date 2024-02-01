@@ -24,7 +24,8 @@ function App() {
 
   return (
     <div className="App">
-      {parentLoggedIn ? <ResponsiveAppBar /> : <></>}
+      {/* {parentLoggedIn ? <ResponsiveAppBar /> : <></>} */}
+      <ResponsiveAppBar />
       <Routes>
         <Route
           exact
