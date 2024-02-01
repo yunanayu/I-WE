@@ -63,27 +63,25 @@ function Info() {
 function RecordMom() {
   const [todayRecord, setTodayRecord] = useState(null);
   const [momRecord, setMomRecord] = useState(null);
-
-  function print() {
-    console.log(momRecord);
-  }
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
     const init = async () => {
       await axios
         .get("/api/motherRecord/1")
         .then((response) => {
-          console.log(response);
-          setMomRecord(response.data);
+          let data = response.data;
+          setMomRecord(data);
         })
         .catch((error) => {
           console.log("GET MOM RECORD ERROR\n" + error);
-        }).finally(() => {
-          print();
-        });
+        })
     };
     init();
   }, []);
+
+  console.log("엄마기록??? " + JSON.stringify(momRecord));
+  
 
   return (
     <>
@@ -104,13 +102,13 @@ function RecordMom() {
           maxWidth="md"
           sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
         >
-          <WeeklyWeightChart />
+          <WeeklyWeightChart recordData={momRecord}/>
         </Box>
         <Box
           maxWidth="md"
           sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
         >
-          <ChangeChart />
+          <ChangeChart recordData={momRecord}/>
         </Box>
       </Container>
     </>
