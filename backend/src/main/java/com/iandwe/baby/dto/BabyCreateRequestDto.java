@@ -29,6 +29,7 @@ BabyCreateRequestDto {
                 .name(name)
                 .pregnancyDate(pregnancyDate)
                 .birth(birth)
+                .status(!(birth == null || String.valueOf(birth).isEmpty()))
                 .build();
     }
 }

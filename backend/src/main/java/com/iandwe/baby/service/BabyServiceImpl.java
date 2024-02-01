@@ -5,6 +5,9 @@ import com.iandwe.baby.dto.*;
 import com.iandwe.baby.exception.NoBabyExistException;
 import com.iandwe.baby.repository.BabyRepository;
 import com.iandwe.checker.service.generator.CheckerGenerator;
+import com.iandwe.member.domain.Member;
+import com.iandwe.member.domain.ParentType;
+import com.iandwe.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +22,22 @@ public class BabyServiceImpl implements BabyService {
 
     private final CheckerGenerator checkerGenerator;
 
+    private final MemberRepository memberRepository;
+
     @Transactional
     @Override
     public BabyCreateResponseDto create(BabyCreateRequestDto dto) {
         Baby baby = dto.toEntity();
+
         babyRepository.save(baby);
         checkerGenerator.generateBabyCheckerData(baby.getNum());
+
+        Member savedMember = memberRepository.findByNum(dto.getMotherNum()).orElseThrow();
+
+        if (isMother(savedMember.getParentType())) {
+            checkerGenerator.generateMotherCheckerData(savedMember.getNum());
+        }
+
         return BabyCreateResponseDto.from(baby);
     }
 
@@ -56,4 +69,7 @@ public class BabyServiceImpl implements BabyService {
         return BabyReadResponseDto.from(baby);
     }
 
+    private static boolean isMother(ParentType type) {
+        return type.equals(ParentType.MOTHER);
+    }
 }

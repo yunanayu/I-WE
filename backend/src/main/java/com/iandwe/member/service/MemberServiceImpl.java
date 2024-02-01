@@ -42,14 +42,7 @@ public class MemberServiceImpl implements MemberService {
         // 회원을 저장함
         Member savedMember = memberRepository.save(member);
 
-        if (isMother(savedMember.getParentType())) {
-            checkerGenerator.generateMotherCheckerData(savedMember.getNum());
-        }
-
         return savedMember;
     }
 
-    private static boolean isMother(ParentType type) {
-        return type.equals(ParentType.MOTHER);
-    }
 }
