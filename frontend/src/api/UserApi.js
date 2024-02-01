@@ -4,7 +4,7 @@ import axios from "axios";
 export const getUserInfo = async (accessToken) => {
   // axios({
   //   method:'get',
-  //   url : `url`
+  //   url : `/api/member`
   // })
   // .then((res) => {
   //   console.log(res.data)
