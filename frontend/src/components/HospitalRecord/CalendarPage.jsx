@@ -41,7 +41,7 @@ const CalendarPage = (props) => {
       )}
 
   return (
-    <Container sx={{display:'flow', width:'70%',alignContent:'center',justifyContent:'center',border:1,borderRadius:1, borderColor: 'blue',}}>
+    <Container sx={{display:'flow', width:'70%',textAlign:'center',alignContent:'center',justifyContent:'center',border:1,borderRadius:1, borderColor: 'blue',}}>
 
       <Container sx={{border:1, color:'violet'}}>
         <Calendar 
@@ -58,7 +58,7 @@ const CalendarPage = (props) => {
         />
       </Container>
       <Typography>
-        {moment(value).format("YYYY년 MM월 DD일")} 
+        {/* {moment(value).format("YYYY년 MM월 DD일")}  */}
       </Typography>
     </Container>
   );

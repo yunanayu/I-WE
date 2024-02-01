@@ -6,7 +6,7 @@ export const getMomOne = async (param) => {
 }
 
 
-const getMomDate = async () => {
+export const getMomDate = async () => {
   const res = await axios({
     method : 'get',
     url : `url`
@@ -18,3 +18,15 @@ const getMomDate = async () => {
   .catch((err) => console.log(err))
   return res.data
 }
+
+
+export const getBabyList = async () => {
+  await axios({
+    method :'get',
+    url : `url`,
+  })
+  .then((res)=>{
+    console.log(res.data);
+  })
+  .catch(err => console.log(err))
+} 
