@@ -24,6 +24,8 @@ public class MotherChecker {
 
     private Long essentialNum;
 
+    private Long babyNum;
+
     private boolean complete;
 
     public void updateComplete(boolean complete){

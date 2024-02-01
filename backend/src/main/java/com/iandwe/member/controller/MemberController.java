@@ -3,6 +3,7 @@ package com.iandwe.member.controller;
 import com.iandwe.common.StatusResponseDto;
 import com.iandwe.member.dto.request.MemberRegisterDto;
 import com.iandwe.member.dto.request.MemberUpdateFcmTokenDto;
+import com.iandwe.member.dto.response.MemberInfoDto;
 import com.iandwe.member.service.MemberService;
 import com.iandwe.security.SecurityUtils;
 import jakarta.validation.Valid;
@@ -23,12 +24,17 @@ public class MemberController {
 
     @PatchMapping
     public ResponseEntity<?> updateFcmToken(@RequestBody MemberUpdateFcmTokenDto memberUpdateFcmTokenDto) {
-        memberUpdateFcmTokenDto.updateEmail(SecurityUtils.getUserEmail());
         memberService.updateFcmToken(memberUpdateFcmTokenDto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping
+    public ResponseEntity<?> findByAccessToken(@RequestHeader String Authorization) {
+        MemberInfoDto memberInfoDto = memberService.findByAccessToken(Authorization);
+
+        return new ResponseEntity<>(memberInfoDto, HttpStatus.OK);
+    }
 
     // 일반 회원가입 => 필요하면 구현 예정
 //    @PostMapping

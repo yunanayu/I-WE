@@ -11,6 +11,7 @@ import com.iandwe.checker.repository.MotherCheckerRepository;
 import com.iandwe.essential.domain.Essential;
 import com.iandwe.essential.exception.NoEssentialExistException;
 import com.iandwe.essential.repository.EssentialRepository;
+import com.iandwe.member.exception.NoMemberExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ public class CheckerService {
     public List<CheckerResponseDto> findByMotherNum(long num) {
         List<MotherChecker> motherCheckers = motherCheckerRepository.findByMotherNum(num);
         if (isEmptyResult(motherCheckers)) {
-            // TODO : Member 의 No member exist exception 을 작성 후 throw 할 것.
+            throw new NoMemberExistException();
         }
 
         return motherCheckers.stream().map(checker -> {

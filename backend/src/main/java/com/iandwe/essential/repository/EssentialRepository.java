@@ -10,8 +10,6 @@ public interface EssentialRepository extends JpaRepository<Essential, Long> {
 
     List<Essential> findByTarget(String target);
 
-    List<Essential> findByTargetTime(int targetTime);
-
     Optional<Essential> findByNum(long num);
 
 }
