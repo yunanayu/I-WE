@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { Container } from '@mui/material';
 import '../../FCM/firebase-messaging-sw'
 import axios from 'axios';
+import { getEssential } from '../../api/RecordApi';
 
 // 기록이 있는지 이 페이지에서 확인 후 있으면 prop으로 내려주고 없으면 기록 추가 모달 창
 const initState = [
@@ -78,9 +79,12 @@ const HospitalRecordMainPage = () => {
   const [dayList,setDayList] = useState([])
 
   const [selectedDay, setSelectedDay] = useState()
-  console.log(selectedDay);
+  // console.log(selectedDay);
   const [recordList, setRecordList] = useState([])
-  console.log(recordList);
+  // console.log(recordList);
+
+
+
   useEffect(()=>{
     // const data = getMomDate()
     // setRecordList(data)

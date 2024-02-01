@@ -9,33 +9,34 @@ import ReadVaccinCard from './ReadVaccinCard';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { recordContext } from '../../pages/HospitalRecordPage/HospitalRecordMainPage';
+import { getEssential } from '../../api/RecordApi';
 
-const vaccineList = [
-  {
-  date : '2024-02-04',
-  hospitalName : '싸피 산부인과',
-  vaccinName : 'B형 간염 1차',
-  status : true ,
-  },
-  {
-  date : '2024-02-08',
-  hospitalName : '싸피 산부인과',
-  vaccinName : 'B형 간염 2차',
-  status : false ,
-  },
-  {
-  date : '2024-02-17',
-  hospitalName : '싸피 소아과',
-  vaccinName : '인플루엔자',
-  status : true ,
-  },
-  {
-  date : '2024-02-08',
-  hospitalName : '싸피 산부인과',
-  vaccinName : 'BCG',
-  status : false ,
-  },
-]
+// const vaccineList = [
+//   {
+//   date : '2024-02-04',
+//   hospitalName : '싸피 산부인과',
+//   vaccinName : 'B형 간염 1차',
+//   status : true ,
+//   },
+//   {
+//   date : '2024-02-08',
+//   hospitalName : '싸피 산부인과',
+//   vaccinName : 'B형 간염 2차',
+//   status : false ,
+//   },
+//   {
+//   date : '2024-02-17',
+//   hospitalName : '싸피 소아과',
+//   vaccinName : '인플루엔자',
+//   status : true ,
+//   },
+//   {
+//   date : '2024-02-08',
+//   hospitalName : '싸피 산부인과',
+//   vaccinName : 'BCG',
+//   status : false ,
+//   },
+// ]
 
 
 
@@ -73,9 +74,25 @@ function a11yProps(index) {
   };
 }
 
-
-
 export default function BasicTabs(props) {
+  const [vaccineList, setVaccineList] = React.useState([])
+
+  React.useEffect(() =>{
+    // const babyVaccine = getEssential('baby')
+    // console.log(babyVaccine)
+    // setVaccineList(babyVaccine)
+    const fetchData = async () => {
+      try {
+        const babyVaccine = await getEssential('baby');
+        setVaccineList(babyVaccine);
+      } catch (error) {
+        console.error('Error fetching baby vaccine:', error);
+      }
+    };
+    fetchData();
+  },[])
+
+
   const initState = React.useContext(recordContext)
   const [value, setValue] = React.useState(0);
   const [records, setRecords] = React.useState(initState)
