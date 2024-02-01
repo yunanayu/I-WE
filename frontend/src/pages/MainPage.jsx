@@ -11,6 +11,10 @@ import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
 import mainprofile from '../images/mainprofile.png';
 import { getUserInfo } from '../api/UserApi';
+import { getInfo } from '../api/InfoApi';
+
+import moment from 'moment';
+
 
 
 const theme = createTheme({
@@ -21,27 +25,17 @@ const theme = createTheme({
 
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [todayDate, setTodayDate] = useState('');
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
   };
-  const handleKakaoLoginFailure = () => {
-    setIsLoggedIn(false)
-  }
   const handleNaverLoginSuccess = () => {
     setIsLoggedIn(true);
   };
-  const handleNaverLoginFailure = () => {
-    setIsLoggedIn(false)
-  }
   const handleGoogleLoginSuccess = () => {
     setIsLoggedIn(true);
   };
-  const handleGoogleLoginFailure = () => {
-    setIsLoggedIn(false)
-  }
-
-  console.log(isLoggedIn)
 
   useEffect(() => {
     if (document.cookie) {
@@ -54,10 +48,42 @@ const Main = ({ onLoginStatusChange }) => {
   
   },  [onLoginStatusChange]);
 
-useEffect(() => {
-  getUserInfo()
-  
-}, [])
+  // 회원정보를 통한 아이정보 받아오기
+  const [babyName, setBabyName] = useState([]);
+  const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const info = await getUserInfo();
+        const babyname = info[0].name
+        setBabyName(babyname);
+        const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
+        const today = moment();
+        const days = today.diff(pregnancyDate, 'days');
+        const weeks = Math.floor(days / 7 + 1)
+        setDaysSincePregnancy(weeks);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+
+  }, []);
+
+  // useEffect(() => {
+  //   const fetchInfo = async() => {
+  //     try {
+  //       const infoinfo = await getInfo();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+
+  //   };
+  //   fetchInfo();
+  // }, []);
+    
 
   return (
     <>
@@ -71,10 +97,10 @@ useEffect(() => {
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
                 <Typography margin="10px" variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                  쑥쑥이는
+                  {babyName} 는 
                 </Typography>
                 <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                  oo주차에요
+                  {daysSincePregnancy} 주차에요
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%"}}>

@@ -15,17 +15,6 @@ const theme = createTheme({
   },
 });
 
-export const getDateInfo = async (accessToken) => {
-  axios({
-    method:'get',
-    url : `/api/info/baby`
-  })
-  .then((res) => {
-    console.log(res.data)
-  })
-  .catch((err) => console.log(err))
-  console.log('아기 주차 정보 가져옴!!!><@@');
-}
 
 //여기서 date(주차 및 월 불러오기)
 //useState에 해당 주차 설정하기
