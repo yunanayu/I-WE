@@ -14,24 +14,24 @@ public class InfoResponseDto {
 
     private Long num;
 
-    private String title;
-
-    private String infoDetail;
-
     private String target;
+
+    private String content;
 
     private String category;
 
-    private String targetTime;
+    private String startTime;
+
+    private String endTime;
 
     public static InfoResponseDto from(Info info) {
         return InfoResponseDto.builder()
                 .num(info.getNum())
-                .title(info.getTitle())
-                .infoDetail(info.getInfoDetail())
                 .target(info.getTarget())
+                .content(info.getContent())
                 .category(info.getCategory())
-                .targetTime(info.getTargetTime())
+                .startTime(info.getStartTime())
+                .endTime(info.getEndTime())
                 .build();
     }
 }

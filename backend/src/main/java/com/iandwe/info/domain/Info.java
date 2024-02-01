@@ -45,13 +45,13 @@ public class Info {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long num;
 
-    private String title;
-
-    private String infoDetail;
-
     private String target;
+
+    private String content;
 
     private String category;
 
-    private String targetTime;
+    private String startTime;
+
+    private String endTime;
 }
