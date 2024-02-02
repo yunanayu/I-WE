@@ -12,64 +12,55 @@ import { getEssential } from '../../api/RecordApi';
 
 // 기록이 있는지 이 페이지에서 확인 후 있으면 prop으로 내려주고 없으면 기록 추가 모달 창
 const initState = [
-    { checkUpDate : '2024-02-05',
-      checkupItem :'1차 정기검진',
+    { target : 'mother',
+      title : '1차 정기검진',
       hospitalName:'싸피 산부인과',
-      doctorName:'김싸피',
-      momWeight:'80',
-      babyName : '이싸피',
-      babyWeight:'0.8',
-      babyHeight:'40',
-      babyDiameter:'15', },
-    { checkUpDate : '2024-02-05',
-      checkupItem :'1차 정기검진',
+      doctor :'김싸피',
+      hospitalDate:'2024-02-05',
+      content: '정기검진',
+      result: '정상',
+      comment : '이상없음',
+    },
+    { target : 'mother',
+      title : '2차 정기검진',
       hospitalName:'싸피 산부인과',
-      doctorName:'김싸피',
-      momWeight:'80',
-      babyName : '이싸피',
-      babyWeight:'0.8',
-      babyHeight:'40',
-      babyDiameter:'15', },
-    { checkUpDate : '2024-02-06',
-      checkupItem :'1차 정기검진',
+      doctor :'이싸피',
+      hospitalDate:'2024-02-06',
+      content: '정기검진',
+      result: '정상',
+      comment : '이상없음',
+    },
+    { target : 'mother',
+      title : '3차 정기검진',
       hospitalName:'싸피 산부인과',
-      doctorName:'김싸피',
-      momWeight:'80',
-      babyName : '이싸피',
-      babyWeight:'0.8',
-      babyHeight:'40',
-      babyDiameter:'15', },
-    { checkUpDate : '2024-02-09',
-      checkupItem :'1차 정기검진',
-      hospitalName:'싸피 산부인과',
-      doctorName:'김싸피',
-      momWeight:'80',
-      babyName : '이싸피',
-      babyWeight:'0.8',
-      babyHeight:'40',
-      babyDiameter:'15', },
-    { checkUpDate : '2024-02-09',
-      checkupItem :'1차 정기검진',
-      hospitalName:'싸피 산부인과',
-      doctorName:'김싸피',
-      momWeight:'80',
-      babyName : '이싸피',
-      babyWeight:'0.8',
-      babyHeight:'40',
-      babyDiameter:'15', },
-    { checkUpDate : '2024-02-18',
-      checkupItem :'2차 정기검진',
-      hospitalName:'싸피 산부인과',
-      doctorName:'김싸피',
-      momWeight:'80',
-      babyName : '이싸피',
-      babyWeight:'0.9',
-      babyHeight:'45',
-      babyDiameter:'16', },
+      doctor :'박싸피',
+      hospitalDate:'2024-02-07',
+      content: '정기검진',
+      result: '정상',
+      comment : '이상없음',
+    },
+    { target : 'baby',
+      title : '1차 정기검진',
+      hospitalName:'싸피 소아과',
+      doctor :'최싸피',
+      hospitalDate:'2024-02-07',
+      content: '정기검진', 
+      result: '정상',
+      comment : '이상없음',
+    },
   ]
 
+export function replaceAWithNumber(inputString) {
+    // 'A'를 제거하고 나머지 문자열에서 숫자만 추출합니다.
+    var numberPart = inputString.replace('A', '').match(/\d+/);
+    // 추출된 숫자가 있으면 해당 숫자를 반환하고, 없으면 null을 반환합니다.
+    return numberPart ? parseInt(numberPart[0]) : null;
+  }
 
 export const recordContext = createContext()
+
+
+
 
 const HospitalRecordMainPage = () => {
   const navigate = useNavigate()
@@ -88,22 +79,18 @@ const HospitalRecordMainPage = () => {
   useEffect(()=>{
     // const data = getMomDate()
     // setRecordList(data)
-    const dates = initState.map((item) => item.checkUpDate)
+    const dates = initState.map((item) => item.hospitalDate)
     setDayList(dates)
     
     
     if (selectedDay) {
-      // const filteredRecords = initState.filter((item) => item.checkUpDate === selectedDay);
-      // setRecordList(filteredRecords);
-      const data = initState.filter((item) => item.checkUpDate === selectedDay)
+      const data = initState.filter((item) => item.hospitalDate === selectedDay)
       setRecordList(data)
     } else {
-      // If no day is selected, display all records
       setRecordList(initState);
     }
 
   },[selectedDay])
-
 
 
   return (

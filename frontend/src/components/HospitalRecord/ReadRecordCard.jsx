@@ -10,6 +10,8 @@ import VaccinesIcon from '@mui/icons-material/Vaccines';
 import MedicationIcon from '@mui/icons-material/Medication';
 import Modal from '@mui/material/Modal';
 import ReadDetailRecordModal from './ReadDetailRecordModal';
+import PregnantWomanIcon from '@mui/icons-material/PregnantWoman';
+import ChildCareIcon from '@mui/icons-material/ChildCare';
 
 
 const style = {
@@ -24,29 +26,26 @@ const style = {
   p: 4,
 };
 
-// 데이터 받아오기
-
 
 const ReadRecordCard = (props) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // console.log(props.index)
-  // console.log(props.record)
+
   return (
     <Card sx={{ Width: '70%', }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {props.record.checkUpDate}
+          {props.record.hopitalDate}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           {props.record.hospitalName}
         </Typography>
         <Typography variant="h5" component="div">
-          {props.record.checkupItem}
+          {props.record.title}
         </Typography>
-        {props.record.checkupItem? <MedicationIcon /> : <></>}
+        {props.record.target === 'mother'? <PregnantWomanIcon /> : <ChildCareIcon/>}
 
       </CardContent>
       <CardActions>

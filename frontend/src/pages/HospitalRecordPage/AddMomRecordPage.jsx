@@ -24,6 +24,12 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import FileUpload from '../../components/HospitalRecord/FileUpload';
 import HealingOutlinedIcon from '@mui/icons-material/HealingOutlined';
 import { ThemeProvider, createTheme } from '@mui/system';
+import axios from 'axios';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const AddMomRecordPage = () => {
   const babyList = [
@@ -46,22 +52,68 @@ const AddMomRecordPage = () => {
     {label:'냠냠'},
   ] 
 
+  const navigate = useNavigate()
+
+  const location = useLocation()
+  const selectedDay = location.state.selectedDay
+
+  const [value, setValue] = React.useState('mother');
+
   const today = dayjs(moment(new Date()).format('YYYY-MM-DD'))  // 추후에 선택한 날짜로 변경하기
   const [state, setState] = useState({
     // checkUpDate : '',
-    selectDay : '',
+    selectDay : selectedDay,
+    title : '',
     checkupItem :'',
     hospitalName:'',
     doctorName:'',
+    checkupResult: '', // 새로운 속성 추가
+    doctorOpinion: '',
+    target : '',
+    // ------------------
     momWeight:'',
     babyName : '',
     babyWeight:'',
     babyHeight:'',
     babyDiameter:'',
   })
-    useEffect(() => {
-      console.log(' 렌더링!')
-    }, [state])
+  console.log(state);
+    // useEffect(() => {
+    //   console.log(' 렌더링!')
+    // }, [state])
+
+
+    const submit = () => {
+      axios({
+        method:'post',
+        url : `api/hospital/create`,
+        data:{
+          target : state.target,  // baby or mom
+          // targetNum 수정하기
+          targetNum : 1,  // pk
+          title : state.title,   // 간단 정보
+          hospitalName : state.hospitalName,  //
+          doctor : state.doctorName,
+          hospitalDate : state.selectDay,
+          content : state.checkupItem,
+          result : state.checkupResult,
+          comment : state.doctorOpinion,
+
+          }
+      })
+      .then((res)=>{
+        console.log(res)
+        window.alert("등록하였습니다.!")
+        navigate('/hospitalrecord')
+      })
+      .catch((err)=>{
+        console.log(err)
+        window.alert('등록실패 ㅋㅎㅋㅎ')
+      })
+    //   await axios({
+
+    //   })
+    }
 
     const theme = createTheme({
       palette: {
@@ -80,19 +132,32 @@ const AddMomRecordPage = () => {
   // console.log(state.babyName);
   
   return (
-    <Container sx={{pt:10,}}>
-      <Box sx={{display:'flex'}}>
+    <Container sx={{pt:10,  border:1,}}>
+      <Box sx={{display:'flex', pb:2}}>
         <Typography variant='h3'>검진 기록하기 </Typography>
         <HealingOutlinedIcon fontSize='large'/>
       </Box>
+      <FormControl>
+        <FormLabel id="demo-controlled-radio-buttons-group">검진 대상</FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+        >
+          <FormControlLabel value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
+          <FormControlLabel value="baby" control={<Radio />} label="아기" name='target' onChange={handleChange}/>
+        </RadioGroup>
+      </FormControl>
       <Box sx={{display:'flex', width:'100%', pt:3 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           {/* <DateCalendar onChange={(e) => setState({...state, checkUpDate : moment(e.$d).format('YYYY-MM-DD')})}/> */}
           <DemoContainer components={['DatePicker']}>
             <DatePicker
               label="검진 날짜 선택"
+              // value={moment(selectedDay)}
               value={today}
               onChange={(newValue) => {
+                console.log(newValue)
                 setState({...state, selectDay : moment(newValue.$d).format('YYYY-MM-DD')})
               }}
               sx={{
@@ -101,72 +166,44 @@ const AddMomRecordPage = () => {
               />
           </DemoContainer>
         </LocalizationProvider>
-        {/* <TextField
-          id="outlined-read-only-input"
-          label=" 검진 날짜"
-          placeholder={state.selectDay == '' ? '검진날짜를 선택해주세요':state.selectDay}
-          value={state.selectDay}
-          InputProps={{
-            readOnly: true,
-          }}
-        /> */}
-        <Autocomplete
+
+        {/* <Autocomplete
           disablePortal
           id="combo-box-demo"
           options={checkupList}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="검진" />}
-          onChange={(e)=>console.log(e.target.innerText)}
-        />
-        <Autocomplete
+          onChange={(e)=>{
+            console.log(e.target.innerText)
+            setState({...state, checkupItem : e.target.innerText})
+          }}
+        /> */}
+          <TextField
+            id="outlined-controlled"
+            name='title'
+            label={state.title == '' ? '검진목적을 입력하세요' : '검진목적'}
+            value={state.title == '' ? '' : state.title}
+            onChange={handleChange}
+            sx={{width:'30%', pr:5}}
+          />
+        {/* <Autocomplete
           disablePortal
           id="combo-box-demo"
           options={vaccinList}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="접종" />}
-          onChange={(e)=>console.log(e.target.innerText)}
-        />
+          onChange={(e)=>{
+            console.log(e.target.innerText)
+            setState({...state, checkupItem : e.target.innerText})
+          }}
+        /> */}
       </Box>
       <Box>
-        <Box sx={{display:'flex', pt:4, pb:5}}>
-          <PregnantWomanIcon fontSize='large'/>
-          <Typography variant='h4'>산모기록</Typography>
+        <Box sx={{display:'flex', pt:4}}>
+          {/* <PregnantWomanIcon fontSize='large'/>
+          <Typography variant='h4'>산모기록</Typography> */}
+          <Typography variant='h4'>병원정보</Typography>
         </Box>
-        {/* <Box sx={{ display:'flex'}}>
-        <Typography variant='h5'>병원이름</Typography>
-        <TextField
-          id="outlined-controlled"
-          name='hospitalName'
-          label={state.hospitalName == '' ? '병원이름을 입력하세요' : '병원이름'}
-          value={state.hospitalName == '' ? '' : state.hospitalName}
-          // onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          //   setState({...state, hospitalName :event.target.value});
-          // }}
-          onChange={handleChange}
-        />
-        <TextField
-          required
-          name='hospitalName'
-          id="outlined-required"
-          label="병원이름"
-          placeholder={state.hospitalName == '' ? '병원이름을 입력하세요' : ''}
-          value={state.hospitalName == '' ? '' : state.hospitalName}
-          onChange={handleChange}
-        />
-        <Typography variant='h5'>담당의사</Typography>
-        <TextField 
-          id="outlined-basic" 
-          name='doctorName'
-          variant="outlined" 
-          label={state.doctorName == '' ? '담당의사를 입력하세요' : '담당의사'}
-          value={state.doctorName == '' ? '' : state.doctorName}
-          // onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          //   setState({...state, doctorName :event.target.value});
-          // }}
-          onChange={handleChange}
-        />
-        </Box> */}
-        <Typography variant='h5'>병원정보</Typography>
         <Box sx={{ display:'flex', pb:4, width:'100%', pt:5 }}>
           <TextField
             id="outlined-controlled"
@@ -186,19 +223,20 @@ const AddMomRecordPage = () => {
             sx={{width:'30%', pr:5}}
           />
         </Box>
-        <Box>
+        {/* <Box>
           <Typography variant='h5'>산모정보</Typography>
-          {/* <Typography variant='h6'>몸무게</Typography> */}
           <TextField
           label="몸무게"
+          name='momWeight'
           id="outlined-start-adornment"
           type='number'
+          onChange={handleChange}
           sx={{ m: 1, width: '25ch' }}
           InputProps={{
             endAdornment:<InputAdornment position="end">kg</InputAdornment>
           }}
         />
-        </Box>
+        </Box> */}
         <Box>
           <Typography variant='h5'>검진사진</Typography>
           <FileUpload />
@@ -208,8 +246,9 @@ const AddMomRecordPage = () => {
           <TextField
           id="outlined-textarea"
           // label="검진결과"
-          name='doctorOpinion'
+          name='checkupResult'
           placeholder="검진결과"
+          onChange={handleChange}
           multiline
           sx={{width:'100%'}}
           >
@@ -221,7 +260,7 @@ const AddMomRecordPage = () => {
 
 
 
-
+{/* 
       <Box sx={{display:'flex', pb:5, pt:4}}>
         <ChildCareIcon fontSize='large'/>
         <Typography variant='h4'>태아기록</Typography>
@@ -238,21 +277,19 @@ const AddMomRecordPage = () => {
             label="아기 선택하기"
             onChange={handleChange}
           >
-            {/* <MenuItem value=""><em>None</em></MenuItem> */}
             {babyList.map((baby) => {
               return(
               <MenuItem value={baby.name}>{baby.name}</MenuItem>
             )})}
           </Select>
-          {/* <FormHelperText>With label + helper text</FormHelperText> */}
         </FormControl>
       </Box>
       <Typography variant='h5'>태아 정보</Typography>
       <Box sx={{display:'flex', width:'100%'}}>
-        {/* <Typography>키</Typography> */}
         <TextField
           label="키"
           name='babyHeight'
+          type='number'
           id="outlined-start-adornment"
           sx={{ m: 1, width: '20%' }}
           placeholder='키'
@@ -261,10 +298,10 @@ const AddMomRecordPage = () => {
           }}
           onChange={handleChange}
         />
-        {/* <Typography>몸무게</Typography> */}
         <TextField
           label="몸무게"
           name='babyWeight'
+          type='number'
           id="outlined-start-adornment"
           sx={{ m: 1, width: '20%' }}
           placeholder='몸무게'
@@ -273,10 +310,10 @@ const AddMomRecordPage = () => {
           }}
           onChange={handleChange}
         />
-        {/* <Typography>머리둘레</Typography> */}
         <TextField
           label="머리둘레"
           name='babyDiameter'
+          type='number'
           id="outlined-start-adornment"
           sx={{ m: 1, width: '20%' }}
           placeholder='머리둘레'
@@ -289,7 +326,7 @@ const AddMomRecordPage = () => {
       <Box>
           <Typography variant='h5'>초음파 사진</Typography>
           <FileUpload />
-        </Box>
+        </Box> */}
 
 
 
@@ -304,11 +341,12 @@ const AddMomRecordPage = () => {
           name='doctorOpinion'
           placeholder="의사소견"
           multiline
+          onChange={handleChange}
           sx={{width:'100%'}}
         />
       </Box>
       <Box sx={{display:'flex', justifyContent:'right'}}>
-        <Button  variant="outlined" sx={{borderColor:'#FBBBB8', color:'#FBBBB8'}}>
+        <Button  variant="outlined" sx={{borderColor:'#FBBBB8', color:'#FBBBB8'}} onClick={submit}>
           등록하기
         </Button>
       </Box>

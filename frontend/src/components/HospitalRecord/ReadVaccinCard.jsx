@@ -11,28 +11,29 @@ import RadioButtonUncheckedTwoToneIcon from '@mui/icons-material/RadioButtonUnch
 import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
 import { updateComplete } from './../../api/RecordApi';
 import Modal from '@mui/material/Modal';
-
-
-// 데이터 받아오기
-// const initState = {
-//   date : '2024-01-04',
-//   hospitalName : '싸피 산부인과',
-//   vaccinName : 'B형 간염 1차',
-//   status : true ,
-// }
+import { replaceAWithNumber } from '../../pages/HospitalRecordPage/HospitalRecordMainPage';
+import moment from 'moment';
+import Stack from '@mui/material/Stack';
+import ChildCareIcon from '@mui/icons-material/ChildCare';
+import PregnantWomanIcon from '@mui/icons-material/PregnantWoman';
 
 const ReadVaccinCard = (props) => {
   const [open, setOpen] = useState(false);
   const [initState, setInitState] = useState(props.vaccine)
-  console.log(initState);
   const updateComplete = () => {
     setInitState({...initState, complete : !initState.complete})
-    // updateComplete({
-    //   targetNum : 1 , 
-    //   essentialNum : 1,
-    //   target : 'baby',
-    //   isComplete : !initState.complet
-    //   })
+  }
+
+  const pregnantDate = new Date()
+  const start = new Date(pregnantDate)
+  const end = new Date(pregnantDate)
+  const date  = {
+    startDate : start.setMonth(pregnantDate.getMonth() + replaceAWithNumber(initState.startTime)),
+    endDate : end.setMonth(pregnantDate.getMonth() + replaceAWithNumber(initState.endTime)),
+  } 
+  const vaccineDate = {
+    startDate : moment(date.startDate).format('YYYY년MM월DD일'),
+    endDate : moment(date.endDate).format('YYYY년MM월DD일'),
   }
 
   const style = {
@@ -48,15 +49,19 @@ const ReadVaccinCard = (props) => {
   };
 
   return (
-    <Card sx={{ Width: '70%', }}>
+    <Card sx={{pb:3, mb:3}}>
       <CardContent sx={{display:'flex', justifyContent:'center'}}>
         {/* <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {initState.num}
         </Typography> */}
         <Box>
-          <Typography variant="h6" component="div">
-            {initState.title}
-          </Typography>
+          <Box sx={{display:'flex'}}>
+            { initState.target === 'baby' ? <ChildCareIcon fontSize='large'/> : <PregnantWomanIcon fontSize='large'/>}
+            <Typography variant="h6" component="div" sx={{pl:2}}>
+              {initState.title}
+            </Typography>
+          </Box>
+
         </Box>
         <Box>
           {initState.complete? 
@@ -88,6 +93,10 @@ const ReadVaccinCard = (props) => {
       <CardActions>
         {/* <Button size="small">상세보기</Button> */}
       </CardActions>
+      <Stack spacing={1}>
+        <Typography variant="overline">권장 접종 기간</Typography>
+        <Typography variant="caption">{vaccineDate.startDate} - {vaccineDate.endDate}</Typography>
+      </Stack>
     </Card>
   );
 };
