@@ -36,6 +36,15 @@ public class MemberController {
         return new ResponseEntity<>(memberInfoDto, HttpStatus.OK);
     }
 
+    @PutMapping("/parent")
+    public ResponseEntity<?> updateParentType(@RequestParam String num, String parentType) {
+        log.info("num : " + num + "parentType : " + parentType);
+
+        memberService.updateParentType(Long.valueOf(num), parentType);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     // 일반 회원가입 => 필요하면 구현 예정
 //    @PostMapping
 //    public ResponseEntity<StatusResponseDto> register(@Valid @RequestBody MemberRegisterDto memberRegisterDto, BindingResult bindingResult) {
