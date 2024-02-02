@@ -81,11 +81,11 @@ public class Baby {
         } catch (ParseException e){
             log.info("Baby Parse Exception : {}", e.getMessage());
         }
-        return targetTime + parseSecToDay(diffSec);
+        return targetTime + (parseSecToDay(diffSec)/7 + 1);
     }
 
     private long parseDate(LocalDate date) throws ParseException {
-        return new SimpleDateFormat("yyyy-mm-dd").parse(String.valueOf(date)).getTime() / 1000;
+        return new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(date)).getTime() / 1000;
     }
 
     private long parseSecToDay(long diffSec) {

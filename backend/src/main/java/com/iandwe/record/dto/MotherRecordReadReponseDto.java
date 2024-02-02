@@ -31,6 +31,7 @@ public class MotherRecordReadReponseDto {
 
     public static MotherRecordReadReponseDto from(MotherRecord motherRecord) {
         return MotherRecordReadReponseDto.builder()
+                .num(motherRecord.getNum())
                 .motherNum(motherRecord.getMotherNum())
                 .weight(motherRecord.getWeight())
                 .recordDate(motherRecord.getRecordDate())
