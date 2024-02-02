@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
+// import { Provider } from 'react-redux';
+// import { createStore } from 'redux';
+// import rootReducer from './reducers'; // rootReducer는 여러 개의 리듀서를 합친 것입니다.
+
 import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
 import RecordBaby from "./pages/RecordBaby";
 import RecordMom from "./pages/RecordMom";
@@ -15,6 +19,9 @@ import AddBabyRecordPage from "./pages/HospitalRecordPage/AddBabyRecordPage";
 import AddMomRecordPage from "./pages/HospitalRecordPage/AddMomRecordPage";
 // import './FCM/firebase-messaging-sw'
 
+// const store = createStore(rootReducer);
+
+
 function App() {
 
   const [parentLoggedIn, setParentLoggedIn] = useState(false);
@@ -24,33 +31,35 @@ function App() {
   };
 
   return (
-    <div className="App">
-      {parentLoggedIn ? <ResponsiveAppBar /> : <></>}
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={<MainPage onLoginStatusChange={handleLoginStatusChange} />}
-        />
-        <Route
-          exact
-          path="/loginSuccess"
-          element={<MainPage onLoginStatusChange={handleLoginStatusChange} />}
-        />
-        <Route path="/infomain" element={<InfoMain />} />
-        <Route path="/infomom" element={<InfoMom />} />
-        <Route path="/infobaby" element={<InfoBaby />} />
-        <Route path="/infoforbaby" element={<InfoForBaby />} />
+    // <Provider store={store}> {/* Provider로 store를 전달 */}
+      <div className="App">
+        {parentLoggedIn ? <ResponsiveAppBar /> : <></>}
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={<MainPage onLoginStatusChange={handleLoginStatusChange} />}
+          />
+          <Route
+            exact
+            path="/loginSuccess"
+            element={<MainPage onLoginStatusChange={handleLoginStatusChange} />}
+          />
+          <Route path="/infomain" element={<InfoMain />} />
+          <Route path="/infomom" element={<InfoMom />} />
+          <Route path="/infobaby" element={<InfoBaby />} />
+          <Route path="/infoforbaby" element={<InfoForBaby />} />
 
-        <Route path="/recordmom" element={<RecordMom />} />
-        <Route path="/recordbaby" element={<RecordBaby />} />
-        <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />
-        <Route path="/babyhospitalrecord" element={<AddBabyRecordPage />} />
-        <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
-        <Route path="/tips" element={<TipPage />} />
+          <Route path="/recordmom" element={<RecordMom />} />
+          <Route path="/recordbaby" element={<RecordBaby />} />
+          <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />
+          <Route path="/babyhospitalrecord" element={<AddBabyRecordPage />} />
+          <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
+          <Route path="/tips" element={<TipPage />} />
 
-      </Routes>
-    </div>
+        </Routes>
+      </div>
+    // </Provider>
   );
 }
 export default App;

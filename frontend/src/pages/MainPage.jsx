@@ -12,6 +12,8 @@ import NaverLogin from "./NaverRedirectPage";
 import mainprofile from '../images/mainprofile.png';
 import { getUserInfo } from '../api/UserApi';
 import { getInfo } from '../api/InfoApi';
+import { useSelector } from 'react-redux';
+
 
 import moment from 'moment';
 
@@ -49,12 +51,15 @@ const Main = ({ onLoginStatusChange }) => {
   },  [onLoginStatusChange]);
 
   // 회원정보를 통한 아이정보 받아오기
+  // const userInfo = useSelector((state) => state.userInfo);
+
   const [babyName, setBabyName] = useState([]);
   const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // console.log(userInfo)
         const info = await getUserInfo();
         const babyname = info[0].name
         setBabyName(babyname);
@@ -72,6 +77,7 @@ const Main = ({ onLoginStatusChange }) => {
 
   }, []);
 
+  // 정보 받아오기 useEffect()
   // useEffect(() => {
   //   const fetchInfo = async() => {
   //     try {
@@ -119,7 +125,7 @@ const Main = ({ onLoginStatusChange }) => {
                     </Typography>
                     <br />
                     <Box style={{textAlign: 'right'}}>
-                      <Link to='/infomom'>
+                      <Link to='/infomom/${weeks}'>
                         <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>더 궁금해요!</Button>
                       </Link>
                     </Box>
