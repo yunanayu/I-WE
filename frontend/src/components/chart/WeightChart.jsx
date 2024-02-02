@@ -253,8 +253,8 @@ function ChangeChart(props) {
 
       const newData = generateData();
     }
-    console.log("BABY DATA !!!!!!!!!!!!" + JSON.stringify(babyData));
-    console.log("WEEK" + week);
+    // console.log("BABY DATA !!!!!!!!!!!!" + JSON.stringify(babyData));
+    // console.log("WEEK" + week);
   }, [momRecord, momBasis])
 
   const generateData = () => {

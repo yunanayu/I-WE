@@ -61,7 +61,7 @@ function Info() {
 // props 설정, form 전송 객체, 차트 데이터 입력 필요
 // 전송 후 배열에 입력, 디비에 저장
 function RecordMom() {
-  const [todayRecord, setTodayRecord] = useState(null);
+  const [recentRecord, setRecentRecord] = useState(null);
   const [momRecord, setMomRecord] = useState(null);
   const [momBasis, setMomBasis] = useState(null);
   const [babyData, setBabyData] = useState(null);
@@ -73,6 +73,7 @@ function RecordMom() {
         .then((response) => {
           let data = response.data;
           setMomRecord(data);
+          setRecentRecord(data.at(-1));
         })
         .catch((error) => {
           console.log("GET MOM RECORD ERROR\n" + error);
@@ -116,7 +117,7 @@ function RecordMom() {
           maxWidth="md"
           sx={{ ...commonStyles, ...setCenter, borderRadius: 3, padding: 2 }}
         >
-          <MomForm />
+          <MomForm data={recentRecord}/>
         </Box>
         <Box
           maxWidth="md"
