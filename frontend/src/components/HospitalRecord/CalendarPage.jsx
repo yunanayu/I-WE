@@ -41,9 +41,9 @@ const CalendarPage = (props) => {
       )}
 
   return (
-    <Container sx={{display:'flow', width:'70%',textAlign:'center',alignContent:'center',justifyContent:'center',border:1,borderRadius:1, borderColor: 'blue',}}>
+    <Container sx={{display:'flow', width:'70%',textAlign:'center',alignContent:'center',justifyContent:'center'}}>
 
-      <Container sx={{border:1, color:'violet'}}>
+      <Container>
         <Calendar 
         onChange={onChange} 
         value={value}

@@ -10,6 +10,8 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { recordContext } from '../../pages/HospitalRecordPage/HospitalRecordMainPage';
 import { getEssential } from '../../api/RecordApi';
+import { Navigate, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // const vaccineList = [
 //   {
@@ -42,6 +44,9 @@ import { getEssential } from '../../api/RecordApi';
 
 
 function CustomTabPanel(props) {
+
+
+
   const { children, value, index, ...other } = props;
   
   return (
@@ -77,21 +82,41 @@ function a11yProps(index) {
 export default function BasicTabs(props) {
   const [vaccineList, setVaccineList] = React.useState([])
 
-  React.useEffect(() =>{
-    // const babyVaccine = getEssential('baby')
-    // console.log(babyVaccine)
-    // setVaccineList(babyVaccine)
-    const fetchData = async () => {
-      try {
-        const babyVaccine = await getEssential('baby');
-        setVaccineList(babyVaccine);
-      } catch (error) {
-        console.error('Error fetching baby vaccine:', error);
-      }
-    };
-    fetchData();
-  },[])
+  // React.useEffect(() =>{
+  //   // const babyVaccine = getEssential('baby')
+  //   // console.log(babyVaccine)
+  //   // setVaccineList(babyVaccine)
+  //   const fetchData = async () => {
+  //     try {
+  //       const babyVaccine = await getEssential('baby');
+  //       setVaccineList(babyVaccine);
+  //     } catch (error) {
+  //       console.error('Error fetching baby vaccine:', error);
+  //     }
+  //   };
+  //   fetchData();
+  // },[])
 
+  React.useEffect(()=>{
+    function getNumberFromString(str) {
+      // 문자열에서 "a" 다음에 오는 숫자만 추출하여 숫자로 반환합니다.
+      return parseInt(str.substring(1));
+  }
+    axios.get(`/api/essential/baby`)
+    .then((res)=>{
+      // console.log(res.data)
+      const list= res.data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));
+      setVaccineList(list)
+    })
+    .catch(err=>console.log(err))
+
+    // axios.get(`/api/essential/baby`)
+  }, [])
+
+
+
+
+  const navigate = useNavigate()
 
   const initState = React.useContext(recordContext)
   const [value, setValue] = React.useState(0);
@@ -120,7 +145,7 @@ export default function BasicTabs(props) {
 
 
   return (
-    <Box sx={{ display:'flex',justifyContent:'center', textAlign:'center', width: '70%', border:1, borderRadius:1, borderColor: 'red', }}>
+    <Box sx={{ display:'flex',justifyContent:'center', textAlign:'center', width: '100%', border:1, borderRadius:1, borderColor: 'red', }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           {/* <Tab label="병원기록" {...a11yProps(0)} /> */}
@@ -156,7 +181,10 @@ export default function BasicTabs(props) {
         <CustomTabPanel value={value} index={0}>
         {records.length === 0 ? 
           <div>
-          <Button onClick={handleOpen} sx={{border:1, borderRadius:5, color:'#FBBBB8'}}>기록 추가하기</Button>
+          <Button 
+          // onClick={handleOpen} 
+          onClick={() => navigate('/momhospitalrecord',{state : {selectedDay:props.selectedDay}})}
+          sx={{border:1, borderRadius:5, color:'#FBBBB8'}}>기록 추가하기</Button>
           <Modal
             open={open}
             onClose={handleClose}

@@ -2,7 +2,20 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Box, Button, TextField } from '@mui/material';
 import { Input } from '@mui/base';
+import { styled } from '@mui/material/styles';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 
 const FileUpload = () => {
   const [files, setFiles] = useState([])
@@ -66,14 +79,15 @@ const FileUpload = () => {
 
   return (
     <div>
-      <Box sx={{display:'flex', width:'80%', border:1, borderColor:'black'}}>
+      <Box sx={{display:'flex', width:'80%',}}>
         {/* <Input
         type='file'
         onChange={selectFiles}
         accept='.png, .jpg,image/*'
         // style={{display:'none'}}
         /> */}
-        <input 
+
+        {/* <input 
           type="file" 
           onChange={selectFiles}
           accept='.png, .jpg,image/*'
@@ -82,15 +96,20 @@ const FileUpload = () => {
         <Button 
         onClick={uploadFile}
         sx={{justifySelf:'left'}}
-        >Upload</Button>
-      </Box>
+        >Upload</Button> */}
+      <Button onChange={selectFiles} component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+        사진 등록하기
+        <VisuallyHiddenInput type="file" />
+      </Button>      
 
       {fileUrlList.map((url, index) => (
         <div key={index}>
-          <img src={url} alt={`Preview ${index}`} />
-          <p>{url}</p>
+          <img src={url} alt={`Preview ${index}`} style={{width:'100px'}}/>
+          {/* <p>{url}</p> */}
         </div>
       ))}
+      </Box>
+
     </div>
   );
 };

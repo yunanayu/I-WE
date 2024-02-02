@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getMessaging, getToken, onMessage, deleteToken } from "firebase/messaging";
 
 export const goDeviceToken = async (token) => {
     await axios({

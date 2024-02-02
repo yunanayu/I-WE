@@ -74,7 +74,7 @@ const AddBabyRecordPage = () => {
   // console.log(state.babyName);
   
   return (
-    <Container sx={{pt:10}}>
+    <Container sx={{pt:10,}}>
       <Typography variant='h3'>아가 기록페이지</Typography>
       <Box sx={{display:'flex', width:'100%', pt:3 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>

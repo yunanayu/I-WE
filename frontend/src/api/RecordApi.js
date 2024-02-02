@@ -30,22 +30,16 @@ export const getBabyList = async () => {
   })
   .catch(err => console.log(err))
 } 
+
+
 // 전체 정보 조회 가능 (app, mother, baby)
 export const getEssential = async (target) => {
-  // await axios({
-  //   method : 'get',
-  //   url:`/api/essential/${target}`,
-  // })
-  // .then((res) => {
-  //   console.log(res)
-  //   const babyEssentialList = 
-  //   res.data.map((data) => {
-  //     'vaccinName' : data.title,
-      
-  //   })
-  //   return babyEssentialList 
-  // })
-  // .catch(err=>console.log(err))
+  axios.get(`/api/check/mother/1`)
+  .then((res)=>{
+    console.log(res)
+    // setVaccineList(res.data)
+  })
+  .catch(err=>console.log(err))
   const vaccineList = [
     {
     // "num": 2,
