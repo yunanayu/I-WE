@@ -28,12 +28,13 @@ public class EssentialService {
         }
     }
 
-    public List<EssentialResponseDto> findByTargetTime(int targetTime) {
-        List<Essential> essentials = essentialRepository.findByTargetTime(targetTime);
+    public List<EssentialResponseDto> findByTargetTime(String targetTime) {
+        List<Essential> essentials = essentialRepository.findAll();
         if (essentials == null || essentials.isEmpty()) {
             throw new NoEssentialExistException();
         }
         return essentials.stream()
+                .filter(e -> e.isRange(targetTime))
                 .map(EssentialResponseDto::from)
                 .toList();
     }

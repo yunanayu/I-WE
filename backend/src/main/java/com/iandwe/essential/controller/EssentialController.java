@@ -25,7 +25,7 @@ public class EssentialController {
     }
 
     @GetMapping("/time/{targetTime}")
-    public ResponseEntity<List<EssentialResponseDto>> findByTargetTime(@PathVariable int targetTime) {
+    public ResponseEntity<List<EssentialResponseDto>> findByTargetTime(@PathVariable String targetTime) {
         return new ResponseEntity<>(essentialService.findByTargetTime(targetTime), HttpStatus.OK);
     }
 

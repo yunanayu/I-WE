@@ -23,7 +23,7 @@ import java.util.Date;
 public class JwtUtil {
     private final JwtProperties jwtProperties;
 //    private final AccessTokenService tokenService;
-    private String secretKey;
+    private static String secretKey;
 
     @PostConstruct
     protected void init() {
@@ -101,7 +101,7 @@ public class JwtUtil {
     }
 
     // 토큰에서 Email을 추출
-    public String getUid(String token) {
+    public static String getUid(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 

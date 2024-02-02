@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Essential {
 
     @Id
@@ -22,9 +24,29 @@ public class Essential {
 
     private String description;
 
-    private int targetTime;
+    private String startTime;
+
+    private String endTime;
 
     private String target;
 
     private String category;
+
+    public boolean isRange(String targetTime) {
+        char isPregnant = targetTime.charAt(0);
+        if (startTime.charAt(0) != isPregnant) {
+            return false;
+        }
+
+        int target = extractTime(targetTime);
+        int start = extractTime(startTime);
+        int end = extractTime(endTime);
+
+        return target >= start && target <= end;
+    }
+
+    private static int extractTime(String targetTime){
+        return Integer.parseInt(targetTime.substring(1));
+    }
+
 }
