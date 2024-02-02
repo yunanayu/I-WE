@@ -5,6 +5,7 @@ const Main = lazy(() => import("../pages/MainPage"))
 const Login = lazy(() => import("../pages/MainPage"))
 const Record = lazy(() => import("../pages/RecordPage"))
 
+const MemberCheck = lazy(() => import("../pages/MemberCheckPage"))
 
 
 
@@ -17,7 +18,10 @@ const root = createBrowserRouter([
         path: "loginSuccess",
         element: <Suspense fallback={Loading}><Login/></Suspense>
     },
-    
+    {
+        path: "addInfo",
+        element: <Suspense fallback={Loading}><MemberCheck/></Suspense>
+    },
     {
         path: "record",
         element: <Suspense fallback={Loading}><Record/></Suspense>
