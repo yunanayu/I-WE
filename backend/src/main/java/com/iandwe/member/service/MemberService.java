@@ -17,4 +17,6 @@ public interface MemberService {
     void updateFcmToken(MemberUpdateFcmTokenDto memberUpdateFcmTokenDto);
 
     MemberInfoDto findByAccessToken(String accessToken);
+
+    void updateParentType(Long num, String parentType);
 }
