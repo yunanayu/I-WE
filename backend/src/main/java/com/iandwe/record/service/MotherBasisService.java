@@ -8,7 +8,7 @@ public interface MotherBasisService {
 
     Boolean create(MotherBasisCreateRequestDto dto);
 
-    MotherBasisReadResponseDto findByMotherNum(long num);
+    MotherBasisReadResponseDto findByMotherNum(long motherNum);
 
     Boolean update(MotherBasisUpdateRequestDto dto);
 }

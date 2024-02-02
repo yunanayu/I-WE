@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface MotherBasisRepository extends JpaRepository<MotherBasis, Long> {
 
-    Optional<MotherBasis> findByMotherNum(long num);
+    Optional<MotherBasis> findByMotherNum(long motherNum);
 }

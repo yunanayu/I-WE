@@ -23,9 +23,6 @@ public class MotherRecordReadReponseDto {
     // 몸무게
     private float weight;
 
-    //키
-    private float height;
-
     // 기록날짜
     private LocalDate recordDate;
 

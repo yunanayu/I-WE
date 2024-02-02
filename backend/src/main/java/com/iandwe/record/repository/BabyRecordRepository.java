@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface BabyRecordRepository extends JpaRepository<BabyRecord, Long> {
 
-    List<BabyRecord> findAllByBabyNum(long num);
+    List<BabyRecord> findAllByBabyNum(long babyNum);
 
     Optional<BabyRecord> findByNum(long num);
 }

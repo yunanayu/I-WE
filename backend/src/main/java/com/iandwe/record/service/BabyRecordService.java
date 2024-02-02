@@ -10,7 +10,7 @@ public interface BabyRecordService {
 
     Boolean create(BabyRecordCreateRequestDto dto);
 
-    List<BabyRecordReadResponseDto> findAllByBabyNum(long num);
+    List<BabyRecordReadResponseDto> findAllByBabyNum(long babyNum);
 
     Boolean update(BabyRecordUpdateRequestDto dto);
 }

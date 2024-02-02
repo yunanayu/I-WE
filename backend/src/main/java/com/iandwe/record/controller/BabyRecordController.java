@@ -22,9 +22,9 @@ public class BabyRecordController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/{num}")
-    public ResponseEntity<List<BabyRecordReadResponseDto>> findAllByBabyNum(@PathVariable long num) {
-        return new ResponseEntity<>(babyRecordService.findAllByBabyNum(num), HttpStatus.OK);
+    @GetMapping("/{babyNum}")
+    public ResponseEntity<List<BabyRecordReadResponseDto>> findAllByBabyNum(@PathVariable long babyNum) {
+        return new ResponseEntity<>(babyRecordService.findAllByBabyNum(babyNum), HttpStatus.OK);
     }
 
     @PutMapping("/update")

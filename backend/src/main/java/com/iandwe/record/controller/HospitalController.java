@@ -24,9 +24,9 @@ public class HospitalController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/{num}")
-    public ResponseEntity<List<HospitalReadResponseDto>> findAllByTargetNum(@PathVariable long num) {
-        return new ResponseEntity<>(hospitalService.findAllByTargetNum(num), HttpStatus.OK);
+    @GetMapping("/{target}/{targetNum}")
+    public ResponseEntity<List<HospitalReadResponseDto>> findAllByTargetAndTargetNum(@PathVariable String target, @PathVariable long targetNum) {
+        return new ResponseEntity<>(hospitalService.findAllByTargetAndTargetNum(target, targetNum), HttpStatus.OK);
     }
 
     @PutMapping("/update")

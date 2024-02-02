@@ -27,8 +27,8 @@ public class BabyRecordServiceImpl implements BabyRecordService {
     }
 
     @Override
-    public List<BabyRecordReadResponseDto> findAllByBabyNum(long num) {
-        List<BabyRecord> babyRecords = babyRecordRepository.findAllByBabyNum(num);
+    public List<BabyRecordReadResponseDto> findAllByBabyNum(long babyNum) {
+        List<BabyRecord> babyRecords = babyRecordRepository.findAllByBabyNum(babyNum);
         if (babyRecords == null || babyRecords.isEmpty()) {
             throw new NoRecordExistException();
         }
