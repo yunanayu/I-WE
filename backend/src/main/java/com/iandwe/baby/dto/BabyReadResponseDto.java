@@ -1,3 +1,4 @@
+
 package com.iandwe.baby.dto;
 
 import com.iandwe.baby.domain.Baby;
@@ -30,6 +31,8 @@ public class BabyReadResponseDto {
 
     private LocalDate birth;
 
+    private String targetTime;
+
     public static BabyReadResponseDto from(Baby baby) {
         return BabyReadResponseDto.builder()
                 .num(baby.getNum())
@@ -40,6 +43,7 @@ public class BabyReadResponseDto {
                 .pregnancyDate(baby.getPregnancyDate())
                 .status(baby.isStatus())
                 .birth(baby.getBirth())
+                .targetTime(baby.getTargetTime())
                 .build();
     }
 
