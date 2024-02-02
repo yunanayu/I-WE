@@ -69,23 +69,43 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
                     .build();
             memberRepository.save(member);
             log.info("temperary register" + member);
+
+            // 로그인 처리
+            // jwt token 발행 시작
+            GeneratedToken token = jwtUtil.generateToken(email, role);
+            log.info("jwtToken = {}", token.getAccessToken());
+
+            // accessToken을 쿼리스트링에 담는 url을 만들어줌
+            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/addInfo")
+                    .queryParam("accessToken", token.getAccessToken())
+                    .queryParam("status", "addInfo")
+                    .build()
+                    .encode(StandardCharsets.UTF_8)
+                    .toUriString();
+            log.info("move login check page");
+
+            // 로그인 확인 페이지로 리다이렉트 시킴
+            getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        }   
+        // 회원 존재
+        else {
+            // 로그인 처리
+            // jwt token 발행 시작
+            GeneratedToken token = jwtUtil.generateToken(email, role);
+            log.info("jwtToken = {}", token.getAccessToken());
+
+            // accessToken을 쿼리스트링에 담는 url을 만들어줌
+            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")
+                    .queryParam("accessToken", token.getAccessToken())
+                    .queryParam("status", "success")
+                    .build()
+                    .encode(StandardCharsets.UTF_8)
+                    .toUriString();
+            log.info("move login check page");
+
+            // 로그인 확인 페이지로 리다이렉트 시킴
+            getRedirectStrategy().sendRedirect(request, response, targetUrl);
         }
-
-        // 로그인 처리
-        // jwt token 발행 시작
-        GeneratedToken token = jwtUtil.generateToken(email, role);
-        log.info("jwtToken = {}", token.getAccessToken());
-
-        // accessToken을 쿼리스트링에 담는 url을 만들어줌
-        String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")
-                .queryParam("accessToken", token.getAccessToken())
-                .build()
-                .encode(StandardCharsets.UTF_8)
-                .toUriString();
-        log.info("move login check page");
-
-        // 로그인 확인 페이지로 리다이렉트 시킴
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
 }
