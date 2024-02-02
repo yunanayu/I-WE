@@ -78,4 +78,13 @@ public class MemberServiceImpl implements MemberService {
         return memberInfoDto;
     }
 
+    @Override
+    public void updateParentType(Long num, String parentType) {
+        Member member = memberRepository.findById(num).orElseThrow(NoMemberExistException::new);
+
+        member.updateParentType(parentType);
+
+        memberRepository.save(member);
+    }
+
 }
