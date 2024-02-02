@@ -47,4 +47,6 @@ public class Member {
     public void updateFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
     }
+
+    public void updateParentType(String parentType) {this.parentType = ParentType.valueOf(parentType);}
 }

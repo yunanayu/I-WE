@@ -10,6 +10,14 @@ import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
 import mainprofile from '../images/mainprofile.png';
+import { getUserInfo } from '../api/UserApi';
+import { getInfo } from '../api/InfoApi';
+import { useSelector } from 'react-redux';
+
+
+import moment from 'moment';
+
+
 
 const theme = createTheme({
   typography: {
@@ -19,27 +27,17 @@ const theme = createTheme({
 
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [todayDate, setTodayDate] = useState('');
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
   };
-  const handleKakaoLoginFailure = () => {
-    setIsLoggedIn(false)
-  }
   const handleNaverLoginSuccess = () => {
     setIsLoggedIn(true);
   };
-  const handleNaverLoginFailure = () => {
-    setIsLoggedIn(false)
-  }
   const handleGoogleLoginSuccess = () => {
     setIsLoggedIn(true);
   };
-  const handleGoogleLoginFailure = () => {
-    setIsLoggedIn(false)
-  }
-
-  console.log(isLoggedIn)
 
   useEffect(() => {
     if (document.cookie) {
@@ -52,32 +50,70 @@ const Main = ({ onLoginStatusChange }) => {
   
   },  [onLoginStatusChange]);
 
+  // 회원정보를 통한 아이정보 받아오기
+  // const userInfo = useSelector((state) => state.userInfo);
+
+  const [babyName, setBabyName] = useState([]);
+  const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // console.log(userInfo)
+        const info = await getUserInfo();
+        const babyname = info[0].name
+        setBabyName(babyname);
+        const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
+        const today = moment();
+        const days = today.diff(pregnancyDate, 'days');
+        const weeks = Math.floor(days / 7 + 1)
+        setDaysSincePregnancy(weeks);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+
+  }, []);
+
+  // 정보 받아오기 useEffect()
+  // useEffect(() => {
+  //   const fetchInfo = async() => {
+  //     try {
+  //       const infoinfo = await getInfo();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+
+  //   };
+  //   fetchInfo();
+  // }, []);
+    
+
   return (
     <>
       {isLoggedIn ? (
         <>
         <ThemeProvider theme={theme}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-              <Box sx={{ flexDirection: 'column', width: '50%', height: '50%', borderRadius: '50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
+          <Box sx={{ width:'100%' , display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: 6,}}>
+            <Box sx={{ display: 'flex',  alignItems: 'center', flexDirection: 'column' }}>
+              <Box sx={{ flexDirection: 'column', width: '50%', borderRadius: '50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
                 <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
                 <Typography margin="10px" variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                  oo님의 oo이는
+                  {babyName} 는 
                 </Typography>
                 <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                  oo주차에요
+                  {daysSincePregnancy} 주차에요
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', width:"90%"}}>
-                <Card sx={{ width: "50%", margin: "5px 5px 5px 5px" }}>
-                  <CardContent sx={{margin:"5px"}}>
+              <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%"}}>
+                <Card sx={{ width: "90%", margin: "5px 5px 5px 5px",}}>
+                  <CardContent sx={{margin:"5px", }}>
                     <Typography variant="h6" component="div">
-                      이 시기에 
-                    </Typography>
-                    <Typography variant="h6" component="div" style={{textAlign: 'right'}}>
-                      엄마는요!
+                      이 시기에 엄마는요!
                     </Typography>
                     < br/>
                     <Typography variant="body2">
@@ -87,22 +123,19 @@ const Main = ({ onLoginStatusChange }) => {
                       <br />
                       - 정보리스트
                     </Typography>
+                    <br />
                     <Box style={{textAlign: 'right'}}>
-                      <Link to='/infomom'>
+                      <Link to='/infomom/${weeks}'>
                         <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>더 궁금해요!</Button>
                       </Link>
                     </Box>
                   </CardContent>
                 </Card>
-                <Card sx={{ width: "50%", margin: "5px 5px 5px 5px" }}>
-                  <CardContent>
-                  <Typography variant="h6" component="div">
-                      이 시기에 
+                <Card sx={{ width: "90%", margin: "5px 5px 5px 5px" }}>
+                  <CardContent >
+                    <Typography variant="h6" component="div">
+                      이 시기에 아이는요!
                     </Typography>
-                    <Typography variant="h6" component="div" style={{textAlign: 'right'}}>
-                      아기는요!
-                    </Typography>
-                    < br/>
                     <Typography variant="body2">
                       - 어때요
                       <br />
@@ -110,6 +143,7 @@ const Main = ({ onLoginStatusChange }) => {
                       <br />
                       - 정보리스트
                     </Typography>
+                    <br />
                     <Box style={{textAlign: 'right'}}>
                       <Link to='/infobaby'>
                         <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>더 궁금해요!</Button>
