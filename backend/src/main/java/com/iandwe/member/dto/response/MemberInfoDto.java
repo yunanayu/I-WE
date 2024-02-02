@@ -32,7 +32,7 @@ public class MemberInfoDto {
                 .email(member.getEmail())
                 .memberId(member.getMemberId())
                 .name(member.getName())
-                .parentType(member.getParentType().toString())
+                .parentType(member.getParentType() == null ? null :  member.getParentType().name())
                 .profileImage(member.getProfileImage())
                 .build();
     }
