@@ -4,11 +4,18 @@ import com.iandwe.checker.service.generator.CheckerGenerator;
 import com.iandwe.member.domain.Member;
 import com.iandwe.member.domain.ParentType;
 import com.iandwe.member.dto.request.MemberRegisterDto;
+import com.iandwe.member.dto.request.MemberUpdateFcmTokenDto;
+import com.iandwe.member.dto.response.MemberInfoDto;
+import com.iandwe.member.exception.NoMemberExistException;
 import com.iandwe.member.repository.MemberRepository;
+import com.iandwe.security.SecurityUtils;
+import com.iandwe.security.service.JwtUtil;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.Optional;
 
 @Log4j2
@@ -17,8 +24,6 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-
-    private final CheckerGenerator checkerGenerator;
 
 //    private final PasswordEncoder passwordEncoder;
 
@@ -42,14 +47,35 @@ public class MemberServiceImpl implements MemberService {
         // 회원을 저장함
         Member savedMember = memberRepository.save(member);
 
-        if (isMother(savedMember.getParentType())) {
-            checkerGenerator.generateMotherCheckerData(savedMember.getNum());
-        }
-
         return savedMember;
     }
 
-    private static boolean isMother(ParentType type) {
-        return type.equals(ParentType.MOTHER);
+    @Override
+    public void updateFcmToken(MemberUpdateFcmTokenDto memberUpdateFcmTokenDto) {
+        memberUpdateFcmTokenDto.updateEmail(SecurityUtils.getUserEmail());
+
+        // 소셜 로그인일 경우(이메일)
+        if(memberUpdateFcmTokenDto.getEmail() != null) {
+            Optional<Member> result = memberRepository.findByEmail(memberUpdateFcmTokenDto.getEmail());
+
+            if(!result.isPresent()) {
+                throw new NoMemberExistException();
+            }
+
+            result.get().updateFcmToken(memberUpdateFcmTokenDto.getFcmToken());
+            memberRepository.save(result.get());
+        }
+
     }
+
+    @Override
+    public MemberInfoDto findByAccessToken(String accessToken) {
+        String email = JwtUtil.getUid(accessToken);
+
+        Member member = memberRepository.findByEmail(email).orElseThrow(NoMemberExistException::new);
+        MemberInfoDto memberInfoDto = MemberInfoDto.from(member);
+
+        return memberInfoDto;
+    }
+
 }

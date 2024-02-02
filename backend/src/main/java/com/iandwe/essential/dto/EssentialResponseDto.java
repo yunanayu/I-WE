@@ -14,7 +14,9 @@ public class EssentialResponseDto {
 
     private String description;
 
-    private int targetTime;
+    private String startTime;
+
+    private String endTime;
 
     private String target;
 
@@ -25,7 +27,8 @@ public class EssentialResponseDto {
                 .num(essential.getNum())
                 .title(essential.getTitle())
                 .description(essential.getDescription())
-                .targetTime(essential.getTargetTime())
+                .startTime(essential.getStartTime())
+                .endTime(essential.getEndTime())
                 .target(essential.getTarget())
                 .category(essential.getCategory())
                 .build();

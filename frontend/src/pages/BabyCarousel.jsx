@@ -62,7 +62,7 @@ const BabyCarousel = () => {
             <Typography variant="h5" color="#112b23" mb={3}>
               {content.label}
             </Typography>
-            <img src={content.url} width={300} height={210} alt={content.alt} />
+            <img src={content.url} width={300} height={210} alt={content.alt} key={content.label} />
           </Stack>
         ))}
       </Carousel>

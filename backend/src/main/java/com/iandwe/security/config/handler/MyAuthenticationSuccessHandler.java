@@ -58,26 +58,8 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
                 .getAuthority(); // Role을 가져옴
         log.info("Role : " + role);
 
-        // 회원이 존재할경우
-        if (isExist) {
-            // jwt token 발행 시작
-            GeneratedToken token = jwtUtil.generateToken(email, role);
-            log.info("jwtToken = {}", token.getAccessToken());
-
-            // accessToken을 쿼리스트링에 담는 url을 만들어줌
-            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")
-                    .queryParam("accessToken", token.getAccessToken())
-                    .build()
-                    .encode(StandardCharsets.UTF_8)
-                    .toUriString();
-            log.info("move login check page");
-
-            // 로그인 확인 페이지로 리다이렉트 시킴
-            getRedirectStrategy().sendRedirect(request, response, targetUrl);
-        }
-        // 회원이 존재하지 않을경우
-        else {
-            // 임의로 회원가입 처리 => 이 부분 나중에 수정해야!!
+        // 회원이 존재하지 않을 경우, 임시로 회원가입 처리 => 이 부분 나중에 수정해야!!
+        if(!isExist) {
             Member member = Member.builder()
                     .email(email)
 //                    .password(passwordEncoder.encode("1111"))
@@ -88,6 +70,26 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             memberRepository.save(member);
             log.info("temperary register" + member);
 
+            // 로그인 처리
+            // jwt token 발행 시작
+            GeneratedToken token = jwtUtil.generateToken(email, role);
+            log.info("jwtToken = {}", token.getAccessToken());
+
+            // accessToken을 쿼리스트링에 담는 url을 만들어줌
+            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/addInfo")
+                    .queryParam("accessToken", token.getAccessToken())
+                    .queryParam("status", "addInfo")
+                    .build()
+                    .encode(StandardCharsets.UTF_8)
+                    .toUriString();
+            log.info("move login check page");
+
+            // 로그인 확인 페이지로 리다이렉트 시킴
+            getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        }   
+        // 회원 존재
+        else {
+            // 로그인 처리
             // jwt token 발행 시작
             GeneratedToken token = jwtUtil.generateToken(email, role);
             log.info("jwtToken = {}", token.getAccessToken());
@@ -95,11 +97,12 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             // accessToken을 쿼리스트링에 담는 url을 만들어줌
             String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")
                     .queryParam("accessToken", token.getAccessToken())
+                    .queryParam("status", "success")
                     .build()
                     .encode(StandardCharsets.UTF_8)
                     .toUriString();
             log.info("move login check page");
-            
+
             // 로그인 확인 페이지로 리다이렉트 시킴
             getRedirectStrategy().sendRedirect(request, response, targetUrl);
         }

@@ -1,160 +1,111 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import CalendarPage from '../../components/HospitalRecord/CalendarPage';
 import CustomTabPanel from  '../../components/HospitalRecord/CustomTabPanel';
 import Box from '@mui/material/Box';
-// import Tab from '@mui/material/Tab';
-// import TabContext from '@mui/lab/TabContext';
-// import TabList from '@mui/lab/TabList';
-// import TabPanel from '@mui/lab/TabPanel';
-// import PropTypes from 'prop-types';
-// import Tabs from '@mui/material/Tabs';
-// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '@mui/material';
 import '../../FCM/firebase-messaging-sw'
 import axios from 'axios';
+import { getEssential } from '../../api/RecordApi';
 
 // 기록이 있는지 이 페이지에서 확인 후 있으면 prop으로 내려주고 없으면 기록 추가 모달 창
 const initState = [
-    { checkUpDate : '2024-01-05',
-      checkupItem :'1차 정기검진',
+    { target : 'mother',
+      title : '1차 정기검진',
       hospitalName:'싸피 산부인과',
-      doctorName:'김싸피',
-      momWeight:'80',
-      babyName : '이싸피',
-      babyWeight:'0.8',
-      babyHeight:'40',
-      babyDiameter:'15', },
-    { checkUpDate : '2024-01-07',
-      checkupItem :'2차 정기검진',
+      doctor :'김싸피',
+      hospitalDate:'2024-02-05',
+      content: '정기검진',
+      result: '정상',
+      comment : '이상없음',
+    },
+    { target : 'mother',
+      title : '2차 정기검진',
       hospitalName:'싸피 산부인과',
-      doctorName:'김싸피',
-      momWeight:'80',
-      babyName : '이싸피',
-      babyWeight:'0.9',
-      babyHeight:'45',
-      babyDiameter:'16', },
+      doctor :'이싸피',
+      hospitalDate:'2024-02-06',
+      content: '정기검진',
+      result: '정상',
+      comment : '이상없음',
+    },
+    { target : 'mother',
+      title : '3차 정기검진',
+      hospitalName:'싸피 산부인과',
+      doctor :'박싸피',
+      hospitalDate:'2024-02-07',
+      content: '정기검진',
+      result: '정상',
+      comment : '이상없음',
+    },
+    { target : 'baby',
+      title : '1차 정기검진',
+      hospitalName:'싸피 소아과',
+      doctor :'최싸피',
+      hospitalDate:'2024-02-07',
+      content: '정기검진', 
+      result: '정상',
+      comment : '이상없음',
+    },
   ]
+
+export function replaceAWithNumber(inputString) {
+    // 'A'를 제거하고 나머지 문자열에서 숫자만 추출합니다.
+    var numberPart = inputString.replace('A', '').match(/\d+/);
+    // 추출된 숫자가 있으면 해당 숫자를 반환하고, 없으면 null을 반환합니다.
+    return numberPart ? parseInt(numberPart[0]) : null;
+  }
+
+export const recordContext = createContext()
+
+
+
 
 const HospitalRecordMainPage = () => {
   const navigate = useNavigate()
 
   // const [momRecordList, setMomRecordList] = useState([])
 
-  // setMomRecordList([
-  //   { checkUpDate : '2024-01-05',
-  //     checkupItem :'1차 정기검진',
-  //     hospitalName:'싸피 산부인과',
-  //     doctorName:'김싸피',
-  //     momWeight:'80',
-  //     babyName : '이싸피',
-  //     babyWeight:'0.8',
-  //     babyHeight:'40',
-  //     babyDiameter:'15', },
-  //   { checkUpDate : '2024-01-07',
-  //     checkupItem :'2차 정기검진',
-  //     hospitalName:'싸피 산부인과',
-  //     doctorName:'김싸피',
-  //     momWeight:'80',
-  //     babyName : '이싸피',
-  //     babyWeight:'0.9',
-  //     babyHeight:'45',
-  //     babyDiameter:'16', },
-  // ])
   const [dayList,setDayList] = useState([])
-  // console.log(dayList)
+
+  const [selectedDay, setSelectedDay] = useState()
+  // console.log(selectedDay);
+  const [recordList, setRecordList] = useState([])
+  // console.log(recordList);
+
+
 
   useEffect(()=>{
-    // getMomDate()
-    const dates = initState.map((item) => item.checkUpDate)
+    // const data = getMomDate()
+    // setRecordList(data)
+    const dates = initState.map((item) => item.hospitalDate)
     setDayList(dates)
-  },[])
-
-
-
-
-  const [value, setValue] = useState('1')
-
-
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '80%',
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-
-  const goRecord = (target) => {
-    if (target == 'baby') {
-      navigate(`/babyrcd`)
+    
+    
+    if (selectedDay) {
+      const data = initState.filter((item) => item.hospitalDate === selectedDay)
+      setRecordList(data)
     } else {
-      navigate(`/momrcd`)
+      setRecordList(initState);
     }
-  }
+
+  },[selectedDay])
+
+
   return (
-    <Container>
-      <Container sx={{width:'80%',alignContent:'center',justifyContent:'center'}}>
-        <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
-          <CalendarPage dayList={dayList}/>
-        </Box>
-        <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
-          <CustomTabPanel />
-        </Box>
-        {/* <div className='recordbox'>
-          <TabContext value={value}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <TabList onChange={handleChange} aria-label="lab API tabs example">
-                <Tab label="병원기록" value="1" />
-                <Tab label="접종 검사" value="2" />
-              </TabList>
-            </Box>
-            <TabPanel value="1">병원 기록 리스트 출력!</TabPanel>
-            <TabPanel value="2">접종 검사 리스트 출력!</TabPanel>
-          </TabContext>
-        </div> */}
-      </Container>
-
-
-
-      <div>
-        <Button onClick={handleOpen}>Open modal</Button>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          sx={{overflowY:'auto'}}
-        >
-          <Box sx={style}>
-            <Box>
-              {/* <BabyRecordPage /> */}
-
-            </Box>
-            {/* <Button
-            onClick={goRecord('baby')}
-            >아기 
-            </Button>
-            <Button
-            onClick={goRecord('mom')}
-            >엄마
-            </Button> */}
+    <recordContext.Provider value={recordList}>
+      <Container sx={{width:'100%'}}>
+        <Container sx={{width:'80%',alignContent:'center',justifyContent:'center',}}>
+          <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
+            <CalendarPage dayList={dayList} setSelectedDay={setSelectedDay}/>
           </Box>
-        </Modal>
-      </div>
-    </Container>
+          <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
+            <CustomTabPanel selectedDay={selectedDay}/>
+          </Box>
+        </Container>
+      </Container>
+    </recordContext.Provider>
   );
 };
 

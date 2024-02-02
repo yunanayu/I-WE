@@ -20,7 +20,9 @@ public class CheckerResponseDto {
 
     private boolean complete;
 
-    private int targetTime;
+    private String startTime;
+
+    private String endTime;
 
     private String category;
 
@@ -30,7 +32,8 @@ public class CheckerResponseDto {
                 .title(essential.getTitle())
                 .description(essential.getDescription())
                 .complete(isComplete)
-                .targetTime(essential.getTargetTime())
+                .startTime(essential.getStartTime())
+                .endTime(essential.getEndTime())
                 .category(essential.getCategory())
                 .build();
     }

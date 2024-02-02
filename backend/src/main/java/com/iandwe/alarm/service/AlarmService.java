@@ -41,20 +41,23 @@ public class AlarmService {
         Essential essential = essentialRepository.findByNum(babyChecker.getEssentialNum()).orElseThrow(NoEssentialExistException::new);
         Baby baby = babyRepository.findByNum(babyChecker.getBabyNum()).orElseThrow(NoBabyExistException::new);
         Member mother = memberRepository.findByNum(baby.getMotherNum()).orElseThrow(NoMemberExistException::new);
-
-        sendEmail(EmailDto.of(mother, essential));
-        sendFCM(FCMDto.of(mother, essential)); // 필요정보 : token, title, content
+        if (essential.isRange(baby.getTargetTime())) {
+            sendEmail(EmailDto.of(mother, essential));
+            sendFCM(FCMDto.of(mother, essential)); // 필요정보 : token, title, content
+        }
     }
 
     @Transactional
     public void sendMotherAlarm(MotherChecker motherChecker) {
         Essential essential = essentialRepository.findByNum(motherChecker.getEssentialNum()).orElseThrow(NoEssentialExistException::new);
         Member mother = memberRepository.findByNum(motherChecker.getMotherNum()).orElseThrow(NoMemberExistException::new);
+        Baby baby = babyRepository.findByNum(motherChecker.getBabyNum()).orElseThrow(NoBabyExistException::new);
 
-        sendEmail(EmailDto.of(mother, essential));
-        sendFCM(FCMDto.of(mother, essential));
+        if (essential.isRange(baby.getTargetTime())) {
+            sendEmail(EmailDto.of(mother, essential));
+            sendFCM(FCMDto.of(mother, essential)); // 필요정보 : token, title, content
+        }
     }
-
 
     private void sendEmail(EmailDto mailDto) {
         SimpleMailMessage message = new SimpleMailMessage();

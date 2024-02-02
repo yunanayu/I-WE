@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from 'moment'
 import './CalendarStyle.css'
 import { Box, Container, Grid, Typography } from "@mui/material"; 
+import { recordContext } from '../../pages/HospitalRecordPage/HospitalRecordMainPage';
 
 
 const CalendarPage = (props) => {
-  // console.log(props)
+
+  // const dayList = useContext(recordContext)
   const dayList = props.dayList
+  // console.log(dayList);
   const curDate = new Date()
-
+  
   const cutMonth = moment(curDate).format('YYYY')
-
+  
   const [value, onChange] = useState(curDate)
   
+  props.setSelectedDay(moment(value).format('YYYY-MM-DD'))
+
   // 해당하는 데이터 넣으면 됨.
 
   // const activeDate = moment(value).format('YYYY-MM-DD')
@@ -25,11 +30,20 @@ const CalendarPage = (props) => {
   //   setActiveMonth(newActiveMonth)
   // }
 
+  const addContent = ({date}) => {
+    const isToday = dayList.find((d) => d === moment(date).format('YYYY-MM-DD'))
+    return ( isToday ?
+      <>
+        <div className='box'>
+          <div className="dot"></div>
+        </div> 
+      </> : <></>
+      )}
 
   return (
-    <Container sx={{display:'flow', width:'70%',alignContent:'center',justifyContent:'center',border:1,borderRadius:1, borderColor: 'blue',}}>
+    <Container sx={{display:'flow', width:'70%',textAlign:'center',alignContent:'center',justifyContent:'center'}}>
 
-      <Container sx={{border:1, color:'violet'}}>
+      <Container>
         <Calendar 
         onChange={onChange} 
         value={value}
@@ -38,25 +52,13 @@ const CalendarPage = (props) => {
         prev2Label={null}
         formatDay={(locale, date) => moment(date).format('D')}
         showNeighboringMonth={false}  // 앞 뒤 달 이어지는 날짜 보여주는 여부
-        // tileContent={addContent}
-        tileContent = {({date}) => {
-          const isToday = dayList.find((d) => d === moment(date).format('YYYY-MM-DD'))
-          return ( isToday ?
-            <>
-          <div className='box'>
-            <div className="dot"></div>
-          </div>
-            </>
-            : <></>
-          )
-        }}
+        tileContent = {addContent}
         // onActiveStartDateChange={({ activeStartDate }) => 
         //   getActiveMonth(activeStartDate)}
         />
       </Container>
-        {/* 현재 클릭한 날짜 */}
       <Typography>
-        {moment(value).format("YYYY년 MM월 DD일")} 
+        {/* {moment(value).format("YYYY년 MM월 DD일")}  */}
       </Typography>
     </Container>
   );

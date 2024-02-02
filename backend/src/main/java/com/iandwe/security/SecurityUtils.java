@@ -12,7 +12,12 @@ public abstract class SecurityUtils {
         return ((SecurityMemberDto)(SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getEmail();
     }
 
+    public static Long getUserNum() {
+        return ((SecurityMemberDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getNum();
+    }
+
     public static SecurityMemberDto getUser() {
         return (SecurityMemberDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
 }
