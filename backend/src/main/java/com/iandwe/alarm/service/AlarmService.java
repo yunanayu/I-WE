@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -36,7 +37,6 @@ public class AlarmService {
 
     private final FCMSender fcmSender;
 
-    @Transactional
     public void sendBabyAlarm(BabyChecker babyChecker) {
         Essential essential = essentialRepository.findByNum(babyChecker.getEssentialNum()).orElseThrow(NoEssentialExistException::new);
         Baby baby = babyRepository.findByNum(babyChecker.getBabyNum()).orElseThrow(NoBabyExistException::new);
@@ -47,7 +47,6 @@ public class AlarmService {
         }
     }
 
-    @Transactional
     public void sendMotherAlarm(MotherChecker motherChecker) {
         Essential essential = essentialRepository.findByNum(motherChecker.getEssentialNum()).orElseThrow(NoEssentialExistException::new);
         Member mother = memberRepository.findByNum(motherChecker.getMotherNum()).orElseThrow(NoMemberExistException::new);
