@@ -74,11 +74,11 @@ public class Baby {
             if (this.status) {
                 targetTime += "A";
                 diffSec = parseDate(LocalDate.now()) - parseDate(birth);
-                targetTime += ((parseSecToDay(diffSec) / 7) + 1);
+                targetTime += ((parseSecToDay(diffSec) / 28) + 1);
             } else {
                 targetTime += "B";
                 diffSec = parseDate(LocalDate.now()) - parseDate(pregnancyDate);
-                targetTime += ((parseSecToDay(diffSec) / 28) + 1);
+                targetTime += ((parseSecToDay(diffSec) / 7) + 1);
             }
         } catch (ParseException e) {
             log.info("Baby Parse Exception : {}", e.getMessage());
