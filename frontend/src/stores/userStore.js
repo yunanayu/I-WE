@@ -1,14 +1,14 @@
 import { create } from "zustand";
-import {persist} from "zustand/middleware"
+import { persist, createJSONStorage } from "zustand/middleware"
 
 
 const useMemberStore = create(
   persist(
     (set) => ({
-  userNum : 0,
-  userName : '',
+  userNum : 0,  // 엄마 num
+  // userName : '',
   setUserNum : (num) => set({ userNum: num}),
-  setUserName : (name) => set({ userName: name}),
+  // setUserName : (name) => set({ userName: name}),
   babyList : [],
   setBabyList : (babyinfo) => 
     set((prev) => ({
@@ -16,8 +16,8 @@ const useMemberStore = create(
       }))
     }),
     {
-      name: "member-store",
-      getStorage: () => sessionStorage
+      name: "member",
+      storage: createJSONStorage(() => sessionStorage)
     }
   )
 )

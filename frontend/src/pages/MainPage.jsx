@@ -29,9 +29,7 @@ const theme = createTheme({
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [todayDate, setTodayDate] = useState('');
-  const { userNum, babyList } = useMemberStore()
-  // console.log(userNum)
-  // console.log(babyList)
+  const babyList  = useMemberStore(state => state.babyList)
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -87,8 +85,6 @@ const Main = ({ onLoginStatusChange }) => {
     const fetchData = async () => {
       try {
         const info = babyList
-        console.log(info)
-        console.log(babyList);
         const babyname = info[0].name
         setBabyName(babyname);
         const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
@@ -103,7 +99,7 @@ const Main = ({ onLoginStatusChange }) => {
 
     fetchData();
 
-  }, [babyList]);
+  }, []);
 
   // 정보 받아오기 useEffect()
   // useEffect(() => {

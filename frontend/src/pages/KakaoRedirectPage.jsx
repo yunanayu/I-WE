@@ -33,7 +33,10 @@ function KakaoLogin({ setIsLoggedIn }) {
         // console.log(userInfo[0].motherNum)
         // setUserNum(userInfo[0].motherNum)
         // setUserName(userInfo[0].name)
-        userInfo.map((info) => setBabyList(info))
+        userInfo.map((info) => {
+          setBabyList(info)
+          setUserNum(info.motherNum)
+        })
         navigate("/"); // 로그인이 완료되면 '/'로 이동
       } 
       else if (code && status === 'addInfo') {
