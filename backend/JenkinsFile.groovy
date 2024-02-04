@@ -115,7 +115,7 @@ pipeline {
                             docker stop ${runningContainers}
                             docker rm ${runningContainers}
                         '''
-                    }
+                    }  
                 }
             }
             post {
