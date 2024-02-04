@@ -115,7 +115,7 @@ pipeline {
                 echo '##### FE Build Image #####'
                 dir('./frontend') {
                     script {
-                        FRONTEND_DOCKER_IMAGE = docker.build("${FRONTEND_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f DOCKERFILE .")
+                        FRONTEND_DOCKER_IMAGE = docker.build("${FRONTEND_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
                     }
                 }
             }
@@ -125,7 +125,7 @@ pipeline {
                 echo '##### BE Build Image #####'
                 dir('./backend') {
                     script {
-                        BACKEND_DOCKER_IMAGE = docker.build("${BACKEND_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f DOCKERFILE .")
+                        BACKEND_DOCKER_IMAGE = docker.build("${BACKEND_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
                     }
                 }
             }
