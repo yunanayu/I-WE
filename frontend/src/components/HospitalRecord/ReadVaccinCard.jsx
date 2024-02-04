@@ -19,6 +19,7 @@ import PregnantWomanIcon from '@mui/icons-material/PregnantWoman';
 import axios from 'axios';
 
 const ReadVaccinCard = (props) => {
+  // console.log(props)
   const [open, setOpen] = useState(false);
   // 접종여부만 set 해주기
   const [initState, setInitState] = useState(props.vaccine.complete)

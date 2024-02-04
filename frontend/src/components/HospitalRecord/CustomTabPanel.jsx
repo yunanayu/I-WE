@@ -67,7 +67,7 @@ export default function BasicTabs(props) {
     // boxShadow: 24,
     p: 4,
   };
-
+  // 기록 불러오는거임 병원기록임 헷갈리지 말자 병원기록!!
   const initState = React.useContext(recordContext)
   const [records, setRecords] = React.useState(initState)
   const [value, setValue] = React.useState(0);
@@ -83,9 +83,12 @@ export default function BasicTabs(props) {
   const [momCheckList, setMomCheckList] = React.useState([])
   const [babyCheckList, setBabyCheckList] = React.useState([])
   const [vaccineList, setVaccineList] = React.useState([])
-  // setVaccineList([...momCheckList,...babyCheckList])
-  const [selectTarget, setSelectTarget] = React.useState('all')
 
+  // 타겟, 카테고리(검사, 접종)
+  const [selectTarget, setSelectTarget] = React.useState('all')
+  const [selectType, setSelectType] = React.useState('all')
+  console.log(vaccineList);
+  console.log(vaccineList.length);
 
   React.useEffect(()=>{
     function getNumberFromString(str) {
@@ -98,10 +101,10 @@ export default function BasicTabs(props) {
     .then((res)=>{
       console.log(res.data)
       const list= res.data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));
-      setVaccineList(list)
       setMomCheckList(list)
     })
     .catch(err=>console.log(err))
+
     axios({
       method :'get',
       url:`/api/check/baby/34`,
@@ -116,17 +119,56 @@ export default function BasicTabs(props) {
 
   React.useEffect(()=>{
     setRecords(initState)
+    }
+  ,[initState])
+  
+  React.useEffect(() => {
+  }, [vaccineList])
+
+  // React.useEffect(() => {
+  //   console.log('타입 바뀜');
+  //   var newList = []
+  //   if (selectType === 'check') {
+  //     const list = babyCheckList.filter((item) => item.category === selectTarget)
+  //     // setVaccineList(list)
+  //     newList = list
+  //     console.log(newList)
+  //     }
+  //   else if (selectType === 'vaccine') {
+  //     const list = babyCheckList.filter((item) => item.category === "접종")
+  //     // setVaccineList(list)
+  //     newList = list
+  //     console.log(newList)
+  //   }
+  //   setVaccineList(newList)
+  // }, [selectType])
+
+  React.useEffect(() => {
     console.log('렌더링!')
+    let newList = []
     if(selectTarget === 'all') {
-      setVaccineList([...momCheckList,...babyCheckList])
+      newList = [...momCheckList,...babyCheckList]
     } 
     else if(selectTarget === 'mother') {
-      setVaccineList(momCheckList)
+      // setVaccineList(momCheckList)
+      newList = momCheckList
     }
     else {
-      setVaccineList(babyCheckList)
+      // setVaccineList(babyCheckList)
+      newList = babyCheckList
+    } 
+
+    setVaccineList(newList)
+    console.log('타입 바뀜');
+    if (selectType != 'all' && selectTarget != 'all') {
+      console.log(selectTarget);
+      console.log(selectType);
+      const list = vaccineList.filter((item) => item.category == '접종' && item.target == selectTarget)
+      newList = list
     }
-  },[initState, selectTarget,vaccineList])
+    setVaccineList(newList)
+  },[selectTarget,selectType])
+
 
 
   const targetChange = (target) => {
@@ -209,11 +251,20 @@ export default function BasicTabs(props) {
           <Option value="mother" onClick={() => setSelectTarget('mother') }>엄마</Option>
           <Option value="baby" onClick={() => setSelectTarget('baby') }>아기</Option>
         </Select>
-        {vaccineList.map((vaccine, index) => {
+        <Select defaultValue="all" variant="plain">
+          <Option value="all" onClick={() => setSelectType('all')}>접종 / 검진</Option>
+          <Option value="검사" onClick={() => setSelectType('검사')}>검진</Option>
+          <Option value="접종" onClick={() => setSelectType('접종')}>접종</Option>
+        </Select>
+        {
+        vaccineList.length != 0? 
+        vaccineList.map((vaccine, index) => {
             return(
               <ReadVaccinCard key={index} index={index} vaccine={vaccine} target={selectTarget}/>
             )
-          })}
+          }) : 
+          <Typography>없음</Typography>
+          }
         </CustomTabPanel>
 
       </Box>
