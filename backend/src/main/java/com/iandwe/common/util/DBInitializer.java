@@ -35,7 +35,7 @@ public class DBInitializer implements ApplicationRunner {
     }
 
     private void saveEssentials() throws IOException {
-        List<String[]> datas = csvDataLoader.loadData("src/main/resources/db/essentialInitData.csv");
+        List<String[]> datas = csvDataLoader.loadData("db/essentialInitData.csv");
         List<Essential> essentials = new ArrayList<>();
 
         for(String[] data : datas) {
@@ -54,7 +54,7 @@ public class DBInitializer implements ApplicationRunner {
     }
 
     private void saveGrowthHeights() throws IOException {
-        List<String[]> datas = csvDataLoader.loadData("src/main/resources/db/growthHeightInitData.csv");
+        List<String[]> datas = csvDataLoader.loadData("db/growthHeightInitData.csv");
         List<GrowthHeight> heights = new ArrayList<>();
 
         for(String[] data : datas) {
@@ -82,7 +82,7 @@ public class DBInitializer implements ApplicationRunner {
     }
 
     private void saveGrowthWeights() throws IOException {
-        List<String[]> datas = csvDataLoader.loadData("src/main/resources/db/growthWeightInitData.csv");
+        List<String[]> datas = csvDataLoader.loadData("db/growthWeightInitData.csv");
         List<GrowthWeight> weights = new ArrayList<>();
 
         for(String[] data : datas) {
