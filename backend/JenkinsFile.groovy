@@ -40,7 +40,7 @@ pipeline {
                 }
             }
         }
-        stage('Docker Clean Image') {
+        stage('Docker Clean Prev Image') {
             steps {
                 script {
                     def existingImages = sh(script: "docker images -q ${DOCKER_IMAGE_NAME}", returnStdout: true).trim()
@@ -71,7 +71,7 @@ pipeline {
                 }
             }
         }
-        stage('Docker Clean Image') {
+        stage('Docker Clean Cur Image') {
             steps {
                 script {
                     def existingImages = sh(script: "docker images -q ${DOCKER_IMAGE_NAME}", returnStdout: true).trim()
