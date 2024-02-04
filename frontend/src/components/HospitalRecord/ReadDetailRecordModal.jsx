@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import RecordPage from './../../pages/RecordPage';
 
 const ReadDetailRecordModal = (props) => {
   // console.log(props.record)

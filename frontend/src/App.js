@@ -11,7 +11,6 @@ import MainPage from "./pages/MainPage";
 import InfoMain from "./pages/InfoPage/InfoMainPage";
 import InfoMom from "./pages/InfoPage/InfoMomPage";
 import InfoBaby from "./pages/InfoPage/InfoBabyPage";
-import InfoDad from "./pages/InfoPage/InfoDadPage";
 import InfoForBaby from "./pages/InfoPage/InfoForBabyPage";
 import TipPage from "./pages/TipPage";
 
