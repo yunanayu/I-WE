@@ -10,6 +10,13 @@ pipeline {
         REGISTRY_CREDENTIAL = 'dockerhub-IdPwd'
         DOCKER_IMAGE = ''
         DOCKER_IMAGE_TAG = 'latest'
+
+        FRONTEND_IMAGE_NAME = 'jihyeon99/iandwe-frontend'
+        FRONTEND_DOCKERFILE_PATH = './frontend/Dockerfile'
+        FRONTEND_CONTAINER_NAME = 'iandwe-frontend'
+        FRONTEND_REGISTRY_CREDENTIAL = 'dockerhub-IdPwd'
+        FRONTEND_DOCKER_IMAGE = ''
+        FRONTEND_DOCKER_IMAGE_TAG = 'latest'
     }
     stages {
         stage('GitLab Clone') {
@@ -17,9 +24,25 @@ pipeline {
                 git branch : 'develop', credentialsId: 'SSAFYC108', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C108.git'
             }
         }
-        stage('Gradle Build') {
+        stage('FE-Install') {
             steps {
-                echo 'Building..'
+                echo '##### FE Install #####'
+                dir('./frontend') {
+                    sh 'npm i'
+                }
+            }
+        }
+        stage('FE-Build'){
+            steps{
+                echo '##### FE BUILD #####'
+                dir('./frontend'){
+                    sh 'npm run build'
+                }
+            }
+        }
+        stage('BE-Build') {
+            steps {
+                echo '##### BE Build #####'
                 dir('./backend') {
                     sh 'chmod +x gradlew'
                     sh './gradlew clean bootjar'
