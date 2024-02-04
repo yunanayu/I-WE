@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         gradle 'gradle_8.5'
-        nodejs 'NodeJS_20.10.0'
+        nodejs 'nodejs-20.10.0'
     }
     environment {
         DOCKER_IMAGE_NAME = 'jihyeon99/iandwe-backend'
