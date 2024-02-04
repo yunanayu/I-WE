@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 
 
 import moment from 'moment';
+import useMemberStore from '../stores/userStore';
 
 
 
@@ -28,6 +29,9 @@ const theme = createTheme({
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [todayDate, setTodayDate] = useState('');
+  const { userNum, userName } = useMemberStore()
+  console.log(userNum)
+  console.log(userName)
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
