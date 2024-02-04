@@ -23,12 +23,17 @@ BabyCreateRequestDto {
 
     private LocalDate birth;
 
+    private boolean status;
+
+    private int gender;
+
     public Baby toEntity() {
         return Baby.builder()
                 .motherNum(motherNum)
                 .name(name)
                 .pregnancyDate(pregnancyDate)
                 .birth(birth)
+                .gender(gender)
                 .status(!(birth == null || String.valueOf(birth).isEmpty()))
                 .build();
     }

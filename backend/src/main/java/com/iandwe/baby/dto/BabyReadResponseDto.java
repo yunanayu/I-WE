@@ -23,7 +23,7 @@ public class BabyReadResponseDto {
 
     private String name;
 
-    private String gender;
+    private int gender;
 
     private LocalDate pregnancyDate;
 
