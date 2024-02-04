@@ -15,7 +15,7 @@ public class BabyUpdateRequestDto {
 
     private String name;
 
-    private String gender;
+    private Integer gender;
 
     private LocalDate pregnancyDate;
 
