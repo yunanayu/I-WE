@@ -29,7 +29,7 @@ pipeline {
         stage('Delete Previous Docker Container') {
             steps {
                 script {
-                    def runningContainers = sh(script: 'docker ps -q --filter "name=${CONTAINER_NAME}"', returnStdout: true).trim()
+                    def runningContainers = sh(script: 'docker ps -a -q --filter "name=${CONTAINER_NAME}"', returnStdout: true).trim()
                     echo "Running Containers: ${runningContainers}"
                     if (runningContainers) {
                         sh """
