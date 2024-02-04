@@ -42,6 +42,47 @@ pipeline {
                 }                
             }
         }
+        stage('Delete Previous Docker Container') {
+            steps {
+                script {
+                    def runningContainers = sh(script: 'docker ps -q --filter "name=${CONTAINER_NAME}"', returnStdout: true).trim()
+                    if (runningContainers) {
+                        sh """
+                            ehco 'Contatiner already exist'
+                            docker stop ${runningContainers}
+                            docker rm ${runningContainers}
+                        """
+                    }
+                }
+            }
+            post {
+                failure {
+                    echo 'Delete Previous Docker Container failure !'
+                }
+                success {
+                    echo 'Delete Previous Docker Container success !'
+                }
+            }
+        }
+        stage('Docker Clean Image') {
+            steps {
+                def existingImages = sh(script: "docker images -q ${DOCKER_IMAGE_NAME}", returnStdout: true).trim()
+                if (existingImages) {
+                    echo "Cleaning existing Docker image: ${existingImages}"
+                    sh "docker rmi ${existingImages}"
+                } else {
+                    echo "No existing Docker image found with name: ${DOCKER_IMAGE_NAME}"
+                }
+            }
+            post {
+                failure {
+                    echo 'Docker Clean Image failure !'
+                }
+                success {
+                    echo 'Docker Clean Image success !'
+                }
+            }
+        }
         stage('Docker Build Image') {
             steps {
                 dir('./backend') {
@@ -78,8 +119,12 @@ pipeline {
         }
         stage('Docker Clean Image') {
             steps {
-                dir('./backend') {
-                    sh 'docker rmi ${DOCKER_IMAGE_NAME}'
+                def existingImages = sh(script: "docker images -q ${DOCKER_IMAGE_NAME}", returnStdout: true).trim()
+                if (existingImages) {
+                    echo "Cleaning existing Docker image: ${existingImages}"
+                    sh "docker rmi ${existingImages}"
+                } else {
+                    echo "No existing Docker image found with name: ${DOCKER_IMAGE_NAME}"
                 }
             }
             post {
@@ -103,28 +148,6 @@ pipeline {
                 }
                 success {
                     echo 'Pull from DockerHub success !'
-                }
-            }
-        }
-        stage('Delete Previous Docker Container') {
-            steps {
-                script {
-                    def runningContainers = sh(script: 'docker ps -q --filter "name=${CONTAINER_NAME}"', returnStdout: true).trim()
-                    if (runningContainers) {
-                        sh """
-                            ehco 'Contatiner already exist'
-                            docker stop ${runningContainers}
-                            docker rm ${runningContainers}
-                        """
-                    }
-                }
-            }
-            post {
-                failure {
-                    echo 'Delete Previous Docker Container failure !'
-                }
-                success {
-                    echo 'Delete Previous Docker Container success !'
                 }
             }
         }
