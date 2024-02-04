@@ -79,7 +79,7 @@ pipeline {
         stage('Docker Clean Image') {
             steps {
                 dir('./backend') {
-                    sh 'docker rmi $DOCKER_IMAGE_NAME'
+                    sh 'docker rmi ${DOCKER_IMAGE_NAME}'
                 }
             }
             post {
@@ -91,24 +91,6 @@ pipeline {
                 }
             }
         }
-//        stage('Delete Previous Docker Container') {
-//            steps {
-//                script {
-//                    sh '''
-//                        docker stop ${CONTAINER_NAME}
-//                        docker rm ${CONTAINER_NAME}
-//                    '''
-//                }
-//            }
-//            post {
-//                failure {
-//                    echo 'Delete Previous Docker Container failure !'
-//                }
-//                success {
-//                    echo 'Delete Previous Docker Container success !'
-//                }
-//            }
-//        }
         stage('Pull from DockerHub') {
             steps {
                 script {
@@ -121,6 +103,27 @@ pipeline {
                 }
                 success {
                     echo 'Pull from DockerHub success !'
+                }
+            }
+        }
+        stage('Delete Previous Docker Container') {
+            steps {
+                script {
+                    def runningContainers = sh(script: 'docker ps -q --filter "name=${CONTAINER_NAME}"', returnStdout: true).trim()
+                    if (runningContainers) {
+                        sh '''
+                            docker stop ${runningContainers}
+                            docker rm ${runningContainers}
+                        '''
+                    }
+                }
+            }
+            post {
+                failure {
+                    echo 'Delete Previous Docker Container failure !'
+                }
+                success {
+                    echo 'Delete Previous Docker Container success !'
                 }
             }
         }
@@ -137,16 +140,6 @@ pipeline {
                 success {
                     echo 'Run Docker Container success !'
                 }
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
             }
         }
     }
