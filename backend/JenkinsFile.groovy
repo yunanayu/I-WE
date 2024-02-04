@@ -32,7 +32,7 @@ pipeline {
                     def runningContainers = sh(script: 'docker ps -q --filter "name=${CONTAINER_NAME}"', returnStdout: true).trim()
                     if (runningContainers) {
                         sh """
-                            ehco 'Contatiner already exist'
+                            echo 'Contatiner already exist'
                             docker stop ${runningContainers}
                             docker rm ${runningContainers}
                         """
