@@ -16,14 +16,6 @@ pipeline {
             steps {
                 git branch : 'develop', credentialsId: 'SSAFYC108', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C108.git'
             }
-            post {
-                failure {
-                  echo 'GitLab Clone failure !'
-                }
-                success {
-                  echo 'GitLab Clone success !'
-                }
-            }
         }
         stage('Gradle Build') {
             steps {
@@ -32,14 +24,6 @@ pipeline {
                     sh 'chmod +x gradlew'
                     sh './gradlew clean bootjar'
                 }
-            }
-            post {
-                failure {
-                    echo 'Gradle Build failure !'
-                }
-                success {
-                    echo 'Gradle Build success !'
-                }                
             }
         }
         stage('Delete Previous Docker Container') {
@@ -55,31 +39,17 @@ pipeline {
                     }
                 }
             }
-            post {
-                failure {
-                    echo 'Delete Previous Docker Container failure !'
-                }
-                success {
-                    echo 'Delete Previous Docker Container success !'
-                }
-            }
         }
         stage('Docker Clean Image') {
             steps {
-                def existingImages = sh(script: "docker images -q ${DOCKER_IMAGE_NAME}", returnStdout: true).trim()
-                if (existingImages) {
-                    echo "Cleaning existing Docker image: ${existingImages}"
-                    sh "docker rmi ${existingImages}"
-                } else {
-                    echo "No existing Docker image found with name: ${DOCKER_IMAGE_NAME}"
-                }
-            }
-            post {
-                failure {
-                    echo 'Docker Clean Image failure !'
-                }
-                success {
-                    echo 'Docker Clean Image success !'
+                script {
+                    def existingImages = sh(script: "docker images -q ${DOCKER_IMAGE_NAME}", returnStdout: true).trim()
+                    if (existingImages) {
+                        echo "Cleaning existing Docker image: ${existingImages}"
+                        sh "docker rmi ${existingImages}"
+                    } else {
+                        echo "No existing Docker image found with name: ${DOCKER_IMAGE_NAME}"
+                    }
                 }
             }
         }
@@ -91,14 +61,6 @@ pipeline {
                     }
                 }
             }
-            post {
-                failure {
-                    echo 'Docker Build failure !'
-                }
-                success {
-                    echo 'Docker Build success !'
-                }
-            }
         }
         stage('Push Image to DockerHub') {
             steps {
@@ -108,31 +70,17 @@ pipeline {
                     }
                 }
             }
-            post {
-                failure {
-                    echo 'Push Image to Docker Hub failure !'
-                }
-                success {
-                    echo 'Push Image to Docker Hub success !'
-                }
-            }
         }
         stage('Docker Clean Image') {
             steps {
-                def existingImages = sh(script: "docker images -q ${DOCKER_IMAGE_NAME}", returnStdout: true).trim()
-                if (existingImages) {
-                    echo "Cleaning existing Docker image: ${existingImages}"
-                    sh "docker rmi ${existingImages}"
-                } else {
-                    echo "No existing Docker image found with name: ${DOCKER_IMAGE_NAME}"
-                }
-            }
-            post {
-                failure {
-                    echo 'Docker Clean Image failure !'
-                }
-                success {
-                    echo 'Docker Clean Image success !'
+                script {
+                    def existingImages = sh(script: "docker images -q ${DOCKER_IMAGE_NAME}", returnStdout: true).trim()
+                    if (existingImages) {
+                        echo "Cleaning existing Docker image: ${existingImages}"
+                        sh "docker rmi ${existingImages}"
+                    } else {
+                        echo "No existing Docker image found with name: ${DOCKER_IMAGE_NAME}"
+                    }
                 }
             }
         }
@@ -142,27 +90,11 @@ pipeline {
                     sh 'docker pull ${DOCKER_IMAGE_NAME}'
                 }
             }
-            post {
-                failure {
-                    echo 'Pull from DockerHub failure !'
-                }
-                success {
-                    echo 'Pull from DockerHub success !'
-                }
-            }
         }
         stage('Run Docker Container') {
             steps {
                 script {
                     sh 'docker run -d --name ${CONTAINER_NAME} -p 8081:8080 ${DOCKER_IMAGE_NAME}'
-                }
-            }
-            post {
-                failure {
-                    echo 'Run Docker Container failure !'
-                }
-                success {
-                    echo 'Run Docker Container success !'
                 }
             }
         }
