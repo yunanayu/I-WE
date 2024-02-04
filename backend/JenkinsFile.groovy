@@ -6,12 +6,10 @@ pipeline {
     }
     environment {
         BACKEND_IMAGE_NAME = 'jihyeon99/iandwe-backend'
-        BACKEND_DOCKERFILE_PATH = './backend/Dockerfile'
         BACKEND_CONTAINER_NAME = 'iandwe-backend'
         BACKEND_DOCKER_IMAGE = ''
 
         FRONTEND_IMAGE_NAME = 'jihyeon99/iandwe-frontend'
-        FRONTEND_DOCKERFILE_PATH = './frontend/Dockerfile'
         FRONTEND_CONTAINER_NAME = 'iandwe-frontend'
         FRONTEND_DOCKER_IMAGE = ''
 
@@ -117,7 +115,7 @@ pipeline {
                 echo '##### FE Build Image #####'
                 dir('./frontend') {
                     script {
-                        FRONTEND_DOCKER_IMAGE = docker.build("${FRONTEND_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f ${FRONTEND_DOCKERFILE_PATH} .")
+                        FRONTEND_DOCKER_IMAGE = docker.build("${FRONTEND_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f DOCKERFILE .")
                     }
                 }
             }
@@ -127,7 +125,7 @@ pipeline {
                 echo '##### BE Build Image #####'
                 dir('./backend') {
                     script {
-                        BACKEND_DOCKER_IMAGE = docker.build("${BACKEND_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f ${BACKEND_DOCKERFILE_PATH} .")
+                        BACKEND_DOCKER_IMAGE = docker.build("${BACKEND_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f DOCKERFILE .")
                     }
                 }
             }
