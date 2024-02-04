@@ -53,7 +53,7 @@
     "workbox-streams": "^6.6.0"
   },
   "scripts": {
-    "start": "react-scripts start --host 0.0.0.0",
+    "start": "react-scripts start --disableHostCheck",
     "build": "CI=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
