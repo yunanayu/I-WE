@@ -33,7 +33,7 @@ public class Baby {
 
     private String name;
 
-    private String gender;
+    private int gender;
 
     private LocalDate pregnancyDate;
 
@@ -74,14 +74,16 @@ public class Baby {
             if (this.status) {
                 targetTime += "A";
                 diffSec = parseDate(LocalDate.now()) - parseDate(birth);
+                targetTime += ((parseSecToDay(diffSec) / 7) + 1);
             } else {
                 targetTime += "B";
                 diffSec = parseDate(LocalDate.now()) - parseDate(pregnancyDate);
+                targetTime += ((parseSecToDay(diffSec) / 28) + 1);
             }
-        } catch (ParseException e){
+        } catch (ParseException e) {
             log.info("Baby Parse Exception : {}", e.getMessage());
         }
-        return targetTime + (parseSecToDay(diffSec)/7 + 1);
+        return targetTime;
     }
 
     private long parseDate(LocalDate date) throws ParseException {
