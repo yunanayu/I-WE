@@ -26,8 +26,10 @@ function KakaoLogin({ setIsLoggedIn }) {
         document.cookie = `token=${code}`;
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정      
         navigate("/"); // 로그인이 완료되면 '/'로 이동
-      } else if (code && status === 'addInfo') {
-        // 홈으로 가기 전에 새로운 페이지로 이동 한 후 완료되면 '/'으로 이동
+      } 
+      else if (code && status === 'addInfo') {
+
+
         console.log("토큰:", code);
         document.cookie = `token=${code}`;
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정
