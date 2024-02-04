@@ -3,7 +3,9 @@ package com.iandwe.common.util;
 import com.iandwe.essential.domain.Essential;
 import com.iandwe.essential.repository.EssentialRepository;
 import com.iandwe.record.domain.GrowthHeight;
+import com.iandwe.record.domain.GrowthWeight;
 import com.iandwe.record.repository.GrowthHeightRepository;
+import com.iandwe.record.repository.GrowthWeightRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -23,10 +25,13 @@ public class DBInitializer implements ApplicationRunner {
 
     private final GrowthHeightRepository growthHeightRepository;
 
+    private final GrowthWeightRepository growthWeightRepository;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         saveEssentials();
         saveGrowthHeights();
+        saveGrowthWeights();
     }
 
     private void saveEssentials() throws IOException {
@@ -34,7 +39,6 @@ public class DBInitializer implements ApplicationRunner {
         List<Essential> essentials = new ArrayList<>();
 
         for(String[] data : datas) {
-            System.out.println(data[5]);
             Essential essential = Essential.builder()
                     .title(data[0])
                     .description(data[1])
@@ -54,7 +58,6 @@ public class DBInitializer implements ApplicationRunner {
         List<GrowthHeight> heights = new ArrayList<>();
 
         for(String[] data : datas) {
-            System.out.println(data[5]);
             GrowthHeight growthHeight = GrowthHeight.builder()
                     .gender(Integer.parseInt(data[0]))
                     .month(Integer.parseInt(data[1]))
@@ -76,5 +79,33 @@ public class DBInitializer implements ApplicationRunner {
         }
 
         growthHeightRepository.saveAll(heights);
+    }
+
+    private void saveGrowthWeights() throws IOException {
+        List<String[]> datas = csvDataLoader.loadData("src/main/resources/db/growthWeightInitData.csv");
+        List<GrowthWeight> weights = new ArrayList<>();
+
+        for(String[] data : datas) {
+            GrowthWeight growthWeight = GrowthWeight.builder()
+                    .gender(Integer.parseInt(data[0]))
+                    .month(Integer.parseInt(data[1]))
+                    .p1(Float.parseFloat(data[2]))
+                    .p3(Float.parseFloat(data[3]))
+                    .p5(Float.parseFloat(data[4]))
+                    .p10(Float.parseFloat(data[5]))
+                    .p15(Float.parseFloat(data[6]))
+                    .p25(Float.parseFloat(data[7]))
+                    .p50(Float.parseFloat(data[8]))
+                    .p75(Float.parseFloat(data[9]))
+                    .p85(Float.parseFloat(data[10]))
+                    .p90(Float.parseFloat(data[11]))
+                    .p95(Float.parseFloat(data[12]))
+                    .p97(Float.parseFloat(data[13]))
+                    .p99(Float.parseFloat(data[14]))
+                    .build();
+            weights.add(growthWeight);
+        }
+
+        growthWeightRepository.saveAll(weights);
     }
 }
