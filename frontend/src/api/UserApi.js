@@ -43,8 +43,8 @@ export const getUserInfo = async () => {
       url: '/api/member'
     });
     const userNum = response.data.num;
+    console.log(response.data)
     //store에 저장 (회원정보)
-    // console.log(userNum)
     const babyResponse = await axios({
       method: 'get',
       url: `/api/baby/${userNum}`
@@ -52,7 +52,6 @@ export const getUserInfo = async () => {
     
 
     const babyInfo = babyResponse.data;
-    // console.log(babyInfo[0])
     // console.log(babyInfo) // List(Array)로 받아질것임!! {num: 2, motherNum: 3, fatherNum: null, name: 'babe', gender: null, …}
     // store에 저장 (아이정보)
     return babyInfo.length > 0 ? babyInfo : null;
