@@ -17,6 +17,7 @@ const ReadDetailRecordModal = (props) => {
   const checkupDate = moment(record.hospitalDate).format('YYYY년 MM월 DD일')
 
   useEffect(()=>{
+    
 
   }, [record])
   const navigate = useNavigate()
