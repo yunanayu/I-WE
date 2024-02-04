@@ -12,6 +12,7 @@ import InfoDad from "./pages/InfoPage/InfoDadPage";
 import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMainPage";
 import AddBabyRecordPage from "./pages/HospitalRecordPage/AddBabyRecordPage";
 import AddMomRecordPage from "./pages/HospitalRecordPage/AddMomRecordPage";
+import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecord";
 // import './FCM/firebase-messaging-sw'
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />
         <Route path="/babyhospitalrecord" element={<AddBabyRecordPage />} />
         <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
+        <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
       </Routes>
     </div>
   );

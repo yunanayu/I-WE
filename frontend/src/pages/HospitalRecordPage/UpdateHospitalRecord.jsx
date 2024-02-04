@@ -40,25 +40,27 @@ const babyList = [
   {name:'최사피'},
 ]
 
-const AddMomRecordPage = () => {
+const UpdateHospitalRecord = (props) => {
 
   const navigate = useNavigate()
 
   const location = useLocation()
-  const selectedDay = location.state.selectedDay
+  const record = location.state.record
+  console.log(record);
 
   const [value, setValue] = React.useState('mother');
 
   const today = dayjs(moment(new Date()).format('YYYY-MM-DD'))  // 추후에 선택한 날짜로 변경하기
   const [state, setState] = useState({
-    selectDay : selectedDay,
-    title : '',
-    checkupItem :'',
-    hospitalName:'',
-    doctorName:'',
-    checkupResult: '',
-    doctorOpinion: '',
-    target : '',
+    // selectDay : selectedDay,
+    targetNum : record.targetNum,
+    title :record.title,
+    checkupItem :record.content,
+    hospitalName:record.hospitalName,
+    doctorName:record.doctor,
+    checkupResult:record.result,
+    doctorOpinion: record.comment,
+    target : record.target,
     // ------------------
     // momWeight:'',
     // babyName : '',
@@ -69,12 +71,12 @@ const AddMomRecordPage = () => {
 
     const submit = () => {
       axios({
-        method:'post',
-        url : `api/hospital/create`,
+        method:'put',
+        url : `/api/hospital/update`,
         data:{
           target : state.target,  // baby or mother
           // targetNum 수정하기
-          targetNum : 1,  // pk
+          targetNum : state.targetNum,  // pk
           title : state.title,   // 간단 정보
           hospitalName : state.hospitalName,  //
           doctor : state.doctorName,
@@ -121,7 +123,7 @@ const AddMomRecordPage = () => {
           <DemoContainer components={['DatePicker']}>
             <DatePicker
               label="검진 날짜 선택"
-              value={today}
+              value={moment(record.hospitalDate)}
               onChange={(newValue) => {
                 console.log(newValue)
                 setState({...state, selectDay : moment(newValue.$d).format('YYYY-MM-DD')})
@@ -167,13 +169,16 @@ const AddMomRecordPage = () => {
           />
         </Box>
         <Box>
-          <Typography variant='h5'>검진사진</Typography>
+          <Typography 
+          variant='h5'
+          >검진사진</Typography>
           <FileUpload />
         </Box>
         <Box>
           <Typography variant='h5'>검진결과</Typography>
           <TextField
           id="outlined-textarea"
+          value={state.result}
           // label="검진결과"
           name='checkupResult'
           placeholder="검진결과"
@@ -197,6 +202,7 @@ const AddMomRecordPage = () => {
           label="의사소견"
           name='doctorOpinion'
           placeholder="의사소견"
+          value={record.comment == '' ? '' : record.comment}
           multiline
           onChange={handleChange}
           sx={{width:'100%'}}
@@ -204,11 +210,11 @@ const AddMomRecordPage = () => {
       </Box>
       <Box sx={{display:'flex', justifyContent:'right'}}>
         <Button  variant="outlined" sx={{borderColor:'#FBBBB8', color:'#FBBBB8'}} onClick={submit}>
-          등록하기
+          수정하기
         </Button>
       </Box>
     </Container>
 
   );
 };
-export default AddMomRecordPage;
+export default UpdateHospitalRecord;

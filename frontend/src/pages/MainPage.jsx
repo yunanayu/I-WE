@@ -10,7 +10,9 @@ import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
 import mainprofile from '../images/mainprofile.png';
+import { getUserInfo } from '../api/UserApi';
 
+import moment from 'moment';
 const theme = createTheme({
   typography: {
     fontFamily: 'Nanum Gothic, sans-serif',
@@ -40,6 +42,30 @@ const Main = ({ onLoginStatusChange }) => {
   }
 
   console.log(isLoggedIn)
+ // 회원정보를 통한 아이정보 받아오기
+  const [babyName, setBabyName] = useState([]);
+  const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
+
+  useEffect(() => {
+    getUserInfo()
+    // const fetchData = async () => {
+    //   try {
+    //     const info = await getUserInfo();
+    //     const babyname = info[0].name
+    //     setBabyName(babyname);
+    //     const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
+    //     const today = moment();
+    //     const days = today.diff(pregnancyDate, 'days');
+    //     const weeks = Math.floor(days / 7 + 1)
+    //     setDaysSincePregnancy(weeks);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+
+    // fetchData();
+
+  }, []);
 
   useEffect(() => {
     if (document.cookie) {

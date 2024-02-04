@@ -16,20 +16,32 @@ import moment from 'moment';
 import Stack from '@mui/material/Stack';
 import ChildCareIcon from '@mui/icons-material/ChildCare';
 import PregnantWomanIcon from '@mui/icons-material/PregnantWoman';
+import axios from 'axios';
 
 const ReadVaccinCard = (props) => {
   const [open, setOpen] = useState(false);
-  const [initState, setInitState] = useState(props.vaccine)
+  // 접종여부만 set 해주기
+  const [initState, setInitState] = useState(props.vaccine.complete)
   const updateComplete = () => {
-    setInitState({...initState, complete : !initState.complete})
+    setInitState(!initState)
+    axios({
+      method:'put',
+      url:`/api/check/complete`,
+      data:{
+        targetNum:1,
+        essentialNum:initState.essentialNum,
+        target:'mother',
+        isComplete:initState
+      }
+    }).then(res=>console.log(res))
+    .catch(err=>console.log(err))
   }
-
   const pregnantDate = new Date()
   const start = new Date(pregnantDate)
   const end = new Date(pregnantDate)
   const date  = {
-    startDate : start.setMonth(pregnantDate.getMonth() + replaceAWithNumber(initState.startTime)),
-    endDate : end.setMonth(pregnantDate.getMonth() + replaceAWithNumber(initState.endTime)),
+    startDate : start.setMonth(pregnantDate.getMonth() + replaceAWithNumber(props.vaccine.startTime)),
+    endDate : end.setMonth(pregnantDate.getMonth() + replaceAWithNumber(props.vaccine.endTime)),
   } 
   const vaccineDate = {
     startDate : moment(date.startDate).format('YYYY년MM월DD일'),
@@ -58,13 +70,13 @@ const ReadVaccinCard = (props) => {
           <Box sx={{display:'flex'}}>
             { initState.target === 'baby' ? <ChildCareIcon fontSize='large'/> : <PregnantWomanIcon fontSize='large'/>}
             <Typography variant="h6" component="div" sx={{pl:2}}>
-              {initState.title}
+              {props.vaccine.title}
             </Typography>
           </Box>
 
         </Box>
         <Box>
-          {initState.complete? 
+          {initState? 
             <IconButton onClick={updateComplete}>
               <CheckCircleOutlineTwoToneIcon />
             </IconButton>
@@ -85,7 +97,7 @@ const ReadVaccinCard = (props) => {
         >
           <Box sx={style}>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {initState.description}
+              {props.vaccine.description}
             </Typography>
           </Box>
         </Modal>
