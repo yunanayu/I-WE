@@ -13,7 +13,7 @@ import { Typography } from "@mui/material";
 // 엄마 주차별 몸무게 막대 그래프
 function WeeklyWeightChart(props) {
   // num, motherNum, weight, recordDate
-  const momRecord = props.recordData;
+  const [momRecord, setMomRecord] = useState([]);
   // const babyRecord = props.babyRecord;
 
   const [selectedInterval, setSelectedInterval] = useState(1);
@@ -27,7 +27,13 @@ function WeeklyWeightChart(props) {
   }, [selectedInterval]);
 
   useEffect(() => {
-    if (momRecord) {
+    if (props.recordData) {
+      setMomRecord(props.recordData);
+    }
+  }, [props.recordData]);
+
+  useEffect(() => {
+    if (props.recordData) {
       const weightArr = momRecord.map((obj) => {
         return {
           weight: obj.weight,
@@ -38,7 +44,7 @@ function WeeklyWeightChart(props) {
       const newData = generateData(selectedInterval);
       setChartData(newData);
     }
-  }, [momRecord]);
+  }, [momRecord, selectedInterval]);
 
   const handleToggleInterval = (event, newInterval) => {
     if (newInterval !== null) {
@@ -52,20 +58,20 @@ function WeeklyWeightChart(props) {
       if (interval === 1) {
         let length = momWeight.length;
         console.log(length);
-        if(length < 6){
-          let tmp = momWeight.slice(0-length);
+        if (length < 6) {
+          let tmp = momWeight.slice(0 - length);
           return tmp;
         }
         let tmp = momWeight.slice(-6);
         return tmp.map((obj) => {
-          return {...obj, date: obj.date.substr(5)}
+          return { ...obj, date: obj.date.substr(5) };
         });
       } else if (interval === 2) {
         let tmp = [];
         let j = 1;
 
         for (let i = 0; i < 6; i++) {
-          if(momWeight.length < j) {
+          if (momWeight.length < j) {
             return tmp;
           }
           let startDate = new Date(momWeight.at(0 - j).date);
@@ -73,8 +79,8 @@ function WeeklyWeightChart(props) {
           let sum = momWeight.at(0 - j).weight;
           let cnt = 1;
           j++;
-          if(momWeight.length < j) {
-            tmp.unshift({weight: sum, date: startDate});
+          if (momWeight.length < j) {
+            tmp.unshift({ weight: sum, date: startDate });
             return tmp;
           }
           let endDate;
@@ -88,20 +94,40 @@ function WeeklyWeightChart(props) {
             j++;
           }
           var arrDayStr = ["일", "월", "화", "수", "목", "금", "토"];
-          let dateString =
-            endDate.getMonth() + 1 +
-            "월 " +
-            endDate.getDate() +
-            "일 (" +
-            arrDayStr[endDate.getDay()] +
-            ")" +
-            " ~ " +
-            (startDate.getMonth() + 1) +
-            "월 " +
-            startDate.getDate() +
-            "일 (" +
-            arrDayStr[startDate.getDay()] +
-            ")";
+          let dateString;
+          if (endDate) {
+            dateString =
+              endDate.getMonth() +
+              1 +
+              "월 " +
+              endDate.getDate() +
+              "일 (" +
+              arrDayStr[endDate.getDay()] +
+              ")" +
+              " ~ " +
+              (startDate.getMonth() + 1) +
+              "월 " +
+              startDate.getDate() +
+              "일 (" +
+              arrDayStr[startDate.getDay()] +
+              ")";
+          } else {
+            dateString =
+              startDate.getMonth() +
+              1 +
+              "월 " +
+              startDate.getDate() +
+              "일 (" +
+              startDate[endDate.getDay()] +
+              ")" +
+              " ~ " +
+              (startDate.getMonth() + 1) +
+              "월 " +
+              startDate.getDate() +
+              "일 (" +
+              arrDayStr[startDate.getDay()] +
+              ")";
+          }
           console.log("몸무게 : " + (sum / cnt).toFixed(1));
           tmp.unshift({
             weight: (sum / cnt).toFixed(1),
@@ -112,29 +138,29 @@ function WeeklyWeightChart(props) {
       } else if (interval === 3) {
         let tmp = [];
         let j = 1;
-        for(let i=0; i<6; i++){
-          if(momWeight.length < j) {
+        for (let i = 0; i < 6; i++) {
+          if (momWeight.length < j) {
             break;
           }
-          let startDate = new Date(momWeight.at(0-j).date);
+          let startDate = new Date(momWeight.at(0 - j).date);
           let wol = startDate.getMonth();
-          let sum = momWeight.at(0-j).weight;
+          let sum = momWeight.at(0 - j).weight;
           let endDate;
           let cnt = 1;
           j++;
-          while(momWeight.length >= j) {
-            endDate = new Date(momWeight.at(0-j).date);
+          while (momWeight.length >= j) {
+            endDate = new Date(momWeight.at(0 - j).date);
             let nextWol = endDate.getMonth();
-            if(wol !== nextWol) break;
-            sum += momWeight.at(0-j).weight;
+            if (wol !== nextWol) break;
+            sum += momWeight.at(0 - j).weight;
             cnt++;
             j++;
           }
           console.log((sum / cnt).toFixed(1));
           tmp.unshift({
             weight: (sum / cnt).toFixed(1),
-            date : (wol+1) + '월'
-          })
+            date: wol + 1 + "월",
+          });
         }
         return tmp;
       }
@@ -177,11 +203,11 @@ function WeeklyWeightChart(props) {
                 id: "x-axis-id",
                 tickLabelStyle: {
                   angle: 45,
-                  dominantBaseline: 'hanging',
-                  textAnchor: 'start',
+                  dominantBaseline: "hanging",
+                  textAnchor: "start",
                 },
                 labelStyle: {
-                  transform: 'translateY(15px)',
+                  transform: "translateY(15px)",
                 },
               },
             ]}
@@ -193,7 +219,7 @@ function WeeklyWeightChart(props) {
           >
             <LinePlot />
             <MarkPlot />
-            <ChartsXAxis label="" position="bottom" axisId="x-axis-id"/>
+            <ChartsXAxis label="" position="bottom" axisId="x-axis-id" />
             <ChartsYAxis label="kg" position="left" axisId="y-axis-id" />
           </ResponsiveChartContainer>
         )}
@@ -204,25 +230,96 @@ function WeeklyWeightChart(props) {
 
 // 엄마 변화율 선 그래프 + 평균 변화율 막대 그래프
 function ChangeChart(props) {
-  
   const momRecord = props.recordData;
   const momBasis = props.basisData;
   const babyData = props.babyData;
 
   // [주차][비만도 => 저체중, 평균, 과제충, 비만]
   const recommendWeightStart = [
-    [0, 0, 0, 0], [0.04, 0.04, 0.04, 0.04], [0.08, 0.08, 0.08, 0.08], [0.1, 0.1, 0.1, 0.1], [0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2], [0.2, 0.2, 0.2, 0.2], [0.3, 0.3, 0.3, 0.3], [0.3, 0.3, 0.3, 0.3],
-    [0.4, 0.4, 0.4, 0.4], [0.4, 0.4, 0.4, 0.4], [0.5, 0.5, 0.5, 0.5], [0.5, 0.5, 0.5, 0.5], [1.0, 0.9, 0.7, 0.7], [1.4, 1.3, 1.0, 0.8], [1.9, 1.7, 1.2, 1.0], [2.3, 2.1, 1.4, 1.2], [2.8, 2.5, 1.7, 1.3],
-    [3.2, 2.9, 1.9, 1.5], [3.7, 3.3, 2.1, 1.7], [4.1, 3.7, 2.4, 1.8], [4.6, 4.1, 2.6, 2.0], [5.0, 4.5, 2.8, 2.2], [5.5, 4.9, 3.1, 2.3], [5.9, 5.3, 3.3, 2.5], [6.4, 5.7, 3.5, 2.7], [6.8, 6.1, 3.8, 2.8], 
-    [7.3, 6.5, 4.0, 3.0], [7.7, 6.9, 4.2, 3.2], [8.2, 7.3, 4.5, 3.3], [8.6, 7.7, 4.7, 3.5], [9.1, 8.1, 4.9, 3.7], [9.5, 8.5, 5.2, 3.8], [10.0, 8.9, 5.4, 4.0], [10.4, 9.3, 5.6, 4.2], [10.9, 9.7, 5.9, 4.3], [11.3, 10.1, 6.1, 4.5], [11.8, 10.5, 6.3, 4.7], [12.2, 10.9, 6.6, 4.8], [12.7, 11.3, 6.8, 5.0]
-  ]
+    [0, 0, 0, 0],
+    [0.04, 0.04, 0.04, 0.04],
+    [0.08, 0.08, 0.08, 0.08],
+    [0.1, 0.1, 0.1, 0.1],
+    [0.2, 0.2, 0.2, 0.2],
+    [0.2, 0.2, 0.2, 0.2],
+    [0.2, 0.2, 0.2, 0.2],
+    [0.3, 0.3, 0.3, 0.3],
+    [0.3, 0.3, 0.3, 0.3],
+    [0.4, 0.4, 0.4, 0.4],
+    [0.4, 0.4, 0.4, 0.4],
+    [0.5, 0.5, 0.5, 0.5],
+    [0.5, 0.5, 0.5, 0.5],
+    [1.0, 0.9, 0.7, 0.7],
+    [1.4, 1.3, 1.0, 0.8],
+    [1.9, 1.7, 1.2, 1.0],
+    [2.3, 2.1, 1.4, 1.2],
+    [2.8, 2.5, 1.7, 1.3],
+    [3.2, 2.9, 1.9, 1.5],
+    [3.7, 3.3, 2.1, 1.7],
+    [4.1, 3.7, 2.4, 1.8],
+    [4.6, 4.1, 2.6, 2.0],
+    [5.0, 4.5, 2.8, 2.2],
+    [5.5, 4.9, 3.1, 2.3],
+    [5.9, 5.3, 3.3, 2.5],
+    [6.4, 5.7, 3.5, 2.7],
+    [6.8, 6.1, 3.8, 2.8],
+    [7.3, 6.5, 4.0, 3.0],
+    [7.7, 6.9, 4.2, 3.2],
+    [8.2, 7.3, 4.5, 3.3],
+    [8.6, 7.7, 4.7, 3.5],
+    [9.1, 8.1, 4.9, 3.7],
+    [9.5, 8.5, 5.2, 3.8],
+    [10.0, 8.9, 5.4, 4.0],
+    [10.4, 9.3, 5.6, 4.2],
+    [10.9, 9.7, 5.9, 4.3],
+    [11.3, 10.1, 6.1, 4.5],
+    [11.8, 10.5, 6.3, 4.7],
+    [12.2, 10.9, 6.6, 4.8],
+    [12.7, 11.3, 6.8, 5.0],
+  ];
 
   const recommendWeightEnd = [
-    [0, 0, 0, 0], [0.2, 0.2, 0.2, 0.2], [0.3, 0.3, 0.3, 0.3], [0.5, 0.5, 0.5, 0.5], [0.7, 0.7, 0.7, 0.7], [0.8, 0.8, 0.8, 0.8], [1.0, 1.0, 1.0, 1.0], [1.2, 1.2, 1.2, 1.2], [1.3, 1.3, 1.3, 1.3],
-    [1.5, 1.5, 1.5, 1.5], [1.7, 1.7, 1.7, 1.7], [1.8, 1.8, 1.8, 1.8], [2.0, 2.0, 2.0, 2.0], [2.6, 2.5, 2.3, 2.3], [3.2, 3.0, 2.3, 2.3], [3.8, 3.5, 3.0, 2.8], [4.4, 4.1, 3.4, 3.0], [5.0, 4.6, 3.7, 3.3],
-    [5.6, 5.1, 4.1, 3.6], [6.2, 5.6, 4.4, 3.8], [6.8, 6.1, 4.8, 4.1], [7.4, 6.6, 5.1, 4.4], [8.0, 7.1, 5.5, 4.6], [8.6, 7.7, 5.8, 4.9], [9.2, 8.2, 6.1, 5.1], [9.8, 8.7, 6.5, 5.4], [10.4, 9.2, 6.8, 5.7],
-    [11.0, 9.7, 7.2, 5.9], [11.6, 10.2, 7.5, 6.2], [12.2, 10.7, 7.9, 6.5], [12.8, 11.2, 8.2, 6.7], [13.4, 11.8, 8.6, 7.0], [14.0, 12.3, 8.9, 7.2], [14.6, 12.8, 9.3, 7.5], [15.2, 13.3, 9.6, 7.8], [15.8, 13.8, 10.0, 8.0], [16.3, 14.3, 10.3, 8.3], [16.9, 14.8, 10.6, 8.5], [17.5, 15.4, 11.0, 8.8], [18.1, 15.9, 11.3, 9.1]
-  ]
+    [0, 0, 0, 0],
+    [0.2, 0.2, 0.2, 0.2],
+    [0.3, 0.3, 0.3, 0.3],
+    [0.5, 0.5, 0.5, 0.5],
+    [0.7, 0.7, 0.7, 0.7],
+    [0.8, 0.8, 0.8, 0.8],
+    [1.0, 1.0, 1.0, 1.0],
+    [1.2, 1.2, 1.2, 1.2],
+    [1.3, 1.3, 1.3, 1.3],
+    [1.5, 1.5, 1.5, 1.5],
+    [1.7, 1.7, 1.7, 1.7],
+    [1.8, 1.8, 1.8, 1.8],
+    [2.0, 2.0, 2.0, 2.0],
+    [2.6, 2.5, 2.3, 2.3],
+    [3.2, 3.0, 2.3, 2.3],
+    [3.8, 3.5, 3.0, 2.8],
+    [4.4, 4.1, 3.4, 3.0],
+    [5.0, 4.6, 3.7, 3.3],
+    [5.6, 5.1, 4.1, 3.6],
+    [6.2, 5.6, 4.4, 3.8],
+    [6.8, 6.1, 4.8, 4.1],
+    [7.4, 6.6, 5.1, 4.4],
+    [8.0, 7.1, 5.5, 4.6],
+    [8.6, 7.7, 5.8, 4.9],
+    [9.2, 8.2, 6.1, 5.1],
+    [9.8, 8.7, 6.5, 5.4],
+    [10.4, 9.2, 6.8, 5.7],
+    [11.0, 9.7, 7.2, 5.9],
+    [11.6, 10.2, 7.5, 6.2],
+    [12.2, 10.7, 7.9, 6.5],
+    [12.8, 11.2, 8.2, 6.7],
+    [13.4, 11.8, 8.6, 7.0],
+    [14.0, 12.3, 8.9, 7.2],
+    [14.6, 12.8, 9.3, 7.5],
+    [15.2, 13.3, 9.6, 7.8],
+    [15.8, 13.8, 10.0, 8.0],
+    [16.3, 14.3, 10.3, 8.3],
+    [16.9, 14.8, 10.6, 8.5],
+    [17.5, 15.4, 11.0, 8.8],
+    [18.1, 15.9, 11.3, 9.1],
+  ];
 
   const [momWeight, setMomWeight] = useState();
   const [basis, setBasis] = useState();
@@ -230,7 +327,7 @@ function ChangeChart(props) {
   const [week, setWeek] = useState();
 
   useEffect(() => {
-    if(momRecord && momBasis && babyData){
+    if (momRecord && momBasis && babyData) {
       const weightArr = momRecord.map((obj) => {
         return {
           weight: obj.weight,
@@ -239,9 +336,9 @@ function ChangeChart(props) {
       });
       setMomWeight(weightArr);
       setBasis(momBasis);
-      setWeek((babyData[0].targetTime).substr(1));
+      setWeek(babyData[0].targetTime.substr(1));
       const bmi = (momBasis.basisWeight / (momBasis.height * momBasis.height)).toFixed(1);
-      if(bmi < 18.5){
+      if (bmi < 18.5) {
         setBmi(0);
       } else if (bmi < 25) {
         setBmi(1);
@@ -255,53 +352,51 @@ function ChangeChart(props) {
     }
     // console.log("BABY DATA !!!!!!!!!!!!" + JSON.stringify(babyData));
     // console.log("WEEK" + week);
-  }, [momRecord, momBasis])
+  }, [momRecord, momBasis]);
 
   const generateData = () => {
     console.log("momWeight : ???? " + JSON.stringify(momWeight));
     if (momWeight) {
-        let tmp = [];
-        let j = 1;
+      let tmp = [];
+      let j = 1;
 
-        for (let i = 0; i < 6; i++) {
-          if(momWeight.length < j) {
-            return tmp;
+      for (let i = 0; i < 6; i++) {
+        if (momWeight.length < j) {
+          return tmp;
+        }
+        let startDate = new Date(momWeight.at(0 - j).date);
+        let yoil = startDate.getDay();
+        let sum = momWeight.at(0 - j).weight;
+        let cnt = 1;
+        j++;
+        if (momWeight.length < j) {
+          tmp.unshift({ weight: sum, date: startDate });
+          return tmp;
+        }
+        let endDate;
+        while (momWeight.length >= j && yoil > 0) {
+          endDate = new Date(momWeight.at(0 - j).date);
+          yoil = endDate.getDay();
+          if (Math.floor(startDate - endDate) / (1000 * 60 * 60 * 24) < 7) {
+            sum += momWeight.at(0 - j).weight;
+            cnt++;
           }
-          let startDate = new Date(momWeight.at(0 - j).date);
-          let yoil = startDate.getDay();
-          let sum = momWeight.at(0 - j).weight;
-          let cnt = 1;
           j++;
-          if(momWeight.length < j) {
-            tmp.unshift({weight: sum, date: startDate});
-            return tmp;
-          }
-          let endDate;
-          while (momWeight.length >= j && yoil > 0) {
-            endDate = new Date(momWeight.at(0 - j).date);
-            yoil = endDate.getDay();
-            if (Math.floor(startDate - endDate) / (1000 * 60 * 60 * 24) < 7) {
-              sum += momWeight.at(0 - j).weight;
-              cnt++;
-            }
-            j++;
-          }
-          console.log("몸무게 : " + (sum / cnt).toFixed(1));
-          tmp.unshift({
-            weight: (sum / cnt).toFixed(1),
-            date: startDate,
-          });
+        }
+        console.log("몸무게 : " + (sum / cnt).toFixed(1));
+        tmp.unshift({
+          weight: (sum / cnt).toFixed(1),
+          date: startDate,
+        });
         return tmp;
-      } 
+      }
     }
   };
 
   const setChartData = (data) => {
-    if(data) {
-
+    if (data) {
     }
-  }
-
+  };
 
   return (
     <Box sx={{ width: "90%" }}>

@@ -33,7 +33,8 @@ function App() {
   return (
     // <Provider store={store}> {/* Provider로 store를 전달 */}
       <div className="App">
-        {parentLoggedIn ? <ResponsiveAppBar /> : <></>}
+        {/* {parentLoggedIn ? <ResponsiveAppBar /> : <></>} */}
+        <ResponsiveAppBar></ResponsiveAppBar>
         <Routes>
           <Route
             exact

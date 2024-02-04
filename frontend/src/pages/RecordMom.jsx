@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import {
-  ChangeChart,
-  WeeklyWeightChart,
-} from "../components/chart/WeightChart";
+import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart";
 import { MomForm } from "./WeightForm";
 import { Typography } from "@mui/material";
 import axios from "axios";
+import { initialize } from "workbox-google-analytics";
 
 // 주차별 몸무게
 const weightWeekly = [];
@@ -77,59 +75,56 @@ function RecordMom() {
         })
         .catch((error) => {
           console.log("GET MOM RECORD ERROR\n" + error);
-        })
+        });
     };
     const initBasis = async () => {
-      await axios.get("/api/motherBasis/1")
-      .then((response) => {
-        let basis = response.data;
-        setMomBasis(basis);
-      })
-      .catch((error) => {
-        console.log("GET MOM BASIS ERROR\n" + error);
-      })
-    }
-    const initBabyData = async() => {
-      await axios.get("/api/baby/1")
-      .then((response) => {
+      await axios
+        .get("/api/motherBasis/1")
+        .then((response) => {
+          let basis = response.data;
+          setMomBasis(basis);
+        })
+        .catch((error) => {
+          console.log("GET MOM BASIS ERROR\n" + error);
+        });
+    };
+    const initBabyData = async () => {
+      await axios.get("/api/baby/1").then((response) => {
         let bData = response.data;
         setBabyData(bData);
-      })
-    }
+      });
+    };
     initData();
     initBasis();
     initBabyData();
   }, []);
 
+  const onUpdateRecent = (data) => {
+    setRecentRecord(data);
+    setMomRecord((prevMomRecord) => {
+      const updatedMomRecord = prevMomRecord.slice(0, -1);
+      updatedMomRecord.push(data);
+      return updatedMomRecord;
+    });
+    console.log("새로운 기록" + JSON.stringify(momRecord));
+  };
+
   console.log("엄마기록??? " + JSON.stringify(momRecord));
-  
 
   return (
     <>
       <Container maxWidth="lg" sx={{ ...setCenter, background: "pink" }}>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           {<Info />}
         </Box>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3, padding: 2 }}
-        >
-          <MomForm data={recentRecord}/>
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, padding: 2 }}>
+          <MomForm data={recentRecord} recentUpdate={onUpdateRecent} />
         </Box>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
-          <WeeklyWeightChart recordData={momRecord}/>
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+          <WeeklyWeightChart recordData={momRecord} />
         </Box>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
-          <ChangeChart recordData={momRecord} basisData={momBasis} babyData={babyData}/>
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+          <ChangeChart recordData={momRecord} basisData={momBasis} babyData={babyData} />
         </Box>
       </Container>
     </>
