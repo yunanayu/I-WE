@@ -27,12 +27,6 @@ public class BabyController {
         return new ResponseEntity<>(babyService.findAllByUserNum(userNum), HttpStatus.OK);
     }
 
-    @PutMapping("/share")
-    public ResponseEntity<?> share(@RequestBody BabyShareRequestDto requestDto) {
-        babyService.share(requestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @PutMapping("/update")
     public ResponseEntity<BabyReadResponseDto> update(@RequestBody BabyUpdateRequestDto requestDto) {
         return new ResponseEntity<>(babyService.update(requestDto), HttpStatus.OK);

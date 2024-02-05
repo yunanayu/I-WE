@@ -20,7 +20,7 @@ public class AlarmJobScheduler {
 
     private final JobLauncher jobLauncher;
 
-//    @Scheduled(cron = "10 * * * * ?") // TEST 시 10초 주기로 스케줄링
+//    @Scheduled(cron = "30 * * * * ?") // TEST 시 10초 주기로 스케줄링
     @Scheduled(cron = "0 0 0 */3 * ?")
     public void runAlarmJob() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         JobParameters jobParameters = new JobParametersBuilder()

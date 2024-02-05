@@ -18,12 +18,15 @@ public class BabyCreateResponseDto {
 
     private LocalDate birth;
 
+    private int gender;
+
     public static BabyCreateResponseDto from(Baby baby) {
         return BabyCreateResponseDto.builder()
                 .motherNum(baby.getMotherNum())
                 .name(baby.getName())
                 .pregnancyDate(baby.getPregnancyDate())
                 .birth(baby.getBirth())
+                .gender(baby.getGender())
                 .build();
     }
 

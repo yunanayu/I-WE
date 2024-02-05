@@ -26,6 +26,8 @@ public class CheckerResponseDto {
 
     private String category;
 
+    private String target;
+
     public static CheckerResponseDto of(Essential essential, boolean isComplete){
         return CheckerResponseDto.builder()
                 .essentialNum(essential.getNum())
@@ -35,6 +37,7 @@ public class CheckerResponseDto {
                 .startTime(essential.getStartTime())
                 .endTime(essential.getEndTime())
                 .category(essential.getCategory())
+                .target(essential.getTarget())
                 .build();
     }
 }

@@ -61,11 +61,11 @@ public class CheckerService {
         if (requestDto.getTarget().equals("baby")) {
             BabyChecker babyChecker = babyCheckerRepository.findByBabyNumAndEssentialNum(requestDto.getTargetNum(), requestDto.getEssentialNum())
                     .orElseThrow(NoCheckerExistException::new);
-            babyChecker.updateComplete(requestDto.isComplete());
+            babyChecker.updateComplete(requestDto.getIsComplete());
         } else if (requestDto.getTarget().equals("mother")) {
             MotherChecker motherChecker = motherCheckerRepository.findByMotherNumAndEssentialNum(requestDto.getTargetNum(), requestDto.getEssentialNum())
                     .orElseThrow(NoCheckerExistException::new);
-            motherChecker.updateComplete(requestDto.isComplete());
+            motherChecker.updateComplete(requestDto.getIsComplete());
         }
     }
 

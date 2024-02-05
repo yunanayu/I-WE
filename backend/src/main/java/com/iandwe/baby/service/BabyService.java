@@ -10,8 +10,6 @@ public interface BabyService {
 
     List<BabyReadResponseDto> findAllByUserNum(long userNum);
 
-    void share(BabyShareRequestDto dto);
-
     BabyReadResponseDto update(BabyUpdateRequestDto dto);
 
 }

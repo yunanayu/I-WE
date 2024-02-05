@@ -1,0 +1,198 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import Button from '@mui/material/Button';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs from "dayjs";
+import 'dayjs/locale/ko'
+import { getUserInfo } from '../api/UserApi';
+import useMemberStore from '../stores/userStore';
+
+function AddChild({ setSpouseStatus }) {
+  const navigate = useNavigate();
+  const [childName, setChildName] = useState("");
+  const [pregnancyDate, setPregnancyDate] = useState("");
+  const [childGender, setChildGender] = useState("");
+  const [pregnancyStatus, setPregnancyStatus] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const setBabyList = useMemberStore(state => state.setBabyList)
+  const setUserNum = useMemberStore(state => state.setUserNum)
+
+  const handleChildNameChange = (event) => {
+    setChildName(event.target.value);
+  };
+
+  const handlePregnancyDateChange = (date) => {
+    const formattedDate = dayjs(date.$d).format("YYYY-MM-DD");
+    console.log(formattedDate)
+    setPregnancyDate(formattedDate);
+  };
+
+  const handleBirthDateChange = (date) => {
+    const formattedDate = dayjs(date.$d).format("YYYY-MM-DD");
+    setBirthDate(formattedDate);
+  };
+
+  const handleChildGenderChange = (event) => {
+    setChildGender(event.target.value);
+  };
+
+  const handlePregnancyStatusChange = (event) => {
+    setPregnancyStatus(event.target.value);
+  };
+  
+  const handleAddChild = async () => {
+    const cookieString = document.cookie;
+    const cookies = cookieString.split('; ');
+
+    var code;
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === 'token') {
+        code = cookieValue;
+      }
+    }
+
+    var userNum;
+
+    // 사용자 정보 요청해서 Authorization에 넣기
+    try {
+      const response = await axios.get('/api/member',
+        {
+          headers: {
+            'Authorization' : code
+          }
+        }
+      );
+      userNum = response.data.num;
+    } catch(e) {
+      console.log("회원정보 받아오기 실패")
+    }
+    console.log(userNum);
+
+    const requestBaby = {
+      motherNum: userNum, // 해당 유저의 num
+      name: childName,
+      gender: childGender === "MALE" ? 1 : childGender === "FEMALE" ? 2 : 0, // 남자=1 여자=2 모름=0
+      birth: new Date(birthDate), // 아이의 생일
+      pregnancyDate: new Date(pregnancyDate), // 임신 날짜
+      status: pregnancyStatus === "pregnancy" ? true : false, // 임신 상태인지 여부를 true 또는 false로 설정
+    };
+    console.log(requestBaby);
+
+    // 아기정보 post
+    try {
+      const response = await axios.post(`/api/baby`, requestBaby, // requestBaby 정보 전달
+      {
+          headers: {
+            'Authorization' : code
+          }
+        }
+      );
+      console.log(response.data);
+      const babyInfo =response.data
+      setBabyList(babyInfo)
+      setUserNum(babyInfo.motherNum)
+      //
+      
+    } 
+    catch(e) {
+      console.log("아기정보 등록 실패")
+    }
+    console.log("아기정보 등록 성공")
+    navigate("/");
+  };
+
+  return (
+    <div>
+      <div>
+        <FormControl>
+          <FormLabel>현재 나의 상태</FormLabel>
+          <RadioGroup
+            name="pregnancy-status"
+            value={pregnancyStatus}
+            onChange={handlePregnancyStatusChange}
+          >
+            <FormControlLabel value="pregnancy" control={<Radio />} label="임신" />
+            <FormControlLabel value="nonpragnancy" control={<Radio />} label="출산" />
+          </RadioGroup>
+        </FormControl>
+      </div>
+
+      {pregnancyStatus === "pregnancy" ? (
+        <>
+          <TextField
+            label="아이의 이름"
+            value={childName}
+            onChange={handleChildNameChange}
+          />
+          <FormControl>
+            <FormLabel>성별</FormLabel>
+            <RadioGroup
+              name="child-gender"
+              value={childGender}
+              onChange={handleChildGenderChange}
+            >
+              <FormControlLabel value="NONE" control={<Radio />} label="모름" />
+              <FormControlLabel value="MALE" control={<Radio />} label="남자" />
+              <FormControlLabel value="FEMALE" control={<Radio />} label="여자" />
+            </RadioGroup>
+          </FormControl>
+          <div>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+              <DemoContainer components={['DatePicker']}>
+                <DesktopDatePicker  
+                  label="임신 추측일" 
+                  value={pregnancyDate}
+                  onChange={handlePregnancyDateChange}/>
+              </DemoContainer>
+            </LocalizationProvider>
+          </div>
+          
+        </>
+      ) : pregnancyStatus === "nonpragnancy" ? (
+        <>
+          <FormControl>
+            <FormLabel>성별</FormLabel>
+            <RadioGroup
+              name="child-gender"
+              value={childGender}
+              onChange={handleChildGenderChange}
+            >
+              <FormControlLabel value="남자" control={<Radio />} label="남자" />
+              <FormControlLabel value="여자" control={<Radio />} label="여자" />
+            </RadioGroup>
+          </FormControl>
+          <TextField
+            label="아이의 이름"
+            value={childName}
+            onChange={handleChildNameChange}
+          />
+          <div>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+              <DemoContainer components={['DesktopDatePicker ']}>
+                <DesktopDatePicker  
+                  label="출산일" 
+                  value={birthDate}
+                  onChange={handleBirthDateChange}/>
+              </DemoContainer>
+            </LocalizationProvider>
+          </div>
+        </>
+      ) : null}
+
+      <Button variant="contained" onClick={handleAddChild}>아이 추가</Button>
+    </div>
+  );
+}
+
+export default AddChild;
