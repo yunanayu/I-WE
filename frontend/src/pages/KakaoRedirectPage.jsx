@@ -6,7 +6,7 @@ import { requestPermission } from "../FCM/firebase-messaging-sw";
 import { getUserInfo } from "../api/UserApi";
 
 function KakaoLogin({ setIsLoggedIn }) {
-  const BackURL = `http://i10c108.p.ssafy.io:8080/oauth2/authorization/kakao`;
+  const BackURL = `http://i10c108.p.ssafy.io:8081/oauth2/authorization/kakao`;
   const navigate = useNavigate();
 
   const handleLogin = () => {
