@@ -85,7 +85,6 @@ const Main = ({ onLoginStatusChange }) => {
     const fetchData = async () => {
       try {
         const info = babyList
-        console.log(babyList)
         const babyname = info[0].name
         setBabyName(babyname);
         const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');

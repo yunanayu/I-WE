@@ -30,7 +30,6 @@ function KakaoLogin({ setIsLoggedIn }) {
 
         const userInfo = await getUserInfo()
         userInfo.map((info) => {
-          console.log(info)
           setBabyList(info)
           setUserNum(info.motherNum)
         })
