@@ -26,7 +26,7 @@ import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecor
 // const store = createStore(rootReducer);
 
 
-function App() {
+
 
 
 function App() {
