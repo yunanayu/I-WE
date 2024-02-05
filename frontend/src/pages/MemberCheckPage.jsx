@@ -20,6 +20,9 @@ function MemberCheckPage({ setSpouseStatus }) {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("accessToken");
     var userNum;
+    if(code) {
+      document.cookie = `token=${code}`;
+    }
 
     // 사용자 정보 요청해서 Authorization에 넣기
     try {

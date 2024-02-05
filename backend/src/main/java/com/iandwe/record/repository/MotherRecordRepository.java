@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface MotherRecordRepository extends JpaRepository<MotherRecord, Long> {
 
-    List<MotherRecord> findAllByMotherNum(long num);
+    List<MotherRecord> findAllByMotherNum(long motherNum);
 
     Optional<MotherRecord> findByNum(long num);
 }

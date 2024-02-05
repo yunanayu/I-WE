@@ -10,7 +10,7 @@ public interface HospitalService {
 
     Boolean create(HospitalCreateRequestDto dto);
 
-    List<HospitalReadResponseDto> findAllByTargetNum(long num);
+    List<HospitalReadResponseDto> findAllByTargetAndTargetNum(String target, long targetNum);
 
     Boolean update(HospitalUpdateRequestDto dto);
 }

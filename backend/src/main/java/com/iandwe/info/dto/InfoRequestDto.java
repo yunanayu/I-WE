@@ -14,15 +14,7 @@ public class InfoRequestDto {
 
     private String target;
 
-    private String targetTime;
-
     private String category;
 
-    public Info toEntity() {
-        return Info.builder()
-                .target(target)
-                .targetTime(targetTime)
-                .category(category)
-                .build();
-    }
+    private String targetTime;
 }

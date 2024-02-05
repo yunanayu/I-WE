@@ -27,8 +27,8 @@ public class MotherRecordServiceImpl implements MotherRecordService {
     }
 
     @Override
-    public List<MotherRecordReadReponseDto> findAllByMotherNum(long num) {
-        List<MotherRecord> motherRecords = motherRecordRepository.findAllByMotherNum(num);
+    public List<MotherRecordReadReponseDto> findAllByMotherNum(long motherNum) {
+        List<MotherRecord> motherRecords = motherRecordRepository.findAllByMotherNum(motherNum);
         if (motherRecords == null || motherRecords.isEmpty()) {
             throw new NoRecordExistException();
         }

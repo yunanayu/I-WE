@@ -23,14 +23,12 @@ public class MotherRecordReadReponseDto {
     // 몸무게
     private float weight;
 
-    //키
-    private float height;
-
     // 기록날짜
     private LocalDate recordDate;
 
     public static MotherRecordReadReponseDto from(MotherRecord motherRecord) {
         return MotherRecordReadReponseDto.builder()
+                .num(motherRecord.getNum())
                 .motherNum(motherRecord.getMotherNum())
                 .weight(motherRecord.getWeight())
                 .recordDate(motherRecord.getRecordDate())

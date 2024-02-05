@@ -24,9 +24,9 @@ public class MotherRecordController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/{num}")
-    public ResponseEntity<List<MotherRecordReadReponseDto>> findAllByMotherNum(@PathVariable long num) {
-        return new ResponseEntity<>(motherRecordService.findAllByMotherNum(num), HttpStatus.OK);
+    @GetMapping("/{motherNum}")
+    public ResponseEntity<List<MotherRecordReadReponseDto>> findAllByMotherNum(@PathVariable long motherNum) {
+        return new ResponseEntity<>(motherRecordService.findAllByMotherNum(motherNum), HttpStatus.OK);
     }
 
     @PutMapping("/update")
@@ -34,6 +34,4 @@ public class MotherRecordController {
         motherRecordService.update(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }

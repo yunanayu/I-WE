@@ -63,21 +63,45 @@ function Info() {
 function RecordMom() {
   const [todayRecord, setTodayRecord] = useState(null);
   const [momRecord, setMomRecord] = useState(null);
+  const [momBasis, setMomBasis] = useState(null);
+  const [babyData, setBabyData] = useState(null);
 
   useEffect(() => {
-    const init = async () => {
+    const initData = async () => {
       await axios
         .get("/api/motherRecord/1")
         .then((response) => {
-          console.log(response);
-          setMomRecord(response);
+          let data = response.data;
+          setMomRecord(data);
         })
         .catch((error) => {
           console.log("GET MOM RECORD ERROR\n" + error);
-        });
+        })
     };
-    init();
+    const initBasis = async () => {
+      await axios.get("/api/motherBasis/1")
+      .then((response) => {
+        let basis = response.data;
+        setMomBasis(basis);
+      })
+      .catch((error) => {
+        console.log("GET MOM BASIS ERROR\n" + error);
+      })
+    }
+    const initBabyData = async() => {
+      await axios.get("/api/baby/1")
+      .then((response) => {
+        let bData = response.data;
+        setBabyData(bData);
+      })
+    }
+    initData();
+    initBasis();
+    initBabyData();
   }, []);
+
+  console.log("엄마기록??? " + JSON.stringify(momRecord));
+  
 
   return (
     <>
@@ -98,13 +122,13 @@ function RecordMom() {
           maxWidth="md"
           sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
         >
-          <WeeklyWeightChart />
+          <WeeklyWeightChart recordData={momRecord}/>
         </Box>
         <Box
           maxWidth="md"
           sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
         >
-          <ChangeChart />
+          <ChangeChart recordData={momRecord} basisData={momBasis} babyData={babyData}/>
         </Box>
       </Container>
     </>

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
-
+  
     @PatchMapping
     public ResponseEntity<?> updateFcmToken(@RequestBody MemberUpdateFcmTokenDto memberUpdateFcmTokenDto) {
         memberService.updateFcmToken(memberUpdateFcmTokenDto);

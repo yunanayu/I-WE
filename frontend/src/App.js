@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 // import { Provider } from 'react-redux';
 // import { createStore } from 'redux';
@@ -20,9 +20,13 @@ import AddChild from "./pages/AddChildPage";
 import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMainPage";
 import AddBabyRecordPage from "./pages/HospitalRecordPage/AddBabyRecordPage";
 import AddMomRecordPage from "./pages/HospitalRecordPage/AddMomRecordPage";
+import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecord";
 // import './FCM/firebase-messaging-sw'
 
 // const store = createStore(rootReducer);
+
+
+function App() {
 
 
 function App() {
@@ -32,6 +36,7 @@ function App() {
     setParentLoggedIn(status);
   };
 
+  
   useEffect(() => {
     if (document.cookie) {
       handleLoginStatusChange(true); // 로그인 성공 시 상태를 true로 설정
@@ -39,7 +44,6 @@ function App() {
       handleLoginStatusChange(false); // 로그아웃 또는 로그인 실패 시 상태를 false로 설정
   }
   }, []);
-  
 
   return (
     // <Provider store={store}> {/* Provider로 store를 전달 */}
@@ -76,16 +80,15 @@ function App() {
           <Route path="/infobaby" element={<InfoBaby />} />
           <Route path="/infoforbaby" element={<InfoForBaby />} />
 
-          <Route path="/recordmom" element={<RecordMom />} />
-          <Route path="/recordbaby" element={<RecordBaby />} />
-          <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />
-          <Route path="/babyhospitalrecord" element={<AddBabyRecordPage />} />
-          <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
-          <Route path="/tips" element={<TipPage />} />
-
-        </Routes>
-      </div>
-    // </Provider>
+        <Route path="/recordmom" element={<RecordMom />} />
+        <Route path="/recordbaby" element={<RecordBaby />} />
+        <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />
+        <Route path="/babyhospitalrecord" element={<AddBabyRecordPage />} />
+        <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
+        <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
+        <Route path="/tips" element={<TipPage />} />
+      </Routes>
+    </div>
   );
 }
 export default App;

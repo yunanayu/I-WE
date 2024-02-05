@@ -22,9 +22,9 @@ public class MotherBasisController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/{num}")
-    public ResponseEntity<MotherBasisReadResponseDto> findByMotherNum(@PathVariable long num) {
-        return new ResponseEntity<>(motherBasisService.findByMotherNum(num), HttpStatus.OK);
+    @GetMapping("/{motherNum}")
+    public ResponseEntity<MotherBasisReadResponseDto> findByMotherNum(@PathVariable long motherNum) {
+        return new ResponseEntity<>(motherBasisService.findByMotherNum(motherNum), HttpStatus.OK);
     }
 
     @PutMapping("/update")

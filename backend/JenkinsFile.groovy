@@ -1,152 +1,209 @@
 pipeline {
     agent any
     tools {
-      gradle 'gradle_8.5'
+        gradle 'gradle_8.5'
+        nodejs 'nodejs-20.10.0'
     }
     environment {
-        DOCKER_IMAGE_NAME = 'jihyeon99/iandwe-backend'
-        DOCKERFILE_PATH = './backend/Dockerfile'
-        CONTAINER_NAME = 'iandwe-backend'
+        BACKEND_IMAGE_NAME = 'jihyeon99/iandwe-backend'
+        BACKEND_CONTAINER_NAME = 'iandwe-backend'
+        BACKEND_DOCKER_IMAGE = ''
+
+        FRONTEND_IMAGE_NAME = 'jihyeon99/iandwe-frontend'
+        FRONTEND_CONTAINER_NAME = 'iandwe-frontend'
+        FRONTEND_DOCKER_IMAGE = ''
+
         REGISTRY_CREDENTIAL = 'dockerhub-IdPwd'
-        DOCKER_IMAGE = ''
         DOCKER_IMAGE_TAG = 'latest'
     }
     stages {
         stage('GitLab Clone') {
             steps {
+                echo '##### GitLab Clone #####'
                 git branch : 'develop', credentialsId: 'SSAFYC108', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C108.git'
             }
-            post {
-                failure {
-                  echo 'GitLab Clone failure !'
-                }
-                success {
-                  echo 'GitLab Clone success !'
+        }
+        stage('FE-Install') {
+            steps {
+                echo '##### FE Install #####'
+                dir('./frontend') {
+                    sh 'npm i'
                 }
             }
         }
-        stage('Gradle Build') {
+        stage('FE-Build'){
+            steps{
+                echo '##### FE Build #####'
+                dir('./frontend'){
+                    sh 'npm run build'
+                }
+            }
+        }
+        stage('BE-Build') {
             steps {
-                echo 'Building..'
+                echo '##### BE Build #####'
                 dir('./backend') {
                     sh 'chmod +x gradlew'
                     sh './gradlew clean bootjar'
                 }
             }
-            post {
-                failure {
-                    echo 'Gradle Build failure !'
+        }
+        stage('FE-Stop&Delete Prev Container') {
+            steps {
+                echo '##### FE Stop&Delete Prev Container #####'
+                script {
+                    def runningContainers = sh(script: 'docker ps -a -q --filter "name=${FRONTEND_CONTAINER_NAME}"', returnStdout: true).trim()
+                    echo "FE Running Containers: ${runningContainers}"
+                    if (runningContainers) {
+                        sh """
+                            echo 'FE Prev Container already exist'
+                            docker stop ${runningContainers}
+                            docker rm ${runningContainers}
+                        """
+                    }
                 }
-                success {
-                    echo 'Gradle Build success !'
-                }                
             }
         }
-        stage('Docker Build Image') {
+        stage('BE-Stop&Delete Prev Container') {
             steps {
+                echo '##### BE Stop&Delete Prev Container #####'
+                script {
+                    def runningContainers = sh(script: 'docker ps -a -q --filter "name=${BACKEND_CONTAINER_NAME}"', returnStdout: true).trim()
+                    echo "BE Running Containers: ${runningContainers}"
+                    if (runningContainers) {
+                        sh """
+                            echo 'BE Prev Container already exist'
+                            docker stop ${runningContainers}
+                            docker rm ${runningContainers}
+                        """
+                    }
+                }
+            }
+        }
+        stage('FE-Clean Prev Image') {
+            steps {
+                echo '##### FE Clean Prev Image #####'
+                script {
+                    def existingImages = sh(script: "docker images -q ${FRONTEND_IMAGE_NAME}", returnStdout: true).trim()
+                    echo "FE Cleaning Prev Image: ${existingImages}"
+                    if (existingImages) {
+                        sh """
+                            echo 'FE Prev Image already exist'
+                            docker rmi ${existingImages}
+                        """
+                    }
+                }
+            }
+        }
+        stage('BE-Clean Prev Image') {
+            steps {
+                echo '##### BE Clean Prev Image #####'
+                script {
+                    def existingImages = sh(script: "docker images -q ${BACKEND_IMAGE_NAME}", returnStdout: true).trim()
+                    echo "BE Cleaning Prev Image: ${existingImages}"
+                    if (existingImages) {
+                        sh """
+                            echo 'BE Prev Image already exist'
+                            docker rmi ${existingImages}
+                        """
+                    }
+                }
+            }
+        }
+        stage('FE-Build Image') {
+            steps {
+                echo '##### FE Build Image #####'
+                dir('./frontend') {
+                    script {
+                        FRONTEND_DOCKER_IMAGE = docker.build("${FRONTEND_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
+                    }
+                }
+            }
+        }
+        stage('BE-Build Image') {
+            steps {
+                echo '##### BE Build Image #####'
                 dir('./backend') {
                     script {
-                        DOCKER_IMAGE = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
+                        BACKEND_DOCKER_IMAGE = docker.build("${BACKEND_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
                     }
                 }
             }
-            post {
-                failure {
-                    echo 'Docker Build failure !'
-                }
-                success {
-                    echo 'Docker Build success !'
-                }
-            }
         }
-        stage('Push Image to DockerHub') {
+        stage('FE-Push Image To DockerHub') {
             steps {
+                echo '##### FE Push Image To DockerHub #####'
                 script {
                     docker.withRegistry('', REGISTRY_CREDENTIAL) {
-                        DOCKER_IMAGE.push()
+                        FRONTEND_DOCKER_IMAGE.push()
                     }
                 }
             }
-            post {
-                failure {
-                    echo 'Push Image to Docker Hub failure !'
-                }
-                success {
-                    echo 'Push Image to Docker Hub success !'
-                }
-            }
         }
-        stage('Docker Clean Image') {
+        stage('BE-Push Image To DockerHub') {
             steps {
-                dir('./backend') {
-                    sh 'docker rmi $DOCKER_IMAGE_NAME'
-                }
-            }
-            post {
-                failure {
-                    echo 'Docker Clean Image failure !'
-                }
-                success {
-                    echo 'Docker Clean Image success !'
-                }
-            }
-        }
-//        stage('Delete Previous Docker Container') {
-//            steps {
-//                script {
-//                    sh '''
-//                        docker stop ${CONTAINER_NAME}
-//                        docker rm ${CONTAINER_NAME}
-//                    '''
-//                }
-//            }
-//            post {
-//                failure {
-//                    echo 'Delete Previous Docker Container failure !'
-//                }
-//                success {
-//                    echo 'Delete Previous Docker Container success !'
-//                }
-//            }
-//        }
-        stage('Pull from DockerHub') {
-            steps {
+                echo '##### BE Push Image To DockerHub #####'
                 script {
-                    sh 'docker pull ${DOCKER_IMAGE_NAME}'
-                }
-            }
-            post {
-                failure {
-                    echo 'Pull from DockerHub failure !'
-                }
-                success {
-                    echo 'Pull from DockerHub success !'
+                    docker.withRegistry('', REGISTRY_CREDENTIAL) {
+                        BACKEND_DOCKER_IMAGE.push()
+                    }
                 }
             }
         }
-        stage('Run Docker Container') {
+        stage('FE-Clean Cur Image') {
             steps {
+                echo '##### FE Clean Cur Image #####'
                 script {
-                    sh 'docker run -d --name ${CONTAINER_NAME} -p 8081:8080 ${DOCKER_IMAGE_NAME}'
-                }
-            }
-            post {
-                failure {
-                    echo 'Run Docker Container failure !'
-                }
-                success {
-                    echo 'Run Docker Container success !'
+                    def existingImages = sh(script: "docker images -q ${FRONTEND_IMAGE_NAME}", returnStdout: true).trim()
+                    if (existingImages) {
+                        echo "FE Cleaning Cur Image: ${existingImages}"
+                        sh "docker rmi ${existingImages}"
+                    }
                 }
             }
         }
-        stage('Test') {
+        stage('BE-Clean Cur Image') {
             steps {
-                echo 'Testing..'
+                echo '##### BE Clean Cur Image #####'
+                script {
+                    def existingImages = sh(script: "docker images -q ${BACKEND_IMAGE_NAME}", returnStdout: true).trim()
+                    if (existingImages) {
+                        echo "BE Cleaning Cur Image: ${existingImages}"
+                        sh "docker rmi ${existingImages}"
+                    }
+                }
             }
         }
-        stage('Deploy') {
+        stage('FE-Pull From DockerHub') {
             steps {
-                echo 'Deploying....'
+                echo '##### FE Pull From DockerHub #####'
+                script {
+                    sh "docker pull ${FRONTEND_IMAGE_NAME}"
+                }
+            }
+        }
+        stage('BE-Pull From DockerHub') {
+            steps {
+                echo '##### BE Pull From DockerHub #####'
+                script {
+                    sh "docker pull ${BACKEND_IMAGE_NAME}"
+                }
+            }
+        }
+        stage('FE-Run Container') {
+            steps {
+                echo '##### FE Run Container #####'
+                script {
+                    sh "docker run -d --name ${FRONTEND_CONTAINER_NAME} -p 3000:3000 ${FRONTEND_IMAGE_NAME}"
+                }
+            }
+        }
+        stage('BE-Run Container') {
+            steps {
+                echo '##### BE Run Container #####'
+                script {
+                    sh "docker run -d --name ${BACKEND_CONTAINER_NAME} -p 8081:8080 ${BACKEND_IMAGE_NAME}"
+                }
             }
         }
     }

@@ -22,9 +22,9 @@ public class InfoController {
     @Autowired
     private final InfoService infoService;
 
-    @GetMapping("/info/{target}/{targetTime}/{category}")
-    public ResponseEntity<List<InfoResponseDto>> findByTargetAndTargetTimeAndCategory(@PathVariable String target, @PathVariable String targetTime, @PathVariable String category) {
-        List<InfoResponseDto> infos = infoService.findByTargetAndTargetTimeAndCategory(new InfoRequestDto(target, targetTime, category));
+    @GetMapping("/info/{target}/{category}/{targetTime}")
+    public ResponseEntity<List<InfoResponseDto>> findByTargetAndTargetTimeAndCategory(@PathVariable String target,  @PathVariable String category, @PathVariable String targetTime) {
+        List<InfoResponseDto> infos = infoService.findByTargetAndTargetTimeAndCategory(new InfoRequestDto(target, category, targetTime));
         return new ResponseEntity<>(infos, HttpStatus.OK);
     }
 

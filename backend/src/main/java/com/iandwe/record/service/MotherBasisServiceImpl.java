@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MotherBasisServiceImpl implements MotherBasisService {
@@ -19,14 +21,18 @@ public class MotherBasisServiceImpl implements MotherBasisService {
     @Override
     @Transactional
     public Boolean create(MotherBasisCreateRequestDto dto) {
-        MotherBasis motherBasis = dto.toEntity();
-        motherBasisRepository.save(motherBasis);
+        if (motherBasisRepository.findByMotherNum(dto.getMotherNum()).isPresent()) {
+            update(MotherBasisUpdateRequestDto.from(dto));
+        } else {
+            MotherBasis motherBasis = dto.toEntity();
+            motherBasisRepository.save(motherBasis);
+        }
         return true;
     }
 
     @Override
-    public MotherBasisReadResponseDto findByMotherNum(long num) {
-        MotherBasis motherBasis = motherBasisRepository.findByMotherNum(num).orElseThrow(NoRecordExistException::new);
+    public MotherBasisReadResponseDto findByMotherNum(long motherNum) {
+        MotherBasis motherBasis = motherBasisRepository.findByMotherNum(motherNum).orElseThrow(NoRecordExistException::new);
         return MotherBasisReadResponseDto.from(motherBasis);
     }
 
