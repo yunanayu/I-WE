@@ -112,23 +112,6 @@ function AddChild({ setSpouseStatus }) {
     navigate("/");
   };
 
-  
-// birth
-// : 
-// "2024-02-01"
-// gender
-// : 
-// 0
-// motherNum
-// : 
-// 1
-// name
-// : 
-// "김싸피"
-// pregnancyDate
-// : 
-// null
-
   return (
     <div>
       <div>
