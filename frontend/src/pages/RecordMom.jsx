@@ -148,7 +148,7 @@ function RecordMom() {
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           {<Info avg={avgData} diff={diffData}/>}
         </Box>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, padding: 2 }}>
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3}}>
           <MomForm data={recentRecord} recentUpdate={onUpdateRecent} />
         </Box>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
