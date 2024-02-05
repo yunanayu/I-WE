@@ -6,11 +6,12 @@ import { requestPermission } from "../FCM/firebase-messaging-sw";
 import { getUserInfo } from "../api/UserApi";
 
 function KakaoLogin({ setIsLoggedIn }) {
-  const BackURL = `/oauth2/authorization/kakao`;
+  const BackURL = process.env.REACT_APP_KAKAO_LOGIN_URL || `/oauth2/authorization/kakao`;
   const navigate = useNavigate();
-
+  
   const handleLogin = () => {
     console.log("로그인눌림");
+    console.log(process.env.REACT_APP_KAKAO_LOGIN_URL);
     window.location.href = BackURL;
   };
 

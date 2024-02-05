@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -32,6 +33,12 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    @Value("${custom.success.url}")
+    private String successUrl;
+
+    @Value("${custom.info.url}")
+    private String infoUrl;
 
     private final JwtUtil jwtUtil;
 
@@ -76,7 +83,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             log.info("jwtToken = {}", token.getAccessToken());
 
             // accessToken을 쿼리스트링에 담는 url을 만들어줌
-            String targetUrl = UriComponentsBuilder.fromUriString("https://i10c108.p.ssafy.io/addInfo")
+            String targetUrl = UriComponentsBuilder.fromUriString(infoUrl)
                     .queryParam("accessToken", token.getAccessToken())
                     .queryParam("status", "addInfo")
                     .build()
@@ -95,7 +102,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             log.info("jwtToken = {}", token.getAccessToken());
 
             // accessToken을 쿼리스트링에 담는 url을 만들어줌
-            String targetUrl = UriComponentsBuilder.fromUriString("https://i10c108.p.ssafy.io/loginSuccess")
+            String targetUrl = UriComponentsBuilder.fromUriString(successUrl)
                     .queryParam("accessToken", token.getAccessToken())
                     .queryParam("status", "success")
                     .build()
