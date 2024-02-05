@@ -11,6 +11,6 @@ public class CheckerUpdateRequestDto {
 
     private String target;
 
-    private boolean isComplete;
+    private Boolean isComplete;
 
 }

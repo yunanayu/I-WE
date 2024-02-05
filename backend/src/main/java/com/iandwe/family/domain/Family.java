@@ -1,4 +1,4 @@
-package com.iandwe.checker.domain;
+package com.iandwe.family.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,23 +11,27 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class BabyChecker {
+public class Family {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long num;
 
-    private Long babyNum;
+    private long mother;
 
-    private Long essentialNum;
+    private long father;
 
-    private boolean complete;
+    private String shareCode;
 
-    public void updateComplete(Boolean complete){
-        this.complete = complete;
+    public void share(long father) {
+        this.father = father;
+    }
+
+    public boolean isCorrectCode(String code) {
+        return this.shareCode.equals(code);
     }
 
 }

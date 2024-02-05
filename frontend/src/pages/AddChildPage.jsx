@@ -14,6 +14,8 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs from "dayjs";
 import 'dayjs/locale/ko'
+import { getUserInfo } from '../api/UserApi';
+import useMemberStore from '../stores/userStore';
 
 function AddChild({ setSpouseStatus }) {
   const navigate = useNavigate();
@@ -22,6 +24,8 @@ function AddChild({ setSpouseStatus }) {
   const [childGender, setChildGender] = useState("");
   const [pregnancyStatus, setPregnancyStatus] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const setBabyList = useMemberStore(state => state.setBabyList)
+  const setUserNum = useMemberStore(state => state.setUserNum)
 
   const handleChildNameChange = (event) => {
     setChildName(event.target.value);
@@ -95,14 +99,18 @@ function AddChild({ setSpouseStatus }) {
         }
       );
       console.log(response.data);
-    } catch(e) {
+      const babyInfo =response.data
+      setBabyList(babyInfo)
+      setUserNum(babyInfo.motherNum)
+      //
+      
+    } 
+    catch(e) {
       console.log("아기정보 등록 실패")
     }
     console.log("아기정보 등록 성공")
     navigate("/");
   };
-
-  
 
   return (
     <div>
