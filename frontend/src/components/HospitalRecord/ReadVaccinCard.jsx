@@ -24,16 +24,16 @@ const ReadVaccinCard = (props) => {
   // 접종여부만 set 해주기
   const [initState, setInitState] = useState(props.vaccine.complete)
 
-  // useEffect(()=>{
-  //   console.log('렌더링해씀다zz');
-  //   axios.get(`/api/check/mother/1`)
-  //   .then(res=>console.log(res.data))
-  //   .catch(err=>console.log(err))
-  // },[initState])
+  useEffect(()=>{
+    console.log('재렌더링');
+    // axios.get(`/api/check/mother/1`)
+    // .then(res=>console.log(res.data))
+    // .catch(err=>console.log(err))
+  },[initState])
 
-  console.log(initState)
   const updateComplete = () => {
-    // setInitState(!initState)
+    setInitState(!initState)
+    console.log(props.vaccine.essentialNum);
     axios({
       method:'put',
       url:`/api/check/complete`,
@@ -41,7 +41,7 @@ const ReadVaccinCard = (props) => {
         targetNum:1,
         essentialNum:props.vaccine.essentialNum,
         target:'mother',
-        isComplete:!initState
+        isComplete : true
       }
     }).then((res)=>{
       console.log(initState)
