@@ -79,6 +79,5 @@
   "devDependencies": {
     "css-loader": "^6.9.1",
     "style-loader": "^3.3.4"
-  },
-  "proxy": "https://i10C108.p.ssafy.io:8081"
+  }
 }
