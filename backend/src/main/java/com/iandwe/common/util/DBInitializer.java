@@ -2,6 +2,8 @@ package com.iandwe.common.util;
 
 import com.iandwe.essential.domain.Essential;
 import com.iandwe.essential.repository.EssentialRepository;
+import com.iandwe.info.domain.Info;
+import com.iandwe.info.repository.InfoRepository;
 import com.iandwe.record.domain.GrowthHeight;
 import com.iandwe.record.domain.GrowthWeight;
 import com.iandwe.record.repository.GrowthHeightRepository;
@@ -28,18 +30,21 @@ public class DBInitializer implements ApplicationRunner {
 
     private final GrowthWeightRepository growthWeightRepository;
 
+    private final InfoRepository infoRepository;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         saveEssentials();
         saveGrowthHeights();
         saveGrowthWeights();
+        saveInfos();
     }
 
     private void saveEssentials() throws IOException {
-        List<String[]> datas = csvDataLoader.loadData("src/main/resources/db/essentialInitData.csv");
+        List<String[]> datas = csvDataLoader.loadData("db/essentialInitData.csv");
         List<Essential> essentials = new ArrayList<>();
 
-        for(String[] data : datas) {
+        for (String[] data : datas) {
             Essential essential = Essential.builder()
                     .title(data[0])
                     .description(data[1])
@@ -55,10 +60,10 @@ public class DBInitializer implements ApplicationRunner {
     }
 
     private void saveGrowthHeights() throws IOException {
-        List<String[]> datas = csvDataLoader.loadData("src/main/resources/db/growthHeightInitData.csv");
+        List<String[]> datas = csvDataLoader.loadData("db/growthHeightInitData.csv");
         List<GrowthHeight> heights = new ArrayList<>();
 
-        for(String[] data : datas) {
+        for (String[] data : datas) {
             List<String> heightData = new ArrayList<>(Arrays.asList(data).subList(2, data.length));
             GrowthHeight growthHeight = GrowthHeight.builder()
                     .gender(Integer.parseInt(data[0]))
@@ -72,10 +77,10 @@ public class DBInitializer implements ApplicationRunner {
     }
 
     private void saveGrowthWeights() throws IOException {
-        List<String[]> datas = csvDataLoader.loadData("src/main/resources/db/growthWeightInitData.csv");
+        List<String[]> datas = csvDataLoader.loadData("db/growthWeightInitData.csv");
         List<GrowthWeight> weights = new ArrayList<>();
 
-        for(String[] data : datas) {
+        for (String[] data : datas) {
             List<String> weightData = new ArrayList<>(Arrays.asList(data).subList(2, data.length));
             GrowthWeight growthWeight = GrowthWeight.builder()
                     .gender(Integer.parseInt(data[0]))
@@ -86,5 +91,22 @@ public class DBInitializer implements ApplicationRunner {
         }
 
         growthWeightRepository.saveAll(weights);
+    }
+
+    private void saveInfos() throws IOException {
+        List<String[]> datas = csvDataLoader.loadData("db/infoInitData.csv");
+        List<Info> infos = new ArrayList<>();
+        for (String[] data : datas) {
+            Info info = Info.builder()
+                    .content(data[0])
+                    .startTime(data[1])
+                    .endTime(data[2])
+                    .target(data[3])
+                    .category(data[4])
+                    .build();
+            infos.add(info);
+        }
+
+        infoRepository.saveAll(infos);
     }
 }
