@@ -216,7 +216,7 @@ function RecordBaby() {
             onClose={recordClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
-          >
+          ><Box>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
               <Box sx={{ ...setCenter, ...style }}>
                 <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
@@ -258,6 +258,7 @@ function RecordBaby() {
                 </Button>
               </Box>
             </LocalizationProvider>
+            </Box>
           </Modal>
 
           {/* 사진용 모달 */}
