@@ -4,6 +4,8 @@ import axios from 'axios';
 const CheckCodePage = () => {
   const [code, setCode] = useState('');
 
+  // 아빠가 입력한 familyNum이 기존에 존재하는지 확인해야함
+
   const handleConfirm = async () => {
     try {
       // 입력한 코드 값 확인 로직

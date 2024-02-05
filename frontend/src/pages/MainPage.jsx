@@ -14,9 +14,8 @@ import { getUserInfo } from '../api/UserApi';
 import { getInfo } from '../api/InfoApi';
 import { useSelector } from 'react-redux';
 
-
 import moment from 'moment';
-
+import useMemberStore from '../stores/userStore';
 
 
 const theme = createTheme({
@@ -28,6 +27,7 @@ const theme = createTheme({
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [todayDate, setTodayDate] = useState('');
+  const babyList  = useMemberStore(state => state.babyList)
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -50,17 +50,13 @@ const Main = ({ onLoginStatusChange }) => {
   
   },  [onLoginStatusChange]);
 
-  // 회원정보를 통한 아이정보 받아오기
-  // const userInfo = useSelector((state) => state.userInfo);
-
   const [babyName, setBabyName] = useState([]);
   const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // console.log(userInfo)
-        const info = await getUserInfo();
+        const info = babyList
         const babyname = info[0].name
         setBabyName(babyname);
         const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
@@ -75,21 +71,8 @@ const Main = ({ onLoginStatusChange }) => {
 
     fetchData();
 
-  }, []);
+  }, [babyList]);
 
-  // 정보 받아오기 useEffect()
-  // useEffect(() => {
-  //   const fetchInfo = async() => {
-  //     try {
-  //       const infoinfo = await getInfo();
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-
-  //   };
-  //   fetchInfo();
-  // }, []);
-    
 
   return (
     <>
