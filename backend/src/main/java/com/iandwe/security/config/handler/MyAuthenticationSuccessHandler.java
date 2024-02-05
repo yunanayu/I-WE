@@ -76,7 +76,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             log.info("jwtToken = {}", token.getAccessToken());
 
             // accessToken을 쿼리스트링에 담는 url을 만들어줌
-            String targetUrl = UriComponentsBuilder.fromUriString("https://i10c108.p.ssafy.io:3000/addInfo")
+            String targetUrl = UriComponentsBuilder.fromUriString("https://i10c108.p.ssafy.io/addInfo")
                     .queryParam("accessToken", token.getAccessToken())
                     .queryParam("status", "addInfo")
                     .build()
@@ -95,7 +95,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             log.info("jwtToken = {}", token.getAccessToken());
 
             // accessToken을 쿼리스트링에 담는 url을 만들어줌
-            String targetUrl = UriComponentsBuilder.fromUriString("https://i10c108.p.ssafy.io:3000/loginSuccess")
+            String targetUrl = UriComponentsBuilder.fromUriString("https://i10c108.p.ssafy.io/loginSuccess")
                     .queryParam("accessToken", token.getAccessToken())
                     .queryParam("status", "success")
                     .build()
