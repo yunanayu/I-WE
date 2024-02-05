@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -23,31 +23,67 @@ const ReadVaccinCard = (props) => {
   const [open, setOpen] = useState(false);
   // 접종여부만 set 해주기
   const [initState, setInitState] = useState(props.vaccine.complete)
+
+  // useEffect(()=>{
+  //   console.log('렌더링해씀다zz');
+  //   axios.get(`/api/check/mother/1`)
+  //   .then(res=>console.log(res.data))
+  //   .catch(err=>console.log(err))
+  // },[initState])
+
+  console.log(initState)
   const updateComplete = () => {
-    setInitState(!initState)
+    // setInitState(!initState)
     axios({
       method:'put',
       url:`/api/check/complete`,
       data:{
         targetNum:1,
-        essentialNum:initState.essentialNum,
+        essentialNum:props.vaccine.essentialNum,
         target:'mother',
-        isComplete:initState
+        isComplete:!initState
       }
-    }).then(res=>console.log(res))
+    }).then((res)=>{
+      console.log(initState)
+      console.log(res)})
     .catch(err=>console.log(err))
   }
+
   const pregnantDate = new Date()
   const start = new Date(pregnantDate)
   const end = new Date(pregnantDate)
-  const date  = {
-    startDate : start.setMonth(pregnantDate.getMonth() + replaceAWithNumber(props.vaccine.startTime)),
-    endDate : end.setMonth(pregnantDate.getMonth() + replaceAWithNumber(props.vaccine.endTime)),
-  } 
-  const vaccineDate = {
-    startDate : moment(date.startDate).format('YYYY년MM월DD일'),
-    endDate : moment(date.endDate).format('YYYY년MM월DD일'),
-  }
+  const [vaccineDate,setVaccineDate] = useState({
+    startDate : '',
+    endDate : ''
+  })
+
+  //날짜 계산
+  const calculateDate = () => {
+    var startdate = ''
+    var enddate = ''
+
+    if (props.vaccine.startTime[0] === 'A') {
+      const date  = {
+        startDate : start.setMonth(pregnantDate.getMonth() + replaceAWithNumber(props.vaccine.startTime)),
+        endDate : end.setMonth(pregnantDate.getMonth() + replaceAWithNumber(props.vaccine.endTime)),
+      } 
+      startdate = moment(date.startDate).format('YYYY년MM월DD일')
+      enddate = moment(date.endDate).format('YYYY년MM월DD일')
+    }
+    else {
+      const date  = {
+        startDate : start.setDate(pregnantDate.getDay() + replaceAWithNumber(props.vaccine.startTime)*7),
+        endDate : end.setDate(pregnantDate.getDay() + replaceAWithNumber(props.vaccine.endTime)*7),
+      } 
+      startdate = moment(date.startDate).format('YYYY년MM월DD일')
+      enddate = moment(date.endDate).format('YYYY년MM월DD일')
+    }
+    setVaccineDate({startDate:startdate, endDate:enddate})
+    }
+
+  useEffect(() => {
+    calculateDate()
+  }, [])
 
   const style = {
     position: 'absolute',
@@ -69,7 +105,7 @@ const ReadVaccinCard = (props) => {
         </Typography> */}
         <Box>
           <Box sx={{display:'flex'}}>
-            { initState.target === 'baby' ? <ChildCareIcon fontSize='large'/> : <PregnantWomanIcon fontSize='large'/>}
+            { props.vaccine.target === 'baby' ? <ChildCareIcon fontSize='large'/> : <PregnantWomanIcon fontSize='large'/>}
             <Typography variant="h6" component="div" sx={{pl:2}}>
               {props.vaccine.title}
             </Typography>

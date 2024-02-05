@@ -88,12 +88,15 @@ export default function BasicTabs(props) {
   const [selectTarget, setSelectTarget] = React.useState('all')
   const [selectType, setSelectType] = React.useState('all')
   console.log(vaccineList);
-  console.log(vaccineList.length);
+  // console.log(vaccineList.length);
 
   React.useEffect(()=>{
     function getNumberFromString(str) {
       return parseInt(str.substring(1));
   }
+    var momlist = []
+    var babylist = []
+    
     axios({
       method :'get',
       url:`/api/check/mother/1`,
@@ -101,20 +104,24 @@ export default function BasicTabs(props) {
     .then((res)=>{
       console.log(res.data)
       const list= res.data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));
+      momlist = list
       setMomCheckList(list)
     })
     .catch(err=>console.log(err))
 
     axios({
       method :'get',
-      url:`/api/check/baby/34`,
+      url:`/api/check/baby/1`,
     })
     .then((res)=>{
-      console.log(res.data)
+      // console.log(res.data)
       const list= res.data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));
+      babylist = list
       setBabyCheckList(list)
     })
     .catch(err=>console.log(err))
+
+    setVaccineList([...momlist, ...babylist])
   }, [])
 
   React.useEffect(()=>{
