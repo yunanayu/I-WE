@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 
 
 import moment from 'moment';
+import useMemberStore from '../stores/userStore';
 
 
 
@@ -28,6 +29,7 @@ const theme = createTheme({
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [todayDate, setTodayDate] = useState('');
+  const babyList  = useMemberStore(state => state.babyList)
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -56,11 +58,33 @@ const Main = ({ onLoginStatusChange }) => {
   const [babyName, setBabyName] = useState([]);
   const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
 
+  
+  //---------------수정 전 info 호출--------------------------------------------
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // console.log(userInfo)
+  //       const info = await getUserInfo();
+  //       const babyname = info[0].name
+  //       setBabyName(babyname);
+  //       const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
+  //       const today = moment();
+  //       const days = today.diff(pregnancyDate, 'days');
+  //       const weeks = Math.floor(days / 7 + 1)
+  //       setDaysSincePregnancy(weeks);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   fetchData();
+
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // console.log(userInfo)
-        const info = await getUserInfo();
+        const info = babyList
         const babyname = info[0].name
         setBabyName(babyname);
         const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
@@ -75,7 +99,7 @@ const Main = ({ onLoginStatusChange }) => {
 
     fetchData();
 
-  }, []);
+  }, [babyList]);
 
   // 정보 받아오기 useEffect()
   // useEffect(() => {
