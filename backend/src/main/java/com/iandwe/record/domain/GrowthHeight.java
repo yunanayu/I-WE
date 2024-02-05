@@ -24,6 +24,6 @@ public class GrowthHeight {
     private int month;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> heights;
+    private List<Float> heights;
 
 }
