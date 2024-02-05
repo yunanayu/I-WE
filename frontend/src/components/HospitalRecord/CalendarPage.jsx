@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from 'moment'
-import './CalendarStyle.css'
+// import './CalendarStyle.css'
 import { Box, Container, Grid, Typography } from "@mui/material"; 
 import { recordContext } from '../../pages/HospitalRecordPage/HospitalRecordMainPage';
 
