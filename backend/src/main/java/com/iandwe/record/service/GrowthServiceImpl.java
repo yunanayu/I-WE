@@ -22,12 +22,26 @@ public class GrowthServiceImpl implements GrowthService {
     @Override
     public GrowthResponseDto getPercentile(int gender, int month, float height, float weight) {
 
-        GrowthResponseDto dto = new GrowthResponseDto();
-
         Optional<GrowthHeight> growthHeight = growthHeightRepository.findByGenderAndMonth(gender, month);
+
+        int heightPercentile = getPercentile(height, growthHeight.get().getHeights());
 
         Optional<GrowthWeight> growthWeight = growthWeightRepository.findByGenderAndMonth(gender, month);
 
-        return null;
+        int weightPercentile = getPercentile(weight, growthWeight.get().getWeights());
+
+        return new GrowthResponseDto(heightPercentile, weightPercentile);
+    }
+
+    private static int getPercentile(float target, List<Float> list) {
+
+        int[] percentile = {99, 97, 95, 90, 85, 75, 50, 25, 15, 10, 5, 3, 1};
+
+        for(int i=0;i<list.size();i++){
+            if(target < list.get(i)){
+                return percentile[i];
+            }
+        }
+        return 1;
     }
 }
