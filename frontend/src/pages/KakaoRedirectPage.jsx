@@ -9,8 +9,8 @@ import useMemberStore from "../stores/userStore";
 function KakaoLogin({ setIsLoggedIn }) {
   const BackURL = `http://localhost:8080/oauth2/authorization/kakao`;
   const navigate = useNavigate();
-  const { userNum, setUserNum, setUserName } = useMemberStore()
   const setBabyList = useMemberStore(state => state.setBabyList)
+  const setUserNum = useMemberStore(state => state.setUserNum)
   const handleLogin = () => {
     console.log("로그인눌림");
     window.location.href = BackURL;
@@ -29,11 +29,8 @@ function KakaoLogin({ setIsLoggedIn }) {
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정    
 
         const userInfo = await getUserInfo()
-        // console.log(userInfo[0])
-        // console.log(userInfo[0].motherNum)
-        // setUserNum(userInfo[0].motherNum)
-        // setUserName(userInfo[0].name)
         userInfo.map((info) => {
+          console.log(info)
           setBabyList(info)
           setUserNum(info.motherNum)
         })
