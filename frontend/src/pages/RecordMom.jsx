@@ -5,7 +5,6 @@ import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart"
 import { MomForm } from "./WeightForm";
 import { Typography } from "@mui/material";
 import axios from "axios";
-import { initialize } from "workbox-google-analytics";
 
 // 주차별 몸무게
 const weightWeekly = [];
@@ -17,13 +16,6 @@ const pregWeek = null;
 const status = "avg";
 // 입력받을 오늘 몸무게
 const weightToday = null;
-
-// 띄워줄 메세지
-const infoMessage = [
-  { stat: "low", msg: "평균보다 낮습니다" },
-  { stat: "avg", msg: "평균치입니다" },
-  { stat: "high", msg: "평균보다 높습니다" },
-];
 
 // 가운데 정렬 css
 const setCenter = {
@@ -43,14 +35,45 @@ const commonStyles = {
 };
 
 // low, avg, high에 맞춰서 메세지 출력
-function Info() {
-  const text = infoMessage.find((element) => {
-    if (element.stat === status) return true;
-  });
+function Info(props) {
+
+  const [avgData, setAvgData] = useState();
+  const [diffData, setDiffData] = useState();
+
+  useEffect(() => {
+    if(props.avg && props.diff){
+      setAvgData(props.avg);
+      setDiffData(props.diff);
+    }
+  }, [props.avg, props.diff])
+    let d, start, end, week, msg, msg2, msg3;
+
+    if(diffData && avgData) {
+       d = diffData[diffData.length-1];
+       start = avgData[avgData.length-1].start;
+       end = avgData[avgData.length-1].end;
+       week = avgData[avgData.length-1].week;
+       msg = `${week}주차 체중 증가량은 \n${d.weight}kg`;
+       
+       if(d.weight >= start && d.weight <= end) {
+         msg2 = "체중이 평균 범위 내에서 증가하고 있어요.";
+       } else if(d.weight< start) {
+         msg2 = "체중이 평균 밑이에요.";
+         msg3 = "균형잡힌 식사를 추천드려요.";
+       } else if(d.weight > end) {
+         msg2 = "체중이 평균보다 높아요.";
+         msg3 = "식사량을 조절하시길 추천드려요.";
+       }
+    }
+
+
+
   return (
     <>
       <Box sx={{ mt: 3, mb: 3 }}>
-        <Typography fontSize={34}> {text.msg} </Typography>
+        <Typography fontSize={34}> {msg} </Typography>
+        {msg2 && (<Typography fontSize={34}> {msg2} </Typography>)}
+        {msg3 && (<Typography fontSize={34}> {msg3} </Typography>)}
       </Box>
     </>
   );
@@ -63,6 +86,8 @@ function RecordMom() {
   const [momRecord, setMomRecord] = useState(null);
   const [momBasis, setMomBasis] = useState(null);
   const [babyData, setBabyData] = useState(null);
+  const [avgData, setAvgData] = useState();
+  const [diffData, setDiffData] = useState();
 
   useEffect(() => {
     const initData = async () => {
@@ -106,16 +131,22 @@ function RecordMom() {
       updatedMomRecord.push(data);
       return updatedMomRecord;
     });
-    console.log("새로운 기록" + JSON.stringify(momRecord));
+    // console.log("새로운 기록" + JSON.stringify(momRecord));
+  };
+  const onAvgUpdate = (data) => {
+    setAvgData(data);
+  };
+  const onDiffUpdate = (data) => {
+    setDiffData(data);
   };
 
-  console.log("엄마기록??? " + JSON.stringify(momRecord));
+  // console.log("엄마기록??? " + JSON.stringify(momRecord));
 
   return (
     <>
       <Container maxWidth="lg" sx={{ ...setCenter, background: "pink" }}>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          {<Info />}
+          {<Info avg={avgData} diff={diffData}/>}
         </Box>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, padding: 2 }}>
           <MomForm data={recentRecord} recentUpdate={onUpdateRecent} />
@@ -124,7 +155,7 @@ function RecordMom() {
           <WeeklyWeightChart recordData={momRecord} />
         </Box>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          <ChangeChart recordData={momRecord} basisData={momBasis} babyData={babyData} />
+          <ChangeChart recordData={momRecord} basisData={momBasis} babyData={babyData} diffUpdate={onDiffUpdate} avgUpdate={onAvgUpdate}/>
         </Box>
       </Container>
     </>

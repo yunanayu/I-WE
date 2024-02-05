@@ -37,7 +37,7 @@ function MomForm(props) {
     } else {
       let todayDate =
         today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
-      console.log(todayDate);
+      // console.log(todayDate);
       const data = {
         motherNum: 1, // 계정정보에서 motherNum 받아오기
         weight: weight,
@@ -62,7 +62,7 @@ function MomForm(props) {
 
   useEffect(() => {
     if (recent) {
-      console.log("최근 데이터 " + JSON.stringify(recent));
+      // console.log("최근 데이터 " + JSON.stringify(recent));
       const recentDate = new Date(recent.recordDate);
       if (
         recentDate.getDay() === today.getDay() &&
@@ -97,7 +97,7 @@ function MomForm(props) {
   );
 }
 
-const BabyForm = React.forwardRef((props: any, ref: any) => {
+const BabyForm = React.forwardRef((props, ref) => {
   const [data, setData] = useState();
   const [dateSelected, setDateSelected] = useState();
   const [weight, setWeight] = useState();
@@ -114,14 +114,13 @@ const BabyForm = React.forwardRef((props: any, ref: any) => {
     setCircumference(e.target.value);
   };
 
-  useEffect(() => {});
 
   useEffect(() => {
     if (props.data && props.dateSelected) {
       setData(props.data);
       setDateSelected(props.dateSelected);
-      console.log("아기기록 !!!!" + data);
-      console.log("선택 날짜 !!!! " + dateSelected);
+      // console.log("아기기록 !!!!" + data);
+      // console.log("선택 날짜 !!!! " + dateSelected);
     }
   }, [props.data, props.dateSelected]);
 
