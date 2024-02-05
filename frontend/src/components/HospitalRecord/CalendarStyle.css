@@ -12,10 +12,19 @@
   align-content: center;
   justify-content: center;
 }
+@media only screen and (max-width: 400px) {
+  .react-calendar {
+    max-width: 300px; /* Adjust as needed for smaller screens */
+  }
 
+  .react-calendar--doubleView {
+    max-width: 300px; /* Adjust as needed for smaller screens */
+  }
+}
 .react-calendar {
-  width: 500px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 500px; /* 최대 너비 설정 */
+  margin: 0 auto; /* 수평 가운데 정렬을 위해 추가 */
   border: none;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 2.5em;
@@ -23,18 +32,23 @@
 }
 
 .react-calendar--doubleView {
-  width: 700px;
+  width: 100%;
 }
 
 .react-calendar--doubleView .react-calendar__viewContainer {
-  display: flex;
-  margin: -0.5em;
+  /* display: flex;
+  
+  margin: -0.5em; */
+  flex-direction: column;
 }
 
 .react-calendar--doubleView .react-calendar__viewContainer > * {
-  width: 50%;
-  margin: 0.5em;
+  /* width: 50%;
+  margin: 0.5em; */
+  width: 100%;
+  margin: 0.5em 0;
 }
+
 
 .react-calendar,
 .react-calendar *,
