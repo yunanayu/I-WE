@@ -34,7 +34,7 @@ const ReadRecordCard = (props) => {
 
 
   return (
-    <Card sx={{ Width: '70%', }}>
+    <Card sx={{ width: '100%', mb: 3, }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {props.record.hopitalDate}

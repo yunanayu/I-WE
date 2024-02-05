@@ -7,9 +7,11 @@ import Stack from '@mui/joy/Stack';
 import Option from '@mui/joy/Option';
 import { Typography } from '@mui/material';
 import ReadVaccinCard from './ReadVaccinCard';
+import { getCheck } from '../../api/RecordApi';
+import NumberRangeSlider from './RangeSlider';
 
 
-function getNumberFromString(str) {
+export function getNumberFromString(str) {
   return parseInt(str.substring(1));
 }
 
@@ -17,7 +19,6 @@ function getNumberFromString(str) {
 const CheckPanel = () => {
   const babyList = useMemberStore(state => state.babyList)
   const userNum = useMemberStore(state => state.userNum)
-  console.log(userNum)
   const [momCheckList, setMomCheckList] = useState([])
 
   // 아기 기록 - 아기 여러명일때 고려하자.
@@ -32,6 +33,33 @@ const CheckPanel = () => {
   // 배열의 index값임
   const [selectBaby, setSelectBaby] = useState(0)
   // console.log(selectBaby)
+  // 개월 수 필터링
+  const [selectRange, setSelectRange] = useState([0, 144])
+
+  const setList = () => {
+    var list = []
+    if (selectType === 'all') {
+      if (selectTarget === 'mother') {
+        list = momCheckList
+      }
+      else {
+        list = babyCheckList
+      }
+    }
+    else if (selectType != 'all' && selectTarget === 'mother') {
+      list = momCheckList.filter((item) => {
+        return item.category === selectType
+      })
+    }
+    else if (selectType != 'all' && selectTarget === 'baby') {
+      list = babyCheckList.filter((item) => {
+        return item.category === selectType
+      })
+    }
+    setVaccineList(list)
+  }
+  
+
 
   useEffect(()=>{
     axios({
@@ -55,13 +83,11 @@ const CheckPanel = () => {
     .catch((err) => console.log(err))
   }, [])
 
+  // 회원가입 시 baby num 어디있는지 확인하기
   useEffect(() => {
     var babyCheck = []
-    console.log('우리 사이 조았자나...')
-    
     if (selectBaby != null) {
     const babyNum = babyList[selectBaby].num
-    console.log(babyNum)
     axios.get(`/api/check/baby/${babyNum}`)
     .then((res) => {
       console.log(res.data)
@@ -81,35 +107,79 @@ const CheckPanel = () => {
       setVaccineList(babyCheckList)
     }
   },[selectTarget])
+
+useEffect(() => {
+  setList()
+  // var list = []
+  // if (selectType === 'all') {
+  //   if (selectTarget === 'mother') {
+  //     list = momCheckList
+  //   }
+  //   else {
+  //     list = babyCheckList
+  //   }
+  // }
+  // else if (selectType != 'all' && selectTarget === 'mother') {
+  //   list = momCheckList.filter((item) => {
+  //     return item.category === selectType
+  //   })
+  // }
+  // else if (selectType != 'all' && selectTarget === 'baby') {
+  //   list = babyCheckList.filter((item) => {
+  //     return item.category === selectType
+  //   })
+  // }
+  // setVaccineList(list)
+}, [selectType])
+
+useEffect(() => {
+  setList()
+  const newList = vaccineList.filter((item) => {
+    const start = getNumberFromString(item.startTime)
+    const end = getNumberFromString(item.endTime)
+    return (
+      start >= selectRange[0] && end <= selectRange[1]
+    )
+  })
+  setVaccineList(newList)
+  console.log(newList)
+}, [selectRange])
+
   return (
     <Box>
         <Select placeholder='대상을 선택해주세요' variant="plain" >
-          <Option value="all" onClick={() => setSelectTarget('all')}>전체보기</Option>
-          <Option value="mother" onClick={() => setSelectTarget('mother') }>엄마</Option>
+          {/* <Option value="all" onClick={() => setSelectTarget('all')}>전체보기</Option> */}
           <Option value="baby" onClick={() => setSelectTarget('baby') }>아기</Option>
+          {<Option value="mother" onClick={() => setSelectTarget('mother') }>엄마</Option>}
         </Select>
         {
         selectTarget == 'baby' 
           &&
           <Select defaultValue={babyList[0].name} variant="plain">
             {babyList.map((baby, index) => {
-              console.log(index)
               return(
-                <Option value={baby.name} onClick={() => setSelectBaby(index)}>{baby.name}</Option>    
+                <Option value={baby.name} key={index} onClick={() => setSelectBaby(index)}>{baby.name}</Option>    
               )
             })}
           </Select>
         }
-        <Select defaultValue="all" variant="plain">
+        <Select variant="plain" placeholder='검진/ 접종 여부 선택'>
           <Option value="all" onClick={() => setSelectType('all')}>접종 / 검진</Option>
           <Option value="검사" onClick={() => setSelectType('검사')}>검진</Option>
           <Option value="접종" onClick={() => setSelectType('접종')}>접종</Option>
         </Select>
+
+        <NumberRangeSlider setSelectRange={setSelectRange}/>
+        
         {
         vaccineList.length != 0? 
         vaccineList.map((vaccine, index) => {
             return(
-              <ReadVaccinCard key={index} index={index} vaccine={vaccine} target={selectTarget}/>
+              <ReadVaccinCard 
+              key={index} index={index} 
+              targetNum = { selectTarget === 'baby' ? babyList[selectBaby].num : userNum }
+              babyIndex = {selectBaby}
+              vaccine={vaccine}/>
             )
           }) : 
           <Typography>없음</Typography>

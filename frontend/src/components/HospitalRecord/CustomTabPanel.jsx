@@ -89,7 +89,7 @@ export default function BasicTabs(props) {
 },[initState])
   
   return (
-    <Box sx={{ display:'flex',justifyContent:'center', textAlign:'center', width: '100%', border:1, borderRadius:1, borderColor: 'red', }}>
+    <Box sx={{ display:'flex',justifyContent:'center', textAlign:'center', width: '100%',}}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', textAlign:'center' }}>
         <Box sx={{display:'flex', justifyContent:'center'}}>
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{display:'flex', justifyContent:'center'}}>

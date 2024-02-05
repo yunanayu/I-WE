@@ -9,15 +9,7 @@ import { Container } from '@mui/material';
 import '../../FCM/firebase-messaging-sw'
 import axios from 'axios';
 import { getEssential } from '../../api/RecordApi';
-
-// export function replaceAWithNumber(inputString) {
-//     // 'A'를 제거하고 나머지 문자열에서 숫자만 추출합니다.
-//     var numberPart = inputString.replace('A', '').match(/\d+/);
-//     // 추출된 숫자가 있으면 해당 숫자를 반환하고, 없으면 null을 반환합니다.
-//     return numberPart ? parseInt(numberPart[0]) : null;
-//   }
-
-// export const recordContext = createContext()
+import useMemberStore from '../../stores/userStore';
 
 
 export function replaceAWithNumber(inputString) {
@@ -27,53 +19,30 @@ export function replaceAWithNumber(inputString) {
   return numberPart ? parseInt(numberPart[0]) : null;
 }
 
-
 export const recordContext = createContext();
-
-
 
 const HospitalRecordMainPage = () => {
   const navigate = useNavigate()
 
   const [initState, setInitState] = useState([])
-  // const [momRecordList, setMomRecordList] = useState([])
-  // console.log(initState)
   const [dayList,setDayList] = useState([])
-
   const [selectedDay, setSelectedDay] = useState()
-  // console.log(selectedDay);
   const [recordList, setRecordList] = useState([])
-  // console.log(recordList);
-
+  const userNum = useMemberStore(state => state.userNum)
 
   useEffect(() => {
-    axios.get(`/api/hospital/mother/1`)
+    axios.get(`/api/hospital/mother/${userNum}`)
     .then((res) => {
       console.log(res.data);
       setInitState(res.data)
     })
     .catch((err) => console.log(err))
-
-    // axios.post(`/api/baby`, {
-    //   motherNum : 1,
-    //   name: '이싸피',
-    //   pregnancyDate: null,
-    //   birth : '2024-01-02'
-    // })
-    // .then((res) => {
-    //   console.log(res);
-    //   // setInitState(res.data)
-    // })
-    // .catch((err) => console.log(err))
   },[])
 
 
   useEffect(()=>{
-    // const data = getMomDate()
-    // setRecordList(data)
     const dates = initState.map((item) => item.hospitalDate)
     setDayList(dates)
-    
     
     if (selectedDay) {
       const data = initState.filter((item) => item.hospitalDate === selectedDay)
@@ -88,14 +57,14 @@ const HospitalRecordMainPage = () => {
   return (
     <recordContext.Provider value={recordList}>
       <Container sx={{width:'100%'}}>
-        <Container sx={{width:'80%',alignContent:'center',justifyContent:'center',}}>
-          <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
+          <Box sx={{display:'flex',flexDirection: 'column',alignContent:'center',justifyContent:'center'}}>
             <CalendarPage dayList={dayList} setSelectedDay={setSelectedDay}/>
           </Box>
           <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
             <CustomTabPanel selectedDay={selectedDay}/>
           </Box>
-        </Container>
+        {/* <Container sx={{alignContent:'center',justifyContent:'center',}}>
+        </Container> */}
       </Container>
     </recordContext.Provider>
   );
