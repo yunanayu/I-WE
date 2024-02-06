@@ -27,12 +27,13 @@ function KakaoLogin({ setIsLoggedIn }) {
         console.log("토큰:", code);
         document.cookie = `token=${code}`;
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정    
-
         const userInfo = await getUserInfo()
         userInfo.map((info) => {
           setBabyList(info)
           setUserNum(info.motherNum)
         })
+        // 알림 허용 req 
+        requestPermission()
         navigate("/"); // 로그인이 완료되면 '/'로 이동
       } 
       else if (code && status === 'addInfo') {
@@ -41,7 +42,6 @@ function KakaoLogin({ setIsLoggedIn }) {
         console.log("토큰:", code);
         document.cookie = `token=${code}`;
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정
-      
         // 추가정보입력
         navigate("/addInfo"); // 로그인이 완료되면 '/'로 이동
       }
@@ -59,7 +59,6 @@ function KakaoLogin({ setIsLoggedIn }) {
       if (token) {
         config.headers.Authorization = `${token}`;
       }
-      // console.log(config.headers.Authorization)
       return config;
     },
     (error) => {

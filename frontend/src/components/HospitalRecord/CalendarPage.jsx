@@ -41,9 +41,7 @@ const CalendarPage = (props) => {
       )}
 
   return (
-    <Container sx={{display:'flow', width:'70%',textAlign:'center',alignContent:'center',justifyContent:'center'}}>
-
-      <Container>
+    <Container sx={{display:'flow', width:'100%',textAlign:'center',alignContent:'center',justifyContent:'center', height:'100%'}}>
         <Calendar 
         onChange={onChange} 
         value={value}
@@ -56,10 +54,6 @@ const CalendarPage = (props) => {
         // onActiveStartDateChange={({ activeStartDate }) => 
         //   getActiveMonth(activeStartDate)}
         />
-      </Container>
-      <Typography>
-        {/* {moment(value).format("YYYY년 MM월 DD일")}  */}
-      </Typography>
     </Container>
   );
 };
