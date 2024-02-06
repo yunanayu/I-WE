@@ -24,6 +24,6 @@ public class GrowthWeight {
     private int month;
 
     @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> weights;
+    private List<Float> weights;
 
 }

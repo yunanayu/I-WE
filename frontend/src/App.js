@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-// import { Provider } from 'react-redux';
-// import { createStore } from 'redux';
-// import rootReducer from './reducers'; // rootReducer는 여러 개의 리듀서를 합친 것입니다.
-
 import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
 import RecordBaby from "./pages/RecordBaby";
 import RecordMom from "./pages/RecordMom";
@@ -16,6 +12,7 @@ import TipPage from "./pages/TipPage";
 import MemberCheck from "./pages/MemberCheckPage";
 import CheckCode from "./pages/CheckCodePage";
 import AddChild from "./pages/AddChildPage";
+import MyPage from "./pages/MyPage";
 
 import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMainPage";
 import AddBabyRecordPage from "./pages/HospitalRecordPage/AddBabyRecordPage";
@@ -26,8 +23,10 @@ import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecor
 // const store = createStore(rootReducer);
 
 
-function App() {
 
+
+
+function App() {
   const [parentLoggedIn, setParentLoggedIn] = useState(false);
   const handleLoginStatusChange = (status) => {
     // Update the parent component state
@@ -44,10 +43,8 @@ function App() {
   }, []);
 
   return (
-    // <Provider store={store}> {/* Provider로 store를 전달 */}
       <div className="App">
         {parentLoggedIn ? <ResponsiveAppBar /> : <></>}
-        {/* <ResponsiveAppBar></ResponsiveAppBar> */}
         <Routes>
           <Route
             exact
@@ -78,6 +75,7 @@ function App() {
           <Route path="/infomom" element={<InfoMom />} />
           <Route path="/infobaby" element={<InfoBaby />} />
           <Route path="/infoforbaby" element={<InfoForBaby />} />
+          <Route path="/mypage" element={<MyPage />} />
 
         <Route path="/recordmom" element={<RecordMom />} />
         <Route path="/recordbaby" element={<RecordBaby />} />

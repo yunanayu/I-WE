@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -68,7 +70,7 @@ public class DBInitializer implements ApplicationRunner {
             GrowthHeight growthHeight = GrowthHeight.builder()
                     .gender(Integer.parseInt(data[0]))
                     .month(Integer.parseInt(data[1]))
-                    .heights(heightData)
+                    .heights(Arrays.stream(data,2,data.length).map(Float::parseFloat).collect(Collectors.toList()))
                     .build();
             heights.add(growthHeight);
         }
@@ -85,7 +87,7 @@ public class DBInitializer implements ApplicationRunner {
             GrowthWeight growthWeight = GrowthWeight.builder()
                     .gender(Integer.parseInt(data[0]))
                     .month(Integer.parseInt(data[1]))
-                    .weights(weightData)
+                    .weights(Arrays.stream(data, 2,data.length).map(Float::parseFloat).collect(Collectors.toList()))
                     .build();
             weights.add(growthWeight);
         }

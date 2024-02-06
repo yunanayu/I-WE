@@ -9,55 +9,7 @@ import { Container } from '@mui/material';
 import '../../FCM/firebase-messaging-sw'
 import axios from 'axios';
 import { getEssential } from '../../api/RecordApi';
-
-// 기록이 있는지 이 페이지에서 확인 후 있으면 prop으로 내려주고 없으면 기록 추가 모달 창
-// const initState = [
-//     { target : 'mother',
-//       title : '1차 정기검진',
-//       hospitalName:'싸피 산부인과',
-//       doctor :'김싸피',
-//       hospitalDate:'2024-02-05',
-//       content: '정기검진',
-//       result: '정상',
-//       comment : '이상없음',
-//     },
-//     { target : 'mother',
-//       title : '2차 정기검진',
-//       hospitalName:'싸피 산부인과',
-//       doctor :'이싸피',
-//       hospitalDate:'2024-02-06',
-//       content: '정기검진',
-//       result: '정상',
-//       comment : '이상없음',
-//     },
-//     { target : 'mother',
-//       title : '3차 정기검진',
-//       hospitalName:'싸피 산부인과',
-//       doctor :'박싸피',
-//       hospitalDate:'2024-02-07',
-//       content: '정기검진',
-//       result: '정상',
-//       comment : '이상없음',
-//     },
-//     { target : 'baby',
-//       title : '1차 정기검진',
-//       hospitalName:'싸피 소아과',
-//       doctor :'최싸피',
-//       hospitalDate:'2024-02-07',
-//       content: '정기검진', 
-//       result: '정상',
-//       comment : '이상없음',
-//     },
-//   ]
-
-// export function replaceAWithNumber(inputString) {
-//     // 'A'를 제거하고 나머지 문자열에서 숫자만 추출합니다.
-//     var numberPart = inputString.replace('A', '').match(/\d+/);
-//     // 추출된 숫자가 있으면 해당 숫자를 반환하고, 없으면 null을 반환합니다.
-//     return numberPart ? parseInt(numberPart[0]) : null;
-//   }
-
-// export const recordContext = createContext()
+import useMemberStore from '../../stores/userStore';
 
 
 export function replaceAWithNumber(inputString) {
@@ -67,53 +19,49 @@ export function replaceAWithNumber(inputString) {
   return numberPart ? parseInt(numberPart[0]) : null;
 }
 
-
 export const recordContext = createContext();
-
-
 
 const HospitalRecordMainPage = () => {
   const navigate = useNavigate()
 
+  // 이거 꼭 재설정
   const [initState, setInitState] = useState([])
-  // const [momRecordList, setMomRecordList] = useState([])
-  // console.log(initState)
   const [dayList,setDayList] = useState([])
-
   const [selectedDay, setSelectedDay] = useState()
-  // console.log(selectedDay);
   const [recordList, setRecordList] = useState([])
-  // console.log(recordList);
+  const userNum = useMemberStore(state => state.userNum)
+  const babyList = useMemberStore(state => state.babyList)
+
+  
+  const [babyrecord, setBabyrecord] = useState([])
+  const [momrecord, setMomrecord] = useState([])
+
+  useEffect(() => {
+    setInitState([...babyrecord,...momrecord])
+  }, [momrecord,babyrecord])
 
 
   useEffect(() => {
-    axios.get(`/api/hospital/mother/1`)
+    axios.get(`/api/hospital/mother/${userNum}`)
     .then((res) => {
-      console.log(res.data);
-      setInitState(res.data)
+      // console.log(res.data);
+      setMomrecord(res.data)
     })
     .catch((err) => console.log(err))
 
-    // axios.post(`/api/baby`, {
-    //   motherNum : 1,
-    //   name: '이싸피',
-    //   pregnancyDate: null,
-    //   birth : '2024-01-02'
-    // })
-    // .then((res) => {
-    //   console.log(res);
-    //   // setInitState(res.data)
-    // })
-    // .catch((err) => console.log(err))
+    babyList.map((baby) => {
+      axios.get(`api/hospital/baby/${baby.num}`)
+      .then((res) => {
+        // console.log(res.data)
+        setBabyrecord([...babyrecord,...res.data])
+      })
+    })
   },[])
 
 
   useEffect(()=>{
-    // const data = getMomDate()
-    // setRecordList(data)
     const dates = initState.map((item) => item.hospitalDate)
     setDayList(dates)
-    
     
     if (selectedDay) {
       const data = initState.filter((item) => item.hospitalDate === selectedDay)
@@ -127,16 +75,19 @@ const HospitalRecordMainPage = () => {
 
   return (
     <recordContext.Provider value={recordList}>
-      <Container sx={{width:'100%'}}>
-        <Container sx={{width:'80%',alignContent:'center',justifyContent:'center',}}>
-          <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
+      <Container sx={{}}>
+          <Box sx={{display:'flex',flexDirection: 'column',alignContent:'center',justifyContent:'center', height: 532}}>
             <CalendarPage dayList={dayList} setSelectedDay={setSelectedDay}/>
           </Box>
           <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
             <CustomTabPanel selectedDay={selectedDay}/>
           </Box>
-        </Container>
+        {/* <Container sx={{alignContent:'center',justifyContent:'center',}}>
+        </Container> */}
       </Container>
+      <Box sx={{height:100}}>
+
+      </Box>
     </recordContext.Provider>
   );
 };
