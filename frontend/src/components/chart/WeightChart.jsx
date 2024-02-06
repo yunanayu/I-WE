@@ -6,7 +6,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { BarPlot } from "@mui/x-charts/BarChart";
 import { LinePlot, MarkPlot } from "@mui/x-charts/LineChart";
-import { ChartsXAxis, ChartsYAxis } from "@mui/x-charts";
+import { ChartsTooltip, ChartsXAxis, ChartsYAxis } from "@mui/x-charts";
 import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
 import { Typography } from "@mui/material";
 
@@ -30,6 +30,8 @@ function WeeklyWeightChart(props) {
     if (props.recordData) {
       setMomRecord(props.recordData);
     }
+    const newData = generateData(selectedInterval);
+    setChartData(newData);
   }, [props]);
 
   useEffect(() => {
@@ -214,6 +216,7 @@ function WeeklyWeightChart(props) {
             <MarkPlot />
             <ChartsXAxis label="" position="bottom" axisId="x-axis-id" />
             <ChartsYAxis label="kg" position="left" axisId="y-axis-id" />
+            <ChartsTooltip trigger="axis"/>
           </ResponsiveChartContainer>
         )}
       </Paper>
@@ -356,7 +359,7 @@ function ChangeChart(props) {
     }
     // console.log("BABY DATA !!!!!!!!!!!!" + JSON.stringify(babyData));
     // console.log("WEEK !!!!! " + week);
-  }, [momRecord, momBasis, week, chartData, lineData]);
+  }, [momRecord, momBasis, week, chartData, lineData, props]);
 
   const generateData = () => {
     if(momWeight) {
@@ -433,7 +436,7 @@ function ChangeChart(props) {
             {
               type: "bar",
               data: chartData.map((data) => data.weight),
-              label: "현재 증가율",
+              label: "증가율",
               id: 'weight'
             },
             {
@@ -466,6 +469,7 @@ function ChangeChart(props) {
           <ChartsXAxis label="임신 주차" position="bottom" axisId="x-axis-id" />
           <ChartsYAxis label="평균 체중 변화량" position="left" axisId="y-axis-id" />
           <ChartsLegend position={{ vertical: "top", horizontal: "right" }} />
+          <ChartsTooltip trigger="axis"/>
         </ResponsiveChartContainer>
         )}
       </Paper>

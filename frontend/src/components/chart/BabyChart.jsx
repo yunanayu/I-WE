@@ -1,6 +1,6 @@
 import { Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { BarPlot, ChartsXAxis, ChartsYAxis, LineChart, LinePlot, MarkPlot, ResponsiveChartContainer } from "@mui/x-charts";
+import { BarPlot, ChartsTooltip, ChartsXAxis, ChartsYAxis, LineChart, LinePlot, MarkPlot, ResponsiveChartContainer } from "@mui/x-charts";
 import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
 import React, { useState, useEffect } from "react";
 /*
@@ -65,6 +65,7 @@ function WeightChart(props) {
           <ChartsXAxis label="임신 주차" position="bottom" axisId="x-axis-id" />
           <ChartsYAxis label="몸무게(g)" position="left" axisId="y-axis-id" />
           <ChartsLegend position={{ vertical: "top", horizontal: "right" }} />
+          <ChartsTooltip trigger="axis"/>
         </ResponsiveChartContainer>
         )}
       </Paper>
@@ -112,6 +113,7 @@ function HeightChart(props) {
           <ChartsXAxis label="임신 주차" position="bottom" axisId="x-axis-id" />
           <ChartsYAxis label="키(cm)" position="left" axisId="y-axis-id" />
           <ChartsLegend position={{ vertical: "top", horizontal: "right" }} />
+          <ChartsTooltip trigger="axis"/>
         </ResponsiveChartContainer>
         )}
       </Paper>
@@ -159,6 +161,7 @@ function HeadChart(props) {
           <ChartsXAxis label="임신 주차" position="bottom" axisId="x-axis-id" />
           <ChartsYAxis label="머리 둘레(nm)" position="left" axisId="y-axis-id" />
           <ChartsLegend position={{ vertical: "top", horizontal: "right" }} />
+          <ChartsTooltip trigger="axis"/>
         </ResponsiveChartContainer>
         )}
       </Paper>

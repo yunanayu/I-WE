@@ -55,7 +55,7 @@ const style = {
 };
 
 // 평균과 비교하여 메세지 출력
-function Info() {
+function Info(props) {
   // 주차 비교
   // 평균값 3개 뽑기
   // 크면 파랑 작으면 빨강
@@ -114,10 +114,18 @@ function RecordBaby() {
   const status = useMemberStore((state) => state.babyList[0].targetTime).substr(0,1);
   const babyName = useMemberStore((state) => state.babyList[0].name);
 
-
-
+  
+  const [born, setBorn] = useState(false);
   const [babyRecord, setBabyRecord] = useState(null);
   const [recentRecord, setRecentRecord] = useState();
+
+  useEffect(() => {
+    if (status === 'A') {
+      setBorn(true);
+    } else {
+      setBorn(false);
+    }
+  }, [status]);
 
   useEffect(() => {
     const init = async () => {
@@ -125,7 +133,7 @@ function RecordBaby() {
         .get(`/api/babyRecord/${babyNum}`)
         .then((response) => {
           setBabyRecord(response.data);
-          const recent = response.data[0];
+          const recent = response.data[response.data.length-1];
           setRecentRecord(recent);
         })
         .catch((error) => {
@@ -152,7 +160,7 @@ function RecordBaby() {
           maxWidth="md"
           sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
         >
-          {<Info />}
+          {<Info born={born} recentRecord={recentRecord} babyName={babyName} targetTime={targetTime}/>}
         </Box>
         <Box maxWidth="md" sx={{ ...setCenter }}>
           <Stack
@@ -218,7 +226,7 @@ function RecordBaby() {
                       {console.log(date)}
                     </Stack>
                   </Typography>
-                  {<BabyForm data={babyRecord} dateSelected={date} babyNum={babyNum}/>}
+                  {<BabyForm data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born}/>}
                 </Box>
               </LocalizationProvider>
             </Box>
