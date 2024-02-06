@@ -53,6 +53,7 @@ const BabyCarousel = () => {
       >
         {imageData.map((content) => (
           <Stack
+          key={content.label} 
             sx={{
               displayplay: "flex",
               justifyContent: "center",

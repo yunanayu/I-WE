@@ -23,7 +23,6 @@ public class AlarmWriterConfig {
         return chunk -> {
             for (BabyChecker babyChecker : chunk.getItems()) {
                 try {
-                    log.info("BabyAlarmWriter chunk start");
                     alarmService.sendBabyAlarm(babyChecker);
                 } catch (Exception e) {
                     log.info("babyAlarmWriter ERROR : {} ", e.getMessage());
@@ -38,7 +37,6 @@ public class AlarmWriterConfig {
         return chunk -> {
             for (MotherChecker motherChecker : chunk) {
                 try {
-                    log.info("MotherAlarmWriter chunk start");
                     alarmService.sendMotherAlarm(motherChecker);
                 } catch (Exception e) {
                     log.info("MotherAlarmWriter ERROR : {} ", e.getMessage());
