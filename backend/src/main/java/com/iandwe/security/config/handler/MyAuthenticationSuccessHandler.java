@@ -2,6 +2,7 @@ package com.iandwe.security.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.iandwe.common.util.PasswordInitializer;
 import com.iandwe.member.domain.Member;
 import com.iandwe.member.domain.MemberRole;
 import com.iandwe.member.domain.PlatformType;
@@ -44,7 +45,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
 
     private final MemberRepository memberRepository;
 
-//    private PasswordEncoder passwordEncoder;
+    private final PasswordInitializer passwordInitializer;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -69,8 +70,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
         if(!isExist) {
             Member member = Member.builder()
                     .email(email)
-//                    .password(passwordEncoder.encode("1111"))
-                    .password("1111")
+                    .password(passwordInitializer.generateAndEncodeTemporaryPassword())
                     .platform(PlatformType.valueOf(provider.toUpperCase(Locale.ROOT)))
                     .role(MemberRole.valueOf(role.substring(5)))
                     .build();
