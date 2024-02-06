@@ -65,8 +65,6 @@ public class FamilyService {
     }
 
     public Long findFatherByNum(Long familyNum) {
-        System.out.println(familyNum +" 여기 패밀리넘버있다 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        System.out.println(familyRepository.findFatherByNum(familyNum));
         return familyRepository.findFatherByNum(familyNum);
         // TODO : Father 에 대한 exception 추가 필요
     }
