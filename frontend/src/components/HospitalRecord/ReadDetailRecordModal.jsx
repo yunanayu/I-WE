@@ -40,6 +40,15 @@ const ReadDetailRecordModal = (props) => {
         />
       <TextField
           id="standard-read-only-input"
+          label="기록대상"
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+          value={record.target}
+        />
+      <TextField
+          id="standard-read-only-input"
           label="진료의사"
           InputProps={{
             readOnly: true,
@@ -59,6 +68,15 @@ const ReadDetailRecordModal = (props) => {
           variant="standard"
           value={record.content}
         />
+        <TextField
+          id="standard-read-only-input"
+          label="검진 결과"
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+          value={record.result}
+        />
       <TextField
           id="standard-read-only-input"
           label="의사 소견"
@@ -69,10 +87,13 @@ const ReadDetailRecordModal = (props) => {
           value={record.comment}
         />
       </Box>
-      <IconButton aria-label="delete" disabled color="primary" >
+      {/* <IconButton aria-label="delete" disabled color="primary" >
         <DeleteIcon />
-      </IconButton>
-      <Button onClick={goUpdate}>수정하기</Button>
+      </IconButton> */}
+      <Button 
+      onClick={goUpdate}
+      sx={{justifyContent:'right'}}
+      >수정하기</Button>
     </Container>
   );
 };
