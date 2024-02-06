@@ -81,6 +81,6 @@ function App() {
         <Route path="/tips" element={<TipPage />} />
       </Routes>
     </div>
-  );
+    );
 }
 export default App;
