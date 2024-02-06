@@ -17,20 +17,16 @@ public class BabyController {
     private final BabyService babyService;
 
     @PostMapping()
-    public ResponseEntity<BabyCreateResponseDto> create(@RequestBody BabyCreateRequestDto requestDto) { // 엄마 id 매개변수로 저장
-        BabyCreateResponseDto responseDto = babyService.create(requestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+    public ResponseEntity<List<BabyReadResponseDto>> create(@RequestBody BabyCreateRequestDto requestDto) { // 엄마 id 매개변수로 저장
+//        BabyCreateResponseDto responseDto = babyService.create(requestDto);
+//        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+        List<BabyReadResponseDto> responseDtos = babyService.create(requestDto);
+        return new ResponseEntity<>(responseDtos, HttpStatus.CREATED);
     }
 
     @GetMapping("/{userNum}")
     public ResponseEntity<List<BabyReadResponseDto>> findAllByUserNum(@PathVariable long userNum) {
         return new ResponseEntity<>(babyService.findAllByUserNum(userNum), HttpStatus.OK);
-    }
-
-    @PutMapping("/share")
-    public ResponseEntity<?> share(@RequestBody BabyShareRequestDto requestDto) {
-        babyService.share(requestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/update")

@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import icon1 from "../../images/icon1.png";
 import { NavLink } from "react-router-dom";
 import { Cookies } from "react-cookie";
+import useMemberStore from "../../stores/userStore";
 
 const pages = [
   { name: "다이어리", link: "/diary" },
@@ -32,6 +33,9 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const cookies = new Cookies(); // Cookies 객체 생성
+  const setBabyList = useMemberStore(state => state.setBabyList)
+  const setUserNum = useMemberStore(state => state.setUserNum)
+  const clearUserStorage = useMemberStore.persist.clearStorage
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -54,6 +58,9 @@ function ResponsiveAppBar() {
 
   const handleLogoutClick = () => {
     cookies.remove(document.cookie); // 쿠키 삭제
+    setUserNum(0)
+    setBabyList([])
+    clearUserStorage()
     window.location.href = "/"; // 로그아웃 시 페이지 이동
   };
 
@@ -73,7 +80,6 @@ function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              // color: "#646464",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -92,7 +98,6 @@ function ResponsiveAppBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              // color="#646464"
               color="inherit"
             >
               <MenuIcon />
@@ -117,7 +122,6 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  {/* Wrap Typography in NavLink for navigation */}
                   <Typography
                     component={NavLink}
                     to={page.link}
@@ -147,7 +151,6 @@ function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              // color: "#646464",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -201,13 +204,9 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem
-                  key={setting}
-                  onClick={
-                    setting === "로그아웃"
-                      ? handleLogoutClick
-                      : handleCloseUserMenu
-                  }
-                >
+                key={setting}
+                onClick={setting === "로그아웃" ? handleLogoutClick : (setting === "마이페이지" ? () => { window.location.href = '/mypage' } : handleCloseUserMenu)}
+              >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

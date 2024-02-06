@@ -46,13 +46,13 @@ const UpdateHospitalRecord = (props) => {
 
   const location = useLocation()
   const record = location.state.record
+  const target = location.state.record.target
   console.log(record);
 
   const [value, setValue] = React.useState('mother');
 
   const today = dayjs(moment(new Date()).format('YYYY-MM-DD'))  // 추후에 선택한 날짜로 변경하기
   const [state, setState] = useState({
-    // selectDay : selectedDay,
     targetNum : record.targetNum,
     title :record.title,
     checkupItem :record.content,
@@ -61,25 +61,23 @@ const UpdateHospitalRecord = (props) => {
     checkupResult:record.result,
     doctorOpinion: record.comment,
     target : record.target,
-    // ------------------
-    // momWeight:'',
-    // babyName : '',
-    // babyWeight:'',
-    // babyHeight:'',
-    // babyDiameter:'',
+    selectDay :record.selectDay
+
   })
+  console.log(state)
 
     const submit = () => {
       axios({
         method:'put',
         url : `/api/hospital/update`,
         data:{
+          num: record.num,
           target : state.target,  // baby or mother
           // targetNum 수정하기
           targetNum : state.targetNum,  // pk
           title : state.title,   // 간단 정보
           hospitalName : state.hospitalName,  //
-          doctor : state.doctorName,
+          doctor :' state.doctorName',
           hospitalDate : state.selectDay,
           content : state.checkupItem,
           result : state.checkupResult,
@@ -113,6 +111,8 @@ const UpdateHospitalRecord = (props) => {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
+          value={record.target}
+          onChange={handleChange}
         >
           <FormControlLabel value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
           <FormControlLabel value="baby" control={<Radio />} label="아기" name='target' onChange={handleChange}/>
@@ -168,17 +168,31 @@ const UpdateHospitalRecord = (props) => {
             sx={{width:'30%', pr:5}}
           />
         </Box>
-        <Box>
+        {/* <Box>
           <Typography 
           variant='h5'
           >검진사진</Typography>
           <FileUpload />
+        </Box> */}
+        <Box>
+          <Typography variant='h5'>검진내용</Typography>
+          <TextField
+          id="outlined-textarea"
+          // label="검진결과"
+          name='checkupItem'
+          placeholder="검진내용"
+          value={state.checkupItem}
+          onChange={handleChange}
+          multiline
+          sx={{width:'100%'}}
+          >
+          </TextField>
         </Box>
         <Box>
           <Typography variant='h5'>검진결과</Typography>
           <TextField
           id="outlined-textarea"
-          value={state.result}
+          value={state.checkupResult}
           // label="검진결과"
           name='checkupResult'
           placeholder="검진결과"

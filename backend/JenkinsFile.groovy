@@ -202,7 +202,7 @@ pipeline {
             steps {
                 echo '##### BE Run Container #####'
                 script {
-                    sh "docker run -d --name ${BACKEND_CONTAINER_NAME} -p 8081:8080 ${BACKEND_IMAGE_NAME}"
+                    sh "docker run -d --name ${BACKEND_CONTAINER_NAME} -p 8081:8081 ${BACKEND_IMAGE_NAME}"
                 }
             }
         }

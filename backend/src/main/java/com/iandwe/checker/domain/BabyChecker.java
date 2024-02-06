@@ -26,7 +26,7 @@ public class BabyChecker {
 
     private boolean complete;
 
-    public void updateComplete(boolean complete){
+    public void updateComplete(Boolean complete){
         this.complete = complete;
     }
 

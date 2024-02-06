@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface BabyService {
 
-    BabyCreateResponseDto create(BabyCreateRequestDto dto);
+//    BabyCreateResponseDto create(BabyCreateRequestDto dto);
+
+    List<BabyReadResponseDto> create(BabyCreateRequestDto dto);
 
     List<BabyReadResponseDto> findAllByUserNum(long userNum);
-
-    void share(BabyShareRequestDto dto);
 
     BabyReadResponseDto update(BabyUpdateRequestDto dto);
 
