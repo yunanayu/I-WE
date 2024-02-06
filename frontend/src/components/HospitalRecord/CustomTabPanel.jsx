@@ -150,6 +150,9 @@ export default function BasicTabs(props) {
               <ReadRecordCard value={value} index={0} record={record}/>
             )
           })}
+          <Button 
+          onClick={() => navigate('/momhospitalrecord',{state : {selectedDay:props.selectedDay}})}
+          sx={{border:1, borderRadius:5, color:'#FBBBB8'}}>기록 추가하기</Button>
           </div>
         }
         </CustomTabPanel>
