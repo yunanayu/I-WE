@@ -8,6 +8,7 @@ import com.iandwe.record.repository.GrowthWeightRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,25 +21,53 @@ public class GrowthServiceImpl implements GrowthService {
     private final GrowthWeightRepository growthWeightRepository;
 
     @Override
-    public GrowthResponseDto getPercentile(int gender, int month, float height, float weight) {
+    public GrowthResponseDto findPercentiles(int gender, int month, float height, float weight) {
 
-        Optional<GrowthHeight> growthHeight = growthHeightRepository.findByGenderAndMonth(gender, month);
+        List<GrowthHeight> growthHeights = growthHeightRepository.findAllByGenderAndMonth(gender, month);
 
-        int heightPercentile = getPercentile(height, growthHeight.get().getHeights());
+        List<GrowthWeight> growthWeights = growthWeightRepository.findAllByGenderAndMonth(gender, month);
 
-        Optional<GrowthWeight> growthWeight = growthWeightRepository.findByGenderAndMonth(gender, month);
+        GrowthResponseDto dto = new GrowthResponseDto();
 
-        int weightPercentile = getPercentile(weight, growthWeight.get().getWeights());
+        int heightPercentile = checkPercentile(height, growthHeights.get(0).getHeights());
 
-        return new GrowthResponseDto(heightPercentile, weightPercentile);
+        int weightPercentile = checkPercentile(weight, growthWeights.get(0).getWeights());
+
+        List<Float> height25thPercentiles = new ArrayList<>();
+
+        List<Float> height75thPercentiles = new ArrayList<>();
+
+        List<Float> weight25thPercentiles = new ArrayList<>();
+
+        List<Float> weight75thPercentiles = new ArrayList<>();
+
+        for (GrowthHeight growthHeight : growthHeights) {
+            height25thPercentiles.add(growthHeight.getHeights().get(7));
+            height75thPercentiles.add(growthHeight.getHeights().get(5));
+        }
+        for (GrowthWeight growthWeight : growthWeights) {
+            weight25thPercentiles.add(growthWeight.getWeights().get(7));
+            weight75thPercentiles.add(growthWeight.getWeights().get(5));
+        }
+
+        dto.setHeightPercentile(heightPercentile);
+
+        dto.setWeightPercentile(weightPercentile);
+
+        dto.setHeight25thPercentiles(height25thPercentiles);
+        dto.setHeight75thPercentiles(height75thPercentiles);
+        dto.setWeight25thPercentiles(weight25thPercentiles);
+        dto.setWeight75thPercentiles(weight75thPercentiles);
+
+        return dto;
     }
 
-    private static int getPercentile(float target, List<Float> list) {
+    private static int checkPercentile(float target, List<Float> list) {
 
         int[] percentile = {99, 97, 95, 90, 85, 75, 50, 25, 15, 10, 5, 3, 1};
 
-        for(int i=0;i<list.size();i++){
-            if(target < list.get(i)){
+        for (int i = 0; i < list.size(); i++) {
+            if (target < list.get(i)) {
                 return percentile[i];
             }
         }

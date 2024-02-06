@@ -20,7 +20,7 @@ public class GrowthController {
     private final GrowthService growthService;
 
     @GetMapping("/{gender}/{month}/{height}/{weight}")
-    public ResponseEntity<GrowthResponseDto> getPercentile(@PathVariable int gender, @PathVariable int month, @PathVariable float height, @PathVariable float weight ) {
-        return new ResponseEntity<>(growthService.getPercentile(gender, month, height, weight), HttpStatus.OK);
+    public ResponseEntity<GrowthResponseDto> findPercentiles(@PathVariable int gender, @PathVariable int month, @PathVariable float height, @PathVariable float weight ) {
+        return new ResponseEntity<>(growthService.findPercentiles(gender, month, height, weight), HttpStatus.OK);
     }
 }
