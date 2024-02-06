@@ -1,22 +1,22 @@
 import axios from "axios";
 
-export const getMomOne = async (param) => {
-  const res = await axios.get(`url`)
+export const getCheck = (userNum, target) => {
+  const res = axios.get(`/api/check/${target}/${userNum}`)
   return res.data
 }
 
 
-export const getMomDate = async () => {
-  const res = await axios({
-    method : 'get',
-    url : `url`
+export const getMomDate = (userNum) => {
+  axios({
+    method :'get',
+    url:`/api/check/mother/${userNum}`,
   })
-  .then ((res) => {
+  .then((res)=>{
     console.log(res.data)
-    // setMomRecordList(res.data)
+    // const list= res.data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));
+    // setMomCheckList(list)
   })
-  .catch((err) => console.log(err))
-  return res.data
+  .catch(err=>console.log(err))
 }
 
 

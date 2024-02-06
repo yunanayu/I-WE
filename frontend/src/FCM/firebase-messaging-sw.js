@@ -5,19 +5,22 @@ import { goDeviceToken } from "../api/FCMTokenApi";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+// Import the functions you need from the SDKs you need
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
+  apiKey: "AIzaSyAJC_FtqavkZ_z_UpZ0lb-nprbuKBwTKho",
   authDomain: "i-and-we-382f4.firebaseapp.com",
   projectId: "i-and-we-382f4",
   storageBucket: "i-and-we-382f4.appspot.com",
   messagingSenderId: "268481112825",
-  appId: process.env.REACT_APP_APP_ID
+  appId: "1:268481112825:web:a5e61ab9c017d14ba1d028"
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 
 const messaging = getMessaging(app);
@@ -34,7 +37,7 @@ export async function requestPermission() {
   console.log("알림 권한이 허용됨");
 
   const token = await getToken(messaging, {
-    vapidKey: process.env.REACT_APP_VAPID_KEY,
+    vapidKey: process.env.REACT_APP_VAPID_KEY
   });
 
   if (token) {
@@ -47,7 +50,7 @@ export async function requestPermission() {
     // ...
   });
    // 사용자가 구독을 취소할 때마다 토큰 삭제
-  //  window.addEventListener('beforeunload', async () => {
+  // window.addEventListener('beforeunload', async () => {
   //   console.log("페이지를 떠날 때 토큰을 삭제합니다.");
   //   try {
   //     await deleteToken(messaging, token);

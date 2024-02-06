@@ -5,8 +5,10 @@ import com.iandwe.baby.dto.*;
 import com.iandwe.baby.exception.NoBabyExistException;
 import com.iandwe.baby.repository.BabyRepository;
 import com.iandwe.checker.service.generator.CheckerGenerator;
+import com.iandwe.family.service.FamilyService;
 import com.iandwe.member.domain.Member;
 import com.iandwe.member.domain.ParentType;
+import com.iandwe.member.exception.NoMemberExistException;
 import com.iandwe.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,19 +26,30 @@ public class BabyServiceImpl implements BabyService {
 
     private final MemberRepository memberRepository;
 
+    private final FamilyService familyService;
+
     @Transactional
     @Override
     public BabyCreateResponseDto create(BabyCreateRequestDto dto) {
         Baby baby = dto.toEntity();
 
-        babyRepository.save(baby);
-        checkerGenerator.generateBabyCheckerData(baby.getNum());
+        Member savedMember = memberRepository.findByNum(dto.getMotherNum()).orElseThrow(NoMemberExistException::new);
 
-        Member savedMember = memberRepository.findByNum(dto.getMotherNum()).orElseThrow();
+        if (savedMember.getFamilyNum() != null) { // 존재 할 때, 근데 아직 아빠가 공유 안받은 경우도 있음
+            baby.share(familyService.findFatherByNum(savedMember.getFamilyNum()));
+        } else {
+            Long num = familyService.create(savedMember.getNum());
+            savedMember.updateFamilyNum(num);
+            memberRepository.save(savedMember);
+        }
+
+        babyRepository.save(baby);
 
         if (isMother(savedMember.getParentType())) {
             checkerGenerator.generateMotherCheckerData(savedMember.getNum(), baby.getNum());
         }
+
+        checkerGenerator.generateBabyCheckerData(baby.getNum());
 
         return BabyCreateResponseDto.from(baby);
     }
@@ -50,14 +63,6 @@ public class BabyServiceImpl implements BabyService {
         return babies.stream()
                 .map(BabyReadResponseDto::from)
                 .toList();
-    }
-
-    @Override
-    @Transactional
-    public void share(BabyShareRequestDto dto) {
-        Baby baby = babyRepository.findByNum(dto.getBabyNum())
-                .orElseThrow(NoBabyExistException::new);
-        baby.share(dto.getFatherNum());
     }
 
     @Override

@@ -41,7 +41,7 @@ public class Baby {
 
     private LocalDate birth;
 
-    public void share(long fatherNum) {
+    public void share(Long fatherNum) {
         this.fatherNum = fatherNum;
     }
 

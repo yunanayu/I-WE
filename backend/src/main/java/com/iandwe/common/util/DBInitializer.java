@@ -2,6 +2,8 @@ package com.iandwe.common.util;
 
 import com.iandwe.essential.domain.Essential;
 import com.iandwe.essential.repository.EssentialRepository;
+import com.iandwe.info.domain.Info;
+import com.iandwe.info.repository.InfoRepository;
 import com.iandwe.record.domain.GrowthHeight;
 import com.iandwe.record.domain.GrowthWeight;
 import com.iandwe.record.repository.GrowthHeightRepository;
@@ -13,7 +15,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -27,18 +32,21 @@ public class DBInitializer implements ApplicationRunner {
 
     private final GrowthWeightRepository growthWeightRepository;
 
+    private final InfoRepository infoRepository;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         saveEssentials();
         saveGrowthHeights();
         saveGrowthWeights();
+        saveInfos();
     }
 
     private void saveEssentials() throws IOException {
         List<String[]> datas = csvDataLoader.loadData("db/essentialInitData.csv");
         List<Essential> essentials = new ArrayList<>();
 
-        for(String[] data : datas) {
+        for (String[] data : datas) {
             Essential essential = Essential.builder()
                     .title(data[0])
                     .description(data[1])
@@ -57,23 +65,12 @@ public class DBInitializer implements ApplicationRunner {
         List<String[]> datas = csvDataLoader.loadData("db/growthHeightInitData.csv");
         List<GrowthHeight> heights = new ArrayList<>();
 
-        for(String[] data : datas) {
+        for (String[] data : datas) {
+            List<String> heightData = new ArrayList<>(Arrays.asList(data).subList(2, data.length));
             GrowthHeight growthHeight = GrowthHeight.builder()
                     .gender(Integer.parseInt(data[0]))
                     .month(Integer.parseInt(data[1]))
-                    .p1(Float.parseFloat(data[2]))
-                    .p3(Float.parseFloat(data[3]))
-                    .p5(Float.parseFloat(data[4]))
-                    .p10(Float.parseFloat(data[5]))
-                    .p15(Float.parseFloat(data[6]))
-                    .p25(Float.parseFloat(data[7]))
-                    .p50(Float.parseFloat(data[8]))
-                    .p75(Float.parseFloat(data[9]))
-                    .p85(Float.parseFloat(data[10]))
-                    .p90(Float.parseFloat(data[11]))
-                    .p95(Float.parseFloat(data[12]))
-                    .p97(Float.parseFloat(data[13]))
-                    .p99(Float.parseFloat(data[14]))
+                    .heights(Arrays.stream(data,2,data.length).map(Float::parseFloat).collect(Collectors.toList()))
                     .build();
             heights.add(growthHeight);
         }
@@ -85,27 +82,33 @@ public class DBInitializer implements ApplicationRunner {
         List<String[]> datas = csvDataLoader.loadData("db/growthWeightInitData.csv");
         List<GrowthWeight> weights = new ArrayList<>();
 
-        for(String[] data : datas) {
+        for (String[] data : datas) {
+            List<String> weightData = new ArrayList<>(Arrays.asList(data).subList(2, data.length));
             GrowthWeight growthWeight = GrowthWeight.builder()
                     .gender(Integer.parseInt(data[0]))
                     .month(Integer.parseInt(data[1]))
-                    .p1(Float.parseFloat(data[2]))
-                    .p3(Float.parseFloat(data[3]))
-                    .p5(Float.parseFloat(data[4]))
-                    .p10(Float.parseFloat(data[5]))
-                    .p15(Float.parseFloat(data[6]))
-                    .p25(Float.parseFloat(data[7]))
-                    .p50(Float.parseFloat(data[8]))
-                    .p75(Float.parseFloat(data[9]))
-                    .p85(Float.parseFloat(data[10]))
-                    .p90(Float.parseFloat(data[11]))
-                    .p95(Float.parseFloat(data[12]))
-                    .p97(Float.parseFloat(data[13]))
-                    .p99(Float.parseFloat(data[14]))
+                    .weights(Arrays.stream(data, 2,data.length).map(Float::parseFloat).collect(Collectors.toList()))
                     .build();
             weights.add(growthWeight);
         }
 
         growthWeightRepository.saveAll(weights);
+    }
+
+    private void saveInfos() throws IOException {
+        List<String[]> datas = csvDataLoader.loadData("db/infoInitData.csv");
+        List<Info> infos = new ArrayList<>();
+        for (String[] data : datas) {
+            Info info = Info.builder()
+                    .content(data[0])
+                    .startTime(data[1])
+                    .endTime(data[2])
+                    .target(data[3])
+                    .category(data[4])
+                    .build();
+            infos.add(info);
+        }
+
+        infoRepository.saveAll(infos);
     }
 }

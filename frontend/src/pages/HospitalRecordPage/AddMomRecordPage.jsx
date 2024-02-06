@@ -30,6 +30,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Option } from '@mui/joy';
+import useMemberStore from './../../stores/userStore';
 
 const babyList = [
   {name:'서싸피'},
@@ -41,9 +43,11 @@ const babyList = [
 ]
 
 const AddMomRecordPage = () => {
-
+  const babyList = useMemberStore(state => state.babyList)
+  console.log(babyList)
   const navigate = useNavigate()
-
+  const [target, setTarget] = useState('')
+  console.log(target)
   const location = useLocation()
   const selectedDay = location.state.selectedDay
 
@@ -66,7 +70,9 @@ const AddMomRecordPage = () => {
     // babyHeight:'',
     // babyDiameter:'',
   })
+  useEffect(() => {
 
+  }, [target])
     const submit = () => {
       axios({
         method:'post',
@@ -112,10 +118,24 @@ const AddMomRecordPage = () => {
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
         >
-          <FormControlLabel value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
-          <FormControlLabel value="baby" control={<Radio />} label="아기" name='target' onChange={handleChange}/>
+          <FormControlLabel onClick={()=> setTarget('mother')} value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
+          <FormControlLabel onClick={()=> setTarget('baby')} value="baby" control={<Radio />} label="아기" name='target' onChange={handleChange}/>
         </RadioGroup>
       </FormControl>
+      {/* {
+      target === 'baby'
+      &&
+      <Select placeholder='대상을 선택해주세요'  variant="plain">
+        {babyList.map((item, index) => {
+          return(
+            <Option value={item.num}>{item.name}</Option>
+          )
+        })}
+      </Select>
+      } */}
+
+
+
       <Box sx={{display:'flex', width:'100%', pt:3 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={['DatePicker']}>
@@ -166,9 +186,22 @@ const AddMomRecordPage = () => {
             sx={{width:'30%', pr:5}}
           />
         </Box>
-        <Box>
+        {/* <Box>
           <Typography variant='h5'>검진사진</Typography>
           <FileUpload />
+        </Box> */}
+        <Box>
+          <Typography variant='h5'>검진내용</Typography>
+          <TextField
+          id="outlined-textarea"
+          // label="검진결과"
+          name='checkupItem'
+          placeholder="검진내용"
+          onChange={handleChange}
+          multiline
+          sx={{width:'100%'}}
+          >
+          </TextField>
         </Box>
         <Box>
           <Typography variant='h5'>검진결과</Typography>
@@ -181,7 +214,6 @@ const AddMomRecordPage = () => {
           multiline
           sx={{width:'100%'}}
           >
-
           </TextField>
         </Box>
       </Box>
