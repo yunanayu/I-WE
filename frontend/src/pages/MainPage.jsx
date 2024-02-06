@@ -50,6 +50,7 @@ const Main = ({ onLoginStatusChange }) => {
 
   const [babyName, setBabyName] = useState([]);
   const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
+  const [daysSinceBirth, setDaysSinceBirth] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,15 +59,20 @@ const Main = ({ onLoginStatusChange }) => {
         const babyname = info[0].name
         setBabyName(babyname);
         const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
+        const birthDate = moment(info[0].birth, 'YYYY-MM-DD');
         const today = moment();
-        const days = today.diff(pregnancyDate, 'days');
-        const weeks = Math.floor(days / 7 + 1)
-        setDaysSincePregnancy(weeks);
+        const pregnancydays = today.diff(pregnancyDate, 'days');
+        const birthdays = today.diff(birthDate, 'days');
+
+        const pregnancyweeks = Math.floor(pregnancydays / 7 + 1)
+        const birthweeks = Math.floor(birthdays / 7 + 1)
+
+        setDaysSincePregnancy(pregnancyweeks);
+        setDaysSinceBirth(birthweeks)
       } catch (error) {
         console.log(error);
       }
     };
-
     fetchData();
 
   }, [babyList]);
@@ -89,7 +95,7 @@ const Main = ({ onLoginStatusChange }) => {
 
     fetchData();
   }, [userNum]);
-
+  console.log(userNum)
   return (
     <>
       {isLoggedIn ? (
@@ -109,7 +115,10 @@ const Main = ({ onLoginStatusChange }) => {
                   (은)는 
                 </Typography>
                 <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                  {daysSincePregnancy > 40 ? `${((daysSincePregnancy - 40) / 4) + 1}개월 입니다` : `${daysSincePregnancy} 주차 입니다`}
+                  {daysSincePregnancy ? (
+                    `${daysSincePregnancy} 주차 입니다`
+                    ) : ( daysSinceBirth ? `${Math.floor(daysSinceBirth / 4)}개월 입니다` : ''
+                  )}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%"}}>

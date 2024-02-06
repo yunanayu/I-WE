@@ -35,6 +35,7 @@ function AddChild({ setSpouseStatus }) {
 
   const handleBirthDateChange = (date) => {
     const formattedDate = dayjs(date.$d).format("YYYY-MM-DD");
+    console.log(formattedDate);
     setBirthDate(formattedDate);
   };
 
