@@ -12,6 +12,8 @@
   align-content: center;
   justify-content: center;
 }
+
+
 @media only screen and (max-width: 400px) {
   .react-calendar {
     max-width: 300px; /* Adjust as needed for smaller screens */

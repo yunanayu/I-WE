@@ -290,8 +290,7 @@ const ReadVaccinCard = (props) => {
 
   return (
     <Card sx={{ pb: 3, mb: 3 }}>
-      <CardContent sx={{ display: 'flex', justifyContent: 'space-between', textAlign:'center' }}>
-        <Box>
+      <CardContent sx={{ display: 'flex', justifyContent: 'center', textAlign:'center' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {props.vaccine.category === '접종' ? <VaccinesOutlinedIcon fontSize="large" /> : <LocalHospitalOutlinedIcon fontSize="large" />}
             {props.vaccine.target === 'baby' ? <ChildCareIcon fontSize="large" /> : <PregnantWomanIcon fontSize="large" />}
@@ -303,13 +302,12 @@ const ReadVaccinCard = (props) => {
                 })}
             </Typography>
           </Box>
-        </Box>
         <IconButton onClick={updateComplete}>
           {initState ? <CheckCircleOutlineTwoToneIcon /> : <RadioButtonUncheckedTwoToneIcon />}
         </IconButton>
       </CardContent>
       <div>
-        <Button onClick={() => setOpen(true)}>설명 보기</Button>
+        <Button onClick={() => setOpen(true)} sx={{color:'#FBBBB8'}}>설명 보기</Button>
         <Modal
           open={open}
           onClose={() => setOpen(false)}
