@@ -59,7 +59,6 @@ function KakaoLogin({ setIsLoggedIn }) {
       if (token) {
         config.headers.Authorization = `${token}`;
       }
-      // console.log(config.headers.Authorization)
       return config;
     },
     (error) => {

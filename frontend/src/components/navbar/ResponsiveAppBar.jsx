@@ -80,7 +80,6 @@ function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              // color: "#646464",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -99,7 +98,6 @@ function ResponsiveAppBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              // color="#646464"
               color="inherit"
             >
               <MenuIcon />
@@ -124,7 +122,6 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  {/* Wrap Typography in NavLink for navigation */}
                   <Typography
                     component={NavLink}
                     to={page.link}
@@ -154,7 +151,6 @@ function ResponsiveAppBar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              // color: "#646464",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -208,13 +204,9 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem
-                  key={setting}
-                  onClick={
-                    setting === "로그아웃"
-                      ? handleLogoutClick
-                      : handleCloseUserMenu
-                  }
-                >
+                key={setting}
+                onClick={setting === "로그아웃" ? handleLogoutClick : (setting === "마이페이지" ? () => { window.location.href = '/mypage' } : handleCloseUserMenu)}
+              >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

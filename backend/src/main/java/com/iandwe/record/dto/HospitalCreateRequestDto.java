@@ -47,6 +47,7 @@ public class HospitalCreateRequestDto {
                 .targetNum(targetNum)
                 .title(title)
                 .hospitalName(hospitalName)
+                .doctor(doctor)
                 .hospitalDate(hospitalDate)
                 .content(content)
                 .result(result)

@@ -8,6 +8,7 @@ import com.iandwe.checker.service.generator.CheckerGenerator;
 import com.iandwe.family.service.FamilyService;
 import com.iandwe.member.domain.Member;
 import com.iandwe.member.domain.ParentType;
+import com.iandwe.member.exception.NoMemberExistException;
 import com.iandwe.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,19 +33,20 @@ public class BabyServiceImpl implements BabyService {
     public BabyCreateResponseDto create(BabyCreateRequestDto dto) {
         Baby baby = dto.toEntity();
 
-        Member savedMember = memberRepository.findByNum(dto.getMotherNum()).orElseThrow();
+        Member savedMember = memberRepository.findByNum(dto.getMotherNum()).orElseThrow(NoMemberExistException::new);
 
-        if (savedMember.getFamilyNum() != null) { // 존재 할 때
+        if (savedMember.getFamilyNum() != null) { // 존재 할 때, 근데 아직 아빠가 공유 안받은 경우도 있음
             baby.share(familyService.findFatherByNum(savedMember.getFamilyNum()));
         } else {
-            familyService.create(savedMember.getNum());
+            Long num = familyService.create(savedMember.getNum());
+            savedMember.updateFamilyNum(num);
+            memberRepository.save(savedMember);
         }
 
         babyRepository.save(baby);
 
         if (isMother(savedMember.getParentType())) {
             checkerGenerator.generateMotherCheckerData(savedMember.getNum(), baby.getNum());
-            // family 에서 num 으로 조회 시 familyNum 이 없을 때, family 만들어주고, 있으면 거기서 fathernum도 baby에 가져와서 넣어준다
         }
 
         checkerGenerator.generateBabyCheckerData(baby.getNum());
