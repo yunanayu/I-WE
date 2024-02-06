@@ -1,33 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart";
+import {
+  WeightChart,
+  HeightChart,
+  HeadChart,
+} from "../components/chart/BabyChart";
 import { BabyForm } from "./WeightForm";
 import { BabyCarousel } from "./BabyCarousel";
-import { Button, Divider, IconButton, Modal, Stack, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import {
+  Button,
+  Divider,
+  IconButton,
+  Modal,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "dayjs/locale/ko";
 import dayjs from "dayjs";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import axios from "axios";
-
-// 주차별 몸무게, 머리둘레, 키
-const weight = [];
-const height = [];
-const headspan = [];
-// 평균 몸무게
-const weightAvg = [];
-// 평균 키
-const heightAvg = [];
-// 평균 머리둘레
-const headspanAvg = [];
-
-// 임신 주차
-const pregWeek = null;
+import useMemberStore from "../stores/userStore";
 
 // 가운데 정렬 css
 const setCenter = {
@@ -58,18 +54,6 @@ const style = {
   p: 4,
 };
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
-
 // 평균과 비교하여 메세지 출력
 function Info() {
   // 주차 비교
@@ -88,7 +72,13 @@ function ButtonField(props) {
   const { setOpen, id, disabled, InputProps: { ref } = {} } = props;
 
   return (
-    <IconButton variant="outlined" id={id} disabled={disabled} ref={ref} onClick={() => setOpen?.((prev) => !prev)}>
+    <IconButton
+      variant="outlined"
+      id={id}
+      disabled={disabled}
+      ref={ref}
+      onClick={() => setOpen?.((prev) => !prev)}
+    >
       <CalendarMonthIcon />
     </IconButton>
   );
@@ -118,69 +108,58 @@ function RecordBaby() {
   const recordOpen = () => setRecord(true);
   const recordClose = () => setRecord(false);
   const [date, setDate] = useState(dayjs());
+  const motherNum = useMemberStore((state) => state.babyList[0].motherNum);
+  const babyNum = useMemberStore((state) => state.babyList[0].num);
+  const targetTime = useMemberStore((state) => state.babyList[0].targetTime).substr(1);
+  const status = useMemberStore((state) => state.babyList[0].targetTime).substr(0,1);
+  const babyName = useMemberStore((state) => state.babyList[0].name);
 
-  // 해당 날짜에 기록(파일) 있으면 받아오기
-  const [file, setFile] = useState([]);
 
-  const handleFileChange = (e) => {
-    setFile(Array.from(e.target.files));
-  };
 
   const [babyRecord, setBabyRecord] = useState(null);
+  const [recentRecord, setRecentRecord] = useState();
 
   useEffect(() => {
     const init = async () => {
       await axios
-        .get("/api/babyRecord/1")
+        .get(`/api/babyRecord/${babyNum}`)
         .then((response) => {
           setBabyRecord(response.data);
+          const recent = response.data[0];
+          setRecentRecord(recent);
         })
         .catch((error) => {
           console.log("GET BABY RECORD ERROR\n" + error);
         });
     };
     init();
-  }, []);
+  }, [babyNum]);
 
-  const uploadFile = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-
-    file.map((file) => {
-      formData.append("files", file);
-    });
-
-    console.log(Array.from(formData));
-
-    // URI 필요
-    axios
-      .post("/file/uploads", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
+ 
   return (
     <>
       <Container maxWidth="lg" sx={{ ...setCenter, background: "skyblue" }}>
         <Box sx={{ ...setCenter, m: 3 }}>
-          <Typography fontSize={34}>{pregWeek} 주차</Typography>
-          <Typography fontSize={24} color={"hotpink"}>
-            {pregWeek} D-???
-          </Typography>
+          {status === "A" ? (
+            <Typography fontSize={34}>D+{targetTime}</Typography>
+          ) : (
+            <>
+              <Typography fontSize={34}>{targetTime} 주차</Typography>
+            </>
+          )}
         </Box>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
           {<Info />}
         </Box>
         <Box maxWidth="md" sx={{ ...setCenter }}>
-          <Stack direction={"row"} spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+          <Stack
+            direction={"row"}
+            spacing={2}
+            divider={<Divider orientation="vertical" flexItem />}
+          >
             <Button
               variant="outlined"
               onClick={recordOpen}
@@ -193,7 +172,7 @@ function RecordBaby() {
                 color: "black",
               }}
             >
-              오늘의 OO이 기록하기
+              오늘의 {babyName} 기록하기
             </Button>
             <Button
               variant="outlined"
@@ -207,7 +186,7 @@ function RecordBaby() {
                 color: "black",
               }}
             >
-              OO이 사진보기
+              {babyName} 사진보기
             </Button>
           </Stack>
           {/* 기록용 모달 */}
@@ -216,48 +195,32 @@ function RecordBaby() {
             onClose={recordClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
-          ><Box>
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-              <Box sx={{ ...setCenter, ...style }}>
-                <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
-                  <Stack direction={"row"} spacing={2}>
-                    {dayjs(date).format("YYYY-MM-DD")}
-                    <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
-                    {console.log(date.toString())}
-                  </Stack>
-                </Typography>
-                <Box
-                  maxWidth="sm"
-                  margin={5}
-                  sx={{
-                    ...commonStyles,
-                    ...setCenter,
-                    borderRadius: 3,
-                    width: "30vw",
-                    height: 150,
-                  }}
-                >
-                  <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{ width: "25vw" }}>
-                    이미지
-                    <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-                  </Button>
+          >
+            <Box>
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                adapterLocale="ko"
+              >
+                <Box sx={{ ...setCenter, ...style }}>
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                    sx={setCenter}
+                  >
+                    <Stack direction={"row"} spacing={2}>
+                      {dayjs(date).format("YYYY-MM-DD")}
+                      <ButtonDatePicker
+                        value={date}
+                        onChange={(newValue) => setDate(newValue)}
+                        format={"YYYY-MM-DD"}
+                      />
+                      {console.log(date)}
+                    </Stack>
+                  </Typography>
+                  {<BabyForm data={babyRecord} dateSelected={date} babyNum={babyNum}/>}
                 </Box>
-                <Box
-                  maxWidth="sm"
-                  sx={{
-                    ...commonStyles,
-                    ...setCenter,
-                    borderRadius: 3,
-                    width: "30vw",
-                  }}
-                >
-                  {<BabyForm data={babyRecord} dateSelected={date} />}
-                </Box>
-                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, width: "25vw" }}>
-                  기록하기
-                </Button>
-              </Box>
-            </LocalizationProvider>
+              </LocalizationProvider>
             </Box>
           </Modal>
 
@@ -276,11 +239,23 @@ function RecordBaby() {
             </Box>
           </Modal>
         </Box>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          <WeeklyWeightChart />
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
+          <WeightChart />
         </Box>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          <ChangeChart />
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        > 
+          <HeightChart />
+        </Box>
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
+          <HeadChart />
         </Box>
       </Container>
     </>

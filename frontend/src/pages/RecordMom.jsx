@@ -5,6 +5,7 @@ import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart"
 import { MomForm } from "./WeightForm";
 import { Typography } from "@mui/material";
 import axios from "axios";
+import useMemberStore from "../stores/userStore";
 
 // 주차별 몸무게
 const weightWeekly = [];
@@ -39,41 +40,45 @@ function Info(props) {
 
   const [avgData, setAvgData] = useState();
   const [diffData, setDiffData] = useState();
+  const [d, setD] = useState();
+  const [start, setStart] = useState();
+  const [end, setEnd] = useState();
+  const [week, setWeek] = useState();
+  const [msg, setMsg] = useState();
+  const [msg2, setMsg2] = useState();
+  const [msg3, setMsg3] = useState();
 
   useEffect(() => {
-    if(props.avg && props.diff){
+    if (props.avg && props.diff) {
       setAvgData(props.avg);
       setDiffData(props.diff);
+  
+      const latestDiffData = props.diff[props.diff.length - 1];
+      setD(latestDiffData);
+      setStart(props.avg[props.avg.length - 1].start);
+      setEnd(props.avg[props.avg.length - 1].end);
+      setWeek(props.avg[props.avg.length - 1].week);
+      setMsg(`저번주 보다 \n${latestDiffData.weight}kg 증가했어요.`);
+  
+      if (latestDiffData.weight >= start && latestDiffData.weight <= end) {
+        setMsg2("체중이 평균 범위 내에서 증가하고 있어요.");
+      } else if (latestDiffData.weight < start) {
+        setMsg2("체중이 평균 밑이에요.");
+        setMsg3("균형잡힌 식사를 추천드려요.");
+      } else if (latestDiffData.weight > end) {
+        setMsg2("체중이 평균보다 높아요.");
+        setMsg3("식사량을 조절하시길 추천드려요.");
+      }
     }
-  }, [props.avg, props.diff])
-    let d, start, end, week, msg, msg2, msg3;
-
-    if(diffData && avgData) {
-       d = diffData[diffData.length-1];
-       start = avgData[avgData.length-1].start;
-       end = avgData[avgData.length-1].end;
-       week = avgData[avgData.length-1].week;
-       msg = `${week}주차 체중 증가량은 \n${d.weight}kg`;
-       
-       if(d.weight >= start && d.weight <= end) {
-         msg2 = "체중이 평균 범위 내에서 증가하고 있어요.";
-       } else if(d.weight< start) {
-         msg2 = "체중이 평균 밑이에요.";
-         msg3 = "균형잡힌 식사를 추천드려요.";
-       } else if(d.weight > end) {
-         msg2 = "체중이 평균보다 높아요.";
-         msg3 = "식사량을 조절하시길 추천드려요.";
-       }
-    }
-
-
+  }, [props.avg, props.diff, week, start, end]);
+    
 
   return (
     <>
       <Box sx={{ mt: 3, mb: 3 }}>
-        <Typography fontSize={34}> {msg} </Typography>
-        {msg2 && (<Typography fontSize={34}> {msg2} </Typography>)}
-        {msg3 && (<Typography fontSize={34}> {msg3} </Typography>)}
+        <Typography fontSize={26}> {msg} </Typography>
+        {msg2 && (<Typography fontSize={26}> {msg2} </Typography>)}
+        {msg3 && (<Typography fontSize={26}> {msg3} </Typography>)}
       </Box>
     </>
   );
@@ -88,11 +93,13 @@ function RecordMom() {
   const [babyData, setBabyData] = useState(null);
   const [avgData, setAvgData] = useState();
   const [diffData, setDiffData] = useState();
+  const motherNum = useMemberStore(state => state.babyList[0].motherNum)
+  const babyNum = useMemberStore(state => state.babyList[0].num);
 
   useEffect(() => {
     const initData = async () => {
       await axios
-        .get("/api/motherRecord/1")
+        .get(`/api/motherRecord/${motherNum}`)
         .then((response) => {
           let data = response.data;
           setMomRecord(data);
@@ -104,7 +111,7 @@ function RecordMom() {
     };
     const initBasis = async () => {
       await axios
-        .get("/api/motherBasis/1")
+        .get(`/api/motherBasis/${motherNum}`)
         .then((response) => {
           let basis = response.data;
           setMomBasis(basis);
@@ -114,7 +121,7 @@ function RecordMom() {
         });
     };
     const initBabyData = async () => {
-      await axios.get("/api/baby/1").then((response) => {
+      await axios.get(`/api/baby/${babyNum}`).then((response) => {
         let bData = response.data;
         setBabyData(bData);
       });
