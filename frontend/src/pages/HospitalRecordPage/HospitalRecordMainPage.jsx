@@ -24,19 +24,38 @@ export const recordContext = createContext();
 const HospitalRecordMainPage = () => {
   const navigate = useNavigate()
 
+  // 이거 꼭 재설정
   const [initState, setInitState] = useState([])
   const [dayList,setDayList] = useState([])
   const [selectedDay, setSelectedDay] = useState()
   const [recordList, setRecordList] = useState([])
   const userNum = useMemberStore(state => state.userNum)
+  const babyList = useMemberStore(state => state.babyList)
+
+  
+  const [babyrecord, setBabyrecord] = useState([])
+  const [momrecord, setMomrecord] = useState([])
+
+  useEffect(() => {
+    setInitState([...babyrecord,...momrecord])
+  }, [momrecord,babyrecord])
+
 
   useEffect(() => {
     axios.get(`/api/hospital/mother/${userNum}`)
     .then((res) => {
-      console.log(res.data);
-      setInitState(res.data)
+      // console.log(res.data);
+      setMomrecord(res.data)
     })
     .catch((err) => console.log(err))
+
+    babyList.map((baby) => {
+      axios.get(`api/hospital/baby/${baby.num}`)
+      .then((res) => {
+        // console.log(res.data)
+        setBabyrecord([...babyrecord,...res.data])
+      })
+    })
   },[])
 
 
@@ -56,8 +75,8 @@ const HospitalRecordMainPage = () => {
 
   return (
     <recordContext.Provider value={recordList}>
-      <Container sx={{width:'100%'}}>
-          <Box sx={{display:'flex',flexDirection: 'column',alignContent:'center',justifyContent:'center'}}>
+      <Container sx={{}}>
+          <Box sx={{display:'flex',flexDirection: 'column',alignContent:'center',justifyContent:'center', height: 532}}>
             <CalendarPage dayList={dayList} setSelectedDay={setSelectedDay}/>
           </Box>
           <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
@@ -66,6 +85,9 @@ const HospitalRecordMainPage = () => {
         {/* <Container sx={{alignContent:'center',justifyContent:'center',}}>
         </Container> */}
       </Container>
+      <Box sx={{height:100}}>
+
+      </Box>
     </recordContext.Provider>
   );
 };

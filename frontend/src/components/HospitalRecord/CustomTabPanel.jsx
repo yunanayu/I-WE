@@ -90,9 +90,11 @@ export default function BasicTabs(props) {
   
   return (
     <Box sx={{ display:'flex',justifyContent:'center', textAlign:'center', width: '100%',}}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', textAlign:'center' }}>
-        <Box sx={{display:'flex', justifyContent:'center'}}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{display:'flex', justifyContent:'center'}}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', textAlign:'center', width:'100%' }}>
+        <Box sx={{display:'flex', justifyContent:'center', width:'100%'}}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" 
+          TabIndicatorProps={{style: { background: "#f87171" }}} // indicator color 
+          sx={{display:'flex', justifyContent:'space-between'}}>
           <Tab label={
             <Typography                             
             sx={{                                 

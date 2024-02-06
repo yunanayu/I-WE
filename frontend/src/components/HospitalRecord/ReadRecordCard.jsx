@@ -12,6 +12,7 @@ import Modal from '@mui/material/Modal';
 import ReadDetailRecordModal from './ReadDetailRecordModal';
 import PregnantWomanIcon from '@mui/icons-material/PregnantWoman';
 import ChildCareIcon from '@mui/icons-material/ChildCare';
+import useMemberStore from '../../stores/userStore';
 
 
 const style = {
@@ -28,28 +29,39 @@ const style = {
 
 
 const ReadRecordCard = (props) => {
+  // console.log(props)
+  const target = props.record.target
+  const num = props.record.targetNum
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const babyList = useMemberStore(state => state.babyList)
+  const baby = babyList.find((baby) => {
+    return baby.num === num 
+  })
 
 
   return (
     <Card sx={{ width: '100%', mb: 3, }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {props.record.hopitalDate}
+          아기이름 : {baby.name}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {props.record.hospitalName}
+          병원 : {props.record.hospitalName}
         </Typography>
-        <Typography variant="h5" component="div">
-          {props.record.title}
-        </Typography>
-        {props.record.target === 'mother'? <PregnantWomanIcon /> : <ChildCareIcon/>}
+        <Box sx={{display:'flex', justifyContent:'center'}}>
+          {props.record.target === 'mother'? <PregnantWomanIcon /> : <ChildCareIcon/>}
+          <Typography variant="h5" component="div" ml={2}>
+            방문 목적 : {props.record.title}
+          </Typography>
+        </Box>
 
       </CardContent>
+      <Box sx={{display:'flex', justifyContent:'center'}}>
+        <Button size="small" onClick={handleOpen} sx={{color:'#FBBBB8'}}>상세보기</Button>
+      </Box>
       <CardActions>
-        <Button size="small" onClick={handleOpen}>상세보기</Button>
         <Modal
           open={open}
           onClose={handleClose}
@@ -57,7 +69,10 @@ const ReadRecordCard = (props) => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <ReadDetailRecordModal record={props.record}/>
+            <ReadDetailRecordModal 
+            record={props.record}
+            babyname = {target === 'baby' ? baby.name : 'mother'}
+            />
           </Box>
         </Modal>
       </CardActions>

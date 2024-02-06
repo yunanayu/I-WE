@@ -9,10 +9,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const ReadDetailRecordModal = (props) => {
-  // console.log(props.record)
-  
   const record = props.record
-
+  const babyName = props.babyname
+  // console.log(props.record)
+  // console.log(babyName)
   const checkupDate = moment(record.hospitalDate).format('YYYY년 MM월 DD일')
 
   useEffect(()=>{
@@ -38,6 +38,9 @@ const ReadDetailRecordModal = (props) => {
           variant="standard"
           value={record.hospitalName}
         />
+      {
+      babyName !== 'mother' 
+      ?
       <TextField
           id="standard-read-only-input"
           label="기록대상"
@@ -45,8 +48,11 @@ const ReadDetailRecordModal = (props) => {
             readOnly: true,
           }}
           variant="standard"
-          value={record.target}
-        />
+          value={babyName}
+      />
+      :
+      <></>
+      }
       <TextField
           id="standard-read-only-input"
           label="진료의사"
@@ -90,10 +96,13 @@ const ReadDetailRecordModal = (props) => {
       {/* <IconButton aria-label="delete" disabled color="primary" >
         <DeleteIcon />
       </IconButton> */}
-      <Button 
-      onClick={goUpdate}
-      sx={{justifyContent:'right'}}
-      >수정하기</Button>
+      <Box sx={{display:'flex', justifyContent:'right'}}>
+        <Button 
+        onClick={goUpdate}
+        sx={{color:'#FBBBB8', justifyContent:'right'}}
+        >수정하기
+        </Button>
+      </Box>
     </Container>
   );
 };

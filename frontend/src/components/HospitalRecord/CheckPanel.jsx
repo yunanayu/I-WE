@@ -36,6 +36,7 @@ const CheckPanel = () => {
   // 개월 수 필터링
   const [selectRange, setSelectRange] = useState([0, 144])
 
+
   const setList = () => {
     var list = []
     if (selectType === 'all') {
@@ -134,15 +135,27 @@ useEffect(() => {
 
 useEffect(() => {
   setList()
-  const newList = vaccineList.filter((item) => {
-    const start = getNumberFromString(item.startTime)
-    const end = getNumberFromString(item.endTime)
-    return (
-      start >= selectRange[0] && end <= selectRange[1]
-    )
-  })
-  setVaccineList(newList)
-  console.log(newList)
+  console.log(selectRange)
+  if (selectTarget === 'baby') {
+    const newList = babyCheckList.filter((item) => {
+      const start = getNumberFromString(item.startTime)
+      const end = getNumberFromString(item.endTime)
+      return (
+        start >= selectRange[0] && end <= selectRange[1]
+      )
+    })
+    setVaccineList(newList)
+  }
+  else {
+    const newList = momCheckList.filter((item) => {
+      const start = getNumberFromString(item.startTime)
+      const end = getNumberFromString(item.endTime)
+      return (
+        start >= selectRange[0] && end <= selectRange[1]
+      )
+    })
+    setVaccineList(newList)
+  }
 }, [selectRange])
 
   return (
@@ -168,8 +181,9 @@ useEffect(() => {
           <Option value="검사" onClick={() => setSelectType('검사')}>검진</Option>
           <Option value="접종" onClick={() => setSelectType('접종')}>접종</Option>
         </Select>
-
-        <NumberRangeSlider setSelectRange={setSelectRange}/>
+        {selectTarget === 'baby' &&
+        <NumberRangeSlider setSelectRange={setSelectRange} target={selectTarget}/>
+        }
         
         {
         vaccineList.length != 0? 
