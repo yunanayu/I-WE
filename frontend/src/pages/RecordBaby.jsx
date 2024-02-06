@@ -4,14 +4,7 @@ import Box from "@mui/material/Box";
 import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart";
 import { BabyForm } from "./WeightForm";
 import { BabyCarousel } from "./BabyCarousel";
-import {
-  Button,
-  Divider,
-  IconButton,
-  Modal,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Button, Divider, IconButton, Modal, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -95,13 +88,7 @@ function ButtonField(props) {
   const { setOpen, id, disabled, InputProps: { ref } = {} } = props;
 
   return (
-    <IconButton
-      variant="outlined"
-      id={id}
-      disabled={disabled}
-      ref={ref}
-      onClick={() => setOpen?.((prev) => !prev)}
-    >
+    <IconButton variant="outlined" id={id} disabled={disabled} ref={ref} onClick={() => setOpen?.((prev) => !prev)}>
       <CalendarMonthIcon />
     </IconButton>
   );
@@ -144,7 +131,7 @@ function RecordBaby() {
   useEffect(() => {
     const init = async () => {
       await axios
-        .get("/api/motherRecord/1")
+        .get("/api/babyRecord/1")
         .then((response) => {
           setBabyRecord(response.data);
         })
@@ -189,18 +176,11 @@ function RecordBaby() {
             {pregWeek} D-???
           </Typography>
         </Box>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           {<Info />}
         </Box>
         <Box maxWidth="md" sx={{ ...setCenter }}>
-          <Stack
-            direction={"row"}
-            spacing={2}
-            divider={<Divider orientation="vertical" flexItem />}
-          >
+          <Stack direction={"row"} spacing={2} divider={<Divider orientation="vertical" flexItem />}>
             <Button
               variant="outlined"
               onClick={recordOpen}
@@ -236,24 +216,14 @@ function RecordBaby() {
             onClose={recordClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
-          >
-            <form>
+          ><Box>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
               <Box sx={{ ...setCenter, ...style }}>
-                <Typography
-                  id="modal-modal-title"
-                  variant="h6"
-                  component="h2"
-                  sx={setCenter}
-                >
+                <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
                   <Stack direction={"row"} spacing={2}>
                     {dayjs(date).format("YYYY-MM-DD")}
-                    <ButtonDatePicker
-                      value={date}
-                      onChange={(newValue) => setDate(newValue)}
-                      format={"YYYY-MM-DD"}
-                    />
-                    {console.log(date)}
+                    <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
+                    {console.log(date.toString())}
                   </Stack>
                 </Typography>
                 <Box
@@ -264,20 +234,12 @@ function RecordBaby() {
                     ...setCenter,
                     borderRadius: 3,
                     width: "30vw",
-                    height: 150
+                    height: 150,
                   }}
                 >
-                  <Button
-                    component="label"
-                    variant="contained"
-                    startIcon={<CloudUploadIcon />}
-                    sx={{width: '25vw'}}
-                  >
+                  <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{ width: "25vw" }}>
                     이미지
-                    <VisuallyHiddenInput
-                      type="file"
-                      onChange={handleFileChange}
-                    />
+                    <VisuallyHiddenInput type="file" onChange={handleFileChange} />
                   </Button>
                 </Box>
                 <Box
@@ -289,18 +251,14 @@ function RecordBaby() {
                     width: "30vw",
                   }}
                 >
-                  {<BabyForm />}
+                  {<BabyForm data={babyRecord} dateSelected={date} />}
                 </Box>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2, width: '25vw' }}
-                >
+                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, width: "25vw" }}>
                   기록하기
                 </Button>
               </Box>
             </LocalizationProvider>
-            </form>
+            </Box>
           </Modal>
 
           {/* 사진용 모달 */}
@@ -318,16 +276,10 @@ function RecordBaby() {
             </Box>
           </Modal>
         </Box>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           <WeeklyWeightChart />
         </Box>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           <ChangeChart />
         </Box>
       </Container>
