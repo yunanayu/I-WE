@@ -50,13 +50,14 @@ public class FamilyService {
     }
 
     @Transactional
-    public void create(long motherNum) {
+    public Long create(long motherNum) {
         String code = FamilyCodeGenerator.generateCode();
         Family family = Family.builder()
                 .mother(motherNum)
                 .shareCode(code)
                 .build();
         familyRepository.save(family);
+        return family.getNum();
     }
 
     public Family findByNum(Long familyNum) {
@@ -64,6 +65,9 @@ public class FamilyService {
     }
 
     public Long findFatherByNum(Long familyNum) {
+        System.out.println(familyNum +" 여기 패밀리넘버있다 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println(familyRepository.findFatherByNum(familyNum));
         return familyRepository.findFatherByNum(familyNum);
+        // TODO : Father 에 대한 exception 추가 필요
     }
 }

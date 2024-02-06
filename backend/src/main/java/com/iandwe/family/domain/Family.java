@@ -20,9 +20,9 @@ public class Family {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long num;
 
-    private long mother;
+    private Long mother;
 
-    private long father;
+    private Long father;
 
     private String shareCode;
 
