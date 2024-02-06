@@ -50,11 +50,16 @@ export default function InfoMain() {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get(`/api/info/${date}`);
+            const response = await axios({
+              method: 'get',
+              url: '/api/essential/baby'
+            });
+            // const response = await axios.get(`/api/info/${date}`);
             const data = response.data;
+            // console.log(data)
             setBabyInfo(data.babyInfo);
-            setMomInfo(data.momInfo);
-            setBabyForInfo(data.babyForInfo);
+            // setMomInfo(data.momInfo);
+            // setBabyForInfo(data.babyForInfo);
           } catch (error) {
             console.log(error);
           }
@@ -82,7 +87,6 @@ export default function InfoMain() {
               variant="scrollable"
               allowScrollButtonsMobile
               scrollButtons ="auto"
-              centered
               textColor="secondary"
               indicatorColor="secondary"
             >

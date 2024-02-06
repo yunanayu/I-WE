@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Box, Typography, Card  } from '@mui/material';
+import { Typography  } from '@mui/material';
 import useMemberStore from '../stores/userStore';
-import axios from 'axios';
 
 const theme = createTheme({
   typography: {
@@ -10,29 +9,14 @@ const theme = createTheme({
   },
 });
 
-// userNum을 가지고 familyNum 받아오기
-
+// familyNum 받아오기
 function MyPage() {
-    const userNum  = useMemberStore(state => state.userNum);
-    const [familyNum, setFamilyNum] = useState(null);
-
-    useEffect(() => {
-        const fetchFamilyNum = async () => {
-            try {
-                const response = await axios.get(`/api/member/${userNum}`);
-                setFamilyNum(response.data.familyNum);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-
-        fetchFamilyNum();
-    }, [userNum]);
+    const familyNum = useMemberStore(state => state.familyNum)
 
     return (
         <>
             <ThemeProvider theme={theme} sx={{display:'flex', justifyContent:'center'}} >
-                <Typography>
+                <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                     가족코드 : {familyNum}
                 </Typography>
             </ThemeProvider>

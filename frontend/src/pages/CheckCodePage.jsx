@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import useMemberStore from '../stores/userStore';
 
 const CheckCodePage = () => {
+  // 입력받은 code
   const [code, setCode] = useState('');
+  // 저장된 familyNum 확인하기
+  const userNum = useMemberStore(state => state.userNum)
+  const familyNum = useMemberStore(state => state.familyNum)
 
   // 아빠가 입력한 familyNum이 기존에 존재하는지 확인해야함
 
   const handleConfirm = async () => {
     try {
       // 입력한 코드 값 확인 로직
-      // 해당 url
-      const response = await axios.get(`/api/code/${code}`);
-      const existingCode = response.data.code;
-
+      
       // 기존에 존재하는 값과 동일한 경우에 '/'로 이동
-      if (code === existingCode) {
+      if (code === familyNum) {
         window.location.href = '/';
       } else {
         console.log('입력한 코드와 기존 코드가 일치하지 않습니다.');
