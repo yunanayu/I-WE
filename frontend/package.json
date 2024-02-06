@@ -54,7 +54,7 @@
     "zustand": "^4.5.0"
   },
   "scripts": {
-    "start": "react-scripts start --disableHostCheck",
+    "start": "react-scripts start",
     "build": "CI=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -81,5 +81,5 @@
     "css-loader": "^6.9.1",
     "style-loader": "^3.3.4"
   },
-  "proxy": "http://i10C108.p.ssafy.io:8081"
+  "proxy": "http://localhost:8080"
 }
