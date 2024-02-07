@@ -1,6 +1,7 @@
 package com.iandwe.alarm.email.dto;
 
 import com.iandwe.alarm.email.util.EmailGenerator;
+import com.iandwe.cheat.dto.request.CheatRequestDto;
 import com.iandwe.essential.domain.Essential;
 import com.iandwe.member.domain.Member;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,14 @@ public class EmailDto {
                 .email(mother.getEmail())
                 .subject(EmailGenerator.generateSubject(mother.getName()))
                 .text(EmailGenerator.generateText(essential.getTitle(), essential.getCategory()))
+                .build();
+    }
+
+    public static EmailDto ofCheatRequestDto(CheatRequestDto dto, String email) {
+        return EmailDto.builder()
+                .email(email)
+                .subject(dto.getTitle())
+                .text(dto.getContent())
                 .build();
     }
 

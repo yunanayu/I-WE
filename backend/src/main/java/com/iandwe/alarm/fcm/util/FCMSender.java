@@ -23,7 +23,7 @@ public class FCMSender {
                 .build();
 
         Message message = Message.builder()
-//                .setToken("fNRzu7w-90lOdhbpi9Dmef:APA91bEmnXrJjYXRoRG80KhyizILqUQZ_dge63ZIz-wkNp38scojpmfHiJW8T6izfKnvR0wYa6BU_uNlWYR3AAn9rsf4ngSO4FTWYH9dGIC0HhaPuBVBpOBbRPZ8pvDpjwwKSvhU7yaO")
+//                .setToken("cgGubJTMjjohJqTNawwrpx:APA91bHXPVI_yrSwy6wZbXq3GxmrFVE5V9WJWUD8z9-YgLQrjMy3U6LFgmdVbIETCmQpM9bSileQdRm8ZYBbnoe_D04Ww_XzJGnhTLdoQUsnWb3NanvJeph_tTfmxEioBTvbiFLss-J6")
                 .setToken(fcmDto.getFcmToken())
                 .setNotification(notification)
                 .build();
