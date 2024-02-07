@@ -19,8 +19,8 @@ export default function InfoMain() {
   
     const babyList = useMemberStore(state => state.babyList);
     // date = `A${months}`의 형태
-    const [date, setDate] = useState(0);
-
+    const [date, setDate] = useState(0); // 선택한 tab의 값
+    const handleChange = (event, value) => { setDate(value);};
     // 각각의 정보 (Array형태)
     const [babybodyInfo, setBabybodyInfo] = useState([]);
     const [mombodyInfo, setMombodyInfo] = useState([]);
@@ -50,67 +50,221 @@ export default function InfoMain() {
       fetchData();
     }, [babyList]);
 
-    // 저장되어있는 Infodata뽑아오기
+
+    // 선택한 탭에 따라 해당 정보를 가져오는 함수
+    // 아기 신체
+    const getBabyBodyInfo = () => {
+      if (date === 0) {
+        // 0 주 탭 선택 시 표시할 정보
+        return (
+          <Box>
+            {/* 0 주에 해당하는 정보 표시 */}
+          </Box>
+        );
+      } else if (typeof date === 'string' && date.startsWith('B')) {
+        const week = parseInt(date.substring(1));
+        return (
+          <Box key={week}>
+            {babybodyInfo.map((info, i) => (
+              <div key={i}>
+                {info.content}
+              </div>
+            ))}
+          </Box>
+        );
+      } else if (typeof date === 'string' && date.startsWith('A')) {
+        const month = parseInt(date.substring(1));
+        return (
+          <Box key={month}>
+            {babybodyInfo.map((info, i) => (
+              <div key={i}>
+                {info.content}
+              </div>
+            ))}
+          </Box>
+        );
+      } else {
+        return null;
+      }
+    };
+
     useEffect(() => {
       const fetchData = async () => {
-        console.log(date);
-        // 아기신체
         try {
           const babybodyinforesponse = await axios({
             method: 'get',
             url: `/api/info/baby/p/${date}`
           });
           const babybodyinfodata = babybodyinforesponse.data;
-          // 나옴
           setBabybodyInfo(babybodyinfodata);
-          console.log(babybodyInfo);
         } catch (error) {
           console.log(error);
         }
-        
-        // // 엄마 신체
-        // try{
-        //   const mombodyinforesponse = await axios({
-        //     method: 'get',
-        //     url: `/api/info/mother/p/${date}`
-        //   });
-        //   const mombodyinfodata = mombodyinforesponse.data;
-        //   setMombodyInfo(mombodyinfodata);
-        // }catch(error){
-        //   console.log(error);
-        // }
-
-        // // 아기 권유
-        // try{
-        //   const babysuginforesponse = await axios({
-        //     method: 'get',
-        //     url: `/api/info/baby/r/${date}`
-        //   });
-        //   const babysuginfodata = babysuginforesponse.data;
-        //   setBabysugInfo(babysuginfodata);
-        // }catch(error){
-        //   console.log(error);
-        // }
-
-        // // 엄마 권유
-        // try{
-        //   const momsuginforesponse = await axios({
-        //     method: 'get',
-        //     url: `/api/info/mother/r/${date}`
-        //   });
-        //   const momsuginfodata = momsuginforesponse.data;
-        //   setMomsugInfo(momsuginfodata);
-        // }catch(error){
-        //   console.log(error);
-        // }
-      };
-        fetchData();
-      }, [date]);
-
-    const handleChange = (event, value) => {
-        setDate(value);
       };
 
+      fetchData();
+    }, [date]);
+
+    // 엄마 신체
+    const getMomBodyInfo = () => {
+      if (date === 0) {
+        // 0 주 탭 선택 시 표시할 정보
+        return (
+          <Box>
+            {/* 0 주에 해당하는 정보 표시 */}
+          </Box>
+        );
+      } else if (typeof date === 'string' && date.startsWith('B')) {
+        const week = parseInt(date.substring(1));
+        return (
+          <Box key={week}>
+            {mombodyInfo.map((info, i) => (
+              <div key={i}>
+                {info.content}
+              </div>
+            ))}
+          </Box>
+        );
+      } else if (typeof date === 'string' && date.startsWith('A')) {
+        const month = parseInt(date.substring(1));
+        return (
+          <Box key={month}>
+            {mombodyInfo.map((info, i) => (
+              <div key={i}>
+                {info.content}
+              </div>
+            ))}
+          </Box>
+        );
+      } else {
+        return null;
+      }
+    };
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const mombodyinforesponse = await axios({
+            method: 'get',
+            url: `/api/info/mother/p/${date}`
+          });
+          const mombodyinfodata = mombodyinforesponse.data;
+          setMombodyInfo(mombodyinfodata);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchData();
+    }, [date]);
+
+    // 아기 및 엄마 권유
+
+    // 아기 권유
+    const getBabySugInfo = () => {
+      if (date === 0) {
+        // 0 주 탭 선택 시 표시할 정보
+        return (
+          <Box>
+            {/* 0 주에 해당하는 정보 표시 */}
+          </Box>
+        );
+      } else if (typeof date === 'string' && date.startsWith('B')) {
+        const week = parseInt(date.substring(1));
+        return (
+          <Box key={week}>
+            {babysugInfo.map((info, i) => (
+              <div key={i}>
+                {info.content}
+              </div>
+            ))}
+          </Box>
+        );
+      } else if (typeof date === 'string' && date.startsWith('A')) {
+        const month = parseInt(date.substring(1));
+        return (
+          <Box key={month}>
+            {babysugInfo.map((info, i) => (
+              <div key={i}>
+                {info.content}
+              </div>
+            ))}
+          </Box>
+        );
+      } else {
+        return null;
+      }
+    };
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const babysuginforesponse = await axios({
+            method: 'get',
+            url: `/api/info/baby/r/${date}`
+          });
+          const babysuginfodata = babysuginforesponse.data;
+          setBabysugInfo(babysuginfodata);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchData();
+    }, [date]);
+
+    // 엄마 권유
+    const getMomSugInfo = () => {
+      if (date === 0) {
+        // 0 주 탭 선택 시 표시할 정보
+        return (
+          <Box>
+            {/* 0 주에 해당하는 정보 표시 */}
+          </Box>
+        );
+      } else if (typeof date === 'string' && date.startsWith('B')) {
+        const week = parseInt(date.substring(1));
+        return (
+          <Box key={week}>
+            {momsugInfo.map((info, i) => (
+              <div key={i}>
+                {info.content}
+              </div>
+            ))}
+          </Box>
+        );
+      } else if (typeof date === 'string' && date.startsWith('A')) {
+        const month = parseInt(date.substring(1));
+        return (
+          <Box key={month}>
+            {momsugInfo.map((info, i) => (
+              <div key={i}>
+                {info.content}
+              </div>
+            ))}
+          </Box>
+        );
+      } else {
+        return null;
+      }
+    };
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const momsuginforesponse = await axios({
+            method: 'get',
+            url: `/api/info/mother/r/${date}`
+          });
+          const momsuginfodata = momsuginforesponse.data;
+          setMomsugInfo(momsuginfodata);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchData();
+    }, [date]);
+    
     return (
       <>
         <ThemeProvider theme={theme} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign:'center' }}>
@@ -140,64 +294,27 @@ export default function InfoMain() {
             <Typography variant="h6" component="div">
               이 시기에 아이는요!
             </Typography>
-            <Card sx={{display: 'flex', textAlign:'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
-              {date === 0 && (
-                <Box>
-                  {/* {babybodyInfo} */}
-                </Box>
-              )}
-              {Array.from({ length: 40 }, (_, i) => i + 1).map(week => (
-                date === `B${week}` && (
-                  <Box key={week}>
-                    {date}
-                    {/* {babybodyInfo} */}
-                  </Box>
-                )
-              ))}
-              {Array.from({ length: 25 }, (_, i) => i).map(month => (
-                date === `A${month}` && (
-                  <Box key={month}>
-                    {babybodyInfo}
-                  </Box>
-                )
-              ))}
-              <CardContent sx={{margin:"5px"}}>
-                <Box style={{textAlign: 'right'}}>
+            <Card sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
+              {getBabyBodyInfo()}
+              <CardContent sx={{ margin: "5px" }}>
+                <Box style={{ textAlign: 'right' }}>
                   <Link to='/infobaby'>
-                    <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>궁금해요!</Button>
+                    <Button size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button>
                   </Link>
                 </Box>
               </CardContent>
             </Card>
           </Box>
-          {/* <Box sx={{ display: 'flex', alignItems:'center', flexDirection: 'column', width:"100%"}}>
+          <Box sx={{ display: 'flex', alignItems:'center', flexDirection: 'column', width:"100%"}}>
             <Typography variant="h6" component="div">
               이 시기에 엄마는요!
             </Typography>
-            <Card sx={{display: 'flex', textAlign:'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
-              {date === 0 && (
-                <Box>
-                  {mombodyInfo}
-                </Box>
-              )}
-              {Array.from({ length: 40 }, (_, i) => i + 1).map(week => (
-                date === `B${week}` && (
-                  <Box key={week}>
-                    {mombodyInfo}
-                  </Box>
-                )
-              ))}
-              {Array.from({ length: 25 }, (_, i) => i).map(month => (
-                date === `A${month}` && (
-                  <Box key={month}>
-                    {mombodyInfo}
-                  </Box>
-                )
-              ))}
-              <CardContent sx={{margin:"5px"}}>
-                <Box style={{textAlign: 'right'}}>
-                  <Link to='/infobaby'>
-                    <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>궁금해요!</Button>
+            <Card sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
+              {getMomBodyInfo()}
+              <CardContent sx={{ margin: "5px" }}>
+                <Box style={{ textAlign: 'right' }}>
+                  <Link to='/infomom'>
+                    <Button size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button>
                   </Link>
                 </Box>
               </CardContent>
@@ -207,38 +324,18 @@ export default function InfoMain() {
             <Typography variant="h6" component="div">
               아이를 위해서는요!
             </Typography>
-            <Card sx={{display: 'flex', textAlign:'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
-              {date === 0 && (
-                <Box>
-                  {babysugInfo}
-                  {momsugInfo}
-                </Box>
-              )}
-              {Array.from({ length: 40 }, (_, i) => i + 1).map(week => (
-                date === `B${week}` && (
-                  <Box key={week}>
-                    {babysugInfo}
-                    {momsugInfo}
-                  </Box>
-                )
-              ))}
-              {Array.from({ length: 25 }, (_, i) => i).map(month => (
-                date === `A${month}` && (
-                  <Box key={month}>
-                    {babysugInfo}
-                    {momsugInfo}
-                  </Box>
-                )
-              ))}
-              <CardContent sx={{margin:"5px"}}>
-                <Box style={{textAlign: 'right'}}>
+            <Card sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
+              {getBabySugInfo()}
+              {getMomSugInfo()}
+              <CardContent sx={{ margin: "5px" }}>
+                <Box style={{ textAlign: 'right' }}>
                   <Link to='/infobaby'>
-                    <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>궁금해요!</Button>
+                    <Button size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button>
                   </Link>
                 </Box>
               </CardContent>
             </Card>
-          </Box> */}
+          </Box>
         </ThemeProvider>
       </>
     )
