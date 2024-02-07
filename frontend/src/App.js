@@ -13,17 +13,10 @@ import MemberCheck from "./pages/MemberCheckPage";
 import CheckCode from "./pages/CheckCodePage";
 import AddChild from "./pages/AddChildPage";
 import MyPage from "./pages/MyPage";
-
 import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMainPage";
 import AddMomRecordPage from "./pages/HospitalRecordPage/AddHospitalRecordPage";
 import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecord";
-// import './FCM/firebase-messaging-sw'
-
-// const store = createStore(rootReducer);
-
-
-
-
+import InfoSection from "./components/Infos/InfoSection";
 
 function App() {
   const [parentLoggedIn, setParentLoggedIn] = useState(false);
@@ -82,6 +75,7 @@ function App() {
         <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
         <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
         <Route path="/tips" element={<TipPage />} />
+        <Route path="/test" element={<InfoSection />} />
       </Routes>
     </div>
     );
