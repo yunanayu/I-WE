@@ -9,8 +9,6 @@ import java.util.Optional;
 
 public interface GrowthHeightRepository extends JpaRepository<GrowthHeight, Long> {
 
-//    Optional<GrowthHeight> findByGenderAndMonth(int gender, int month);
-
     @Query("select h from GrowthHeight h " +
             "where h.gender = :gender " +
             "and h.month <= :month " +
