@@ -9,7 +9,6 @@ import { Typography, Box, CardContent, Card } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-
 const theme = createTheme({
     typography: {
       fontFamily: 'Nanum Gothic, sans-serif',
@@ -17,28 +16,34 @@ const theme = createTheme({
   });
 
 export default function InfoMain() {
+  
     const babyList = useMemberStore(state => state.babyList);
     // date = `A${months}`의 형태
     const [date, setDate] = useState(0);
 
     // 각각의 정보
-    const [babyInfo, setBabyInfo] = useState(null);
-    const [momInfo, setMomInfo] = useState(null);
-    const [babyForInfo, setBabyForInfo] = useState(null);
+    const [babybodyInfo, setBabybodyInfo] = useState([]);
+    const [mombodyInfo, setMombodyInfo] = useState([]);
+    const [babysugInfo, setBabysugInfo] = useState([]);
+    const [momsugInfo, setMomsugInfo] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const info = babyList;
                 const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
+                const birthDate = moment(info[0].birth, 'YYYY-MM-DD');
                 const today = moment();
-                const days = today.diff(pregnancyDate, 'days');
-                const weeks = Math.floor(days / 7 + 1);
-                if ( weeks > 40 ){
-                    const months = Math.floor((weeks-40) / 4);
-                    setDate(`A${months}`);
+                const pregnancydays = today.diff(pregnancyDate, 'days');
+                const birthdays = today.diff(birthDate, 'days');
+                const pregnancyweeks = Math.floor(pregnancydays / 7 + 1);
+                const birthmonths = Math.floor(birthdays / 30);
+                if (birthDate){
+                  setDate(`A${birthmonths}`);
+                } 
+                if (pregnancyDate){
+                  setDate(`B${pregnancyweeks}`);
                 }
-                setDate(`B${weeks}`);
             } catch(error) {
                 console.log(error)
             }
@@ -46,33 +51,66 @@ export default function InfoMain() {
         fetchData();
     }, [babyList]);
 
-    // 저장되어있는 data뽑아오기
+    // 저장되어있는 Infodata뽑아오기
     useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await axios({
-              method: 'get',
-              url: '/api/essential/baby'
-            });
-            // const response = await axios.get(`/api/info/${date}`);
-            const data = response.data;
-            // console.log(data)
-            setBabyInfo(data.babyInfo);
-            // setMomInfo(data.momInfo);
-            // setBabyForInfo(data.babyForInfo);
-          } catch (error) {
-            console.log(error);
-          }
-        };
-    
+      const fetchData = async () => {
+        console.log(date);
+        // 아기신체
+        try {
+          const babybodyinforesponse = await axios({
+            method: 'get',
+            url: `/api/info/baby/p/${date}`
+          });
+          const babybodyinfodata = babybodyinforesponse.data;
+          // 나옴
+          console.log(babybodyinfodata);
+          setBabybodyInfo(babybodyinfodata);
+        } catch (error) {
+          console.log(error);
+        }
+        
+        // 엄마 신체
+        try{
+          const mombodyinforesponse = await axios({
+            method: 'get',
+            url: `/api/info/mother/p/${date}`
+          });
+          const mombodyinfodata = mombodyinforesponse.data;
+          setMombodyInfo(mombodyinfodata);
+        }catch(error){
+          console.log(error);
+        }
+
+        // 아기 권유
+        try{
+          const babysuginforesponse = await axios({
+            method: 'get',
+            url: `/api/info/baby/r/${date}`
+          });
+          const babysuginfodata = babysuginforesponse.data;
+          setBabysugInfo(babysuginfodata);
+        }catch(error){
+          console.log(error);
+        }
+
+        // 엄마 권유
+        try{
+          const momsuginforesponse = await axios({
+            method: 'get',
+            url: `/api/info/mother/r/${date}`
+          });
+          const momsuginfodata = momsuginforesponse.data;
+          setMomsugInfo(momsuginfodata);
+        }catch(error){
+          console.log(error);
+        }
+      };
         fetchData();
       }, [date]);
 
     const handleChange = (event, value) => {
         setDate(value);
       };
-    console.log(date);
-
 
     return (
       <>
@@ -86,9 +124,7 @@ export default function InfoMain() {
               onChange={handleChange}
               variant="scrollable"
               allowScrollButtonsMobile
-              scrollButtons ="auto"
-              textColor="secondary"
-              indicatorColor="secondary"
+              textColor='inherit'
             >
               <Box>
                 <Tab label="0 주" value={0} />
@@ -108,20 +144,20 @@ export default function InfoMain() {
             <Card sx={{display: 'flex', textAlign:'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
               {date === 0 && (
                 <Box>
-                  {babyInfo}
+                  {babybodyInfo}
                 </Box>
               )}
-              {Array.from({ length: 40 }, (_, i) => i + 1).map(week => (
+              {Array.from({ length: 39 }, (_, i) => i + 1).map(week => (
                 date === `B${week}` && (
                   <Box key={week}>
-                    {babyInfo}
+                    {babybodyInfo}
                   </Box>
                 )
               ))}
               {Array.from({ length: 25 }, (_, i) => i).map(month => (
                 date === `A${month}` && (
                   <Box key={month}>
-                    {babyInfo}
+                    {babybodyInfo}
                   </Box>
                 )
               ))}
@@ -134,6 +170,75 @@ export default function InfoMain() {
               </CardContent>
             </Card>
           </Box>
+          {/* <Box sx={{ display: 'flex', alignItems:'center', flexDirection: 'column', width:"100%"}}>
+            <Typography variant="h6" component="div">
+              이 시기에 엄마는요!
+            </Typography>
+            <Card sx={{display: 'flex', textAlign:'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
+              {date === 0 && (
+                <Box>
+                  {mombodyInfo}
+                </Box>
+              )}
+              {Array.from({ length: 40 }, (_, i) => i + 1).map(week => (
+                date === `B${week}` && (
+                  <Box key={week}>
+                    {mombodyInfo}
+                  </Box>
+                )
+              ))}
+              {Array.from({ length: 25 }, (_, i) => i).map(month => (
+                date === `A${month}` && (
+                  <Box key={month}>
+                    {mombodyInfo}
+                  </Box>
+                )
+              ))}
+              <CardContent sx={{margin:"5px"}}>
+                <Box style={{textAlign: 'right'}}>
+                  <Link to='/infobaby'>
+                    <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>궁금해요!</Button>
+                  </Link>
+                </Box>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems:'center', flexDirection: 'column', width:"100%"}}>
+            <Typography variant="h6" component="div">
+              아이를 위해서는요!
+            </Typography>
+            <Card sx={{display: 'flex', textAlign:'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
+              {date === 0 && (
+                <Box>
+                  {babysugInfo}
+                  {momsugInfo}
+                </Box>
+              )}
+              {Array.from({ length: 40 }, (_, i) => i + 1).map(week => (
+                date === `B${week}` && (
+                  <Box key={week}>
+                    {babysugInfo}
+                    {momsugInfo}
+                  </Box>
+                )
+              ))}
+              {Array.from({ length: 25 }, (_, i) => i).map(month => (
+                date === `A${month}` && (
+                  <Box key={month}>
+                    {babysugInfo}
+                    {momsugInfo}
+                  </Box>
+                )
+              ))}
+              <CardContent sx={{margin:"5px"}}>
+                <Box style={{textAlign: 'right'}}>
+                  <Link to='/infobaby'>
+                    <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>궁금해요!</Button>
+                  </Link>
+                </Box>
+              </CardContent>
+            </Card>
+          </Box> */}
         </ThemeProvider>
       </>
     )

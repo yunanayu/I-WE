@@ -78,7 +78,6 @@ function AddChild({ setSpouseStatus }) {
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
-    console.log(userNum);
     // user type, pk 저장
     setUserNum(userNum)
     setParentType(parentType)
@@ -91,7 +90,6 @@ function AddChild({ setSpouseStatus }) {
       pregnancyDate: new Date(pregnancyDate), // 임신 날짜
       status: pregnancyStatus === "pregnancy" ? true : false, // 임신 상태인지 여부를 true 또는 false로 설정
     };
-    console.log(requestBaby);
 
     var babyList = []
     // 아기정보 post
@@ -103,7 +101,6 @@ function AddChild({ setSpouseStatus }) {
           }
         }
       );
-      console.log(response.data);
       const babyInfo = response.data
       babyList = response.data
 
