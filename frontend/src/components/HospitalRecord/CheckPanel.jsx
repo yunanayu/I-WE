@@ -37,7 +37,6 @@ const CheckPanel = () => {
   
   // 배열의 index값임
   const [selectBaby, setSelectBaby] = useState(0)
-  console.log(selectBaby)
   // 개월 수 필터링
   const [selectRange, setSelectRange] = useState([0, 144])
 
@@ -50,7 +49,6 @@ const CheckPanel = () => {
     return babyList.indexOf(baby);
   });
   
-  console.log(indexesOfBornBabies);
 
   const setList = () => {
     var list = []
@@ -78,14 +76,11 @@ const CheckPanel = () => {
 
 
   useEffect(()=>{
-
-
     axios({
       method :'get',
       url:`/api/check/mother/${userNum}`,
     })
     .then((res)=>{
-      console.log(res.data)
       const list= res.data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));
       setMomCheckList(list)
     })
@@ -94,7 +89,6 @@ const CheckPanel = () => {
     const babyNum = babyList[selectBaby].num
     axios.get(`/api/check/baby/${babyNum}`)
     .then((res) => {
-      console.log(res.data)
       const list= res.data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));
       setBabyCheckList(list)
     })
@@ -108,7 +102,6 @@ const CheckPanel = () => {
     const babyNum = babyList[selectBaby].num
     axios.get(`/api/check/baby/${babyNum}`)
     .then((res) => {
-      console.log(res.data)
       babyCheck = res.data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));
     })
     setBabyCheckList(babyCheck)
@@ -152,18 +145,14 @@ useEffect(() => {
 
 useEffect(() => {
   setList()
-  console.log(selectRange)
   if (selectTarget === 'baby') {
     const newList = babyCheckList.filter((item) => {
       const start = getNumberFromString(item.startTime)
       const end = getNumberFromString(item.endTime)
-      console.log(start, end)
       return (
-        // start >= selectRange[0] && end <= selectRange[1]
-        selectRange[0] <= start  && end <= selectRange[1]
+        start >= selectRange[0] && end <= selectRange[1]
       )
     })
-    console.log(newList)
     setVaccineList(newList)
   }
   else {
@@ -194,7 +183,6 @@ useEffect(() => {
           <Select defaultValue={bornBabyList[0].name} variant="plain">
             {indexesOfBornBabies.map((idx, index) => {
               const baby = babyList[idx]
-              console.log(baby)
               return(
                 <Option value={baby.name} key={index} onClick={() => setSelectBaby(idx)}>{baby.name}</Option>    
               )
@@ -204,7 +192,8 @@ useEffect(() => {
           <></>
         }
         {selectTarget !== 'all' &&
-        <Select variant="plain" placeholder='검진/ 접종 여부 선택'>
+        // <Select variant="plain" placeholder='검진/ 접종 여부 선택'>
+        <Select variant="plain" placeholder='검진/ 접종 여부 선택' defaultValue="all">
           <Option value="all" onClick={() => setSelectType('all')}>접종 / 검진</Option>
           <Option value="검사" onClick={() => setSelectType('검사')}>검진</Option>
           <Option value="접종" onClick={() => setSelectType('접종')}>접종</Option>
