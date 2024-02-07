@@ -5,10 +5,13 @@ import { persist, createJSONStorage } from "zustand/middleware"
 const useRecordStore = create(
   persist(
     (set) => ({
-      
+      momRecord : [],
+      babyRecord : [],
+      setMomRecord : (record) => set( {momRecord:record}),
+      setBabyRecord : (record) => set( {babyRecord:record})
     }),
     {
-      name: "member",
+      name: "record",
       storage: createJSONStorage(() => sessionStorage)
     }
   )

@@ -14,12 +14,16 @@ import NumberRangeSlider from './RangeSlider';
 export function getNumberFromString(str) {
   return parseInt(str.substring(1));
 }
-export const  sortList = (data) => {data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));}
+export const  sortList = (data) => {
+  return data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime))
+}
 
 const CheckPanel = () => {
   const babyList = useMemberStore(state => state.babyList)
   const userNum = useMemberStore(state => state.userNum)
   const [momCheckList, setMomCheckList] = useState([])
+  // 현재 엄마 임신 상태
+  const momStatus = babyList[babyList.length -1].status
 
   // 아기 기록 - 아기 여러명일때 고려하자.
   const [babyCheckList, setBabyCheckList] = useState([])
@@ -33,7 +37,7 @@ const CheckPanel = () => {
   
   // 배열의 index값임
   const [selectBaby, setSelectBaby] = useState(0)
-  // console.log(selectBaby)
+  console.log(selectBaby)
   // 개월 수 필터링
   const [selectRange, setSelectRange] = useState([0, 144])
 
@@ -41,7 +45,12 @@ const CheckPanel = () => {
   const bornBabyList = babyList.filter((baby) => {
     return baby.birth != null
   })
-
+  
+  const indexesOfBornBabies = bornBabyList.map((baby) => {
+    return babyList.indexOf(baby);
+  });
+  
+  console.log(indexesOfBornBabies);
 
   const setList = () => {
     var list = []
@@ -69,6 +78,8 @@ const CheckPanel = () => {
 
 
   useEffect(()=>{
+
+
     axios({
       method :'get',
       url:`/api/check/mother/${userNum}`,
@@ -116,7 +127,7 @@ const CheckPanel = () => {
   },[selectTarget])
 
 useEffect(() => {
-  // setList()
+  setList()
   var list = []
   if (selectType === 'all') {
     if (selectTarget === 'mother') {
@@ -146,10 +157,13 @@ useEffect(() => {
     const newList = babyCheckList.filter((item) => {
       const start = getNumberFromString(item.startTime)
       const end = getNumberFromString(item.endTime)
+      console.log(start, end)
       return (
-        start >= selectRange[0] && end <= selectRange[1]
+        // start >= selectRange[0] && end <= selectRange[1]
+        selectRange[0] <= start  && end <= selectRange[1]
       )
     })
+    console.log(newList)
     setVaccineList(newList)
   }
   else {
@@ -169,17 +183,20 @@ useEffect(() => {
         <Select placeholder='대상을 선택해주세요' variant="plain" >
           {/* <Option value="all" onClick={() => setSelectTarget('all')}>전체보기</Option> */}
           <Option value="baby" onClick={() => setSelectTarget('baby') }>아기</Option>
-          <Option value="mother" onClick={() => setSelectTarget('mother') }>엄마</Option>
+          {/* 엄마 비 임신 상태일때는 안보임 */}
+          {!momStatus && <Option value="mother" onClick={() => setSelectTarget('mother') }>엄마</Option>}
         </Select>
         {
-        selectTarget == 'baby' 
+        selectTarget === 'baby' 
           &&
-        bornBabyList.length != 0
+        bornBabyList != null
         ?
-          <Select defaultValue={babyList[0].name} variant="plain">
-            {babyList.map((baby, index) => {
+          <Select defaultValue={bornBabyList[0].name} variant="plain">
+            {indexesOfBornBabies.map((idx, index) => {
+              const baby = babyList[idx]
+              console.log(baby)
               return(
-                <Option value={baby.name} key={index} onClick={() => setSelectBaby(index)}>{baby.name}</Option>    
+                <Option value={baby.name} key={index} onClick={() => setSelectBaby(idx)}>{baby.name}</Option>    
               )
             })}
           </Select>
@@ -196,7 +213,6 @@ useEffect(() => {
         {selectTarget === 'baby' &&
         <NumberRangeSlider setSelectRange={setSelectRange} target={selectTarget}/>
         }
-        
         {
         vaccineList.length != 0? 
         vaccineList.map((vaccine, index) => {
