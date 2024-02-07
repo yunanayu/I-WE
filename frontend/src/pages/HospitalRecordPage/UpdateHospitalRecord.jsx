@@ -31,15 +31,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const babyList = [
-  {name:'서싸피'},
-  {name:'이싸피'},
-  {name:'박싸피'},
-  {name:'정싸피'},
-  {name:'전싸피'},
-  {name:'최사피'},
-]
-
 const UpdateHospitalRecord = (props) => {
 
   const navigate = useNavigate()
@@ -47,7 +38,6 @@ const UpdateHospitalRecord = (props) => {
   const location = useLocation()
   const record = location.state.record
   const target = location.state.record.target
-  console.log(record);
 
   const [value, setValue] = React.useState('mother');
 
@@ -64,7 +54,6 @@ const UpdateHospitalRecord = (props) => {
     selectDay :record.selectDay
 
   })
-  console.log(state)
 
     const submit = () => {
       axios({
@@ -86,12 +75,12 @@ const UpdateHospitalRecord = (props) => {
       })
       .then((res)=>{
         console.log(res)
-        window.alert("등록하였습니다.!")
+        window.alert("수정하였습니다.")
         navigate('/hospitalrecord')
       })
       .catch((err)=>{
         console.log(err)
-        window.alert('등록실패 ㅋㅎㅋㅎ')
+        window.alert('수정실패')
       })
     }
   
