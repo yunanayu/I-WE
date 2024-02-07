@@ -23,6 +23,7 @@ const theme = createTheme({
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const babyList  = useMemberStore(state => state.babyList)
+  const setBabyList = useMemberStore(state => state.setBabyList)
   const userNum = useMemberStore(state => state.userNum)
   const setFamilyNum = useMemberStore(state => state.setFamilyNum)
 
@@ -50,6 +51,9 @@ const Main = ({ onLoginStatusChange }) => {
   const [babyName, setBabyName] = useState([]);
   const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
   const [daysSinceBirth, setDaysSinceBirth] = useState(null);
+  const [daysAfterBirth, setDaysAfterBirth] = useState(null);
+  const [daysBeforeBirth, setDaysBeforeBirth] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +68,12 @@ const Main = ({ onLoginStatusChange }) => {
         const birthdays = today.diff(birthDate, 'days');
         const pregnancyweeks = Math.floor(pregnancydays / 7 + 1)
         const birthweeks = Math.floor(birthdays / 7 + 1)
+        // 출산예정일
+        const suggestDate = (280 - pregnancydays);
+        // 출산 후 
 
+        setDaysBeforeBirth(suggestDate);
+        setDaysAfterBirth(birthdays);
         setDaysSincePregnancy(pregnancyweeks);
         setDaysSinceBirth(birthweeks)
       } catch (error) {
@@ -79,7 +88,7 @@ const Main = ({ onLoginStatusChange }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if ( isLoggedIn ){
+        if(isLoggedIn){
           const response = await axios({
           method: 'get',
           // userNum
@@ -87,13 +96,16 @@ const Main = ({ onLoginStatusChange }) => {
         });
         const data = response.data.code;
         setFamilyNum(data)
+
         }
       } catch (error) {
         console.log(error);
       }
     };
+
     fetchData();
   }, [userNum]);
+
   return (
     <>
       {isLoggedIn ? (
@@ -101,6 +113,12 @@ const Main = ({ onLoginStatusChange }) => {
         <ThemeProvider theme={theme}>
           <Box sx={{ width:'100%' , display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: 6,}}>
             <Box sx={{ display: 'flex',  alignItems: 'center', flexDirection: 'column' }}>
+              <Typography margin="10px" variant="h3" align="center" sx={{ mb: 2, color: 'gray' }}>
+                  {daysSincePregnancy ? (
+                    ` D - ${daysBeforeBirth}`
+                    ) : ( daysSinceBirth ? `D + ${daysAfterBirth}` : ''
+                  )}
+                </Typography>
               <Box sx={{ flexDirection: 'column', width: '50%', borderRadius: '50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
                 <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               </Box>

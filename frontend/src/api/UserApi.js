@@ -24,6 +24,18 @@ export const getUserInfo = async () => {
   }
 };
 
-// '아이추가'하고 => 다시 /api/baby/${userNum} 호출해서 store에 다시 저장
-// 아기가 추가되면 해당 아이를 새로 불러오기
-// 아이추가 함수
+export const getUserNumType = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: '/api/member'
+    });
+    const userInfo = response.data;
+    console.log(userInfo)
+    //store에 저장 (회원정보)
+    return userInfo
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

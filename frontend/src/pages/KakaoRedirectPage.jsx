@@ -4,13 +4,14 @@ import kakaologin from "../images/kakaologin.png";
 import { useNavigate } from "react-router-dom";
 import { requestPermission } from "../FCM/firebase-messaging-sw";
 import { getUserInfo } from "../api/UserApi";
-import useMemberStore from "../stores/userStore";
+import useMemberStore, { setMember } from "../stores/userStore";
 
 function KakaoLogin({ setIsLoggedIn }) {
   const BackURL = process.env.REACT_APP_KAKAO_LOGIN_URL || `/oauth2/authorization/kakao`;
   const navigate = useNavigate();
   const setBabyList = useMemberStore(state => state.setBabyList)
   const setUserNum = useMemberStore(state => state.setUserNum)
+  const setParentType = useMemberStore(state => state.setParentType)
   const handleLogin = () => {
     // console.log(process.env.REACT_APP_KAKAO_LOGIN_URL);
     window.location.href = BackURL;
@@ -27,11 +28,7 @@ function KakaoLogin({ setIsLoggedIn }) {
         // console.log("토큰:", code);
         document.cookie = `token=${code}`;
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정    
-        const userInfo = await getUserInfo()
-        userInfo.map((info) => {
-          setBabyList(info)
-          setUserNum(info.motherNum)
-        })
+        setMember()
         // 알림 허용 req 
         requestPermission()
         navigate("/"); // 로그인이 완료되면 '/'로 이동

@@ -7,10 +7,13 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 import axios  from "axios";
+import useMemberStore from "../stores/userStore";
+
 
 function MemberCheckPage({ setSpouseStatus }) {
   const navigate = useNavigate();
   const [selectedMember, setSelectedMember] = useState(""); // 선택된 멤버 (FATHER, MOTHER)
+  const setUserNum = useMemberStore(state => state.setUserNum)
 
   const handleSelectMember = (event) => {
     setSelectedMember(event.target.value);
@@ -32,6 +35,7 @@ function MemberCheckPage({ setSpouseStatus }) {
         }
       );
       userNum = response.data.num;
+      setUserNum(userNum)
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
