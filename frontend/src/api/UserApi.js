@@ -7,7 +7,8 @@ export const getUserInfo = async () => {
       url: '/api/member'
     });
     const userNum = response.data.num;
-    // console.log(userNum)
+    const userName = response.data.name
+    // console.log(userName)
     //store에 저장 (회원정보)
     const babyResponse = await axios({
       method: 'get',
@@ -31,7 +32,6 @@ export const getUserNumType = async () => {
       url: '/api/member'
     });
     const userInfo = response.data;
-    console.log(userInfo)
     //store에 저장 (회원정보)
     return userInfo
   } catch (error) {

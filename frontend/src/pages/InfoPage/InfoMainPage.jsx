@@ -21,34 +21,33 @@ export default function InfoMain() {
     // date = `A${months}`의 형태
     const [date, setDate] = useState(0);
 
-    // 각각의 정보
+    // 각각의 정보 (Array형태)
     const [babybodyInfo, setBabybodyInfo] = useState([]);
     const [mombodyInfo, setMombodyInfo] = useState([]);
     const [babysugInfo, setBabysugInfo] = useState([]);
     const [momsugInfo, setMomsugInfo] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const info = babyList;
-                const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
-                const birthDate = moment(info[0].birth, 'YYYY-MM-DD');
-                const today = moment();
-                const pregnancydays = today.diff(pregnancyDate, 'days');
-                const birthdays = today.diff(birthDate, 'days');
-                const pregnancyweeks = Math.floor(pregnancydays / 7 + 1);
-                const birthmonths = Math.floor(birthdays / 30);
-                if (birthDate){
-                  setDate(`A${birthmonths}`);
-                } 
-                if (pregnancyDate){
-                  setDate(`B${pregnancyweeks}`);
-                }
-            } catch(error) {
-                console.log(error)
-            }
-        };
-        fetchData();
+      const fetchData = async () => {
+        try {
+          const info = babyList;
+          const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
+          const birthDate = moment(info[0].birth, 'YYYY-MM-DD');
+          const today = moment();
+          const pregnancydays = today.diff(pregnancyDate, 'days');
+          const birthdays = today.diff(birthDate, 'days');
+          const pregnancyweeks = Math.floor(pregnancydays / 7 + 1);
+          const birthmonths = Math.floor(birthdays / 30);
+          if (info[0].pregnancyDate === null){
+            setDate(`A${birthmonths}`);
+          } else if (info[0].birth === null){
+            setDate(`B${pregnancyweeks}`);
+          }
+        } catch(error) {
+          console.log(error)
+        }
+      };
+      fetchData();
     }, [babyList]);
 
     // 저장되어있는 Infodata뽑아오기
@@ -63,47 +62,47 @@ export default function InfoMain() {
           });
           const babybodyinfodata = babybodyinforesponse.data;
           // 나옴
-          console.log(babybodyinfodata);
           setBabybodyInfo(babybodyinfodata);
+          console.log(babybodyInfo);
         } catch (error) {
           console.log(error);
         }
         
-        // 엄마 신체
-        try{
-          const mombodyinforesponse = await axios({
-            method: 'get',
-            url: `/api/info/mother/p/${date}`
-          });
-          const mombodyinfodata = mombodyinforesponse.data;
-          setMombodyInfo(mombodyinfodata);
-        }catch(error){
-          console.log(error);
-        }
+        // // 엄마 신체
+        // try{
+        //   const mombodyinforesponse = await axios({
+        //     method: 'get',
+        //     url: `/api/info/mother/p/${date}`
+        //   });
+        //   const mombodyinfodata = mombodyinforesponse.data;
+        //   setMombodyInfo(mombodyinfodata);
+        // }catch(error){
+        //   console.log(error);
+        // }
 
-        // 아기 권유
-        try{
-          const babysuginforesponse = await axios({
-            method: 'get',
-            url: `/api/info/baby/r/${date}`
-          });
-          const babysuginfodata = babysuginforesponse.data;
-          setBabysugInfo(babysuginfodata);
-        }catch(error){
-          console.log(error);
-        }
+        // // 아기 권유
+        // try{
+        //   const babysuginforesponse = await axios({
+        //     method: 'get',
+        //     url: `/api/info/baby/r/${date}`
+        //   });
+        //   const babysuginfodata = babysuginforesponse.data;
+        //   setBabysugInfo(babysuginfodata);
+        // }catch(error){
+        //   console.log(error);
+        // }
 
-        // 엄마 권유
-        try{
-          const momsuginforesponse = await axios({
-            method: 'get',
-            url: `/api/info/mother/r/${date}`
-          });
-          const momsuginfodata = momsuginforesponse.data;
-          setMomsugInfo(momsuginfodata);
-        }catch(error){
-          console.log(error);
-        }
+        // // 엄마 권유
+        // try{
+        //   const momsuginforesponse = await axios({
+        //     method: 'get',
+        //     url: `/api/info/mother/r/${date}`
+        //   });
+        //   const momsuginfodata = momsuginforesponse.data;
+        //   setMomsugInfo(momsuginfodata);
+        // }catch(error){
+        //   console.log(error);
+        // }
       };
         fetchData();
       }, [date]);
@@ -144,13 +143,14 @@ export default function InfoMain() {
             <Card sx={{display: 'flex', textAlign:'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
               {date === 0 && (
                 <Box>
-                  {babybodyInfo}
+                  {/* {babybodyInfo} */}
                 </Box>
               )}
-              {Array.from({ length: 39 }, (_, i) => i + 1).map(week => (
+              {Array.from({ length: 40 }, (_, i) => i + 1).map(week => (
                 date === `B${week}` && (
                   <Box key={week}>
-                    {babybodyInfo}
+                    {date}
+                    {/* {babybodyInfo} */}
                   </Box>
                 )
               ))}

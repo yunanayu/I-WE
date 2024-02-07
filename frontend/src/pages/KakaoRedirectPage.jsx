@@ -11,6 +11,7 @@ function KakaoLogin({ setIsLoggedIn }) {
   const navigate = useNavigate();
   const setBabyList = useMemberStore(state => state.setBabyList)
   const setUserNum = useMemberStore(state => state.setUserNum)
+  // const setUserName = useMemberStore(state => state.setUserName)
   const setParentType = useMemberStore(state => state.setParentType)
   const handleLogin = () => {
     // console.log(process.env.REACT_APP_KAKAO_LOGIN_URL);

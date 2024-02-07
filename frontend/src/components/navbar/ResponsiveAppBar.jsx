@@ -35,6 +35,9 @@ function ResponsiveAppBar() {
   const cookies = new Cookies(); // Cookies 객체 생성
   const setBabyList = useMemberStore(state => state.setBabyList)
   const setUserNum = useMemberStore(state => state.setUserNum)
+  const setUserName = useMemberStore(state => state.setUserName)
+  const userName = useMemberStore(state => state.userName);
+
   const clearUserStorage = useMemberStore.persist.clearStorage
 
   const handleOpenNavMenu = (event) => {
@@ -60,26 +63,22 @@ function ResponsiveAppBar() {
     cookies.remove(document.cookie); // 쿠키 삭제
     setUserNum(0)
     setBabyList([])
+    setUserName('')
     clearUserStorage()
     window.location.href = "/"; // 로그아웃 시 페이지 이동
   };
 
+
   return (
     <AppBar position="sticky" sx={{ background: "#FBBBB8" }} elevation={4}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
+        <Toolbar disableGutters sx={{display:'flex', justifyContent:'space-between',}}>
+          <Box
             component={NavLink}
             to="/"
             onClick={handleHomeLinkClick}
-            sx={{
-              mr: 2,
+            sx={{             
               display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
@@ -89,7 +88,7 @@ function ResponsiveAppBar() {
               alt="icon1"
               style={{ width: "50px", height: "50px" }}
             />
-          </Typography>
+          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -141,13 +140,12 @@ function ResponsiveAppBar() {
 
           <Typography
             variant="h5"
-            noWrap
             component={NavLink}
             to="/"
             onClick={handleHomeLinkClick}
             sx={{
-              mr: 2,
               display: { xs: "flex", md: "none" },
+              justifyContent:'center',
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
@@ -155,64 +153,70 @@ function ResponsiveAppBar() {
               color: "inherit",
               textDecoration: "none",
             }}
-          >
-            <img
-              src={icon1}
-              alt="icon1"
-              style={{ width: "50px", height: "50px" }}
-            />
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.name}
-                component={NavLink}
-                to={page.link}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: "white",
-                  display: "block",
-                  textDecoration: "none",
-                }}
-              >
-                {page.name}
-              </Button>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src="/broken-image.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem
-                key={setting}
-                onClick={setting === "로그아웃" ? handleLogoutClick : (setting === "마이페이지" ? () => { window.location.href = '/mypage' } : handleCloseUserMenu)}
-              >
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
+              <img
+                src={icon1}
+                alt="icon1"
+                style={{ width: "50px", height: "50px" }}
+              />
+            </Typography>
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {pages.map((page) => (
+                <Button
+                  key={page.name}
+                  component={NavLink}
+                  to={page.link}
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    textDecoration: "none",
+                  }}
+                >
+                  {page.name}
+                </Button>
               ))}
-            </Menu>
+            </Box>
+            <Box sx={{display:'flex', alignItems:'center'}}>
+              <Box sx={{ fontSize: 'x-small' }}>
+                {userName} 님 반가워요!&nbsp;
+              </Box>
+
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar src="/broken-image.jpg" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={setting === "로그아웃" ? handleLogoutClick : (setting === "마이페이지" ? () => { window.location.href = '/mypage' } : handleCloseUserMenu)}
+                    >
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
           </Box>
+          
         </Toolbar>
       </Container>
     </AppBar>

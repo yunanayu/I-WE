@@ -25,6 +25,7 @@ function AddChild({ setSpouseStatus }) {
   const [birthDate, setBirthDate] = useState("");
   const setBabyList = useMemberStore(state => state.setBabyList)
   const setUserNum = useMemberStore(state => state.setUserNum)
+  const setUserName = useMemberStore(state => state.setUserName)
   const setParentType = useMemberStore(state => state.setParentType)
 
   const handleChildNameChange = (event) => {
@@ -33,7 +34,6 @@ function AddChild({ setSpouseStatus }) {
 
   const handlePregnancyDateChange = (date) => {
     const formattedDate = dayjs(date.$d).format("YYYY-MM-DD");
-    console.log(formattedDate)
     setPregnancyDate(formattedDate);
   };
 
@@ -64,6 +64,7 @@ function AddChild({ setSpouseStatus }) {
 
     var userNum;
     var parentType
+    var userName
     // 사용자 정보 요청해서 Authorization에 넣기
     try {
       const response = await axios.get('/api/member',
@@ -75,12 +76,14 @@ function AddChild({ setSpouseStatus }) {
       );
       userNum = response.data.num;
       parentType = response.data.parentType;
+      userName = response.data.name;
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
-    // user type, pk 저장
+    // user type, pk, name 저장
     setUserNum(userNum)
     setParentType(parentType)
+    setUserName(userName)
 
     const requestBaby = {
       motherNum: userNum, // 해당 유저의 num
