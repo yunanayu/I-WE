@@ -12,8 +12,7 @@ function KakaoLogin({ setIsLoggedIn }) {
   const setBabyList = useMemberStore(state => state.setBabyList)
   const setUserNum = useMemberStore(state => state.setUserNum)
   const handleLogin = () => {
-    console.log("로그인눌림");
-    console.log(process.env.REACT_APP_KAKAO_LOGIN_URL);
+    // console.log(process.env.REACT_APP_KAKAO_LOGIN_URL);
     window.location.href = BackURL;
   };
 
@@ -25,7 +24,7 @@ function KakaoLogin({ setIsLoggedIn }) {
         const status = urlParams.get("status");
 
       if (code && status === 'success') {
-        console.log("토큰:", code);
+        // console.log("토큰:", code);
         document.cookie = `token=${code}`;
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정    
         const userInfo = await getUserInfo()
@@ -38,9 +37,7 @@ function KakaoLogin({ setIsLoggedIn }) {
         navigate("/"); // 로그인이 완료되면 '/'로 이동
       } 
       else if (code && status === 'addInfo') {
-
-
-        console.log("토큰:", code);
+        // console.log("토큰:", code);
         document.cookie = `token=${code}`;
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정
         // 추가정보입력
@@ -66,7 +63,6 @@ function KakaoLogin({ setIsLoggedIn }) {
       return Promise.reject(error);
     }
   );
-  
 
   return (
     <div>

@@ -20,7 +20,6 @@ const theme = createTheme({
   },
 });
 
-
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const babyList  = useMemberStore(state => state.babyList)
@@ -63,7 +62,6 @@ const Main = ({ onLoginStatusChange }) => {
         const today = moment();
         const pregnancydays = today.diff(pregnancyDate, 'days');
         const birthdays = today.diff(birthDate, 'days');
-
         const pregnancyweeks = Math.floor(pregnancydays / 7 + 1)
         const birthweeks = Math.floor(birthdays / 7 + 1)
 
@@ -81,21 +79,21 @@ const Main = ({ onLoginStatusChange }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios({
+        if ( isLoggedIn ){
+          const response = await axios({
           method: 'get',
           // userNum
           url: `/api/family/${userNum}`
         });
         const data = response.data.code;
         setFamilyNum(data)
+        }
       } catch (error) {
         console.log(error);
       }
     };
-
     fetchData();
   }, [userNum]);
-  console.log(userNum)
   return (
     <>
       {isLoggedIn ? (
