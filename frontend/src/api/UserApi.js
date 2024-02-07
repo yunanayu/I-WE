@@ -30,7 +30,6 @@ export const getUserNumType = async () => {
       url: '/api/member'
     });
     const userInfo = response.data;
-    // console.log(userInfo)
     //store에 저장 (회원정보)
     return userInfo
   } catch (error) {
