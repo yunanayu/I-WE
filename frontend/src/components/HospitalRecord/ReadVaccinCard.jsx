@@ -240,6 +240,8 @@ const ReadVaccinCard = (props) => {
   };
 
   // const pregnantDate = '2023-04-15';
+  
+  // if (props.babyIndex)
   const pregnantDate = babyList[props.babyIndex].pregnancyDate
   const birth = babyList[props.babyIndex].birth;
   const start = new Date(pregnantDate);

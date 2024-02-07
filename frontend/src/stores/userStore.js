@@ -31,7 +31,9 @@ export const useFcmStore = create(
   persist(
     (set) => ({
       permission : false,
-      setPermission : (type) => set({permission:type})
+      token : '',
+      setPermission : (type) => set({permission:type}),
+      setToken : (token) => set({token:token})
     }),
     {
       name: "push",

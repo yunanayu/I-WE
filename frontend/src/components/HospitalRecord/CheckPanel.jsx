@@ -39,7 +39,7 @@ const CheckPanel = () => {
   const [selectType, setSelectType] = useState("all");
 
   // 배열의 index값임
-  const [selectBaby, setSelectBaby] = useState(0);
+  const [selectBaby, setSelectBaby] = useState(null);
   // 개월 수 필터링
   const [selectRange, setSelectRange] = useState([0, 144]);
 
@@ -85,7 +85,7 @@ const CheckPanel = () => {
         setMomCheckList(list);
       })
       .catch((err) => console.log(err));
-
+    if (selectBaby !== null) {
     const babyNum = babyList[selectBaby].num;
     axios
       .get(`/api/check/baby/${babyNum}`)
@@ -97,6 +97,7 @@ const CheckPanel = () => {
         setBabyCheckList(list);
       })
       .catch((err) => console.log(err));
+    }
   }, []);
 
   // 회원가입 시 baby num 어디있는지 확인하기
@@ -177,7 +178,7 @@ const CheckPanel = () => {
           </Option>
         )}
       </Select>
-      {selectTarget === "baby" && bornBabyList != null ? (
+      {(selectTarget === "baby" && bornBabyList.length != 0) ? (
         <Select defaultValue={bornBabyList[0].name} variant="plain">
           {indexesOfBornBabies.map((idx, index) => {
             const baby = babyList[idx];
@@ -195,7 +196,7 @@ const CheckPanel = () => {
       ) : (
         <></>
       )}
-      {selectTarget !== "all" && (
+      {(selectTarget !== "all" && bornBabyList.length != 0) && (
         // <Select variant="plain" placeholder='검진/ 접종 여부 선택'>
         <Select
           variant="plain"
@@ -219,7 +220,7 @@ const CheckPanel = () => {
           target={selectTarget}
         />
       )}
-      {vaccineList.length != 0 ? (
+      {(vaccineList.length != 0 && selectBaby !== null) ? (
         vaccineList.map((vaccine, index) => {
           return (
             <ReadVaccinCard
@@ -233,9 +234,11 @@ const CheckPanel = () => {
             />
           );
         })
-      ) : (
-        <Typography>없음</Typography>
-      )}
+      ) : 
+      (
+        <Typography>해당사항 없음</Typography>
+      )
+      }
     </Box>
   );
 };

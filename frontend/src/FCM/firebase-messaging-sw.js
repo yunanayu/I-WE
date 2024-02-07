@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage, deleteToken, onBackgroundMessage  } from "firebase/messaging";
 import { goDeviceToken } from "../api/FCMTokenApi";
 import { useFcmStore } from "../stores/userStore";
+import { toBeChecked } from "@testing-library/jest-dom/matchers";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,6 +25,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
+// // FCM Token Store 부분
+// const setPermission = useFcmStore.getState().setPermission()
+// const setToken = useFcmStore(state => state.setToken)
 
 export async function requestPermission() {
   // const setPermission = useFcmStore(state => state.setPermission)
@@ -37,6 +41,7 @@ export async function requestPermission() {
   }
 
   console.log("알림 권한이 허용됨");
+  useFcmStore.getState().setPermission(true)
   // alert 창 말고 다른 방식으로 출력해주기
   // window.alert('알림이 허용되었습니다.!')
 
@@ -45,7 +50,8 @@ export async function requestPermission() {
   });
 
   if (token) {
-    console.log("token: ", token)
+    // console.log("token: ", token)
+    useFcmStore.getState().setToken(token)
     goDeviceToken(token)
   } else console.log("Can not get Token");
 
