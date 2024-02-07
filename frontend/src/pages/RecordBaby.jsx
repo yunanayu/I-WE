@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { WeightChart, HeightChart, HeadChart } from "../components/chart/BabyChart";
+import {
+  WeightChart,
+  HeightChart,
+  HeadChart,
+} from "../components/chart/BabyChart";
 import { BabyForm } from "./WeightForm";
 import { BabyCarousel } from "./BabyCarousel";
-import { Button, Divider, IconButton, Modal, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Divider,
+  IconButton,
+  Modal,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -56,18 +67,23 @@ function Info(props) {
   tmp.setMonth(tmp.getMonth() - 3);
   tmp.setFullYear(tmp.getFullYear() + 1);
   tmp.setDate(tmp.getDate() + 7);
-  const pBirth = Math.ceil(Math.abs(today.getTime() - tmp.getTime()) / (1000 * 60 * 60 * 24)) - 1;
+  const pBirth =
+    Math.ceil(
+      Math.abs(today.getTime() - tmp.getTime()) / (1000 * 60 * 60 * 24)
+    ) - 1;
 
-  const dDay = Math.ceil(Math.abs(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)) - 1;
+  const dDay =
+    Math.ceil(
+      Math.abs(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)
+    ) - 1;
 
   return (
     <>
       <Box sx={{ ...setCenter, mt: 3, mb: 3 }}>
         {props.status === "A" ? (
           <>
-            <Typography fontSize={34}>
-              D+{dDay} {props.targetTime}
-            </Typography>
+            <Typography fontSize={34}>{props.targetTime} 개월</Typography>
+            <Typography fontSize={28}> D+{dDay} </Typography>
           </>
         ) : (
           <>
@@ -84,7 +100,13 @@ function ButtonField(props) {
   const { setOpen, id, disabled, InputProps: { ref } = {} } = props;
 
   return (
-    <IconButton variant="outlined" id={id} disabled={disabled} ref={ref} onClick={() => setOpen?.((prev) => !prev)}>
+    <IconButton
+      variant="outlined"
+      id={id}
+      disabled={disabled}
+      ref={ref}
+      onClick={() => setOpen?.((prev) => !prev)}
+    >
       <CalendarMonthIcon />
     </IconButton>
   );
@@ -116,29 +138,68 @@ function RecordBaby() {
   const [date, setDate] = useState(dayjs());
   const motherNum = useMemberStore((state) => state.babyList[0].motherNum);
   const babyNum = useMemberStore((state) => state.babyList[0].num);
-  const targetTime = useMemberStore((state) => state.babyList[0].targetTime).substr(1);
-  const status = useMemberStore((state) => state.babyList[0].targetTime).substr(0, 1);
+  const targetTime = useMemberStore(
+    (state) => state.babyList[0].targetTime
+  ).substr(1);
+  const status = useMemberStore((state) => state.babyList[0].targetTime).substr(
+    0,
+    1
+  );
   const babyName = useMemberStore((state) => state.babyList[0].name);
-  const pregnancyDate = useMemberStore((state) => state.babyList[0].pregnancyDate);
+  const pregnancyDate = useMemberStore(
+    (state) => state.babyList[0].pregnancyDate
+  );
   const birthDate = useMemberStore((state) => state.babyList[0].birth);
   const gender = useMemberStore((state) => state.babyList[0].gender);
-  const week = (new Date().getTime() - new Date(targetTime).getTime()) / (1000 * 60 * 60 * 24) / 7;
-  console.log("week " + targetTime);
 
+  const [recentRecordMonth, setRecentRecordMonth] = useState();
   const [born, setBorn] = useState(false);
   const [babyRecord, setBabyRecord] = useState(null);
   const [recentRecord, setRecentRecord] = useState();
   const [weightRecord, setWeightRecord] = useState();
   const [heightRecord, setHeightRecord] = useState();
   const [headRecord, setHeadRecord] = useState();
+  const [percentileRecord, setPercentileRecord] = useState();
 
   useEffect(() => {
-    if (status === "A") {
-      setBorn(true);
-    } else {
-      setBorn(false);
+    if (recentRecord) {
+      setRecentRecordMonth(() => {
+        const d = new Date(recentRecord.recordDate);
+        const b = new Date(birthDate);
+        return (
+          (d.getFullYear() - b.getFullYear()) * 12 +
+          d.getMonth() - b.getMonth() + 1
+        );
+      });
     }
-  }, [status]);
+  }, [recentRecord]);
+
+  useEffect(() => {
+    if (recentRecordMonth) {
+      if (status === "A") {
+        setBorn(true);
+        const init2 = async () => {
+          await axios
+            .get(
+              `/api/growth/${gender + 1}/${recentRecordMonth}/${
+                recentRecord.height
+              }/${recentRecord.weight}/${recentRecord.circumference}`
+            )
+            .then((response) => {
+              const data = response.data;
+              console.log(data);
+              setPercentileRecord(data);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        };
+        init2();
+      } else {
+        setBorn(false);
+      }
+    }
+  }, [status, recentRecord, recentRecordMonth]);
 
   useEffect(() => {
     const init = async () => {
@@ -153,18 +214,7 @@ function RecordBaby() {
           console.log("GET BABY RECORD ERROR\n" + error);
         });
     };
-    const init2 = async () => {
-      await axios
-        .get(`/api/growth/1/5/30/5`)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
     init();
-    init2();
   }, [babyNum]);
 
   useEffect(() => {
@@ -201,7 +251,10 @@ function RecordBaby() {
   return (
     <>
       <Container maxWidth="lg" sx={{ ...setCenter, background: "skyblue" }}>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
           {
             <Info
               born={born}
@@ -215,7 +268,11 @@ function RecordBaby() {
           }
         </Box>
         <Box maxWidth="md" sx={{ ...setCenter }}>
-          <Stack direction={"row"} spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+          <Stack
+            direction={"row"}
+            spacing={2}
+            divider={<Divider orientation="vertical" flexItem />}
+          >
             <Button
               variant="outlined"
               onClick={recordOpen}
@@ -253,12 +310,24 @@ function RecordBaby() {
             aria-describedby="modal-modal-description"
           >
             <Box>
-              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                adapterLocale="ko"
+              >
                 <Box sx={{ ...setCenter, ...style }}>
-                  <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
+                  <Typography
+                    id="modal-modal-title"
+                    variant="h6"
+                    component="h2"
+                    sx={setCenter}
+                  >
                     <Stack direction={"row"} spacing={2}>
                       {dayjs(date).format("YYYY-MM-DD")}
-                      <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
+                      <ButtonDatePicker
+                        value={date}
+                        onChange={(newValue) => setDate(newValue)}
+                        format={"YYYY-MM-DD"}
+                      />
                       {console.log(date)}
                     </Stack>
                   </Typography>
@@ -291,14 +360,30 @@ function RecordBaby() {
             </Box>
           </Modal>
         </Box>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          <WeightChart weightRecord={weightRecord} />
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3, height: 400 }}
+        >
+          <WeightChart
+            weightRecord={weightRecord}
+            percentile={percentileRecord}
+            month={recentRecordMonth}
+          />
         </Box>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          <HeightChart heightRecord={heightRecord} />
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
+          <HeightChart
+            heightRecord={heightRecord}
+            percentile={percentileRecord}
+          />
         </Box>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          <HeadChart headRecord={headRecord} />
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
+          <HeadChart headRecord={headRecord} percentile={percentileRecord} />
         </Box>
         {/* {status === "A" ? (
           <>
