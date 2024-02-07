@@ -1,6 +1,9 @@
 package com.iandwe.security.service;
 
+import com.iandwe.member.repository.TokenRepository;
+import com.iandwe.member.service.TokenService;
 import com.iandwe.security.dto.GeneratedToken;
+import com.iandwe.security.dto.RefreshToken;
 import com.iandwe.security.properties.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -21,9 +24,12 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 public class JwtUtil {
+
     private final JwtProperties jwtProperties;
-//    private final AccessTokenService tokenService;
+    private final TokenRepository tokenRepository;
     private static String secretKey;
+
+
 
     @PostConstruct
     protected void init() {
@@ -36,9 +42,9 @@ public class JwtUtil {
         String refreshToken = generateRefreshToken(email, role);
         String accessToken = generateAccessToken(email, role);
 
-        // 토큰을 Redis에 저장 <- 이부분 나중에
-        log.info("Refresh 토큰 저장됐다 가정~" + refreshToken);
-//        tokenService.saveTokenInfo(email, refreshToken, accessToken);
+        // 토큰을 Redis에 저장
+        tokenRepository.save(new RefreshToken(email, accessToken, refreshToken));
+
         return new GeneratedToken(accessToken, refreshToken);
     }
 
@@ -67,10 +73,12 @@ public class JwtUtil {
 
     public String generateAccessToken(String email, String role) {
         long tokenPeriod = 1000L * 60L * 30L; // 30분
+
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);
 
         Date now = new Date();
+
         return
                 Jwts.builder()
                         // Payload를 구성하는 속성들을 정의
