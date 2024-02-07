@@ -29,9 +29,9 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public List<HospitalReadResponseDto> findAllByTargetAndTargetNum(String target, long targetNum) {
         List<Hospital> hospitals = hospitalRepository.findAllByTargetAndTargetNum(target, targetNum);
-        if (hospitals == null || hospitals.isEmpty()) {
-            throw new NoHospitalExistException();
-        }
+//        if (hospitals == null || hospitals.isEmpty()) {
+//            throw new NoHospitalExistException();
+//        }
         return hospitals.stream()
                 .map(HospitalReadResponseDto::from)
                 .toList();
