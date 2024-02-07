@@ -8,13 +8,14 @@ import useMemberStore, { setMember } from "../stores/userStore";
 import { setUserInfo } from './../stores/store';
 
 function KakaoLogin({ setIsLoggedIn }) {
-  const BackURL = `http://localhost:8080/oauth2/authorization/kakao`;
+  const BackURL = process.env.REACT_APP_KAKAO_LOGIN_URL || `/oauth2/authorization/kakao`;
   const navigate = useNavigate();
   const setBabyList = useMemberStore(state => state.setBabyList)
   const setUserNum = useMemberStore(state => state.setUserNum)
   const setParentType = useMemberStore(state => state.setParentType)
   const handleLogin = () => {
     console.log("로그인눌림");
+    console.log(process.env.REACT_APP_KAKAO_LOGIN_URL);
     window.location.href = BackURL;
   };
 

@@ -26,9 +26,4 @@ public class InfoServiceImpl implements InfoService {
                 .map(InfoResponseDto::from)
                 .toList();
     }
-
-    @Override
-    public String findByNum(Long num) {
-        return infoRepository.findByNum(num);
-    }
 }

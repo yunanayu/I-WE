@@ -20,8 +20,13 @@ import AddMomRecordPage from "./pages/HospitalRecordPage/AddMomRecordPage";
 import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecord";
 // import './FCM/firebase-messaging-sw'
 
-function App() {
+// const store = createStore(rootReducer);
 
+
+
+
+
+function App() {
   const [parentLoggedIn, setParentLoggedIn] = useState(false);
   const handleLoginStatusChange = (status) => {
     // Update the parent component state

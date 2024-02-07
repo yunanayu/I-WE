@@ -2,6 +2,7 @@ package com.iandwe.security.config.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.iandwe.common.util.PasswordInitializer;
 import com.iandwe.member.domain.Member;
 import com.iandwe.member.domain.MemberRole;
 import com.iandwe.member.domain.PlatformType;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -33,11 +35,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Value("${custom.success.url}")
+    private String successUrl;
+
+    @Value("${custom.info.url}")
+    private String infoUrl;
+
     private final JwtUtil jwtUtil;
 
     private final MemberRepository memberRepository;
 
-//    private PasswordEncoder passwordEncoder;
+    private final PasswordInitializer passwordInitializer;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -62,8 +70,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
         if(!isExist) {
             Member member = Member.builder()
                     .email(email)
-//                    .password(passwordEncoder.encode("1111"))
-                    .password("1111")
+                    .password(passwordInitializer.generateAndEncodeTemporaryPassword())
                     .platform(PlatformType.valueOf(provider.toUpperCase(Locale.ROOT)))
                     .role(MemberRole.valueOf(role.substring(5)))
                     .build();
@@ -76,7 +83,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             log.info("jwtToken = {}", token.getAccessToken());
 
             // accessToken을 쿼리스트링에 담는 url을 만들어줌
-            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/addInfo")
+            String targetUrl = UriComponentsBuilder.fromUriString(infoUrl)
                     .queryParam("accessToken", token.getAccessToken())
                     .queryParam("status", "addInfo")
                     .build()
@@ -95,7 +102,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
             log.info("jwtToken = {}", token.getAccessToken());
 
             // accessToken을 쿼리스트링에 담는 url을 만들어줌
-            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/loginSuccess")
+            String targetUrl = UriComponentsBuilder.fromUriString(successUrl)
                     .queryParam("accessToken", token.getAccessToken())
                     .queryParam("status", "success")
                     .build()

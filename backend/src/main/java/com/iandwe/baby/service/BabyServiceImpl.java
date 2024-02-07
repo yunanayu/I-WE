@@ -30,7 +30,7 @@ public class BabyServiceImpl implements BabyService {
 
     @Transactional
     @Override
-    public BabyCreateResponseDto create(BabyCreateRequestDto dto) {
+    public List<BabyReadResponseDto> create(BabyCreateRequestDto dto) {
         Baby baby = dto.toEntity();
 
         Member savedMember = memberRepository.findByNum(dto.getMotherNum()).orElseThrow(NoMemberExistException::new);
@@ -51,7 +51,8 @@ public class BabyServiceImpl implements BabyService {
 
         checkerGenerator.generateBabyCheckerData(baby.getNum());
 
-        return BabyCreateResponseDto.from(baby);
+//        return BabyCreateResponseDto.from(baby);
+        return findAllByUserNum(savedMember.getNum());
     }
 
     @Override

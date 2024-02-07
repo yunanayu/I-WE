@@ -37,24 +37,10 @@ public class MemberController {
     }
 
     @PutMapping("/parent")
-    public ResponseEntity<?> updateParentType(@RequestParam String num, String parentType) {
-        log.info("num : " + num + "parentType : " + parentType);
-
+    public ResponseEntity<?> updateParentType(String num, String parentType) {
         memberService.updateParentType(Long.valueOf(num), parentType);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // 일반 회원가입 => 필요하면 구현 예정
-//    @PostMapping
-//    public ResponseEntity<StatusResponseDto> register(@Valid @RequestBody MemberRegisterDto memberRegisterDto, BindingResult bindingResult) {
-//        // DTO의 유효성 검사가 실패할 경우 400번 에러를 돌려준다.
-//        if (bindingResult.hasErrors()) {
-//            return ResponseEntity.badRequest().body(StatusResponseDto.addStatus(400));
-//        }
-//
-//        // 회원을 저장한다.
-//        memberService.save(memberRegisterDto);
-//        return ResponseEntity.ok(StatusResponseDto.addStatus(200));
-//    }
 }

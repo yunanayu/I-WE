@@ -18,7 +18,7 @@ public class InfoResponseDto {
 
     private String content;
 
-    private String category;
+    private char category;
 
     private String startTime;
 

@@ -23,7 +23,6 @@ export const getUserInfo = async () => {
   }
 };
 
-
 export const getUserNumType = async () => {
   try {
     const response = await axios({

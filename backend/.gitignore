@@ -236,5 +236,5 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij,java,gradle
 
 # yuna firebase key ignore
-**/i-and-we-382f4-firebase-adminsdk-jl3ok-989e110512.json
-i-and-we-382f4-firebase-adminsdk-jl3ok-989e110512.json
+#**/i-and-we-382f4-firebase-adminsdk-jl3ok-989e110512.json
+#i-and-we-382f4-firebase-adminsdk-jl3ok-989e110512.json
