@@ -126,11 +126,11 @@ public class DBInitializer implements ApplicationRunner {
                     .startTime(data[1])
                     .endTime(data[2])
                     .target(data[3])
-                    .category(data[4])
+                    .category(data[4].charAt(0))
                     .build();
             infos.add(info);
         }
-
+        
         infoRepository.saveAll(infos);
     }
 }

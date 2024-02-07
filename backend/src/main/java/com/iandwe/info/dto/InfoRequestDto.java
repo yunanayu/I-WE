@@ -14,7 +14,7 @@ public class InfoRequestDto {
 
     private String target;
 
-    private String category;
+    private char category;
 
     private String targetTime;
 }

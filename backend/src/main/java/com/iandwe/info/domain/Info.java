@@ -47,7 +47,7 @@ public class Info {
     @Column(length = 500)
     private String content;
 
-    private String category;
+    private char category;
 
     private String startTime;
 
