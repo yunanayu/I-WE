@@ -19,8 +19,8 @@ public class GrowthController {
 
     private final GrowthService growthService;
 
-    @GetMapping("/{gender}/{month}/{height}/{weight}")
-    public ResponseEntity<GrowthResponseDto> findPercentiles(@PathVariable int gender, @PathVariable int month, @PathVariable float height, @PathVariable float weight ) {
-        return new ResponseEntity<>(growthService.findPercentiles(gender, month, height, weight), HttpStatus.OK);
+    @GetMapping("/{gender}/{month}/{height}/{weight}/{circumferences}")
+    public ResponseEntity<GrowthResponseDto> findPercentiles(@PathVariable int gender, @PathVariable int month, @PathVariable float height, @PathVariable float weight, @PathVariable float circumferences) {
+        return new ResponseEntity<>(growthService.findPercentiles(gender, month, height, weight, circumferences), HttpStatus.OK);
     }
 }

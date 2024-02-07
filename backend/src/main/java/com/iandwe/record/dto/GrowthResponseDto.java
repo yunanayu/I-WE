@@ -18,6 +18,8 @@ public class GrowthResponseDto {
 
     private int weightPercentile;
 
+    private int circumferencePercentile;
+
     private List<Float> height25thPercentiles;
 
     private List<Float> height75thPercentiles;
@@ -25,4 +27,8 @@ public class GrowthResponseDto {
     private List<Float> weight25thPercentiles;
 
     private List<Float> weight75thPercentiles;
+
+    private List<Float> circumference25thPercentiles;
+
+    private List<Float> circumference75thPercentiles;
 }
