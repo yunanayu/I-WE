@@ -10,12 +10,11 @@ import axios  from "axios";
 
 function MemberCheckPage({ setSpouseStatus }) {
   const navigate = useNavigate();
-  const [selectedMember, setSelectedMember] = useState(""); // 선택된 멤버 (husband, wife)
+  const [selectedMember, setSelectedMember] = useState(""); // 선택된 멤버 (FATHER, MOTHER)
 
   const handleSelectMember = (event) => {
     setSelectedMember(event.target.value);
   };
-
   const handleConfirm = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("accessToken");
@@ -23,7 +22,6 @@ function MemberCheckPage({ setSpouseStatus }) {
     if(code) {
       document.cookie = `token=${code}`;
     }
-
     // 사용자 정보 요청해서 Authorization에 넣기
     try {
       const response = await axios.get('/api/member',
@@ -37,7 +35,6 @@ function MemberCheckPage({ setSpouseStatus }) {
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
-    console.log(userNum);
 
     // 남편/아내 정보 업데이트
     try {
@@ -53,8 +50,7 @@ function MemberCheckPage({ setSpouseStatus }) {
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
-    console.log("남편/아내 등록 성공")
-
+    // console.log("남편/아내 등록 성공")
     
     if (selectedMember === "FATHER") {
       // 남편인 경우, 공유 코드 입력 페이지로 이동

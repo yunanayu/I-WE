@@ -29,13 +29,11 @@ function AddChild({ setSpouseStatus }) {
 
   const handlePregnancyDateChange = (date) => {
     const formattedDate = dayjs(date.$d).format("YYYY-MM-DD");
-    console.log(formattedDate)
     setPregnancyDate(formattedDate);
   };
 
   const handleBirthDateChange = (date) => {
     const formattedDate = dayjs(date.$d).format("YYYY-MM-DD");
-    console.log(formattedDate);
     setBirthDate(formattedDate);
   };
 
@@ -74,7 +72,6 @@ function AddChild({ setSpouseStatus }) {
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
-    console.log(userNum);
 
     const requestBaby = {
       motherNum: userNum, // 해당 유저의 num
@@ -84,7 +81,6 @@ function AddChild({ setSpouseStatus }) {
       pregnancyDate: new Date(pregnancyDate), // 임신 날짜
       status: pregnancyStatus === "pregnancy" ? true : false, // 임신 상태인지 여부를 true 또는 false로 설정
     };
-    console.log(requestBaby);
 
     // 아기정보 post
     try {
@@ -95,11 +91,11 @@ function AddChild({ setSpouseStatus }) {
           }
         }
       );
-      console.log(response.data);
+      // console.log(response.data);
     } catch(e) {
       console.log("아기정보 등록 실패")
     }
-    console.log("아기정보 등록 성공")
+    // console.log("아기정보 등록 성공")
     navigate("/");
   };
 
