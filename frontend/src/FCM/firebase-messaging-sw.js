@@ -36,14 +36,11 @@ export async function requestPermission() {
   const permission = await Notification.requestPermission();
   if (permission === "denied") {
     console.log("알림 권한 허용 안됨");
-    // window.alert('알림 권한이 거절되었습니다.')
     return;
   }
 
-  console.log("알림 권한이 허용됨");
+  // console.log("알림 권한이 허용됨");
   useFcmStore.getState().setPermission(true)
-  // alert 창 말고 다른 방식으로 출력해주기
-  // window.alert('알림이 허용되었습니다.!')
 
   const token = await getToken(messaging, {
     vapidKey: process.env.REACT_APP_VAPID_KEY
@@ -59,6 +56,7 @@ export async function requestPermission() {
     console.log("메시지가 도착했습니다.", payload);
   });
 
+  // 알림 거부 코드 짜기
 
   // onBackgroundMessage(messaging, (payload) => {
   //   console.log('[firebase-messaging-sw.js] Received background message ', payload);
