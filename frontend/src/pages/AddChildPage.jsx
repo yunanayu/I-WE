@@ -64,7 +64,6 @@ function AddChild({ setSpouseStatus }) {
     }
 
     var userNum;
-    var parentType
     // 사용자 정보 요청해서 Authorization에 넣기
     try {
       const response = await axios.get('/api/member',
@@ -75,14 +74,12 @@ function AddChild({ setSpouseStatus }) {
         }
       );
       userNum = response.data.num;
-      parentType = response.data.parentType;
+      // user type, pk 저장
+      setUserNum(response.data.num)
+      setParentType(response.data.parentType)
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
-    console.log(userNum);
-    // user type, pk 저장
-    setUserNum(userNum)
-    setParentType(parentType)
 
     const requestBaby = {
       motherNum: userNum, // 해당 유저의 num
@@ -94,7 +91,6 @@ function AddChild({ setSpouseStatus }) {
     };
     console.log(requestBaby);
 
-    var babyList = []
     // 아기정보 post
     try {
       const response = await axios.post(`/api/baby`, requestBaby, // requestBaby 정보 전달
@@ -104,14 +100,11 @@ function AddChild({ setSpouseStatus }) {
           }
         }
       );
-      console.log(response.data);
-      const babyInfo = response.data
-      babyList = response.data
+      setBabyList(...response.data)
 
     } catch(e) {
       console.log("아기정보 등록 실패")
     }
-    setBabyList(...babyList)
     console.log("아기정보 등록 성공")
     navigate("/");
   };  

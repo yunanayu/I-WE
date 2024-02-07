@@ -7,7 +7,6 @@ export const getUserInfo = async () => {
       url: '/api/member'
     });
     const userNum = response.data.num;
-    console.log(userNum)
     //store에 저장 (회원정보)
     const babyResponse = await axios({
       method: 'get',

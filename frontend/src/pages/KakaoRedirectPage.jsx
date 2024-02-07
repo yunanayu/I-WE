@@ -29,7 +29,7 @@ function KakaoLogin({ setIsLoggedIn }) {
         console.log("토큰:", code);
         document.cookie = `token=${code}`;
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정    
-        setMember()
+        setMember() // 유저 정보 및 아기 리스트 저장
         // 알림 허용 req 
         requestPermission()
         navigate("/"); // 로그인이 완료되면 '/'로 이동
