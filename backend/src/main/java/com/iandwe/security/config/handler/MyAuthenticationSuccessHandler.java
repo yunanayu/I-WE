@@ -64,13 +64,16 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
         String role = oAuth2User.getAuthorities().stream().findFirst() // 첫번째 Role을 찾아옴
                 .orElseThrow(IllegalAccessError::new) // 존재하지 않을 시 예외를 던짐
                 .getAuthority(); // Role을 가져옴
-        log.info("Role : " + role);
 
-        // 회원이 존재하지 않을 경우, 임시로 회원가입 처리 => 이 부분 나중에 수정해야!!
+        // 회원이 존재하지 않을 경우, 임시로 회원가입 처리
         if(!isExist) {
+            String memberId = email != null ? email.split("@")[0] : "";
+            String name = oAuth2User.getAttribute("name");
             Member member = Member.builder()
                     .email(email)
                     .password(passwordInitializer.generateAndEncodeTemporaryPassword())
+                    .memberId(memberId)
+                    .name(name)
                     .platform(PlatformType.valueOf(provider.toUpperCase(Locale.ROOT)))
                     .role(MemberRole.valueOf(role.substring(5)))
                     .build();

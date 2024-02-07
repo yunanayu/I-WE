@@ -8,6 +8,4 @@ import java.util.List;
 public interface InfoService {
 
     List<InfoResponseDto> findByTargetAndTargetTimeAndCategory(InfoRequestDto dto);
-
-    String findByNum(Long num);
 }
