@@ -1,12 +1,16 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware"
+import { getUserInfo, getUserNumType } from "../api/UserApi";
+
 
 
 const useMemberStore = create(
   persist(
     (set) => ({
   userNum : 0,  // 엄마 num
+  parentType : null,
   setUserNum : (num) => set({ userNum: num}),
+  setParentType : (type) => set({parentType : type}),
   babyList : [],
   setBabyList : (babyinfo) => 
     set((prev) => ({
@@ -22,4 +26,28 @@ const useMemberStore = create(
   )
 )
 
+
+export const useFcmStore = create(
+  persist(
+    (set) => ({
+      permission : false,
+      setPermission : (type) => set({permission:type})
+    }),
+    {
+      name: "push",
+      storage: createJSONStorage(() => sessionStorage)
+    }
+  )
+)
+
 export default useMemberStore
+
+
+// 유저 정보 저장 함수 
+export const setMember = async () => {
+  const userInfo = await getUserNumType()
+  const babyInfo = await getUserInfo()
+  useMemberStore.getState().setUserNum(userInfo.num)
+  useMemberStore.getState().setParentType(userInfo.parentType)
+  useMemberStore.getState().setBabyList(...babyInfo)
+}

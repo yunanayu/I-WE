@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage, deleteToken } from "firebase/messaging";
 import { goDeviceToken } from "../api/FCMTokenApi";
+import { useFcmStore } from "../stores/userStore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,20 +22,23 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-
 const messaging = getMessaging(app);
 
+
 export async function requestPermission() {
+  // const setPermission = useFcmStore(state => state.setPermission)
   console.log("권한 요청 중...");
 
   const permission = await Notification.requestPermission();
   if (permission === "denied") {
     console.log("알림 권한 허용 안됨");
+    // window.alert('알림 권한이 거절되었습니다.')
     return;
   }
 
   console.log("알림 권한이 허용됨");
+  // alert 창 말고 다른 방식으로 출력해주기
+  // window.alert('알림이 허용되었습니다.!')
 
   const token = await getToken(messaging, {
     vapidKey: process.env.REACT_APP_VAPID_KEY

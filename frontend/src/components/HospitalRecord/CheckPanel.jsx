@@ -14,7 +14,7 @@ import NumberRangeSlider from './RangeSlider';
 export function getNumberFromString(str) {
   return parseInt(str.substring(1));
 }
-
+export const  sortList = (data) => {data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));}
 
 const CheckPanel = () => {
   const babyList = useMemberStore(state => state.babyList)
@@ -30,11 +30,17 @@ const CheckPanel = () => {
   // 타겟, 카테고리(검사, 접종)
   const [selectTarget, setSelectTarget] = useState('all')
   const [selectType, setSelectType] = useState('all')
+  
   // 배열의 index값임
   const [selectBaby, setSelectBaby] = useState(0)
   // console.log(selectBaby)
   // 개월 수 필터링
   const [selectRange, setSelectRange] = useState([0, 144])
+
+  // 태어난 babyList
+  const bornBabyList = babyList.filter((baby) => {
+    return baby.birth != null
+  })
 
 
   const setList = () => {
@@ -57,7 +63,7 @@ const CheckPanel = () => {
         return item.category === selectType
       })
     }
-    setVaccineList(list)
+    setVaccineList(sortList(list))
   }
   
 
@@ -92,7 +98,7 @@ const CheckPanel = () => {
     axios.get(`/api/check/baby/${babyNum}`)
     .then((res) => {
       console.log(res.data)
-      babyCheck = res.data
+      babyCheck = res.data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));
     })
     setBabyCheckList(babyCheck)
     }
@@ -110,27 +116,27 @@ const CheckPanel = () => {
   },[selectTarget])
 
 useEffect(() => {
-  setList()
-  // var list = []
-  // if (selectType === 'all') {
-  //   if (selectTarget === 'mother') {
-  //     list = momCheckList
-  //   }
-  //   else {
-  //     list = babyCheckList
-  //   }
-  // }
-  // else if (selectType != 'all' && selectTarget === 'mother') {
-  //   list = momCheckList.filter((item) => {
-  //     return item.category === selectType
-  //   })
-  // }
-  // else if (selectType != 'all' && selectTarget === 'baby') {
-  //   list = babyCheckList.filter((item) => {
-  //     return item.category === selectType
-  //   })
-  // }
-  // setVaccineList(list)
+  // setList()
+  var list = []
+  if (selectType === 'all') {
+    if (selectTarget === 'mother') {
+      list = momCheckList
+    }
+    else {
+      list = babyCheckList
+    }
+  }
+  else if (selectType != 'all' && selectTarget === 'mother') {
+    list = momCheckList.filter((item) => {
+      return item.category === selectType
+    })
+  }
+  else if (selectType != 'all' && selectTarget === 'baby') {
+    list = babyCheckList.filter((item) => {
+      return item.category === selectType
+    })
+  }
+  setVaccineList(sortList(list))
 }, [selectType])
 
 useEffect(() => {
@@ -163,11 +169,13 @@ useEffect(() => {
         <Select placeholder='대상을 선택해주세요' variant="plain" >
           {/* <Option value="all" onClick={() => setSelectTarget('all')}>전체보기</Option> */}
           <Option value="baby" onClick={() => setSelectTarget('baby') }>아기</Option>
-          {<Option value="mother" onClick={() => setSelectTarget('mother') }>엄마</Option>}
+          <Option value="mother" onClick={() => setSelectTarget('mother') }>엄마</Option>
         </Select>
         {
         selectTarget == 'baby' 
           &&
+        bornBabyList.length != 0
+        ?
           <Select defaultValue={babyList[0].name} variant="plain">
             {babyList.map((baby, index) => {
               return(
@@ -175,12 +183,16 @@ useEffect(() => {
               )
             })}
           </Select>
+          :
+          <></>
         }
+        {selectTarget !== 'all' &&
         <Select variant="plain" placeholder='검진/ 접종 여부 선택'>
           <Option value="all" onClick={() => setSelectType('all')}>접종 / 검진</Option>
           <Option value="검사" onClick={() => setSelectType('검사')}>검진</Option>
           <Option value="접종" onClick={() => setSelectType('접종')}>접종</Option>
         </Select>
+        }
         {selectTarget === 'baby' &&
         <NumberRangeSlider setSelectRange={setSelectRange} target={selectTarget}/>
         }

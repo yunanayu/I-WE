@@ -23,3 +23,20 @@ export const getUserInfo = async () => {
     throw error;
   }
 };
+
+
+export const getUserNumType = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: '/api/member'
+    });
+    const userInfo = response.data;
+    console.log(userInfo)
+    //store에 저장 (회원정보)
+    return userInfo
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

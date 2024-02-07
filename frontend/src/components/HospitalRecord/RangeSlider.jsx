@@ -4,7 +4,7 @@ import { Grid, Typography, Slider } from '@mui/material';
 function NumberRangeSlider(props) {
   const setSelectRange = props.setSelectRange
   const target = props.target
-  const [range, setRange] = useState([1, 144]); // 시작 숫자와 종료 숫자를 배열로 관리
+  const [range, setRange] = useState([0, 144]); // 시작 숫자와 종료 숫자를 배열로 관리
 
 
   useEffect(() => {
