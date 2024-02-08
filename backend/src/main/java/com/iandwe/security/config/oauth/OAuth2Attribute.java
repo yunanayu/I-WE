@@ -50,6 +50,7 @@ public class OAuth2Attribute {
                 .attributes(attributes)
                 .attributeKey(attributeKey)
                 .name("")
+                .profileImage((String) attributes.get("picture"))
                 .build();
     }
 
