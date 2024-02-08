@@ -9,6 +9,7 @@ import { Typography } from "@mui/material";
 import ReadVaccinCard from "./ReadVaccinCard";
 import { getCheck } from "../../api/RecordApi";
 import NumberRangeSlider from "./RangeSlider";
+import MotherCheck from './Check/MotherCheck';
 
 export function getNumberFromString(str) {
   return parseInt(str.substring(1));
@@ -27,27 +28,26 @@ const CheckPanel = () => {
   const [momCheckList, setMomCheckList] = useState([]);
   // 현재 엄마 임신 상태
   const momStatus = babyList[babyList.length - 1].status;
-
+  console.log(momStatus)
   // 아기 기록 - 아기 여러명일때 고려하자.
   const [babyCheckList, setBabyCheckList] = useState([]);
-
-  // 출력해야하는 리스트!!!
+  console.log(babyCheckList)
+  console.log(momCheckList)
+  // vaccine card로 보내는 리스트
   const [vaccineList, setVaccineList] = useState([]);
-
+  console.log("백신 리스트 " , vaccineList)
   // 타겟, 카테고리(검사, 접종)
   const [selectTarget, setSelectTarget] = useState("all");
   const [selectType, setSelectType] = useState("all");
-
-  // 배열의 index값임
+  // BabyList 배열의 index값임
   const [selectBaby, setSelectBaby] = useState(null);
   // 개월 수 필터링
   const [selectRange, setSelectRange] = useState([0, 144]);
-
   // 태어난 babyList
   const bornBabyList = babyList.filter((baby) => {
     return baby.birth != null;
   });
-
+  console.log(bornBabyList)
   const indexesOfBornBabies = bornBabyList.map((baby) => {
     return babyList.indexOf(baby);
   });
@@ -60,14 +60,13 @@ const CheckPanel = () => {
       } else {
         list = babyCheckList;
       }
-    } else if (selectType != "all" && selectTarget === "mother") {
-      list = momCheckList.filter((item) => {
-        return item.category === selectType;
-      });
-    } else if (selectType != "all" && selectTarget === "baby") {
-      list = babyCheckList.filter((item) => {
-        return item.category === selectType;
-      });
+    } 
+    else {
+      if (selectTarget === "mother") {
+        list = momCheckList.filter((item) => item.category === selectType);
+      } else {
+        list = babyCheckList.filter((item) => item.category === selectType);
+      }
     }
     setVaccineList(sortList(list));
   };
@@ -167,12 +166,13 @@ const CheckPanel = () => {
 
   return (
     <Box>
+      <MotherCheck />
       <Select placeholder="대상을 선택해주세요" variant="plain">
         <Option value="baby" onClick={() => setSelectTarget("baby")}>
           아기
         </Option>
         {/* 엄마 비 임신 상태일때는 안보임 */}
-        {(!momStatus || parentType !== "FATHER") && (
+        {(momStatus || parentType !== "FATHER") && (
           <Option value="mother" onClick={() => setSelectTarget("mother")}>
             엄마
           </Option>
@@ -196,7 +196,7 @@ const CheckPanel = () => {
       ) : (
         <></>
       )}
-      {(selectTarget !== "all" && bornBabyList.length != 0) && (
+      {selectTarget !== "all" && (
         // <Select variant="plain" placeholder='검진/ 접종 여부 선택'>
         <Select
           variant="plain"
@@ -220,24 +220,24 @@ const CheckPanel = () => {
           target={selectTarget}
         />
       )}
-      {(vaccineList.length != 0 && selectBaby !== null) ? (
+      {vaccineList.length != 0  ?  
+      (
         vaccineList.map((vaccine, index) => {
           return (
             <ReadVaccinCard
-              key={index}
-              index={index}
-              targetNum={
-                selectTarget === "baby" ? babyList[selectBaby].num : userNum
-              }
-              babyIndex={selectBaby}
-              vaccine={vaccine}
+            key={index}
+            index={index}
+            targetNum={
+              selectTarget === "baby" ? babyList[selectBaby].num : userNum
+            }
+            babyIndex={selectBaby}
+            vaccine={vaccine}
             />
-          );
-        })
-      ) : 
-      (
-        <Typography>해당사항 없음</Typography>
-      )
+            );
+          })
+          ) 
+          :
+          (<Typography>해당사항 없음</Typography>)
       }
     </Box>
   );

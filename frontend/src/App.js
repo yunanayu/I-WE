@@ -75,7 +75,7 @@ function App() {
         <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
         <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
         <Route path="/tips" element={<TipPage />} />
-        <Route path="/test" element={<InfoSection />} />
+        {/* <Route path="/test" element={<InfoSection />} /> */}
       </Routes>
     </div>
     );
