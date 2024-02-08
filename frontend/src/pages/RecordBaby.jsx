@@ -63,6 +63,13 @@ function Info(props) {
   const birthDate = new Date(props.birthDate);
   const pregnancyDate = new Date(props.pregnancyDate);
   const tmp = new Date(pregnancyDate);
+  const [percentile, setPercentile] = useState();
+  useEffect(() => {
+    if(props.percentile){
+      setPercentile(props.percentile)
+      console.log(props.percentile);
+    }
+  }, [props.percentile])
 
   tmp.setMonth(tmp.getMonth() - 3);
   tmp.setFullYear(tmp.getFullYear() + 1);
@@ -80,10 +87,12 @@ function Info(props) {
   return (
     <>
       <Box sx={{ ...setCenter, mt: 3, mb: 3 }}>
-        {props.status === "A" ? (
+        {props.status === "A" && percentile ? (
           <>
-            <Typography fontSize={34}>{props.targetTime} 개월</Typography>
-            <Typography fontSize={28}> D+{dDay} </Typography>
+            <Typography fontSize={34}> D+{dDay} </Typography>
+            <Typography fontSize={23}> 체중은 상위 {percentile.weightPercentile}% </Typography>
+            <Typography fontSize={23}> 키는 상위 {percentile.heightPercentile}% </Typography>
+            <Typography fontSize={23}> 머리둘레는 상위 {percentile.circumferencePercentile}% </Typography>
           </>
         ) : (
           <>
@@ -264,6 +273,7 @@ function RecordBaby() {
               status={status}
               pregnancyDate={pregnancyDate}
               birthDate={birthDate}
+              percentile={percentileRecord}
             />
           }
         </Box>

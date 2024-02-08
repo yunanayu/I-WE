@@ -79,17 +79,13 @@ const WeightChart = (props) => {
         type: "boxplot",
         label: "Box Plot",
         order: 2,
-        data: Array.from({ length: 7 }, () => [
-          faker.number.int({ min: 80, max: 100 }),
-          faker.number.int({ min: 20, max: 80 }),
-          faker.number.int({ min: 0, max: 20 })
-        ]),
+        data: [],
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)"
       },
       {
         label: "Line Dataset",
-        data: Array.from({ length: 7 }, () => faker.number.int({ min: 20, max: 80 })),
+        data: [],
         type: "line",
         borderColor: "skyblue",
         fill: false,
@@ -106,33 +102,70 @@ const WeightChart = (props) => {
   }, [props.percentile, props.weightRecord])
 
   useEffect(() => {
-    if(weightRecord) {
+    console.log(percentile);
+    if (weightRecord) {
       let arr = [];
       let m = props.month;
-      arr.push(weightRecord[weightRecord.length-1]);
-      for(let i=weightRecord.length-1; i>=0; i--) {
-        if(new Date(arr[0].recordDate).getMonth() !== new Date(weightRecord[i].recordDate).getMonth()){
-          // const obj = {
-          //   weight: weightRecord[i].weight,
-          //   month: m
-          // }
-          // arr.unshift(obj);
-          // m--;
-          arr.unshift(weightRecord[i]);
+      let obj = {
+        weight: weightRecord[weightRecord.length - 1].weight,
+        recordDate: weightRecord[weightRecord.length - 1].recordDate,
+        month: m,
+      };
+      m--;
+      arr.push(obj);
+      for (let i = weightRecord.length - 1; i >= 0; i--) {
+        if (new Date(arr[0].recordDate).getMonth() !== new Date(weightRecord[i].recordDate).getMonth()) {
+          const obj = {
+            weight: weightRecord[i].weight,
+            recordDate: weightRecord[i].recordDate,
+            month: m,
+          };
+          arr.unshift(obj);
+          m--;
         }
       }
       setWeightData(arr);
     }
-  }, [weightRecord])
+  }, [weightRecord]);
 
   useEffect(() => {
-    console.log("weightDAta" + JSON.stringify(weightData));
-    if(weightData) {
+    if(weightData && percentile) {
+      let a = [...percentile.weight75thPercentiles].reverse();
+      let b = [...weightData].reverse();
+      let c = [...percentile.weight25thPercentiles].reverse();
+      let d = [...weightData];
       const data = {
-        labels: [],
-        datasets: []
+        labels: weightData.map((obj) => {
+          return obj.month+"월"
+        }),
+        datasets: [
+          {
+            type: "boxplot",
+            label: "체중 백분위수",
+            order: 2,
+            data: Array.from({ length: weightData.length >= 5 ? 5 : weightData.length }, () => [
+              a.pop(),
+              b.pop().weight,
+              c.pop()
+            ]),
+            
+            borderColor: "rgb(255, 99, 132)",
+            backgroundColor: "rgba(255, 99, 132, 0.5)"
+          },
+          {
+            label: "체중",
+            data: d.map((obj) => {
+              return obj.weight
+            }),
+            type: "line",
+            borderColor: "skyblue",
+            fill: false,
+            order: 1
+          }
+        ]
       }
-      setChartData({})
+      console.log(data.datasets[1].data);
+      setChartData(data)
     }
   }, [weightData])
 
@@ -155,7 +188,7 @@ const WeightChart = (props) => {
         },
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: false
           }
         },
       }
