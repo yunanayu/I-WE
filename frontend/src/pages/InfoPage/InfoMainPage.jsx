@@ -14,7 +14,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-
 const theme = createTheme({
     typography: {
       fontFamily: 'Nanum Gothic, sans-serif',
@@ -33,11 +32,19 @@ export default function InfoMain() {
   const [momsugInfo, setMomsugInfo] = useState([]);
   // 더 알아보기 누르면 나오는 창
   const [open, setOpen] = useState(false);
-  const [scroll, setScroll] = useState('babymore');
+  const [babyscroll, setbabyScroll] = useState('babymore');
+  const [momscroll, setmomScroll] = useState('mommore');
+  const [infoscroll, setinfoScroll] = useState('infomore');
+
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
-    setScroll(scrollType);
+    setbabyScroll(scrollType);
+    setmomScroll(scrollType);
+    setinfoScroll(scrollType);
   };
+
+
+  
   const handleClose = () => {
     setOpen(false);
   };
@@ -491,12 +498,12 @@ export default function InfoMain() {
                 <Dialog
                   open={open}
                   onClose={handleClose}
-                  scroll={scroll}
+                  scroll={babyscroll}
                   aria-labelledby="scroll-dialog-title"
                   aria-describedby="scroll-dialog-description"
                 >
                   <DialogTitle id="scroll-dialog-title">이 시기의 아이 정보 더알아보기</DialogTitle>
-                  <DialogContent dividers={scroll === 'babymore'}>
+                  <DialogContent dividers={babyscroll === 'babymore'}>
                   <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
                     {getBabyBodyInfo()}
                   </DialogContentText>
@@ -517,16 +524,16 @@ export default function InfoMain() {
             {getMomBodyInfothree()}
             <CardContent sx={{ margin: "5px" }}>
               <Box style={{ textAlign: 'right' }}>
-                <Button onClick={handleClickOpen('mommore')} size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button>
+                <Button onClick={handleClickOpen('more')} size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button>
                 <Dialog
                   open={open}
                   onClose={handleClose}
-                  scroll={scroll}
+                  scroll={momscroll}
                   aria-labelledby="scroll-dialog-title"
                   aria-describedby="scroll-dialog-description"
                 >
                   <DialogTitle id="scroll-dialog-title">이 시기의 엄마 정보 더알아보기</DialogTitle>
-                  <DialogContent dividers={scroll === 'mommore'}>
+                  <DialogContent dividers={momscroll === 'mommore'}>
                   <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
                     {getMomBodyInfo()}
                   </DialogContentText>
@@ -544,19 +551,19 @@ export default function InfoMain() {
             아이를 위해서는요!
           </Typography>
           <Card sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
-            {getMomSugInfothree()}
+            {getBabySugInfothree()}
             <CardContent sx={{ margin: "5px" }}>
               <Box style={{ textAlign: 'right' }}>
                 <Button onClick={handleClickOpen('infomore')} size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button>
                 <Dialog
                   open={open}
                   onClose={handleClose}
-                  scroll={scroll}
+                  scroll={infoscroll}
                   aria-labelledby="scroll-dialog-title"
                   aria-describedby="scroll-dialog-description"
                 >
                   <DialogTitle id="scroll-dialog-title">이 시기의 정보 더알아보기</DialogTitle>
-                  <DialogContent dividers={scroll === 'infomore'}>
+                  <DialogContent dividers={infoscroll === 'infomore'}>
                   <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
                     {getBabySugInfo()}
                     {getMomSugInfo()}
