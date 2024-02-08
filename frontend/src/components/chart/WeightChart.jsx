@@ -32,7 +32,7 @@ function WeeklyWeightChart(props) {
     }
     const newData = generateData(selectedInterval);
     setChartData(newData);
-  }, [props]);
+  }, []);
 
   useEffect(() => {
     if (props.recordData) {

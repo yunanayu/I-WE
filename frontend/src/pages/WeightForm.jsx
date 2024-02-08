@@ -79,7 +79,7 @@ function MomForm(props) {
         setWeight(recent.weight);
       }
     }
-  }, [recent]);
+  }, [recent, today]);
 
   return (
     <>

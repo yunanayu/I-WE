@@ -67,7 +67,6 @@ function Info(props) {
   useEffect(() => {
     if(props.percentile){
       setPercentile(props.percentile)
-      console.log(props.percentile);
     }
   }, [props.percentile])
 
@@ -90,9 +89,9 @@ function Info(props) {
         {props.status === "A" && percentile ? (
           <>
             <Typography fontSize={34}> D+{dDay} </Typography>
-            <Typography fontSize={23}> 체중은 상위 {percentile.weightPercentile}% </Typography>
-            <Typography fontSize={23}> 키는 상위 {percentile.heightPercentile}% </Typography>
-            <Typography fontSize={23}> 머리둘레는 상위 {percentile.circumferencePercentile}% </Typography>
+            <Typography fontSize={23}> 체중 상위 {percentile.weightPercentile}% </Typography>
+            <Typography fontSize={23}> 신장 상위 {percentile.heightPercentile}% </Typography>
+            <Typography fontSize={23}> 머리둘레 상위 {percentile.circumferencePercentile}% </Typography>
           </>
         ) : (
           <>
@@ -196,7 +195,6 @@ function RecordBaby() {
             )
             .then((response) => {
               const data = response.data;
-              console.log(data);
               setPercentileRecord(data);
             })
             .catch((error) => {
@@ -253,9 +251,6 @@ function RecordBaby() {
         })
       );
     }
-    console.log(weightRecord);
-    console.log(heightRecord);
-    console.log(headRecord);
   }, [babyRecord]);
   return (
     <>
@@ -338,7 +333,6 @@ function RecordBaby() {
                         onChange={(newValue) => setDate(newValue)}
                         format={"YYYY-MM-DD"}
                       />
-                      {console.log(date)}
                     </Stack>
                   </Typography>
                   {
@@ -382,18 +376,19 @@ function RecordBaby() {
         </Box>
         <Box
           maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3, height: 400 }}
         >
           <HeightChart
             heightRecord={heightRecord}
             percentile={percentileRecord}
+            month={recentRecordMonth}
           />
         </Box>
         <Box
           maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3, height: 400 }}
         >
-          <HeadChart headRecord={headRecord} percentile={percentileRecord} />
+          <HeadChart headRecord={headRecord} percentile={percentileRecord} month={recentRecordMonth}/>
         </Box>
         {/* {status === "A" ? (
           <>
