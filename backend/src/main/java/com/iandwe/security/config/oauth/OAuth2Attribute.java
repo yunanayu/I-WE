@@ -49,6 +49,7 @@ public class OAuth2Attribute {
                 .provider(provider)
                 .attributes(attributes)
                 .attributeKey(attributeKey)
+                .name("")
                 .build();
     }
 

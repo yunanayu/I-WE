@@ -1,15 +1,13 @@
 package com.iandwe.info.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Builder
 public class Info {
 
@@ -47,7 +45,7 @@ public class Info {
     @Column(length = 500)
     private String content;
 
-    private String category;
+    private char category;
 
     private String startTime;
 
