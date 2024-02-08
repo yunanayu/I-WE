@@ -39,7 +39,7 @@ const MotherCheck = () => {
         <Option value="검진" onClick={() => setType("검사")}>검진</Option>
       </Select>
       {vaccineList.map((item, index) => {
-        return <CheckCard key={index} vaccine={item}/>
+        return <CheckCard key={index} item={item}/>
       })}
 
     </Box>      
