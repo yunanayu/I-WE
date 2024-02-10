@@ -12,35 +12,11 @@ import { recordContext } from '../../pages/HospitalRecordPage/HospitalRecordMain
 import { getEssential } from '../../api/RecordApi';
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-// const vaccineList = [
-//   {
-//   date : '2024-02-04',
-//   hospitalName : '싸피 산부인과',
-//   vaccinName : 'B형 간염 1차',
-//   status : true ,
-//   },
-//   {
-//   date : '2024-02-08',
-//   hospitalName : '싸피 산부인과',
-//   vaccinName : 'B형 간염 2차',
-//   status : false ,
-//   },
-//   {
-//   date : '2024-02-17',
-//   hospitalName : '싸피 소아과',
-//   vaccinName : '인플루엔자',
-//   status : true ,
-//   },
-//   {
-//   date : '2024-02-08',
-//   hospitalName : '싸피 산부인과',
-//   vaccinName : 'BCG',
-//   status : false ,
-//   },
-// ]
-
-
+import Select from '@mui/joy/Select';
+import Stack from '@mui/joy/Stack';
+import Option from '@mui/joy/Option';
+import useMemberStore from './../../stores/userStore';
+import CheckPanel from './CheckPanel';
 
 
 function CustomTabPanel(props) {
@@ -79,58 +55,9 @@ function a11yProps(index) {
   };
 }
 
+
 export default function BasicTabs(props) {
-  const [vaccineList, setVaccineList] = React.useState([])
-
-  // React.useEffect(() =>{
-  //   // const babyVaccine = getEssential('baby')
-  //   // console.log(babyVaccine)
-  //   // setVaccineList(babyVaccine)
-  //   const fetchData = async () => {
-  //     try {
-  //       const babyVaccine = await getEssential('baby');
-  //       setVaccineList(babyVaccine);
-  //     } catch (error) {
-  //       console.error('Error fetching baby vaccine:', error);
-  //     }
-  //   };
-  //   fetchData();
-  // },[])
-
-  React.useEffect(()=>{
-    function getNumberFromString(str) {
-      // 문자열에서 "a" 다음에 오는 숫자만 추출하여 숫자로 반환합니다.
-      return parseInt(str.substring(1));
-  }
-    axios.get(`/api/essential/baby`)
-    .then((res)=>{
-      // console.log(res.data)
-      const list= res.data.sort((a, b) => getNumberFromString(a.startTime) - getNumberFromString(b.startTime));
-      setVaccineList(list)
-    })
-    .catch(err=>console.log(err))
-
-    // axios.get(`/api/essential/baby`)
-  }, [])
-
-
-
-
   const navigate = useNavigate()
-
-  const initState = React.useContext(recordContext)
-  const [value, setValue] = React.useState(0);
-  const [records, setRecords] = React.useState(initState)
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  React.useEffect(()=>{
-    setRecords(initState)
-  },[initState])
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const style = {
     position: 'absolute',
     top: '50%',
@@ -142,13 +69,32 @@ export default function BasicTabs(props) {
     // boxShadow: 24,
     p: 4,
   };
+  // 기록 불러오는거임 병원기록임 헷갈리지 말자 병원기록!!
+  const initState = React.useContext(recordContext)
+  const [records, setRecords] = React.useState(initState)
+  const [value, setValue] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
+  React.useEffect(()=>{
+  }, [])
+
+  React.useEffect(()=>{
+    setRecords(initState)
+},[initState])
+  
   return (
-    <Box sx={{ display:'flex',justifyContent:'center', textAlign:'center', width: '100%', border:1, borderRadius:1, borderColor: 'red', }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          {/* <Tab label="병원기록" {...a11yProps(0)} /> */}
+    <Box sx={{ display:'flex',justifyContent:'center', textAlign:'center', width: '100%',}}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', textAlign:'center', width:'100%' }}>
+        <Box sx={{display:'flex', justifyContent:'center', width:'100%'}}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" 
+          TabIndicatorProps={{style: { background: "#f87171" }}} // indicator color 
+          sx={{display:'flex', justifyContent:'space-between'}}>
           <Tab label={
             <Typography                             
             sx={{                                 
@@ -178,11 +124,12 @@ export default function BasicTabs(props) {
             </Typography>} 
           {...a11yProps(1)} />
         </Tabs>
+        </Box>
+        
         <CustomTabPanel value={value} index={0}>
         {records.length === 0 ? 
           <div>
           <Button 
-          // onClick={handleOpen} 
           onClick={() => navigate('/momhospitalrecord',{state : {selectedDay:props.selectedDay}})}
           sx={{border:1, borderRadius:5, color:'#FBBBB8'}}>기록 추가하기</Button>
           <Modal
@@ -194,17 +141,7 @@ export default function BasicTabs(props) {
           >
             <Box sx={style}>
               <Box>
-                {/* <BabyRecordPage /> */}
-
               </Box>
-              {/* <Button
-              onClick={goRecord('baby')}
-              >아기 
-              </Button>
-              <Button
-              onClick={goRecord('mom')}
-              >엄마
-              </Button> */}
             </Box>
           </Modal>
         </div>
@@ -215,15 +152,15 @@ export default function BasicTabs(props) {
               <ReadRecordCard value={value} index={0} record={record}/>
             )
           })}
+          <Button 
+          onClick={() => navigate('/momhospitalrecord',{state : {selectedDay:props.selectedDay}})}
+          sx={{border:1, borderRadius:5, color:'#FBBBB8'}}>기록 추가하기</Button>
           </div>
         }
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-        {vaccineList.map((vaccine) => {
-            return(
-              <ReadVaccinCard value={value} index={0} vaccine={vaccine}/>
-            )
-          })}
+          {/* 검진 접종 확인 탭 패널 */}
+          <CheckPanel />
         </CustomTabPanel>
 
       </Box>

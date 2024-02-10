@@ -10,14 +10,9 @@ import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
 import mainprofile from '../images/mainprofile.png';
-import { getUserInfo } from '../api/UserApi';
-import { getInfo } from '../api/InfoApi';
-import { useSelector } from 'react-redux';
-
-
+import axios from 'axios';
 import moment from 'moment';
-
-
+import useMemberStore from '../stores/userStore';
 
 const theme = createTheme({
   typography: {
@@ -25,9 +20,12 @@ const theme = createTheme({
   },
 });
 
+
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [todayDate, setTodayDate] = useState('');
+  const babyList  = useMemberStore(state => state.babyList)
+  const userNum = useMemberStore(state => state.userNum)
+  const setFamilyNum = useMemberStore(state => state.setFamilyNum)
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -50,17 +48,13 @@ const Main = ({ onLoginStatusChange }) => {
   
   },  [onLoginStatusChange]);
 
-  // 회원정보를 통한 아이정보 받아오기
-  // const userInfo = useSelector((state) => state.userInfo);
-
   const [babyName, setBabyName] = useState([]);
   const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // console.log(userInfo)
-        const info = await getUserInfo();
+        const info = babyList
         const babyname = info[0].name
         setBabyName(babyname);
         const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
@@ -75,21 +69,26 @@ const Main = ({ onLoginStatusChange }) => {
 
     fetchData();
 
-  }, []);
+  }, [babyList]);
 
-  // 정보 받아오기 useEffect()
-  // useEffect(() => {
-  //   const fetchInfo = async() => {
-  //     try {
-  //       const infoinfo = await getInfo();
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
+  // 공유코드 저장
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios({
+          method: 'get',
+          // userNum
+          url: `/api/family/${userNum}`
+        });
+        const data = response.data.code;
+        setFamilyNum(data)
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  //   };
-  //   fetchInfo();
-  // }, []);
-    
+    fetchData();
+  }, [userNum]);
 
   return (
     <>
@@ -102,11 +101,15 @@ const Main = ({ onLoginStatusChange }) => {
                 <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
+                <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                  {babyName}
+                </Typography>
+                
                 <Typography margin="10px" variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                  {babyName} 는 
+                  (은)는 
                 </Typography>
                 <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                  {daysSincePregnancy} 주차에요
+                  {daysSincePregnancy > 40 ? `${((daysSincePregnancy - 40) / 4) + 1}개월 입니다` : `${daysSincePregnancy} 주차 입니다`}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%"}}>
@@ -125,7 +128,7 @@ const Main = ({ onLoginStatusChange }) => {
                     </Typography>
                     <br />
                     <Box style={{textAlign: 'right'}}>
-                      <Link to='/infomom/${weeks}'>
+                      <Link to='/infomom'>
                         <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>더 궁금해요!</Button>
                       </Link>
                     </Box>

@@ -1,6 +1,6 @@
 package com.iandwe.alarm.fcm.dto;
 
-import com.iandwe.alarm.fcm.constant.FCMMessage;
+import com.iandwe.cheat.dto.request.CheatRequestDto;
 import com.iandwe.essential.domain.Essential;
 import com.iandwe.member.domain.Member;
 import lombok.AllArgsConstructor;
@@ -27,6 +27,14 @@ public class FCMDto {
                 .fcmToken(member.getFcmToken())
                 .title(getTitleMessage(member.getName(), essential.getTitle()))
                 .body(getBodyMessage())
+                .build();
+    }
+
+    public static FCMDto ofCheatRequestDto(CheatRequestDto dto, String token) {
+        return FCMDto.builder()
+                .fcmToken(token)
+                .title(dto.getTitle())
+                .body(dto.getContent())
                 .build();
     }
 }

@@ -49,4 +49,8 @@ public class Member {
     }
 
     public void updateParentType(String parentType) {this.parentType = ParentType.valueOf(parentType);}
+
+    public void updateFamilyNum(Long num) {
+        this.familyNum = num;
+    }
 }

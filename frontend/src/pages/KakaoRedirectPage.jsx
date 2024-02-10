@@ -4,13 +4,16 @@ import kakaologin from "../images/kakaologin.png";
 import { useNavigate } from "react-router-dom";
 import { requestPermission } from "../FCM/firebase-messaging-sw";
 import { getUserInfo } from "../api/UserApi";
+import useMemberStore from "../stores/userStore";
 
 function KakaoLogin({ setIsLoggedIn }) {
-  const BackURL = `http://localhost:8080/oauth2/authorization/kakao`;
+  const BackURL = process.env.REACT_APP_KAKAO_LOGIN_URL || `/oauth2/authorization/kakao`;
   const navigate = useNavigate();
-
+  const setBabyList = useMemberStore(state => state.setBabyList)
+  const setUserNum = useMemberStore(state => state.setUserNum)
   const handleLogin = () => {
     console.log("로그인눌림");
+    console.log(process.env.REACT_APP_KAKAO_LOGIN_URL);
     window.location.href = BackURL;
   };
 
@@ -24,14 +27,22 @@ function KakaoLogin({ setIsLoggedIn }) {
       if (code && status === 'success') {
         console.log("토큰:", code);
         document.cookie = `token=${code}`;
-        setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정      
+        setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정    
+        const userInfo = await getUserInfo()
+        userInfo.map((info) => {
+          setBabyList(info)
+          setUserNum(info.motherNum)
+        })
+        // 알림 허용 req 
+        requestPermission()
         navigate("/"); // 로그인이 완료되면 '/'로 이동
-      } else if (code && status === 'addInfo') {
-        // 홈으로 가기 전에 새로운 페이지로 이동 한 후 완료되면 '/'으로 이동
+      } 
+      else if (code && status === 'addInfo') {
+
+
         console.log("토큰:", code);
         document.cookie = `token=${code}`;
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정
-      
         // 추가정보입력
         navigate("/addInfo"); // 로그인이 완료되면 '/'로 이동
       }
@@ -49,7 +60,6 @@ function KakaoLogin({ setIsLoggedIn }) {
       if (token) {
         config.headers.Authorization = `${token}`;
       }
-      // console.log(config.headers.Authorization)
       return config;
     },
     (error) => {

@@ -18,13 +18,16 @@ public class InfoResponseDto {
 
     private String content;
 
-    private String category;
+    private char category;
 
     private String startTime;
 
     private String endTime;
 
     public static InfoResponseDto from(Info info) {
+        if(info.getContent().startsWith("\"")){
+            info.setContent(info.getContent().substring(1,info.getContent().length()-1));
+        }
         return InfoResponseDto.builder()
                 .num(info.getNum())
                 .target(info.getTarget())

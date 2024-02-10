@@ -1,9 +1,8 @@
 package com.iandwe.record.service;
 
+import com.iandwe.record.dto.GrowthResponseDto;
+
 public interface GrowthService {
 
-    String getHeightPercentile(int month, float height);
-
-    String getWeightPercentile(int month, float weight);
-
+    public GrowthResponseDto findPercentiles(int gender, int month, float height, float weight, float circumferences);
 }
