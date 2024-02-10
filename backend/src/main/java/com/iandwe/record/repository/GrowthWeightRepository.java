@@ -4,4 +4,6 @@ import com.iandwe.record.domain.GrowthWeight;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GrowthWeightRepository extends JpaRepository<GrowthWeight, Long>  {
+
+    GrowthWeight findByGenderAndMonth(int gender, int month);
 }

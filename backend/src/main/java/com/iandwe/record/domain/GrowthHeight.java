@@ -50,4 +50,8 @@ public class GrowthHeight {
 
     private float p99;
 
+    public String getPercentile(float height) {
+
+        return "";
+    }
 }
