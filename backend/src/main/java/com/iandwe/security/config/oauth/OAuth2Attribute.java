@@ -49,6 +49,8 @@ public class OAuth2Attribute {
                 .provider(provider)
                 .attributes(attributes)
                 .attributeKey(attributeKey)
+                .name("")
+                .profileImage((String) attributes.get("picture"))
                 .build();
     }
 
