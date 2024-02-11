@@ -31,20 +31,15 @@ export default function InfoMain() {
   const [babysugInfo, setBabysugInfo] = useState([]);
   const [momsugInfo, setMomsugInfo] = useState([]);
   // 더 알아보기 누르면 나오는 창
+
   const [open, setOpen] = useState(false);
-  const [babyscroll, setbabyScroll] = useState('babymore');
-  const [momscroll, setmomScroll] = useState('mommore');
-  const [infoscroll, setinfoScroll] = useState('infomore');
+  const [scroll, setScroll] = useState('more');
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
-    setbabyScroll(scrollType);
-    setmomScroll(scrollType);
-    setinfoScroll(scrollType);
+    setScroll(scrollType);
   };
 
-
-  
   const handleClose = () => {
     setOpen(false);
   };
@@ -99,7 +94,10 @@ export default function InfoMain() {
         <Box key={week}>
           {babybodyInfo.map((info, i) => (
             <div key={i}>
+              -
               {info.content}
+              <br />
+              <br />
             </div>
           ))}
         </Box>
@@ -110,7 +108,10 @@ export default function InfoMain() {
         <Box key={month}>
           {babybodyInfo.map((info, i) => (
             <div key={i}>
+              -
               {info.content}
+              <br />
+              <br />
             </div>
           ))}
         </Box>
@@ -134,7 +135,10 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
+            -
             {info.content}
+            <br />
+            <br />
           </div>
         ));
       return (
@@ -148,7 +152,10 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
+            -
             {info.content}
+            <br />
+            <br />
           </div>
         ));
       return (
@@ -169,6 +176,8 @@ export default function InfoMain() {
           url: `/api/info/baby/p/${date}`
         });
         const babybodyinfodata = babybodyinforesponse.data;
+            console.log(babybodyinfodata)
+
         setBabybodyInfo(babybodyinfodata);
       } catch (error) {
         console.log(error);
@@ -193,7 +202,10 @@ export default function InfoMain() {
         <Box key={week}>
           {mombodyInfo.map((info, i) => (
             <div key={i}>
+              -
               {info.content}
+              <br />
+              <br />
             </div>
           ))}
         </Box>
@@ -204,7 +216,10 @@ export default function InfoMain() {
         <Box key={month}>
           {mombodyInfo.map((info, i) => (
             <div key={i}>
+              -
               {info.content}
+              <br />
+              <br />
             </div>
           ))}
         </Box>
@@ -245,7 +260,10 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
+            -
             {info.content}
+            <br />
+            <br />
           </div>
         ));
       return (
@@ -259,7 +277,10 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
+            -
             {info.content}
+            <br />
+            <br />
           </div>
         ));
       return (
@@ -289,7 +310,10 @@ export default function InfoMain() {
         <Box key={week}>
           {babysugInfo.map((info, i) => (
             <div key={i}>
+              -
               {info.content}
+              <br />
+              <br />
             </div>
           ))}
         </Box>
@@ -300,7 +324,10 @@ export default function InfoMain() {
         <Box key={month}>
           {babysugInfo.map((info, i) => (
             <div key={i}>
+              -
               {info.content}
+              <br />
+              <br />
             </div>
           ))}
         </Box>
@@ -327,47 +354,6 @@ export default function InfoMain() {
     fetchData();
   }, [date]);
 
-  const getBabySugInfothree = () => {
-    if (date === 0) {
-      // 0 주 탭 선택 시 표시할 정보
-      return (
-        <Box>
-          {/* 0 주에 해당하는 정보 표시 */}
-        </Box>
-      );
-    } else if (typeof date === 'string' && date.startsWith('B')) {
-      const week = parseInt(date.substring(1));
-      const selectedBabysugInfo = babysugInfo
-        .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
-        .map((info, i) => (
-          <div key={i}>
-            {info.content}
-          </div>
-        ));
-      return (
-        <Box key={week}>
-          {selectedBabysugInfo}
-        </Box>
-      );
-    } else if (typeof date === 'string' && date.startsWith('A')) {
-      const month = parseInt(date.substring(1));
-      const selectedBabysugInfo = babysugInfo
-        .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
-        .map((info, i) => (
-          <div key={i}>
-            {info.content}
-          </div>
-        ));
-      return (
-        <Box key={month}>
-          {selectedBabysugInfo}
-        </Box>
-      );
-    } else {
-      return null;
-    }
-  };
-
   // 엄마 권유
   const getMomSugInfo = () => {
     if (date === 0) {
@@ -383,7 +369,10 @@ export default function InfoMain() {
         <Box key={week}>
           {momsugInfo.map((info, i) => (
             <div key={i}>
+              -
               {info.content}
+              <br />
+              <br />
             </div>
           ))}
         </Box>
@@ -394,7 +383,10 @@ export default function InfoMain() {
         <Box key={month}>
           {momsugInfo.map((info, i) => (
             <div key={i}>
+              -
               {info.content}
+              <br />
+              <br />
             </div>
           ))}
         </Box>
@@ -434,7 +426,10 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
+            -
             {info.content}
+            <br />
+            <br />
           </div>
         ));
       return (
@@ -448,7 +443,9 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
+            -
             {info.content}
+            <br />
           </div>
         ));
       return (
@@ -464,9 +461,7 @@ export default function InfoMain() {
   return (
     <>
       <ThemeProvider theme={theme} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign:'center' }}>
-        <Box>
-          {date}
-        </Box>
+
         <Box sx={{ opacity:'80%',  bgcolor: '#FBBBB8', display: 'flex', justifyContent: 'center' }}>
           <Tabs
             value={date}
@@ -486,26 +481,37 @@ export default function InfoMain() {
             ))}
           </Tabs>
         </Box>
-        <Box sx={{ display: 'flex', alignItems:'center', flexDirection: 'column', width:"100%"}}>
-          <Typography variant="h6" component="div">
+        <Box sx={{ display: 'flex', alignItems:'center', flexDirection: 'column', width:"100%", mt:'10px'}}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
             이 시기에 아이는요!
           </Typography>
-          <Card sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
+          <Card sx={{ display: 'flex',  justifyContent: 'center', flexDirection: 'column', width: "90%", padding: "15px 15px 0px 15px" }}>
             {getBabyBodyInfothree()}
-            <CardContent sx={{ margin: "5px" }}>
+            <CardContent>
               <Box style={{ textAlign: 'right' }}>
                 <Button onClick={handleClickOpen('babymore')} size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button>
                 <Dialog
                   open={open}
                   onClose={handleClose}
-                  scroll={babyscroll}
+                  scroll={scroll}
                   aria-labelledby="scroll-dialog-title"
                   aria-describedby="scroll-dialog-description"
                 >
-                  <DialogTitle id="scroll-dialog-title">이 시기의 아이 정보 더알아보기</DialogTitle>
-                  <DialogContent dividers={babyscroll === 'babymore'}>
+                  {scroll === "babymore" && <DialogTitle id="scroll-dialog-title">이 시기의 아이 정보 더알아보기</DialogTitle>
+                  }
+                  {scroll === "mommore" && <DialogTitle id="scroll-dialog-title">이 시기의 엄마 정보 더알아보기</DialogTitle>}
+                  {scroll === "infomore" && <DialogTitle id="scroll-dialog-title">이 시기의 정보 더알아보기</DialogTitle>}
+
+                  <DialogContent dividers={scroll === 'babymore'}>
                   <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-                    {getBabyBodyInfo()}
+                    {scroll === "babymore" && getBabyBodyInfo()}
+                    {scroll === "mommore" && getMomBodyInfo()}
+                    {scroll === "infomore" && (
+                      <React.Fragment>
+                        {getMomSugInfo()}
+                        {getBabySugInfo()}
+                      </React.Fragment>
+                    )}
                   </DialogContentText>
                   </DialogContent>
                   <DialogActions>
@@ -516,63 +522,28 @@ export default function InfoMain() {
             </CardContent>
           </Card>
         </Box>
-        <Box sx={{ display: 'flex', alignItems:'center', flexDirection: 'column', width:"100%"}}>
-          <Typography variant="h6" component="div">
+        <Box sx={{ display: 'flex', alignItems:'center', flexDirection: 'column', width:"100%", mt:'10px'}}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
             이 시기에 엄마는요!
           </Typography>
-          <Card sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
+          <Card sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width: "90%", padding: "15px 15px 0px 15px" }}>
             {getMomBodyInfothree()}
-            <CardContent sx={{ margin: "5px" }}>
+            <CardContent>
               <Box style={{ textAlign: 'right' }}>
-                <Button onClick={handleClickOpen('more')} size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button>
-                <Dialog
-                  open={open}
-                  onClose={handleClose}
-                  scroll={momscroll}
-                  aria-labelledby="scroll-dialog-title"
-                  aria-describedby="scroll-dialog-description"
-                >
-                  <DialogTitle id="scroll-dialog-title">이 시기의 엄마 정보 더알아보기</DialogTitle>
-                  <DialogContent dividers={momscroll === 'mommore'}>
-                  <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-                    {getMomBodyInfo()}
-                  </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClose}>닫기</Button>
-                  </DialogActions>
-                </Dialog>
+                <Button onClick={handleClickOpen('mommore')} size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button>
               </Box>
             </CardContent>
           </Card>
         </Box>
-        <Box sx={{ display: 'flex', alignItems:'center', flexDirection: 'column', width:"100%"}}>
-          <Typography variant="h6" component="div">
+        <Box sx={{ display: 'flex', alignItems:'center', flexDirection: 'column', width:"100%", mt:'10px'}}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
             아이를 위해서는요!
           </Typography>
-          <Card sx={{ display: 'flex', textAlign: 'center', justifyContent: 'center', flexDirection: 'column', width: "90%", margin: "5px 5px 5px 5px" }}>
-            {getBabySugInfothree()}
-            <CardContent sx={{ margin: "5px" }}>
+          <Card sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width: "90%", padding: "15px 15px 0px 15px" }}>
+            {getMomSugInfothree()}
+            <CardContent>
               <Box style={{ textAlign: 'right' }}>
                 <Button onClick={handleClickOpen('infomore')} size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button>
-                <Dialog
-                  open={open}
-                  onClose={handleClose}
-                  scroll={infoscroll}
-                  aria-labelledby="scroll-dialog-title"
-                  aria-describedby="scroll-dialog-description"
-                >
-                  <DialogTitle id="scroll-dialog-title">이 시기의 정보 더알아보기</DialogTitle>
-                  <DialogContent dividers={infoscroll === 'infomore'}>
-                  <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-                    {getBabySugInfo()}
-                    {getMomSugInfo()}
-                  </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClose}>닫기</Button>
-                  </DialogActions>
-                </Dialog>
               </Box>
             </CardContent>
           </Card>

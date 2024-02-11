@@ -37,6 +37,9 @@ function ResponsiveAppBar() {
   const setUserNum = useMemberStore(state => state.setUserNum)
   const setUserName = useMemberStore(state => state.setUserName)
   const userName = useMemberStore(state => state.userName);
+  const setProfileImage = useMemberStore(state => state.setProfileImage)
+  const profileImage = useMemberStore(state => state.profileImage);
+
 
   const clearUserStorage = useMemberStore.persist.clearStorage
 
@@ -64,6 +67,7 @@ function ResponsiveAppBar() {
     setUserNum(0)
     setBabyList([])
     setUserName('')
+    setProfileImage('')
     clearUserStorage()
     window.location.href = "/"; // 로그아웃 시 페이지 이동
   };
@@ -184,10 +188,14 @@ function ResponsiveAppBar() {
               </Box>
 
               <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Tooltip title="마이페이지">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  {profileImage ? (
+                    <Avatar src={profileImage} />
+                  ) : (
                     <Avatar src="/broken-image.jpg" />
-                  </IconButton>
+                  )}
+                </IconButton>
                 </Tooltip>
                 <Menu
                   sx={{ mt: "45px" }}
