@@ -71,7 +71,7 @@ const BabyCheck = () => {
                 검진
               </Option>
             </Select>
-            <RangeSlider setSelectRange={setSelectRange} target='baby'/>
+            {/* <RangeSlider setSelectRange={setSelectRange} target='baby'/> */}
             </>
           )}
           {vaccineList.map((item, index) => {

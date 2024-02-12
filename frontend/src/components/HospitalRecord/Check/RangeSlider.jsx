@@ -28,8 +28,8 @@ function NumberRangeSlider(props) {
         <Slider
           value={range}
           onChange={handleChange}
-          min={range[0]}
-          max={range[1]}
+          min={0}
+          max={target === 'mother'? '40' : '24'}
           valueLabelDisplay="auto"
           aria-labelledby="range-slider"
           getAriaValueText={(value) => `${value}`}

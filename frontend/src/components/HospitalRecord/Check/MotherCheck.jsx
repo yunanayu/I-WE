@@ -8,11 +8,11 @@ import CheckCard from "./CheckCard";
 import { sortList } from "./CheckPanel";
 import RangeSlider from "./RangeSlider";
 
-
 const MotherCheck = () => {
   const userNum = useMemberStore((state) => state.userNum);
   const babyList = useMemberStore((state) => state.babyList);
   const [momCheckList, setMomCheckList] = useState([]);
+  // 필터링 되어 저장되는 값
   const [vaccineList, setVaccineList] = useState([]);
   const [type, setType] = useState("all");
   const [selectRange, setSelectRange] = useState([0, 40]);
@@ -35,6 +35,26 @@ const MotherCheck = () => {
       setVaccineList(list);
     }
   }, [type]);
+
+  // useEffect(() => {
+  //   if (type === "all") {
+  //     setVaccineList(momCheckList);
+  //   } else {
+  //     const filteredList = momCheckList.filter(
+  //       (item) => item.category === type
+  //     );
+  //     setVaccineList(filteredList);
+  //   }
+  // }, [type, momCheckList]);
+
+  // useEffect(() => {
+  //   const filteredList = momCheckList.filter((item) => {
+  //     const { startTime, endTime } = item;
+  //     return startTime >= selectRange[0] && endTime <= selectRange[1];
+  //   });
+  //   setVaccineList(filteredList);
+  // }, [selectRange, momCheckList]);
+
   return (
     <Box>
       {babyList[babyList.length - 1].status ? (
@@ -53,7 +73,7 @@ const MotherCheck = () => {
               검진
             </Option>
           </Select>
-          <RangeSlider setSelectRange={setSelectRange} target='mother'/> 
+          {/* <RangeSlider setSelectRange={setSelectRange} target="mother" /> */}
           {vaccineList.map((item, index) => {
             return <CheckCard key={index} item={item} num={userNum} />;
           })}
