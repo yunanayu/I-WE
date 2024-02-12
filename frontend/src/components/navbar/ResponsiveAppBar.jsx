@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import icon1 from "../../images/icon1.png";
 import { NavLink } from "react-router-dom";
 import { Cookies } from "react-cookie";
-import useMemberStore from "../../stores/userStore";
+import useMemberStore, { useFcmStore } from "../../stores/userStore";
 
 const pages = [
   { name: "다이어리", link: "/diary" },
@@ -36,6 +36,7 @@ function ResponsiveAppBar() {
   const setBabyList = useMemberStore(state => state.setBabyList)
   const setUserNum = useMemberStore(state => state.setUserNum)
   const clearUserStorage = useMemberStore.persist.clearStorage
+  const clearPushStorage = useFcmStore.persist.clearStorage
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -61,6 +62,7 @@ function ResponsiveAppBar() {
     setUserNum(0)
     setBabyList([])
     clearUserStorage()
+    clearPushStorage()
     window.location.href = "/"; // 로그아웃 시 페이지 이동
   };
 

@@ -14,6 +14,8 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs from "dayjs";
 import 'dayjs/locale/ko'
+import { AutoFixOffSharp } from '@mui/icons-material';
+import useMemberStore from './../stores/userStore';
 
 function AddChild({ setSpouseStatus }) {
   const navigate = useNavigate();
@@ -22,6 +24,9 @@ function AddChild({ setSpouseStatus }) {
   const [childGender, setChildGender] = useState("");
   const [pregnancyStatus, setPregnancyStatus] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const setBabyList = useMemberStore(state => state.setBabyList)
+  const setUserNum = useMemberStore(state => state.setUserNum)
+  const setParentType = useMemberStore(state => state.setParentType)
 
   const handleChildNameChange = (event) => {
     setChildName(event.target.value);
@@ -59,7 +64,6 @@ function AddChild({ setSpouseStatus }) {
     }
 
     var userNum;
-
     // 사용자 정보 요청해서 Authorization에 넣기
     try {
       const response = await axios.get('/api/member',
@@ -70,10 +74,12 @@ function AddChild({ setSpouseStatus }) {
         }
       );
       userNum = response.data.num;
+      // user type, pk 저장
+      setUserNum(response.data.num)
+      setParentType(response.data.parentType)
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
-    console.log(userNum);
 
     const requestBaby = {
       motherNum: userNum, // 해당 유저의 num
@@ -94,15 +100,14 @@ function AddChild({ setSpouseStatus }) {
           }
         }
       );
-      console.log(response.data);
+      setBabyList(...response.data)
+
     } catch(e) {
       console.log("아기정보 등록 실패")
     }
     console.log("아기정보 등록 성공")
     navigate("/");
-  };
-
-  
+  };  
 
   return (
     <div>

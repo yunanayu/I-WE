@@ -8,7 +8,8 @@ export const goDeviceToken = (token) => {
         'fcmToken' : `${token}`
       }
     })
-    .then((res)=>console.log(res))
+    .then((res)=>{
+    })
     .catch((err) => console.log(err))
 
   }
