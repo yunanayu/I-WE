@@ -8,6 +8,7 @@ import CheckCard from './CheckCard';
 
 const MotherCheck = () => {
   const userNum = useMemberStore(state => state.userNum)
+  const babyList  = useMemberStore(state => state.babyList)
   const [momCheckList, setMomCheckList] = useState([])
   const [vaccineList, setVaccineList] = useState([])
   const [type, setType] = useState(null)
@@ -30,6 +31,10 @@ const MotherCheck = () => {
   }, [type])
   return (
     <Box>
+      {babyList[babyList.length - 1].status ? 
+      '해당사항이 없습니다.' 
+      : 
+      <>
       <Select
         variant="plain"
         placeholder="검진/ 접종 여부 선택"
@@ -39,9 +44,9 @@ const MotherCheck = () => {
         <Option value="검진" onClick={() => setType("검사")}>검진</Option>
       </Select>
       {vaccineList.map((item, index) => {
-        return <CheckCard key={index} item={item}/>
+        return <CheckCard key={index} item={item} num={userNum}/>
       })}
-
+    </> }
     </Box>      
   );
 };

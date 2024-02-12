@@ -9,7 +9,8 @@ import { Typography } from "@mui/material";
 import ReadVaccinCard from "./ReadVaccinCard";
 import { getCheck } from "../../api/RecordApi";
 import NumberRangeSlider from "./RangeSlider";
-import MotherCheck from './Check/MotherCheck';
+import MotherCheck from "./Check/MotherCheck";
+import BabyCheck from "./Check/BabyCheck";
 
 export function getNumberFromString(str) {
   return parseInt(str.substring(1));
@@ -26,16 +27,18 @@ const CheckPanel = () => {
   const userNum = useMemberStore((state) => state.userNum);
   const parentType = useMemberStore((state) => state.parentType);
   const [momCheckList, setMomCheckList] = useState([]);
+
   // 현재 엄마 임신 상태
   const momStatus = babyList[babyList.length - 1].status;
-  console.log(momStatus)
+  console.log(momStatus);
+
   // 아기 기록 - 아기 여러명일때 고려하자.
   const [babyCheckList, setBabyCheckList] = useState([]);
-  console.log(babyCheckList)
-  console.log(momCheckList)
+  console.log(babyCheckList);
+  console.log(momCheckList);
   // vaccine card로 보내는 리스트
   const [vaccineList, setVaccineList] = useState([]);
-  console.log("백신 리스트 " , vaccineList)
+  console.log("백신 리스트 ", vaccineList);
   // 타겟, 카테고리(검사, 접종)
   const [selectTarget, setSelectTarget] = useState("all");
   const [selectType, setSelectType] = useState("all");
@@ -47,7 +50,7 @@ const CheckPanel = () => {
   const bornBabyList = babyList.filter((baby) => {
     return baby.birth != null;
   });
-  console.log(bornBabyList)
+  console.log(bornBabyList);
   const indexesOfBornBabies = bornBabyList.map((baby) => {
     return babyList.indexOf(baby);
   });
@@ -60,8 +63,7 @@ const CheckPanel = () => {
       } else {
         list = babyCheckList;
       }
-    } 
-    else {
+    } else {
       if (selectTarget === "mother") {
         list = momCheckList.filter((item) => item.category === selectType);
       } else {
@@ -85,17 +87,18 @@ const CheckPanel = () => {
       })
       .catch((err) => console.log(err));
     if (selectBaby !== null) {
-    const babyNum = babyList[selectBaby].num;
-    axios
-      .get(`/api/check/baby/${babyNum}`)
-      .then((res) => {
-        const list = res.data.sort(
-          (a, b) =>
-            getNumberFromString(a.startTime) - getNumberFromString(b.startTime)
-        );
-        setBabyCheckList(list);
-      })
-      .catch((err) => console.log(err));
+      const babyNum = babyList[selectBaby].num;
+      axios
+        .get(`/api/check/baby/${babyNum}`)
+        .then((res) => {
+          const list = res.data.sort(
+            (a, b) =>
+              getNumberFromString(a.startTime) -
+              getNumberFromString(b.startTime)
+          );
+          setBabyCheckList(list);
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
 
@@ -166,19 +169,18 @@ const CheckPanel = () => {
 
   return (
     <Box>
-      <MotherCheck />
       <Select placeholder="대상을 선택해주세요" variant="plain">
         <Option value="baby" onClick={() => setSelectTarget("baby")}>
           아기
         </Option>
-        {/* 엄마 비 임신 상태일때는 안보임 */}
-        {(momStatus || parentType !== "FATHER") && (
-          <Option value="mother" onClick={() => setSelectTarget("mother")}>
-            엄마
-          </Option>
-        )}
+        <Option value="mother" onClick={() => setSelectTarget("mother")}>
+          엄마
+        </Option>
       </Select>
-      {(selectTarget === "baby" && bornBabyList.length != 0) ? (
+      {selectTarget === 'mother' && <MotherCheck />}
+      {selectTarget === 'baby' && <BabyCheck />}
+
+      {/* {selectTarget === "baby" && bornBabyList.length != 0 ? (
         <Select defaultValue={bornBabyList[0].name} variant="plain">
           {indexesOfBornBabies.map((idx, index) => {
             const baby = babyList[idx];
@@ -220,25 +222,23 @@ const CheckPanel = () => {
           target={selectTarget}
         />
       )}
-      {vaccineList.length != 0  ?  
-      (
+      {vaccineList.length != 0 ? (
         vaccineList.map((vaccine, index) => {
           return (
             <ReadVaccinCard
-            key={index}
-            index={index}
-            targetNum={
-              selectTarget === "baby" ? babyList[selectBaby].num : userNum
-            }
-            babyIndex={selectBaby}
-            vaccine={vaccine}
+              key={index}
+              index={index}
+              targetNum={
+                selectTarget === "baby" ? babyList[selectBaby].num : userNum
+              }
+              babyIndex={selectBaby}
+              vaccine={vaccine}
             />
-            );
-          })
-          ) 
-          :
-          (<Typography>해당사항 없음</Typography>)
-      }
+          );
+        })
+      ) : (
+        <Typography>해당사항 없음</Typography>
+      )} */}
     </Box>
   );
 };
