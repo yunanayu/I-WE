@@ -12,8 +12,8 @@ const BabyCheck = () => {
   const BabyList = useMemberStore((state) => state.babyList);
   const [babyCheck, setBabyCheck] = useState([]);
   const [vaccineList, setVaccineList] = useState([]);
-  const [selectBaby, setSelectBaby] = useState("all");
-  const [type, setType] = useState(null);
+  const [selectBaby, setSelectBaby] = useState(null);
+  const [type, setType] = useState("all");
   const [selectRange, setSelectRange] = useState([0, 24]);
   const bornBabyList = BabyList.filter((baby) => baby.status);
 
