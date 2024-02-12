@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Box, Button, Typography, TextField } from "@mui/material";
 import axios from "axios";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -8,7 +8,7 @@ import useMemberStore from "../stores/userStore";
 function MomForm(props) {
   const data = props.data;
   const [recent, setRecent] = useState();
-  const today = new Date();
+  const today = useMemo(() => new Date(), [recent]); // Memoize today to avoid unnecessary re-renders
   const [weight, setWeight] = useState();
   const [update, setUpdate] = useState(false);
   const motherNum = useMemberStore((state) => state.babyList[0].motherNum);
@@ -225,23 +225,26 @@ const BabyForm = React.forwardRef((props, ref) => {
     e.preventDefault();
     if (update) {
       const data = {
+        num: recentData.num,
         babyNum: props.babyNum,
-        babyImage: file ? file : null,
         height: height,
         weight: weight,
         circumference: circumference,
         recordDate: recentData.recordDate,
       };
       console.log(data);
-      axios
-        .put("/api/babyRecord/update", data)
-        .then((response) => {
-          console.log("UPDATE OK\n" + response);
-        })
-        .catch((error) => {
-          console.log("UPDATE FAIL\n" + error);
-        });
-      // window.location.reload();
+      const put = async () => {
+        await axios
+          .put("/api/babyRecord/update", data)
+          .then((response) => {
+            console.log("UPDATE OK\n" + response);
+          })
+          .catch((error) => {
+            console.log("UPDATE FAIL\n" + error);
+          });
+      };
+      put();
+      props.onSubmit(data);
     } else {
       let todayDate =
         dateSelected.year() +
@@ -251,21 +254,23 @@ const BabyForm = React.forwardRef((props, ref) => {
         ("0" + dateSelected.date()).slice(-2);
       const data = {
         babyNum: props.babyNum,
-        babyImage: file ? file : null,
         weight: weight,
         height: height,
         circumference: circumference,
         recordDate: todayDate,
       };
-      axios
-        .post("/api/babyRecord/create", data)
-        .then((response) => {
-          console.log("POST OK\n" + response);
-        })
-        .catch((error) => {
-          console.log("POST FAIL\n" + error);
-        });
-      window.location.reload();
+      const update = async () => {
+        await axios
+          .post("/api/babyRecord/create", data)
+          .then((response) => {
+            console.log("POST OK\n" + response);
+          })
+          .catch((error) => {
+            console.log("POST FAIL\n" + error);
+          });
+      };
+      update();
+      props.onSubmit(data);
     }
   };
 

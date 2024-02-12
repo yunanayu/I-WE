@@ -21,13 +21,10 @@ const pages = [
   { name: "서비스찾기", link: "/service" },
   { name: "커뮤니티", link: "/community" },
   { name: "정보제공", link: "/infomain" },
-  { name: "기록" },
-  { name: "꿀팁", link: "/tips" },
-];
-const sub = [
   { name: "엄마기록", link: "/recordmom" },
   { name: "아기기록", link: "/recordbaby" },
   { name: "병원기록", link: "/hospitalrecord" },
+  { name: "꿀팁", link: "/tips" },
 ];
 const settings = ["마이페이지", "로그아웃"];
 
@@ -35,16 +32,6 @@ function ResponsiveAppBar() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(true);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [anchorElSub, setAnchorElSub] = React.useState(null);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const open = Boolean(anchorEl);
-
   const cookies = new Cookies(); // Cookies 객체 생성
   const setBabyList = useMemberStore((state) => state.setBabyList);
   const setUserNum = useMemberStore((state) => state.setUserNum);
@@ -54,17 +41,8 @@ function ResponsiveAppBar() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleOpenSubMenu = (event) => {
-    setAnchorElSub(event.currentTarget);
-  };
-  const handleCloseSubMenu = () => {
-    setAnchorElSub(null);
-    setAnchorElNav(null);
   };
 
   const handleCloseNavMenu = () => {
@@ -112,14 +90,7 @@ function ResponsiveAppBar() {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
+            <IconButton size="large" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu} color="inherit">
               <MenuIcon />
             </IconButton>
             <Menu
@@ -140,58 +111,8 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) =>
-                page.name !== "기록" ? (
-                  <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                    <Typography
-                      component={NavLink}
-                      to={page.link}
-                      textAlign="center"
-                      sx={{
-                        textDecoration: "none",
-                        color: "gray",
-                      }}
-                    >
-                      {page.name}
-                    </Typography>
-                  </MenuItem>
-                ) : (
-                  <MenuItem key={page.name} onClick={handleOpenSubMenu}>
-                    <Typography
-                      component={NavLink}
-                      to={page.link}
-                      textAlign="center"
-                      sx={{
-                        textDecoration: "none",
-                        color: "gray",
-                      }}
-                    >
-                      {page.name}
-                    </Typography>
-                  </MenuItem>
-                )
-              )}
-            </Menu>
-            <Menu
-              id="submenu-appbar"
-              anchorEl={anchorElSub}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElSub)}
-              onClose={handleCloseSubMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {sub.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseSubMenu}>
+              {pages.map((page) => (
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                   <Typography
                     component={NavLink}
                     to={page.link}
@@ -228,69 +149,22 @@ function ResponsiveAppBar() {
             <img src={icon1} alt="icon1" style={{ width: "50px", height: "50px" }} />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) =>
-              page.name !== "기록" ? (
-                <Button
-                  key={page.name}
-                  component={NavLink}
-                  to={page.link}
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    my: 2,
-                    color: "white",
-                    display: "block",
-                    textDecoration: "none",
-                    textAlign: "center",
-                  }}
-                >
-                  {page.name}
-                </Button>
-              ) : (
-                <>
-                  <Button
-                    id="basic-button"
-                    aria-controls={open ? "basic-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={handleClick}
-                    sx={{
-                      my: 2,
-                      color: "white",
-                      display: "block",
-                      textDecoration: "none",
-                      textAlign: "center",
-                    }}
-                  >
-                    {page.name}
-                  </Button>
-                  <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                      "aria-labelledby": "basic-button",
-                    }}
-                  >
-                    {sub.map((page) => (
-                      <MenuItem key={page.name} onClick={handleClose}>
-                        <Typography
-                          component={NavLink}
-                          to={page.link}
-                          textAlign="center"
-                          sx={{
-                            textDecoration: "none",
-                            color: "gray",
-                          }}
-                        >
-                          {page.name}
-                        </Typography>
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                </>
-              )
-            )}
+            {pages.map((page) => (
+              <Button
+                key={page.name}
+                component={NavLink}
+                to={page.link}
+                onClick={handleCloseNavMenu}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                  textDecoration: "none",
+                }}
+              >
+                {page.name}
+              </Button>
+            ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

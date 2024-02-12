@@ -4,15 +4,13 @@ import {
   CategoryScale,
   LinearScale,
   LineController,
-  LineElement, PointElement, 
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import {
-  BoxPlotController,
-  BoxAndWiskers,
-} from "@sgratzl/chartjs-chart-boxplot";
+import { BoxPlotController, BoxAndWiskers } from "@sgratzl/chartjs-chart-boxplot";
 
 ChartJS.register(
   CategoryScale,
@@ -20,20 +18,19 @@ ChartJS.register(
   BoxPlotController,
   BoxAndWiskers,
   LineController,
-  LineElement, PointElement, 
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
   Legend
 );
 
 const WeightChart = (props) => {
-
   const [weightRecord, setWeightRecord] = useState();
   const [percentile, setPercentile] = useState();
   const [weightData, setWeightData] = useState();
   const [chartData, setChartData] = useState({
-    labels: [
-    ],
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [
       {
         type: "boxplot",
@@ -41,7 +38,7 @@ const WeightChart = (props) => {
         order: 2,
         data: [],
         borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)"
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
         label: "Line Dataset",
@@ -49,17 +46,17 @@ const WeightChart = (props) => {
         type: "line",
         borderColor: "skyblue",
         fill: false,
-        order: 1
-      }
-    ]
+        order: 1,
+      },
+    ],
   });
 
   useEffect(() => {
-    if(props.weightRecord && props.percentile) {
+    if (props.weightRecord && props.percentile) {
       setWeightRecord(props.weightRecord);
       setPercentile(props.percentile);
     }
-  }, [props.percentile, props.weightRecord])
+  }, [props.percentile, props.weightRecord]);
 
   useEffect(() => {
     if (weightRecord) {
@@ -72,7 +69,7 @@ const WeightChart = (props) => {
       };
       m--;
       arr.push(obj);
-      for (let i = weightRecord.length - 1; i >= (weightRecord.length>=5 ? weightRecord.length-6 : 0); i--) {
+      for (let i = weightRecord.length - 1; i >= (weightRecord.length >= 5 ? weightRecord.length - 6 : 0); i--) {
         if (new Date(arr[0].recordDate).getMonth() !== new Date(weightRecord[i].recordDate).getMonth()) {
           const obj = {
             weight: weightRecord[i].weight,
@@ -88,16 +85,16 @@ const WeightChart = (props) => {
   }, [weightRecord, props.month]);
 
   useEffect(() => {
-    if(weightData && percentile) {
-      let a = [...percentile.weight99thPercentiles].reverse().slice(5-weightData.length, percentile.length);
-      let b = [...percentile.weight75thPercentiles].reverse().slice(5-weightData.length, percentile.length);
+    if (weightData && percentile) {
+      let a = [...percentile.weight99thPercentiles].reverse().slice(5 - weightData.length, percentile.length);
+      let b = [...percentile.weight75thPercentiles].reverse().slice(5 - weightData.length, percentile.length);
       let c = [...weightData].reverse();
-      let d = [...percentile.weight25thPercentiles].reverse().slice(5-weightData.length, percentile.length);
-      let e = [...percentile.weight1stPercentiles].reverse().slice(5-weightData.length, percentile.length);
+      let d = [...percentile.weight25thPercentiles].reverse().slice(5 - weightData.length, percentile.length);
+      let e = [...percentile.weight1stPercentiles].reverse().slice(5 - weightData.length, percentile.length);
       let f = [...weightData];
       const data = {
         labels: weightData.map((obj) => {
-          return obj.month+"개월"
+          return obj.month + "개월";
         }),
         datasets: [
           {
@@ -109,51 +106,51 @@ const WeightChart = (props) => {
               b.pop(),
               c.pop().weight,
               d.pop(),
-              e.pop()
+              e.pop(),
             ]),
-            
+
             borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)"
+            backgroundColor: "rgba(255, 99, 132, 0.5)",
           },
           {
             label: "체중",
             data: f.map((obj) => {
-              return obj.weight
+              return obj.weight;
             }),
             type: "line",
             borderColor: "skyblue",
             fill: false,
-            order: 1
-          }
-        ]
-      }
-      setChartData(data)
+            order: 1,
+          },
+        ],
+      };
+      setChartData(data);
     }
-  }, [weightData, percentile])
+  }, [weightData]);
 
-  useEffect(() => { 
-    const chartRef = new ChartJS('chartCanvas', {
+  useEffect(() => {
+    const chartRef = new ChartJS("chartCanvas", {
       data: chartData,
       options: {
-        maintainAspectRatio:false,
+        maintainAspectRatio: false,
         plugins: {
           title: {
             display: true,
-            text: '체중 백분위 차트'
+            text: "체중 백분위 차트",
           },
           legend: {
-            display: true
+            display: true,
           },
           tooltip: {
-            enabled: true
-          }
+            enabled: true,
+          },
         },
         scales: {
           y: {
-            beginAtZero: false
-          }
+            beginAtZero: false,
+          },
         },
-      }
+      },
     });
 
     return () => {
@@ -162,20 +159,18 @@ const WeightChart = (props) => {
   }, [chartData]);
 
   return (
-  <>
-  <canvas id="chartCanvas" style={{ width: "100%", height: "100%" }} />
-  </>
-  )
-}
+    <>
+      <canvas id="chartCanvas" style={{ width: "100%", height: "100%" }} />
+    </>
+  );
+};
 
 const HeightChart = (props) => {
-
   const [heightRecord, setHeightRecord] = useState();
   const [percentile, setPercentile] = useState();
   const [heightData, setHeightData] = useState();
   const [chartData, setChartData] = useState({
-    labels: [
-    ],
+    labels: [],
     datasets: [
       {
         type: "boxplot",
@@ -183,7 +178,7 @@ const HeightChart = (props) => {
         order: 2,
         data: [],
         borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)"
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
         label: "Line Dataset",
@@ -191,17 +186,17 @@ const HeightChart = (props) => {
         type: "line",
         borderColor: "skyblue",
         fill: false,
-        order: 1
-      }
-    ]
+        order: 1,
+      },
+    ],
   });
 
   useEffect(() => {
-    if(props.heightRecord && props.percentile) {
+    if (props.heightRecord && props.percentile) {
       setHeightRecord(props.heightRecord);
       setPercentile(props.percentile);
     }
-  }, [props.percentile, props.heightRecord])
+  }, [props.percentile, props.heightRecord]);
 
   useEffect(() => {
     if (heightRecord) {
@@ -214,7 +209,7 @@ const HeightChart = (props) => {
       };
       m--;
       arr.push(obj);
-      for (let i = heightRecord.length - 1; i >= (heightRecord.length>=5 ? heightRecord.length-6 : 0); i--) {
+      for (let i = heightRecord.length - 1; i >= (heightRecord.length >= 5 ? heightRecord.length - 6 : 0); i--) {
         if (new Date(arr[0].recordDate).getMonth() !== new Date(heightRecord[i].recordDate).getMonth()) {
           const obj = {
             height: heightRecord[i].height,
@@ -230,17 +225,17 @@ const HeightChart = (props) => {
   }, [heightRecord, props.month]);
 
   useEffect(() => {
-    if(heightData && percentile) {
-      let a = [...percentile.height99thPercentiles].reverse().slice(5-heightData.length, percentile.length);
-      let b = [...percentile.height75thPercentiles].reverse().slice(5-heightData.length, percentile.length);
+    if (heightData && percentile) {
+      let a = [...percentile.height99thPercentiles].reverse().slice(5 - heightData.length, percentile.length);
+      let b = [...percentile.height75thPercentiles].reverse().slice(5 - heightData.length, percentile.length);
       let c = [...heightData].reverse();
-      let d = [...percentile.height25thPercentiles].reverse().slice(5-heightData.length, percentile.length);
-      let e = [...percentile.height1stPercentiles].reverse().slice(5-heightData.length, percentile.length);
+      let d = [...percentile.height25thPercentiles].reverse().slice(5 - heightData.length, percentile.length);
+      let e = [...percentile.height1stPercentiles].reverse().slice(5 - heightData.length, percentile.length);
       let f = [...heightData];
 
       const data = {
         labels: heightData.map((obj) => {
-          return obj.month+"개월"
+          return obj.month + "개월";
         }),
         datasets: [
           {
@@ -252,51 +247,51 @@ const HeightChart = (props) => {
               b.pop(),
               c.pop().height,
               d.pop(),
-              e.pop()
+              e.pop(),
             ]),
-            
+
             borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)"
+            backgroundColor: "rgba(255, 99, 132, 0.5)",
           },
           {
             label: "체중",
             data: f.map((obj) => {
-              return obj.height
+              return obj.height;
             }),
             type: "line",
             borderColor: "skyblue",
             fill: false,
-            order: 1
-          }
-        ]
-      }
-      setChartData(data)
+            order: 1,
+          },
+        ],
+      };
+      setChartData(data);
     }
-  }, [heightData, percentile])
+  }, [heightData, percentile]);
 
-  useEffect(() => { 
-    const chartRef = new ChartJS('chartCanvas2', {
+  useEffect(() => {
+    const chartRef = new ChartJS("chartCanvas2", {
       data: chartData,
       options: {
-        maintainAspectRatio:false,
+        maintainAspectRatio: false,
         plugins: {
           title: {
             display: true,
-            text: '신장 백분위'
+            text: "신장 백분위",
           },
           legend: {
-            display: true
+            display: true,
           },
           tooltip: {
-            enabled: true
-          }
+            enabled: true,
+          },
         },
         scales: {
           y: {
-            beginAtZero: false
-          }
+            beginAtZero: false,
+          },
         },
-      }
+      },
     });
 
     return () => {
@@ -305,20 +300,18 @@ const HeightChart = (props) => {
   }, [chartData]);
 
   return (
-  <>
-  <canvas id="chartCanvas2" style={{ width: "100%", height: "100%" }} />
-  </>
-  )
-}
+    <>
+      <canvas id="chartCanvas2" style={{ width: "100%", height: "100%" }} />
+    </>
+  );
+};
 
 const HeadChart = (props) => {
-
   const [headRecord, setHeadRecord] = useState();
   const [percentile, setPercentile] = useState();
   const [headData, setHeadData] = useState();
   const [chartData, setChartData] = useState({
-    labels: [
-    ],
+    labels: [],
     datasets: [
       {
         type: "boxplot",
@@ -326,7 +319,7 @@ const HeadChart = (props) => {
         order: 2,
         data: [],
         borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)"
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
         label: "Line Dataset",
@@ -334,17 +327,17 @@ const HeadChart = (props) => {
         type: "line",
         borderColor: "skyblue",
         fill: false,
-        order: 1
-      }
-    ]
+        order: 1,
+      },
+    ],
   });
 
   useEffect(() => {
-    if(props.headRecord && props.percentile) {
+    if (props.headRecord && props.percentile) {
       setHeadRecord(props.headRecord);
       setPercentile(props.percentile);
     }
-  }, [props.percentile, props.headRecord])
+  }, [props.percentile, props.headRecord]);
 
   useEffect(() => {
     if (headRecord) {
@@ -357,7 +350,7 @@ const HeadChart = (props) => {
       };
       m--;
       arr.push(obj);
-      for (let i = headRecord.length - 1; i >= (headRecord.length>=5 ? headRecord.length-6 : 0); i--) {
+      for (let i = headRecord.length - 1; i >= (headRecord.length >= 5 ? headRecord.length - 6 : 0); i--) {
         if (new Date(arr[0].recordDate).getMonth() !== new Date(headRecord[i].recordDate).getMonth()) {
           const obj = {
             head: headRecord[i].head,
@@ -373,17 +366,17 @@ const HeadChart = (props) => {
   }, [headRecord, props.month]);
 
   useEffect(() => {
-    if(headData && percentile) {
-      let a = [...percentile.circumference99thPercentiles].reverse().slice(5-headData.length, percentile.length);
-      let b = [...percentile.circumference75thPercentiles].reverse().slice(5-headData.length, percentile.length);
+    if (headData && percentile) {
+      let a = [...percentile.circumference99thPercentiles].reverse().slice(5 - headData.length, percentile.length);
+      let b = [...percentile.circumference75thPercentiles].reverse().slice(5 - headData.length, percentile.length);
       let c = [...headData].reverse();
-      let d = [...percentile.circumference25thPercentiles].reverse().slice(5-headData.length, percentile.length);
-      let e = [...percentile.circumference1stPercentiles].reverse().slice(5-headData.length, percentile.length);
+      let d = [...percentile.circumference25thPercentiles].reverse().slice(5 - headData.length, percentile.length);
+      let e = [...percentile.circumference1stPercentiles].reverse().slice(5 - headData.length, percentile.length);
       let f = [...headData];
- 
+
       const data = {
         labels: headData.map((obj) => {
-          return obj.month+"개월"
+          return obj.month + "개월";
         }),
         datasets: [
           {
@@ -395,51 +388,51 @@ const HeadChart = (props) => {
               b.pop(),
               c.pop().head,
               d.pop(),
-              e.pop()
+              e.pop(),
             ]),
-            
+
             borderColor: "rgb(255, 99, 132)",
-            backgroundColor: "rgba(255, 99, 132, 0.5)"
+            backgroundColor: "rgba(255, 99, 132, 0.5)",
           },
           {
             label: "머리둘레",
             data: f.map((obj) => {
-              return obj.head
+              return obj.head;
             }),
             type: "line",
             borderColor: "skyblue",
             fill: false,
-            order: 1
-          }
-        ]
-      }
-      setChartData(data)
+            order: 1,
+          },
+        ],
+      };
+      setChartData(data);
     }
-  }, [headData, percentile])
+  }, [headData, percentile]);
 
-  useEffect(() => { 
-    const chartRef = new ChartJS('chartCanvas3', {
+  useEffect(() => {
+    const chartRef = new ChartJS("chartCanvas3", {
       data: chartData,
       options: {
-        maintainAspectRatio:false,
+        maintainAspectRatio: false,
         plugins: {
           title: {
             display: true,
-            text: '머리둘레 백분위 차트'
+            text: "머리둘레 백분위 차트",
           },
           legend: {
-            display: true
+            display: true,
           },
           tooltip: {
-            enabled: true
-          }
+            enabled: true,
+          },
         },
         scales: {
           y: {
-            beginAtZero: false
-          }
+            beginAtZero: false,
+          },
         },
-      }
+      },
     });
 
     return () => {
@@ -448,10 +441,10 @@ const HeadChart = (props) => {
   }, [chartData]);
 
   return (
-  <>
-  <canvas id="chartCanvas3" style={{ width: "100%", head: "100%" }} />
-  </>
-  )
-}
+    <>
+      <canvas id="chartCanvas3" style={{ width: "100%", head: "100%" }} />
+    </>
+  );
+};
 
 export { WeightChart, HeightChart, HeadChart };
