@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import useMemberStore from '../../../stores/userStore';
 import axios from 'axios';
 import CheckCard from './CheckCard';
+import { sortList } from './CheckPanel';
 
 const BabyCheck = () => {
   const BabyList = useMemberStore(state => state.babyList)
@@ -15,7 +16,7 @@ const BabyCheck = () => {
 
   useEffect(() => {
     axios.get(`/api/check/baby/${selectBaby}`)
-    .then(res => setBabyCheck(res.data))
+    .then(res => setBabyCheck(sortList(res.data)))
     .catch(err => console.error(err))
   },[selectBaby])
 

@@ -47,30 +47,8 @@ const CheckCard = (props) => {
     }
   }
 
-  // const calculateDate = () => {
-  //   let startdate = '';
-  //   let enddate = '';
 
-  //   if (props.vaccine.startTime[0] === 'A') {
-  //     const startDate = new Date(birth);
-  //     const endDate = new Date(birth);
-
-  //     startDate.setMonth(startDate.getMonth() + replaceAWithNumber(props.vaccine.startTime));
-  //     endDate.setMonth(endDate.getMonth() + replaceAWithNumber(props.vaccine.endTime));
-
-  //     startdate = moment(startDate).format('YYYY년MM월DD일');
-  //     enddate = moment(endDate).format('YYYY년MM월DD일');
-  //   } else {
-  //     start.setDate(start.getDate() + replaceAWithNumber(props.vaccine.startTime) * 7);
-  //     end.setDate(end.getDate() + replaceAWithNumber(props.vaccine.endTime) * 7);
-
-  //     startdate = moment(start).format('YYYY년MM월DD일');
-  //     enddate = moment(end).format('YYYY년MM월DD일');
-  //   }
-  //   setVaccineDate({ startDate: startdate, endDate: enddate });
-  // };
-
-
+  // 날짜 계산
   useEffect(() => {
     let startdate = '';
     let enddate = '';
@@ -136,7 +114,6 @@ const CheckCard = (props) => {
         </Modal>
       </div>
       <CardActions>
-        {/* <Button size="small">상세보기</Button> */}
       </CardActions>
       <Stack spacing={1}>
         <Typography variant="overline">권장 접종 기간</Typography>
