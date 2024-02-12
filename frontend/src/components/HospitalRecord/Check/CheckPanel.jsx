@@ -8,7 +8,7 @@ import Option from "@mui/joy/Option";
 import { Typography } from "@mui/material";
 import ReadVaccinCard from "../ReadVaccinCard";
 import { getCheck } from "../../../api/RecordApi";
-import NumberRangeSlider from "../RangeSlider";
+import NumberRangeSlider from "./RangeSlider";
 import MotherCheck from "./MotherCheck";
 import BabyCheck from "./BabyCheck";
 
