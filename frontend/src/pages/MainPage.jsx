@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import icon from "../images/icon.png";
 import logo from "../images/logo.png";
 import { Link } from 'react-router-dom';
@@ -24,8 +24,15 @@ const theme = createTheme({
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const babyList  = useMemberStore(state => state.babyList)
+  const setBabyList = useMemberStore(state => state.setBabyList)
   const userNum = useMemberStore(state => state.userNum)
   const setFamilyNum = useMemberStore(state => state.setFamilyNum)
+
+  // useEffect(() => {
+  //   if (babyList == []) {
+  //     axios.get()
+  //   }
+  // })
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);

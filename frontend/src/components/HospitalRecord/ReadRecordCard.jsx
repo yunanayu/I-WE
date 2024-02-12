@@ -44,9 +44,12 @@ const ReadRecordCard = (props) => {
   return (
     <Card sx={{ width: '100%', mb: 3, }}>
       <CardContent>
+        {target === 'baby'
+        &&
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           아기이름 : {baby.name}
         </Typography>
+        }
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           병원 : {props.record.hospitalName}
         </Typography>

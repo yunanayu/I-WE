@@ -31,7 +31,7 @@ const HospitalRecordMainPage = () => {
   const [recordList, setRecordList] = useState([])
   const userNum = useMemberStore(state => state.userNum)
   const babyList = useMemberStore(state => state.babyList)
-
+  const parentType = useMemberStore(state => state.parentType)
   
   const [babyrecord, setBabyrecord] = useState([])
   const [momrecord, setMomrecord] = useState([])
@@ -42,17 +42,17 @@ const HospitalRecordMainPage = () => {
 
 
   useEffect(() => {
+    if (parentType === 'MOTHER') {
     axios.get(`/api/hospital/mother/${userNum}`)
     .then((res) => {
-      // console.log(res.data);
       setMomrecord(res.data)
     })
     .catch((err) => console.log(err))
+  }
 
     babyList.map((baby) => {
       axios.get(`api/hospital/baby/${baby.num}`)
       .then((res) => {
-        // console.log(res.data)
         setBabyrecord([...babyrecord,...res.data])
       })
     })
@@ -82,8 +82,6 @@ const HospitalRecordMainPage = () => {
           <Box sx={{display:'flex',alignContent:'center',justifyContent:'center'}}>
             <CustomTabPanel selectedDay={selectedDay}/>
           </Box>
-        {/* <Container sx={{alignContent:'center',justifyContent:'center',}}>
-        </Container> */}
       </Container>
       <Box sx={{height:100}}>
 

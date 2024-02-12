@@ -65,3 +65,22 @@ export const updateComplete = async (data) => {
   .catch(err => console.log(err))
 }
 
+
+
+export const changeComplete = (targetNum, essentialNum, target, isComplete) => {
+  axios({
+    method: 'put',
+    url: `/api/check/complete`,
+    data: {
+      targetNum: targetNum,
+      essentialNum: essentialNum,
+      target: target,
+      isComplete: isComplete,
+    },
+  })
+    .then((res) => {
+      console.log('변경 완료')
+      // console.log(res)
+    })
+    .catch((err) => console.log(err));
+} 

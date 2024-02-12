@@ -74,6 +74,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
                     .password(passwordInitializer.generateAndEncodeTemporaryPassword())
                     .memberId(memberId)
                     .name(name)
+                    .profileImage(oAuth2User.getAttribute("profileImage"))
                     .platform(PlatformType.valueOf(provider.toUpperCase(Locale.ROOT)))
                     .role(MemberRole.valueOf(role.substring(5)))
                     .build();
