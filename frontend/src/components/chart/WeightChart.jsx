@@ -157,7 +157,7 @@ function WeeklyWeightChart(props) {
   return (
     <Box sx={{ width: "90%" }}>
       <Box sx={{ mt: 3, textAlign: "center" }}>
-        <Typography fontSize={28}> 날짜별 체중 </Typography>
+        <Typography fontSize={24}> 날짜별 체중 </Typography>
       </Box>
       <ToggleButtonGroup size="small" value={selectedInterval} exclusive onChange={handleToggleInterval} aria-label="select-interval" sx={{ mb: 3 }}>
         <ToggleButton value={1}>일별</ToggleButton>
@@ -418,7 +418,7 @@ function ChangeChart(props) {
   return (
     <Box sx={{ width: "90%" }}>
       <Box sx={{ mt: 3, textAlign: "center" }}>
-        <Typography fontSize={28}> 체중 증가율 </Typography>
+        <Typography fontSize={24}> 체중 증가율 </Typography>
       </Box>
       <Paper sx={{ width: "100%", height: 350 }}>
         {/* @ts-ignore */}

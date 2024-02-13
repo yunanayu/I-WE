@@ -38,6 +38,8 @@ const Info = (props) => {
   const [msg, setMsg] = useState();
   const [msg2, setMsg2] = useState();
   const [msg3, setMsg3] = useState();
+  const [msg4, setMsg4] = useState();
+  const [msg5, setMsg5] = useState();
 
   useEffect(() => {}, [props.momRecord]);
 
@@ -55,16 +57,20 @@ const Info = (props) => {
       setStart(props.avg[props.avg.length - 1].start);
       setEnd(props.avg[props.avg.length - 1].end);
       setWeek(props.avg[props.avg.length - 1].week);
-      setMsg(`저번주 보다 \n${latestDiffData.weight}kg 증가했어요.`);
+      // eslint-disable-next-line no-useless-concat
+      setMsg(`체중이 지난주보다`);
+      setMsg5(`${latestDiffData.weight}kg 증가했어요.`);
   
       if (latestDiffData.weight >= start && latestDiffData.weight <= end) {
         setMsg2("체중이 평균 범위 내에서 증가하고 있어요.");
+        setMsg3("이대로만 유지해요.");
       } else if (latestDiffData.weight < start) {
         setMsg2("체중이 평균 밑이에요.");
         setMsg3("균형잡힌 식사를 추천드려요.");
       } else if (latestDiffData.weight > end) {
-        setMsg2("체중이 평균보다 높아요.");
-        setMsg3("식사량을 조절하시길 추천드려요.");
+        setMsg2("체중이 평균보다");
+        setMsg3("빠르게 증가하고 있어요.");
+        setMsg4("식사량의 조절이 필요해요.");
       }
     }
     console.log(111);
@@ -72,10 +78,12 @@ const Info = (props) => {
 
   return (
     <>
-      <Box sx={{ mt: 3, mb: 3 }}>
-        <Typography fontSize={26}> {msg} </Typography>
-        {msg2 && <Typography fontSize={26}> {msg2} </Typography>}
-        {msg3 && <Typography fontSize={26}> {msg3} </Typography>}
+      <Box sx={{ p: 3, textAlign: 'center' }}>
+        <Typography fontSize={20} variant="body2" style={{whiteSpace: "pre-line"}}> {msg} </Typography>
+        <Typography fontSize={26} variant="body2" style={{whiteSpace: "pre-line"}}> {msg5} </Typography>
+        {msg2 && <Typography fontSize={20} variant="body2" style={{whiteSpace: "pre-line"}} sx={{mt: 1}}> {msg2} </Typography>}
+        {msg3 && <Typography fontSize={20} variant="body2" style={{whiteSpace: "pre-line"}}> {msg3} </Typography>}
+        {msg4 && <Typography fontSize={16} variant="body2" style={{whiteSpace: "pre-line"}} sx={{mt: 1}}> {msg4} </Typography>}
       </Box>
     </>
   );
@@ -138,7 +146,6 @@ function RecordMom() {
       updatedMomRecord.push(data);
       return updatedMomRecord;
     });
-    console.log("새로운 기록123" + JSON.stringify(momRecord));
   };
 
   const updateChartData = (data) => {
