@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useMemberStore from "./../../stores/userStore";
 import axios from "axios";
 import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
@@ -12,24 +12,34 @@ import SendIcon from '@mui/icons-material/Send';
 import { getBabyList } from "../../api/UserApi";
 
 
-const UpdateChild = () => {
+const UpdateChild = (props) => {
   const userNum = useMemberStore(state => state.userNum)
-  const BabyList = useMemberStore((state) => state.babyList);
-  const motherNum = BabyList[0].motherNum;
+  const baby = props.baby
+  const motherNum = baby.motherNum;
   const [status, setStatus] = useState(null)
   const today = dayjs(moment(new Date()).format('YYYY-MM-DD'))
   const [initState, setInitState] = useState({
-    name: "",
-    gender: 0,
-    birth: null,
-    pregnancyDate: null,
-    status: false,
+    name: baby.name,
+    gender: baby.gender,
+    birth: baby.birth,
+    pregnancyDate: baby.pregnancyDate,
+    status: baby.status,
   });
+  console.log(initState)
   const handleChange = (event) => {
     setInitState({...initState, [event.target.name] : event.target.value})
   };
   const dateInputBefore = useRef()
   const dateInputAfter = useRef()
+
+  useEffect(()=> {
+    if (baby.status) {
+      setStatus('before')
+    }
+    else{
+      setStatus('after')
+    }
+  }, [])
 
   const addChild = () => {
     // if (initState.birth === null && initState.pregnancyDate) {
@@ -37,10 +47,10 @@ const UpdateChild = () => {
     // }
     // console.log(initState)
     axios({
-      method: "post",
-      url: `/api/baby`,
+      method: "put",
+      url: `/api/baby/update`,
       data: {
-        motherNum: motherNum,
+        babyNum: baby.num,
         name: initState.name,
         gender: initState.gender,
         birth: initState.birth,
@@ -64,11 +74,12 @@ const UpdateChild = () => {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
+          value={status} 
         >
           <FormControlLabel
             onClick={() => {
               setStatus("before")
-              setInitState({...initState, status: false, pregnancyDate:'', birth:''})
+              setInitState({...initState, status: false,})
             }}
             value="before"
             control={<Radio />}
@@ -78,7 +89,7 @@ const UpdateChild = () => {
           <FormControlLabel
             onClick={() => {
               setStatus("after")
-              setInitState({...initState, status: true, pregnancyDate:'', birth:''})
+              setInitState({...initState, status: true,})
           }}
             value="after"
             control={<Radio />}

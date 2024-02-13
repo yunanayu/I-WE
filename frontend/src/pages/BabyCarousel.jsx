@@ -35,7 +35,7 @@ const BabyCarousel = () => {
     },
   ];
   return (
-    <Box sx={{ width: "30vw", height: "40vh" }}>
+    <Box sx={{ width: "100%" }}>
       <Carousel
         showArrows={true}
         centerMode={true}
@@ -53,7 +53,7 @@ const BabyCarousel = () => {
       >
         {imageData.map((content) => (
           <Stack
-          key={content.label} 
+            key={content.label}
             sx={{
               displayplay: "flex",
               justifyContent: "center",
@@ -63,7 +63,7 @@ const BabyCarousel = () => {
             <Typography variant="h5" color="#112b23" mb={3}>
               {content.label}
             </Typography>
-            <img src={content.url} width={300} height={210} alt={content.alt} key={content.label} />
+            <img src={content.url} width={250} height={350} alt={content.alt} key={content.label} />
           </Stack>
         ))}
       </Carousel>

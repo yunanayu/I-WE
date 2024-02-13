@@ -9,8 +9,12 @@ const useMemberStore = create(
     (set) => ({
   userNum : 0,  // 엄마 num
   parentType : null,
+  userName : null,
+  profileImage : null,
   setUserNum : (num) => set({ userNum: num}),
+  setUserName : (name) => set({ userName: name}),
   setParentType : (type) => set({parentType : type}),
+  setProfileImage : (img) => set({profileImage : img}),
   babyList : [],
   setBabyList : (babyinfo) => 
     set((prev) => ({
@@ -63,7 +67,9 @@ export const setMember = async () => {
   const userInfo = await getUserNumType()
   const babyInfo = await getUserInfo()
   useMemberStore.getState().setUserNum(userInfo.num)
+  useMemberStore.getState().setUserName(userInfo.name)
   useMemberStore.getState().setParentType(userInfo.parentType)
-  useMemberStore.getState().setBabyList(...babyInfo)
+  useMemberStore.getState().setProfileImage(userInfo.profileImage)
+  useMemberStore.getState().setBabyList(babyInfo)
 }
 

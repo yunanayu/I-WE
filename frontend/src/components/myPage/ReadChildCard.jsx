@@ -49,7 +49,7 @@ const ReadChildCard = (props) => {
             aria-describedby="modal-modal-description"
         >
         <Box sx={style}>
-            <UpdateChild />
+            <UpdateChild baby={baby}/>
         </Box>
         </Modal>
     </Card>
