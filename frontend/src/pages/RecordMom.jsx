@@ -70,7 +70,7 @@ const Info = (props) => {
         setMsg4("식사량의 조절이 필요해요.");
       }
     }
-    console.log(111);
+    // console.log(111);
   }, [avgData, diffData]);
 
   return (
@@ -171,18 +171,18 @@ function RecordMom() {
     setRecentRecord(data);
     setMomRecord((prevMomRecord) => {
       const updatedMomRecord = prevMomRecord ? [...prevMomRecord, data] : [data];
-      console.log("새로운 기록" + JSON.stringify(updatedMomRecord));
+      // console.log("새로운 기록" + JSON.stringify(updatedMomRecord));
       return [...updatedMomRecord];
     });
   };
 
   const onAvgUpdate = (data) => {
     setAvgData([...data]);
-    console.log(JSON.stringify(avgData));
+    // console.log(JSON.stringify(avgData))
   };
   const onDiffUpdate = (data) => {
     setDiffData([...data]);
-    console.log(JSON.stringify(diffData));
+    // console.log(JSON.stringify(diffData))
   };
 
   // console.log("엄마기록??? " + JSON.stringify(momRecord));
