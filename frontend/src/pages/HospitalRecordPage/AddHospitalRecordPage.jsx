@@ -122,7 +122,6 @@ const AddMomRecordPage = () => {
               label="검진 날짜 선택"
               value={today}
               onChange={(newValue) => {
-                console.log(newValue)
                 setState({...state, selectDay : moment(newValue.$d).format('YYYY-MM-DD')})
               }}
               sx={{
