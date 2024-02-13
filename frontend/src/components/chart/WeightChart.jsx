@@ -165,7 +165,7 @@ function WeeklyWeightChart(props) {
         <ToggleButton value={3}>월별</ToggleButton>
       </ToggleButtonGroup>
 
-      <Paper sx={{ width: "100%", height: 300, paddingBottom: 1 }} elevation={3}>
+      <Paper sx={{ width: "100%", height: 300, paddingBottom: 1, mb: 2 }} elevation={3}>
         {/* @ts-ignore */}
         {chartData && ( // Render only if there is data
           <ResponsiveChartContainer
@@ -423,7 +423,7 @@ function ChangeChart(props) {
       <Box sx={{ mt: 3, textAlign: "center" }}>
         <Typography fontSize={24}> 체중 증가율 </Typography>
       </Box>
-      <Paper sx={{ width: "100%", height: 350 }}>
+      <Paper sx={{ width: "100%", height: 350, paddingBottom: 1, mb: 2 }}>
         {/* @ts-ignore */}
         {chartData && lineData && (
           <ResponsiveChartContainer
