@@ -94,7 +94,6 @@ function MemberCheckPage({ setSpouseStatus }) {
             다음  →
           </Button>
         </FormControl>
-        
       </Box>
     </div>
 
