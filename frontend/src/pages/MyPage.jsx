@@ -19,16 +19,18 @@ function MyPage() {
   const userName = useMemberStore(state => state.userName)
   return (
     <Container>
+        <Typography variant="h6" gutterBottom sx={{m:5}}>마이페이지</Typography>
       <Box sx={{display:'flex', m:5,}}>
         {profileImage ? (
           <Avatar sx={{ width: 56, height: 56 }} src={profileImage} />
         ) : (
           <Avatar sx={{ width: 56, height: 56 }} src="/broken-image.jpg" />
         )}
-        <Typography sx={{ml:2, pt:1}}>{userName} 님 반갑습니다.!</Typography>
+        <Typography sx={{ml:2, pt:1}}>{userName} 님 반갑습니다!</Typography>
       </Box>
       <Divider sx={{mb:2}}/>
       <Box sx={{ width: 400 }}>
+        <Typography variant="caption" display="block" gutterBottom sx={{pl:2}}>나의 가족</Typography>
         <nav aria-label="secondary mailbox folders">
           <List>
             <ListItem disablePadding>

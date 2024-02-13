@@ -63,28 +63,43 @@ const ReadChildCard = (props) => {
     <Box>
       <Card sx={{ minWidth: 275, mb:2}}>
       <CardContent>
+        <Box sx={{display:'flex'}}>
+          <Typography variant="body1" gutterBottom>아이정보</Typography>
+          <IconButton sx={{justifyConten:'right'}} onClick={handleOpen}><EditOutlinedIcon /></IconButton>
+        </Box>
         {baby.birth === null ?
-        <>
-          {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">임신추측일(마지막 생리일) : {baby.pregnancyDate}</Typography> */}
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            태명 : {baby.name}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">출산 예정일: {calculateDueDate(baby.pregnancyDate)}</Typography>
-        </>
+        <Box sx={{display:'flex'}}>
+          <Box>
+            <Typography gutterBottom>태명</Typography>
+            <Typography gutterBottom>성별</Typography>
+            <Typography gutterBottom>출산 예정일</Typography>
+          </Box>
+          <Box sx={{justifyContent:'center', ml:2}}>
+            {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">임신추측일(마지막 생리일) : {baby.pregnancyDate}</Typography> */}
+            <Typography color="text.secondary" gutterBottom>{baby.name}</Typography>
+            <Typography color="text.secondary" gutterBottom>{baby.gender === 1 ? '남자' : (baby.gender === 2 ? '여자' : '미정')}</Typography>
+            <Typography color="text.secondary" gutterBottom>{calculateDueDate(baby.pregnancyDate)}</Typography>          
+          </Box>
+        </Box>
         :
-        <>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            아기 이름 : {baby.name}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            생일 : {baby.birth}
-          </Typography>
-        </>
+        <Box sx={{display:'flex'}}>
+        <Box>
+          <Typography gutterBottom>이름</Typography>
+          <Typography gutterBottom>성별</Typography>
+          <Typography gutterBottom>생년월일</Typography>
+        </Box>
+        <Box sx={{justifyContent:'center', ml:2}}>
+          {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">임신추측일(마지막 생리일) : {baby.pregnancyDate}</Typography> */}
+          <Typography color="text.secondary" gutterBottom>{baby.name}</Typography>
+          <Typography color="text.secondary" gutterBottom>{baby.gender === 1 ? '남자' : (baby.gender === 2 ? '여자' : '미정')}</Typography>
+          <Typography color="text.secondary" gutterBottom>{baby.birth}</Typography>          
+        </Box>
+      </Box>
         }
-        <Typography>성별: {baby.gender === 1 ? '남자' : (baby.gender === 2 ? '여자' : '미정')}</Typography>
       </CardContent>
-      <IconButton onClick={handleOpen}><EditOutlinedIcon /></IconButton>
       <IconButton onClick={() => goDelete()}><DeleteOutlineOutlinedIcon /></IconButton>
+
+      
         <Modal
             open={open}
             onClose={handleClose}

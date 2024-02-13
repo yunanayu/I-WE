@@ -43,9 +43,6 @@ const UpdateChild = (props) => {
   }, [])
 
   const addChild = () => {
-    // if (initState.birth === null && initState.pregnancyDate) {
-    //   if ()
-    // }
     // console.log(initState)
     axios({
       method: "put",
@@ -60,7 +57,6 @@ const UpdateChild = (props) => {
       },
     })
     .then((res) => {
-      // console.log(res)
       getBabyList(userNum)
     })
     .catch(err => console.log(err))
