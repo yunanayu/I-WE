@@ -26,6 +26,8 @@ import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMai
 import AddMomRecordPage from "./pages/HospitalRecordPage/AddHospitalRecordPage";
 import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecord";
 import InfoSection from "./components/Infos/InfoSection";
+import ChildList from "./components/myPage/ChildList";
+import CodeSharePage from "./pages/MyPage/CodeSharePage";
 
 
 function App() {
@@ -97,6 +99,8 @@ function App() {
             <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />
             <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
             <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
+            <Route path="/babylist" element={<ChildList />} />
+            <Route path="/codeshare" element={<CodeSharePage />} />
           </Routes>
         </div>
         {parentLoggedIn && (

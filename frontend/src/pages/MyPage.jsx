@@ -1,62 +1,53 @@
 import React from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Typography, Box, Button, Container } from "@mui/material";
+import { Typography, Box, Button, Container, Avatar } from "@mui/material";
 import useMemberStore from "../stores/userStore";
 import ChildList from "../components/myPage/ChildList";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
+import FileUpload from "../components/HospitalRecord/FileUpload";
+import { useNavigate } from "react-router-dom";
+import KeyboardArrowRightSharpIcon from "@mui/icons-material/KeyboardArrowRightSharp";
 
-const theme = createTheme({
-  typography: {
-    fontFamily: "Nanum Gothic, sans-serif",
-  },
-});
 // familyNum 받아오기
 function MyPage() {
-  const familyNum = useMemberStore((state) => state.familyNum);
-  const handleCopy = () => {};
+  const navigate = useNavigate();
+  const profileImage = useMemberStore(state => state.profileImage)
+  const userName = useMemberStore(state => state.userName)
   return (
     <Container>
-        <ThemeProvider
-            theme={theme}
-            sx={{ display: "flex", justifyContent: "center" }}
-        >
-            <Typography>마이페이지</Typography>
-            <Typography
-            margin="10px"
-            variant="h5"
-            align="center"
-            sx={{ mt: 4, mb: 2, color: "gray" }}
-            >
-            가족코드: {familyNum}
-            </Typography>
-            <CopyToClipboard text={familyNum}>
-            <Button variant="contained" color="primary" onClick={handleCopy}>
-                코드 복사
-            </Button>
-            </CopyToClipboard>
-        </ThemeProvider>
-        <ChildList />
-    <Box sx={{width:400, border:1, borderColor:"primary"}}>
+      <Box sx={{display:'flex', m:5,}}>
+        {profileImage ? (
+          <Avatar sx={{ width: 56, height: 56 }} src={profileImage} />
+        ) : (
+          <Avatar sx={{ width: 56, height: 56 }} src="/broken-image.jpg" />
+        )}
+        <Typography sx={{ml:2, pt:1}}>{userName} 님 반갑습니다.!</Typography>
+      </Box>
+      <Divider sx={{mb:2}}/>
+      <Box sx={{ width: 400 }}>
         <nav aria-label="secondary mailbox folders">
-            <List>
+          <List>
             <ListItem disablePadding>
-                <ListItemButton>
-                <ListItemText primary="아기 목록" />
-                </ListItemButton>
+              <ListItemButton onClick={() => navigate("/codeshare")}>
+                <ListItemText primary="가족 코드 보기" />
+                <KeyboardArrowRightSharpIcon color="disabled" />
+              </ListItemButton>
             </ListItem>
             <Divider />
             <ListItem disablePadding>
-                <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary="Spam" />
-                </ListItemButton>
+              <ListItemButton>
+                <ListItemText
+                  primary="아기 목록"
+                  onClick={() => navigate("/babylist")}
+                />
+                <KeyboardArrowRightSharpIcon color="disabled" />
+              </ListItemButton>
             </ListItem>
-            </List>
+          </List>
         </nav>
       </Box>
     </Container>

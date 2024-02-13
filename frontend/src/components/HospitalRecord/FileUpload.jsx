@@ -67,7 +67,8 @@ const FileUpload = () => {
         'Content-Type': 'multipart/form-data'
       },
       data : {
-        data : formData
+        data : formData,
+        
       }
       })
       . then((res) => {

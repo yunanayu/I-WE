@@ -15,6 +15,7 @@ import { getBabyList } from "../../api/UserApi";
 const UpdateChild = (props) => {
   const userNum = useMemberStore(state => state.userNum)
   const baby = props.baby
+  console.log(baby)
   const motherNum = baby.motherNum;
   const [status, setStatus] = useState(null)
   const today = dayjs(moment(new Date()).format('YYYY-MM-DD'))
@@ -110,23 +111,24 @@ const UpdateChild = (props) => {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
+          value={initState.gender}
         >
           <FormControlLabel
-            value="0"
+            value={0}
             control={<Radio />}
             label="모름"
             name="gender"
             onChange={handleChange}
           />
           <FormControlLabel
-            value="1"
+            value={1}
             control={<Radio />}
             label="남자"
             name="gender"
             onChange={handleChange}
           />
           <FormControlLabel
-            value="2"
+            value={2}
             control={<Radio />}
             label="여자"
             name="gender"
@@ -148,7 +150,7 @@ const UpdateChild = (props) => {
       }
       {status === 'after' &&
       <>
-      <TextField label='이름' name='name' onChange={handleChange} />
+      <TextField label='이름' defaultValue={baby.name} name='name' onChange={handleChange} />
       <FormControl>
         <FormLabel id="demo-controlled-radio-buttons-group">
           성별
@@ -157,16 +159,17 @@ const UpdateChild = (props) => {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
+          value={initState.gender}
         >
           <FormControlLabel
-            value="1"
+            value={1}
             control={<Radio />}
             label="남자"
             name="gender"
             onChange={handleChange}
           />
           <FormControlLabel
-            value="2"
+            value={2}
             control={<Radio />}
             label="여자"
             name="gender"

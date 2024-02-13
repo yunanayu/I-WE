@@ -31,6 +31,7 @@ const ReadChildCard = (props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const baby = props.baby
+  console.log(baby)
   function calculateDueDate(pregnancyDate) {
     // pregnancyDate를 JavaScript Date 객체로 변환
     const startDate = new Date(pregnancyDate);
@@ -47,34 +48,38 @@ const ReadChildCard = (props) => {
       window.alert('삭제할수없습니다.')
     }
     else {
-      // window.confirm()
-      axios.delete(`api/baby/kill/${baby.num}`)
-      .then((res) => {
-        console.log(res)
-        window.alert('삭제되었습니다.')
-        getBabyList(userNum)
-      })
-      .catch(err => console.log(err))
+      if (window.confirm('삭제하시겠습니까?') ) {
+        axios.delete(`api/baby/kill/${baby.num}`)
+        .then((res) => {
+          window.alert('삭제되었습니다.')
+          getBabyList(userNum)
+        })
+        .catch(err => console.log(err))
+      }
     }
   }
   
-  console.log(baby)
   return (
     <Box>
       <Card sx={{ minWidth: 275, mb:2}}>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          아기 이름 : {baby.name}
-        </Typography>
         {baby.birth === null ?
         <>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">임신추측일(마지막 생리일) : {baby.pregnancyDate}</Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">출산 예정일: {calculateDueDate(baby.pregnancyDate)}</Typography>
+          {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">임신추측일(마지막 생리일) : {baby.pregnancyDate}</Typography> */}
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            태명 : {baby.name}
+          </Typography>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">출산 예정일: {calculateDueDate(baby.pregnancyDate)}</Typography>
         </>
         :
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          생일 : {baby.birth}
-        </Typography>
+        <>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            아기 이름 : {baby.name}
+          </Typography>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            생일 : {baby.birth}
+          </Typography>
+        </>
         }
         <Typography>성별: {baby.gender === 1 ? '남자' : (baby.gender === 2 ? '여자' : '미정')}</Typography>
       </CardContent>
