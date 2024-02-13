@@ -1,10 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import {
-  ChangeChart,
-  WeeklyWeightChart,
-} from "../components/chart/WeightChart";
+import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart";
 import { MomForm } from "./WeightForm";
 import { Typography } from "@mui/material";
 import axios from "axios";
@@ -60,7 +57,7 @@ const Info = (props) => {
       // eslint-disable-next-line no-useless-concat
       setMsg(`체중이 지난주보다`);
       setMsg5(`${latestDiffData.weight}kg 증가했어요.`);
-  
+
       if (latestDiffData.weight >= start && latestDiffData.weight <= end) {
         setMsg2("체중이 평균 범위 내에서 증가하고 있어요.");
         setMsg3("이대로만 유지해요.");
@@ -78,12 +75,33 @@ const Info = (props) => {
 
   return (
     <>
-      <Box sx={{ p: 3, textAlign: 'center' }}>
-        <Typography fontSize={20} variant="body2" style={{whiteSpace: "pre-line"}}> {msg} </Typography>
-        <Typography fontSize={26} variant="body2" style={{whiteSpace: "pre-line"}}> {msg5} </Typography>
-        {msg2 && <Typography fontSize={20} variant="body2" style={{whiteSpace: "pre-line"}} sx={{mt: 1}}> {msg2} </Typography>}
-        {msg3 && <Typography fontSize={20} variant="body2" style={{whiteSpace: "pre-line"}}> {msg3} </Typography>}
-        {msg4 && <Typography fontSize={16} variant="body2" style={{whiteSpace: "pre-line"}} sx={{mt: 1}}> {msg4} </Typography>}
+      <Box sx={{ p: 3, textAlign: "center" }}>
+        <Typography fontSize={20} variant="body2" style={{ whiteSpace: "pre-line" }}>
+          {" "}
+          {msg}{" "}
+        </Typography>
+        <Typography fontSize={26} variant="body2" style={{ whiteSpace: "pre-line" }}>
+          {" "}
+          {msg5}{" "}
+        </Typography>
+        {msg2 && (
+          <Typography fontSize={20} variant="body2" style={{ whiteSpace: "pre-line" }} sx={{ mt: 1 }}>
+            {" "}
+            {msg2}{" "}
+          </Typography>
+        )}
+        {msg3 && (
+          <Typography fontSize={20} variant="body2" style={{ whiteSpace: "pre-line" }}>
+            {" "}
+            {msg3}{" "}
+          </Typography>
+        )}
+        {msg4 && (
+          <Typography fontSize={16} variant="body2" style={{ whiteSpace: "pre-line" }} sx={{ mt: 1 }}>
+            {" "}
+            {msg4}{" "}
+          </Typography>
+        )}
       </Box>
     </>
   );
@@ -100,6 +118,7 @@ function RecordMom() {
   const [diffData, setDiffData] = useState();
   const motherNum = useMemberStore((state) => state.babyList[0].motherNum);
   const babyNum = useMemberStore((state) => state.babyList[0].num);
+  const status = useMemberStore((state) => state.babyList[0].targetTime).substr(0, 1);
 
   useEffect(() => {
     const initData = async () => {
@@ -171,39 +190,17 @@ function RecordMom() {
   return (
     <>
       <Container maxWidth="lg" sx={{ ...setCenter, background: "pink" }}>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           {<Info record={momRecord} avg={avgData} diff={diffData} />}
         </Box>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
-          <MomForm
-            data={recentRecord}
-            recentUpdate={onUpdateRecent}
-            onPostSuccess={updateChartData}
-          />
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+          <MomForm data={recentRecord} recentUpdate={onUpdateRecent} onPostSuccess={updateChartData} />
         </Box>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           <WeeklyWeightChart recordData={momRecord} />
         </Box>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
-          <ChangeChart
-            recordData={momRecord}
-            basisData={momBasis}
-            babyData={babyData}
-            diffUpdate={onDiffUpdate}
-            avgUpdate={onAvgUpdate}
-          />
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+          <ChangeChart recordData={momRecord} basisData={momBasis} babyData={babyData} diffUpdate={onDiffUpdate} avgUpdate={onAvgUpdate} status={status} />
         </Box>
       </Container>
     </>
