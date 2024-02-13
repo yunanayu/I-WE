@@ -39,38 +39,58 @@ public class GrowthServiceImpl implements GrowthService {
         int weightPercentile = checkPercentile(weight, growthWeights.get(0).getWeights());
         int circumferencesPercentile = checkPercentile(circumference, growthCircumferences.get(0).getCircumferences());
 
+        List<Float> height1stPercentiles = new ArrayList<>();
         List<Float> height25thPercentiles = new ArrayList<>();
         List<Float> height75thPercentiles = new ArrayList<>();
+        List<Float> height99thPercentiles = new ArrayList<>();
 
+        List<Float> weight1stPercentiles = new ArrayList<>();
         List<Float> weight25thPercentiles = new ArrayList<>();
         List<Float> weight75thPercentiles = new ArrayList<>();
+        List<Float> weight99thPercentiles = new ArrayList<>();
 
+        List<Float> circumference1stPercentiles = new ArrayList<>();
         List<Float> circumference25thPercentiles = new ArrayList<>();
         List<Float> circumference75thPercentiles = new ArrayList<>();
+        List<Float> circumference99thPercentiles = new ArrayList<>();
 
         for (GrowthHeight growthHeight : growthHeights) {
+            height1stPercentiles.add(growthHeight.getHeights().get(12));
             height25thPercentiles.add(growthHeight.getHeights().get(7));
             height75thPercentiles.add(growthHeight.getHeights().get(5));
+            height99thPercentiles.add(growthHeight.getHeights().get(1));
         }
         for (GrowthWeight growthWeight : growthWeights) {
+            weight1stPercentiles.add(growthWeight.getWeights().get(12));
             weight25thPercentiles.add(growthWeight.getWeights().get(7));
             weight75thPercentiles.add(growthWeight.getWeights().get(5));
+            weight99thPercentiles.add(growthWeight.getWeights().get(1));
         }
         for (GrowthCircumference growthCircumference : growthCircumferences) {
+            circumference1stPercentiles.add(growthCircumference.getCircumferences().get(12));
             circumference25thPercentiles.add(growthCircumference.getCircumferences().get(7));
             circumference75thPercentiles.add(growthCircumference.getCircumferences().get(5));
+            circumference99thPercentiles.add(growthCircumference.getCircumferences().get(1));
         }
 
         dto.setHeightPercentile(heightPercentile);
         dto.setWeightPercentile(weightPercentile);
         dto.setCircumferencePercentile(circumferencesPercentile);
 
+        dto.setHeight1stPercentiles(height1stPercentiles);
         dto.setHeight25thPercentiles(height25thPercentiles);
         dto.setHeight75thPercentiles(height75thPercentiles);
+        dto.setHeight99thPercentiles(height99thPercentiles);
+
+        dto.setWeight1stPercentiles(weight1stPercentiles);
         dto.setWeight25thPercentiles(weight25thPercentiles);
         dto.setWeight75thPercentiles(weight75thPercentiles);
+        dto.setWeight99thPercentiles(weight99thPercentiles);
+
+        dto.setCircumference1stPercentiles(circumference1stPercentiles);
         dto.setCircumference25thPercentiles(circumference25thPercentiles);
         dto.setCircumference75thPercentiles(circumference75thPercentiles);
+        dto.setCircumference99thPercentiles(circumference99thPercentiles);
 
         return dto;
     }

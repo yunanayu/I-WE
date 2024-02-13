@@ -31,7 +31,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Option } from '@mui/joy';
-import useMemberStore from './../../stores/userStore';
+import useMemberStore from '../../stores/userStore';
 
 const babyList = [
   {name:'서싸피'},
@@ -44,10 +44,8 @@ const babyList = [
 
 const AddMomRecordPage = () => {
   const babyList = useMemberStore(state => state.babyList)
-  console.log(babyList)
   const navigate = useNavigate()
   const [target, setTarget] = useState('')
-  console.log(target)
   const location = useLocation()
   const selectedDay = location.state.selectedDay
 
@@ -63,12 +61,6 @@ const AddMomRecordPage = () => {
     checkupResult: '',
     doctorOpinion: '',
     target : '',
-    // ------------------
-    // momWeight:'',
-    // babyName : '',
-    // babyWeight:'',
-    // babyHeight:'',
-    // babyDiameter:'',
   })
   useEffect(() => {
 
@@ -92,12 +84,12 @@ const AddMomRecordPage = () => {
       })
       .then((res)=>{
         console.log(res)
-        window.alert("등록하였습니다.!")
+        window.alert("등록하였습니다.")
         navigate('/hospitalrecord')
       })
       .catch((err)=>{
         console.log(err)
-        window.alert('등록실패 ㅋㅎㅋㅎ')
+        window.alert('등록실패')
       })
     }
   
@@ -122,19 +114,6 @@ const AddMomRecordPage = () => {
           <FormControlLabel onClick={()=> setTarget('baby')} value="baby" control={<Radio />} label="아기" name='target' onChange={handleChange}/>
         </RadioGroup>
       </FormControl>
-      {/* {
-      target === 'baby'
-      &&
-      <Select placeholder='대상을 선택해주세요'  variant="plain">
-        {babyList.map((item, index) => {
-          return(
-            <Option value={item.num}>{item.name}</Option>
-          )
-        })}
-      </Select>
-      } */}
-
-
 
       <Box sx={{display:'flex', width:'100%', pt:3 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>

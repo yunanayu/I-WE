@@ -1,3 +1,17 @@
+@media only screen and (max-width: 400px) {
+  .react-calendar {
+    max-width: 300px; 
+  }
+
+  .react-calendar--doubleView {
+    max-width: 300px;
+  }
+}
+
+@font-face {
+  font-family: 'Noto Sans KR', sans-serif;
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+}
 .dot {
   height: 8px;
   width: 8px;
@@ -13,16 +27,6 @@
   justify-content: center;
 }
 
-
-@media only screen and (max-width: 400px) {
-  .react-calendar {
-    max-width: 300px; /* Adjust as needed for smaller screens */
-  }
-
-  .react-calendar--doubleView {
-    max-width: 300px; /* Adjust as needed for smaller screens */
-  }
-}
 .react-calendar {
   width: 100%;
   max-width: 500px; /* 최대 너비 설정 */
@@ -71,6 +75,10 @@
   cursor: pointer;
 }
 
+.react-calendar__navigation__label > span {
+  font-size: large;
+  font-weight: normal;
+}
 .react-calendar__navigation {
   display: flex;
   height: 44px;

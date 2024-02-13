@@ -6,7 +6,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { ResponsiveChartContainer } from "@mui/x-charts/ResponsiveChartContainer";
 import { BarPlot } from "@mui/x-charts/BarChart";
 import { LinePlot, MarkPlot } from "@mui/x-charts/LineChart";
-import { ChartsXAxis, ChartsYAxis } from "@mui/x-charts";
+import { ChartsTooltip, ChartsXAxis, ChartsYAxis } from "@mui/x-charts";
 import { ChartsLegend } from "@mui/x-charts/ChartsLegend";
 import { Typography } from "@mui/material";
 
@@ -30,7 +30,9 @@ function WeeklyWeightChart(props) {
     if (props.recordData) {
       setMomRecord(props.recordData);
     }
-  }, [props]);
+    const newData = generateData(selectedInterval);
+    setChartData(newData);
+  }, [selectedInterval, props.recordData]);
 
   useEffect(() => {
     if (props.recordData) {
@@ -52,7 +54,6 @@ function WeeklyWeightChart(props) {
       setChartData(newData);
     }
   }, [momWeight, selectedInterval, props.recordData]);
-
 
   const handleToggleInterval = (event, newInterval) => {
     if (newInterval !== null) {
@@ -92,11 +93,7 @@ function WeeklyWeightChart(props) {
           let sum = arr[start].weight;
           let s = 1;
           for (let j = start + 1; j < start + 7; j++) {
-            if (
-              !arr[j] ||
-              new Date(arr[j].date).getDay() >= startDate.getDay() ||
-              startDate.getDate() - new Date(arr[j].date).getDate() > 6
-            ) {
+            if (!arr[j] || new Date(arr[j].date).getDay() >= startDate.getDay() || startDate.getDate() - new Date(arr[j].date).getDate() > 6) {
               // console.log("조건 브레이크");
               break;
             }
@@ -110,16 +107,13 @@ function WeeklyWeightChart(props) {
           var arrDayStr = ["일", "월", "화", "수", "목", "금", "토"];
           let dateString;
           dateString =
-            endDate.getMonth() +
-            1 +
-            "월 " +
+            ("0" + (endDate.getMonth() + 1)).slice(-2) +
+            "-" +
             endDate.getDate() +
-            "일" +
-            " ~ \n" +
-            (startDate.getMonth() + 1) +
-            "월 " +
-            startDate.getDate() +
-            "일";
+            "\n~" +
+            ("0" + (startDate.getMonth() + 1)).slice(-2) +
+            "-" +
+            startDate.getDate();
 
           // console.log("몸무게 : " + (sum / s).toFixed(1) + "\n" + dateString);
           tmp.unshift({
@@ -165,20 +159,13 @@ function WeeklyWeightChart(props) {
       <Box sx={{ mt: 3, textAlign: "center" }}>
         <Typography fontSize={28}> 날짜별 체중 </Typography>
       </Box>
-      <ToggleButtonGroup
-        size="small"
-        value={selectedInterval}
-        exclusive
-        onChange={handleToggleInterval}
-        aria-label="select-interval"
-        sx={{ mb: 3 }}
-      >
+      <ToggleButtonGroup size="small" value={selectedInterval} exclusive onChange={handleToggleInterval} aria-label="select-interval" sx={{ mb: 3 }}>
         <ToggleButton value={1}>일별</ToggleButton>
         <ToggleButton value={2}>주별</ToggleButton>
         <ToggleButton value={3}>월별</ToggleButton>
       </ToggleButtonGroup>
 
-      <Paper sx={{ width: "100%", height: 300 }}>
+      <Paper sx={{ width: "100%", height: 300, paddingBottom: 1 }} elevation={3}>
         {/* @ts-ignore */}
         {chartData && ( // Render only if there is data
           <ResponsiveChartContainer
@@ -195,18 +182,18 @@ function WeeklyWeightChart(props) {
                 scaleType: "band",
                 id: "x-axis-id",
                 tickLabelStyle: {
-                  angle: 70,
+                  angle: 45,
                   dominantBaseline: "hanging",
                   textAnchor: "start",
-                },
-                labelStyle: {
-                  transform: "translateY(15px)",
                 },
               },
             ]}
             yAxis={[
               {
                 id: "y-axis-id",
+                labelStyle: {
+                  transform: "translateY(15px)",
+                },
               },
             ]}
           >
@@ -214,6 +201,7 @@ function WeeklyWeightChart(props) {
             <MarkPlot />
             <ChartsXAxis label="" position="bottom" axisId="x-axis-id" />
             <ChartsYAxis label="kg" position="left" axisId="y-axis-id" />
+            <ChartsTooltip trigger="axis" />
           </ResponsiveChartContainer>
         )}
       </Paper>
@@ -332,10 +320,7 @@ function ChangeChart(props) {
       setMomWeight(weightArr);
       setBasis(momBasis);
       setWeek(babyData[0].targetTime.substr(1));
-      const bmi = (
-        momBasis.basisWeight /
-        (momBasis.height * momBasis.height)
-      ).toFixed(1);
+      const bmi = (momBasis.basisWeight / (momBasis.height * momBasis.height)).toFixed(1);
       if (bmi < 18.5) {
         setBmi(0);
       } else if (bmi < 25) {
@@ -345,21 +330,21 @@ function ChangeChart(props) {
       } else {
         setBmi(3);
       }
-      if(momRecord) {
+      if (momRecord) {
         const newData = generateData();
         setChartData(newData);
       }
-      if(chartData && lineData){
+      if (chartData && lineData) {
         props.diffUpdate(chartData);
         props.avgUpdate(lineData);
       }
     }
     // console.log("BABY DATA !!!!!!!!!!!!" + JSON.stringify(babyData));
     // console.log("WEEK !!!!! " + week);
-  }, [momRecord, momBasis, week, chartData, lineData]);
+  }, [momRecord, momBasis, week, chartData, lineData, props]);
 
   const generateData = () => {
-    if(momWeight) {
+    if (momWeight) {
       if (momWeight.length === 0) {
         return [];
       }
@@ -380,11 +365,7 @@ function ChangeChart(props) {
         let sum = arr[start].weight;
         let s = 1;
         for (let j = start + 1; j < start + 7; j++) {
-          if (
-            !arr[j] ||
-            new Date(arr[j].date).getDay() >= startDate.getDay() ||
-            startDate.getDate() - new Date(arr[j].date).getDate() > 6
-          ) {
+          if (!arr[j] || new Date(arr[j].date).getDay() >= startDate.getDay() || startDate.getDate() - new Date(arr[j].date).getDate() > 6) {
             // console.log("조건 브레이크");
             break;
           }
@@ -398,22 +379,22 @@ function ChangeChart(props) {
           date: week - w,
         });
         let dat = {
-          "start": recommendWeightStart[week][bmi],
-          "end" : recommendWeightEnd[week][bmi],
-          "week" : week-w,
-        }
+          start: recommendWeightStart[week][bmi],
+          end: recommendWeightEnd[week][bmi],
+          week: week - w,
+        };
         ld.unshift(dat);
         w++;
       }
       ld.shift();
       setLineData(ld);
       // console.log("기준!!!!\n" + JSON.stringify(lineData));
-      
-      for(let k=0; k<tmp.length-1; k++) {
+
+      for (let k = 0; k < tmp.length - 1; k++) {
         diff.push({
-          'weight' : (tmp[k+1].weight - tmp[k].weight).toFixed(1),
-          'date' : tmp[k+1].date,
-        })
+          weight: (tmp[k + 1].weight - tmp[k].weight).toFixed(1),
+          date: tmp[k + 1].date,
+        });
       }
       // console.log("몸무게 변화율\n" + JSON.stringify(diff));
       return diff;
@@ -427,46 +408,48 @@ function ChangeChart(props) {
       </Box>
       <Paper sx={{ width: "100%", height: 350 }}>
         {/* @ts-ignore */}
-        {chartData && lineData && (<ResponsiveChartContainer
-          margin={{ top: 100 }}
-          series={[
-            {
-              type: "bar",
-              data: chartData.map((data) => data.weight),
-              label: "현재 증가율",
-              id: 'weight'
-            },
-            {
-              type: "line",
-              data: lineData.map((data) => data.start),
-              label: "추천 최소치",
-            },
-            {
-              type: "line",
-              data: lineData.map((data) => data.end),
-              label: "추천 최대치",
-            },
-          ]}
-          xAxis={[
-            {
-              data: chartData.map((data) => data.date),
-              scaleType: "band",
-              id: "x-axis-id",
-            },
-          ]}
-          yAxis={[
-            {
-              id: "y-axis-id",
-            },
-          ]}
-        >
-          <BarPlot />
-          <LinePlot />
-          <MarkPlot />
-          <ChartsXAxis label="임신 주차" position="bottom" axisId="x-axis-id" />
-          <ChartsYAxis label="평균 체중 변화량" position="left" axisId="y-axis-id" />
-          <ChartsLegend position={{ vertical: "top", horizontal: "right" }} />
-        </ResponsiveChartContainer>
+        {chartData && lineData && (
+          <ResponsiveChartContainer
+            margin={{ top: 100 }}
+            series={[
+              {
+                type: "bar",
+                data: chartData.map((data) => data.weight),
+                label: "증가율",
+                id: "weight",
+              },
+              {
+                type: "line",
+                data: lineData.map((data) => data.start),
+                label: "추천 최소치",
+              },
+              {
+                type: "line",
+                data: lineData.map((data) => data.end),
+                label: "추천 최대치",
+              },
+            ]}
+            xAxis={[
+              {
+                data: chartData.map((data) => data.date),
+                scaleType: "band",
+                id: "x-axis-id",
+              },
+            ]}
+            yAxis={[
+              {
+                id: "y-axis-id",
+              },
+            ]}
+          >
+            <BarPlot />
+            <LinePlot />
+            <MarkPlot />
+            <ChartsXAxis label="주차" position="bottom" axisId="x-axis-id" />
+            <ChartsYAxis label="평균 체중 변화량" position="left" axisId="y-axis-id" />
+            <ChartsLegend position={{ vertical: "top", horizontal: "right" }} />
+            <ChartsTooltip trigger="axis" />
+          </ResponsiveChartContainer>
         )}
       </Paper>
     </Box>

@@ -7,17 +7,6 @@ import { Typography } from "@mui/material";
 import axios from "axios";
 import useMemberStore from "../stores/userStore";
 
-// 주차별 몸무게
-const weightWeekly = [];
-// 평균 몸무게
-const weightAvg = null;
-// 임신 주차
-const pregWeek = null;
-// status 구하는 함수 필요
-const status = "avg";
-// 입력받을 오늘 몸무게
-const weightToday = null;
-
 // 가운데 정렬 css
 const setCenter = {
   display: "flex",
@@ -140,6 +129,16 @@ function RecordMom() {
     });
     // console.log("새로운 기록" + JSON.stringify(momRecord));
   };
+
+  const updateChartData = (data) => {
+    setRecentRecord(data);
+    setMomRecord((prevMomRecord) => {
+      let updatedMomRecord = [...prevMomRecord];
+      updatedMomRecord.push(data);
+      return updatedMomRecord;
+    });
+  };
+
   const onAvgUpdate = (data) => {
     setAvgData(data);
   };
@@ -156,7 +155,7 @@ function RecordMom() {
           {<Info avg={avgData} diff={diffData}/>}
         </Box>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3}}>
-          <MomForm data={recentRecord} recentUpdate={onUpdateRecent} />
+          <MomForm data={recentRecord} recentUpdate={onUpdateRecent} onPostSuccess={updateChartData}/>
         </Box>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           <WeeklyWeightChart recordData={momRecord} />
