@@ -18,7 +18,8 @@ import MemberCheck from "./pages/MemberCheckPage";
 import CheckCode from "./pages/CheckCodePage";
 import AddChild from "./pages/AddChildPage";
 import MyPage from "./pages/MyPage";
-import DiaryPage from "./pages/DiaryPage"
+// import DiaryPage from "./pages/DiaryPage"
+import DiaryPage from "./pages/WebSocketComponent"
 import FindHospital from "./pages/FindHospitalPage"
 import Community from "./pages/CommunityPage";
 
@@ -26,6 +27,7 @@ import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMai
 import AddMomRecordPage from "./pages/HospitalRecordPage/AddHospitalRecordPage";
 import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecord";
 import InfoSection from "./components/Infos/InfoSection";
+import WebSocketComponent from './pages/WebSocketComponent';
 
 
 function App() {
