@@ -1,9 +1,9 @@
 package com.iandwe.security.service;
 
-import com.iandwe.member.repository.TokenRepository;
-import com.iandwe.member.service.TokenService;
+//import com.iandwe.member.repository.TokenRepository;
+//import com.iandwe.member.service.TokenService;
 import com.iandwe.security.dto.GeneratedToken;
-import com.iandwe.security.dto.RefreshToken;
+//import com.iandwe.security.dto.RefreshToken;
 import com.iandwe.security.properties.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -26,7 +26,7 @@ import java.util.Date;
 public class JwtUtil {
 
     private final JwtProperties jwtProperties;
-    private final TokenRepository tokenRepository;
+//    private final TokenRepository tokenRepository;
     private static String secretKey;
 
 
@@ -43,7 +43,7 @@ public class JwtUtil {
         String accessToken = generateAccessToken(email, role);
 
         // 토큰을 Redis에 저장
-        tokenRepository.save(new RefreshToken(email, accessToken, refreshToken));
+//        tokenRepository.save(new RefreshToken(email, accessToken, refreshToken));
 
         return new GeneratedToken(accessToken, refreshToken);
     }
