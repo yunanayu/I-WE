@@ -47,7 +47,7 @@ public class BabyController {
         return new ResponseEntity<>(babyService.update(requestDto), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{babyNum}")
+    @DeleteMapping("/kill/{babyNum}")
     public ResponseEntity<?> kill(@PathVariable long babyNum){
         babyService.kill(babyNum);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
