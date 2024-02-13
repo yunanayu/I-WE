@@ -54,6 +54,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll()
 //                                .anyRequest().authenticated() // 그 외의 모든 요청은 인증이 필요
 //                        .anyRequest().permitAll()
+
                 )
                 // OAuth2 로그인 설정
                 .oauth2Login(config -> config
