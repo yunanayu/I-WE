@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useMemberStore from '../../stores/userStore';
 import { Box, Button, Container, Typography } from '@mui/material';
 import ReadChildCard from './ReadChildCard';
 import Modal from '@mui/material/Modal';
 import AddChild from './AddChild';
-
 
 const style = {
   position: 'absolute',
@@ -17,13 +16,13 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
 const ChildList = () => {
   const babyList = useMemberStore(state => state.babyList)
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  useEffect(() => {
+  }, [babyList])
   console.log(babyList)
   return (
     <Container sx={{ mb:5 , pb:5}}>

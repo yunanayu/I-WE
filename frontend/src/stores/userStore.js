@@ -46,18 +46,18 @@ export const useFcmStore = create(
   )
 )
 
-export const useBabyStore = create(
-  persist(
-    (set) => ({
-      bornbabyList :[],
-      setBornBabyList : () => set((state) => ({ bornbabyList: state.babyList.filter((baby) => baby.birth !== null) })),
-    }),
-    {
-      name: "baby",
-      storage: createJSONStorage(() => sessionStorage)
-    }
-  )
-)
+// export const useBabyStore = create(
+//   persist(
+//     (set) => ({
+//       bornbabyList :[],
+//       setBornBabyList : () => set((state) => ({ bornbabyList: state.babyList.filter((baby) => baby.birth !== null) })),
+//     }),
+//     {
+//       name: "baby",
+//       storage: createJSONStorage(() => sessionStorage)
+//     }
+//   )
+// )
 
 export default useMemberStore
 
