@@ -14,7 +14,6 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs from "dayjs";
 import 'dayjs/locale/ko'
-import { AutoFixOffSharp } from '@mui/icons-material';
 import useMemberStore from './../stores/userStore';
 
 function AddChild({ setSpouseStatus }) {
@@ -26,6 +25,7 @@ function AddChild({ setSpouseStatus }) {
   const [birthDate, setBirthDate] = useState("");
   const setBabyList = useMemberStore(state => state.setBabyList)
   const setUserNum = useMemberStore(state => state.setUserNum)
+  const setUserName = useMemberStore(state => state.setUserName)
   const setParentType = useMemberStore(state => state.setParentType)
 
   const handleChildNameChange = (event) => {
@@ -34,7 +34,6 @@ function AddChild({ setSpouseStatus }) {
 
   const handlePregnancyDateChange = (date) => {
     const formattedDate = dayjs(date.$d).format("YYYY-MM-DD");
-    console.log(formattedDate)
     setPregnancyDate(formattedDate);
   };
 
@@ -64,6 +63,8 @@ function AddChild({ setSpouseStatus }) {
     }
 
     var userNum;
+    var parentType
+    var userName
     // 사용자 정보 요청해서 Authorization에 넣기
     try {
       const response = await axios.get('/api/member',
@@ -74,12 +75,15 @@ function AddChild({ setSpouseStatus }) {
         }
       );
       userNum = response.data.num;
-      // user type, pk 저장
-      setUserNum(response.data.num)
-      setParentType(response.data.parentType)
+      parentType = response.data.parentType;
+      userName = response.data.name;
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
+    // user type, pk, name 저장
+    setUserNum(userNum)
+    setParentType(parentType)
+    setUserName(userName)
 
     const requestBaby = {
       motherNum: userNum, // 해당 유저의 num
@@ -89,8 +93,8 @@ function AddChild({ setSpouseStatus }) {
       pregnancyDate: new Date(pregnancyDate), // 임신 날짜
       status: pregnancyStatus === "pregnancy" ? true : false, // 임신 상태인지 여부를 true 또는 false로 설정
     };
-    console.log(requestBaby);
 
+    var babyList = []
     // 아기정보 post
     try {
       const response = await axios.post(`/api/baby`, requestBaby, // requestBaby 정보 전달
@@ -100,11 +104,13 @@ function AddChild({ setSpouseStatus }) {
           }
         }
       );
-      setBabyList(...response.data)
+      const babyInfo = response.data
+      babyList = response.data
 
     } catch(e) {
       console.log("아기정보 등록 실패")
     }
+    setBabyList(...babyList)
     console.log("아기정보 등록 성공")
     navigate("/");
   };  
@@ -113,7 +119,7 @@ function AddChild({ setSpouseStatus }) {
     <div>
       <div>
         <FormControl>
-          <FormLabel>현재 나의 상태</FormLabel>
+          <FormLabel>현재 상태</FormLabel>
           <RadioGroup
             name="pregnancy-status"
             value={pregnancyStatus}
@@ -148,9 +154,12 @@ function AddChild({ setSpouseStatus }) {
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
               <DemoContainer components={['DatePicker']}>
                 <DesktopDatePicker  
-                  label="임신 추측일" 
+                  label="임신 추측일 (마지막 생리 날짜)" 
                   value={pregnancyDate}
-                  onChange={handlePregnancyDateChange}/>
+                  onChange={handlePregnancyDateChange}
+                  shouldDisableDate={(day) => {
+                    return dayjs(day).isAfter(dayjs(), 'day');
+                  }}/>
               </DemoContainer>
             </LocalizationProvider>
           </div>
@@ -165,8 +174,8 @@ function AddChild({ setSpouseStatus }) {
               value={childGender}
               onChange={handleChildGenderChange}
             >
-              <FormControlLabel value="남자" control={<Radio />} label="남자" />
-              <FormControlLabel value="여자" control={<Radio />} label="여자" />
+              <FormControlLabel value="MALE" control={<Radio />} label="남자" />
+              <FormControlLabel value="FEMALE" control={<Radio />} label="여자" />
             </RadioGroup>
           </FormControl>
           <TextField
@@ -180,7 +189,10 @@ function AddChild({ setSpouseStatus }) {
                 <DesktopDatePicker  
                   label="출산일" 
                   value={birthDate}
-                  onChange={handleBirthDateChange}/>
+                  onChange={handleBirthDateChange}
+                  shouldDisableDate={(day) => {
+                    return dayjs(day).isAfter(dayjs(), 'day');
+                  }}/>
               </DemoContainer>
             </LocalizationProvider>
           </div>
