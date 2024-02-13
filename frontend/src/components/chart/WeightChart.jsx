@@ -330,18 +330,23 @@ function ChangeChart(props) {
       } else {
         setBmi(3);
       }
+    }
+    }, [momRecord, momBasis, babyData]);
+    
+    useEffect(() => {
       if (momRecord) {
-        const newData = generateData();
-        setChartData(newData);
-      }
+          const newData = generateData();
+          setChartData(newData);
+        }
+      }, [momWeight, momRecord])
+    useEffect(() => {
       if (chartData && lineData) {
         props.diffUpdate(chartData);
         props.avgUpdate(lineData);
       }
-    }
     // console.log("BABY DATA !!!!!!!!!!!!" + JSON.stringify(babyData));
     // console.log("WEEK !!!!! " + week);
-  }, [momRecord, momBasis, week, chartData, lineData, props]);
+  }, [chartData, lineData]);
 
   const generateData = () => {
     if (momWeight) {
@@ -386,7 +391,9 @@ function ChangeChart(props) {
         ld.unshift(dat);
         w++;
       }
-      ld.shift();
+      if(ld.length > 1){
+        ld.shift();
+      }
       setLineData(ld);
       // console.log("기준!!!!\n" + JSON.stringify(lineData));
 
@@ -395,6 +402,13 @@ function ChangeChart(props) {
           weight: (tmp[k + 1].weight - tmp[k].weight).toFixed(1),
           date: tmp[k + 1].date,
         });
+      }
+      if(diff.length === 0) {
+        // console.log(JSON.stringify(momBasis));
+        diff.push({
+          weight: (momRecord[0].weight - momBasis.basisWeight),
+          date: momRecord[0].recordDate,
+        })
       }
       // console.log("몸무게 변화율\n" + JSON.stringify(diff));
       return diff;

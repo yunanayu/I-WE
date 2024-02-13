@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { ChangeChart, WeeklyWeightChart } from "../components/chart/WeightChart";
+import {
+  ChangeChart,
+  WeeklyWeightChart,
+} from "../components/chart/WeightChart";
 import { MomForm } from "./WeightForm";
 import { Typography } from "@mui/material";
 import axios from "axios";
@@ -25,8 +28,7 @@ const commonStyles = {
 };
 
 // low, avg, high에 맞춰서 메세지 출력
-function Info(props) {
-
+const Info = (props) => {
   const [avgData, setAvgData] = useState();
   const [diffData, setDiffData] = useState();
   const [d, setD] = useState();
@@ -37,11 +39,17 @@ function Info(props) {
   const [msg2, setMsg2] = useState();
   const [msg3, setMsg3] = useState();
 
+  useEffect(() => {}, [props.momRecord]);
+
   useEffect(() => {
     if (props.avg && props.diff) {
-      setAvgData(props.avg);
-      setDiffData(props.diff);
-  
+      setAvgData([...props.avg]);
+      setDiffData([...props.diff]);
+    }
+  }, [props.avg, props.diff, week, start, end]);
+
+  useEffect(() => {
+    if (avgData && diffData) {
       const latestDiffData = props.diff[props.diff.length - 1];
       setD(latestDiffData);
       setStart(props.avg[props.avg.length - 1].start);
@@ -59,19 +67,19 @@ function Info(props) {
         setMsg3("식사량을 조절하시길 추천드려요.");
       }
     }
-  }, [props.avg, props.diff, week, start, end]);
-    
+    console.log(111);
+  }, [avgData, diffData]);
 
   return (
     <>
       <Box sx={{ mt: 3, mb: 3 }}>
         <Typography fontSize={26}> {msg} </Typography>
-        {msg2 && (<Typography fontSize={26}> {msg2} </Typography>)}
-        {msg3 && (<Typography fontSize={26}> {msg3} </Typography>)}
+        {msg2 && <Typography fontSize={26}> {msg2} </Typography>}
+        {msg3 && <Typography fontSize={26}> {msg3} </Typography>}
       </Box>
     </>
   );
-}
+};
 
 // props 설정, form 전송 객체, 차트 데이터 입력 필요
 // 전송 후 배열에 입력, 디비에 저장
@@ -82,8 +90,8 @@ function RecordMom() {
   const [babyData, setBabyData] = useState(null);
   const [avgData, setAvgData] = useState();
   const [diffData, setDiffData] = useState();
-  const motherNum = useMemberStore(state => state.babyList[0].motherNum)
-  const babyNum = useMemberStore(state => state.babyList[0].num);
+  const motherNum = useMemberStore((state) => state.babyList[0].motherNum);
+  const babyNum = useMemberStore((state) => state.babyList[0].num);
 
   useEffect(() => {
     const initData = async () => {
@@ -123,27 +131,32 @@ function RecordMom() {
   const onUpdateRecent = (data) => {
     setRecentRecord(data);
     setMomRecord((prevMomRecord) => {
-      const updatedMomRecord = prevMomRecord.slice(0, -1);
+      let updatedMomRecord = [];
+      if (momRecord) {
+        updatedMomRecord = prevMomRecord.slice(0, -1);
+      }
       updatedMomRecord.push(data);
       return updatedMomRecord;
     });
-    // console.log("새로운 기록" + JSON.stringify(momRecord));
+    console.log("새로운 기록123" + JSON.stringify(momRecord));
   };
 
   const updateChartData = (data) => {
     setRecentRecord(data);
     setMomRecord((prevMomRecord) => {
-      let updatedMomRecord = [...prevMomRecord];
-      updatedMomRecord.push(data);
-      return updatedMomRecord;
+      const updatedMomRecord = prevMomRecord ? [...prevMomRecord, data] : [data];
+      console.log("새로운 기록" + JSON.stringify(updatedMomRecord));
+      return [...updatedMomRecord];
     });
   };
 
   const onAvgUpdate = (data) => {
-    setAvgData(data);
+    setAvgData([...data]);
+    console.log(JSON.stringify(avgData))
   };
   const onDiffUpdate = (data) => {
-    setDiffData(data);
+    setDiffData([...data]);
+    console.log(JSON.stringify(diffData))
   };
 
   // console.log("엄마기록??? " + JSON.stringify(momRecord));
@@ -151,17 +164,39 @@ function RecordMom() {
   return (
     <>
       <Container maxWidth="lg" sx={{ ...setCenter, background: "pink" }}>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          {<Info avg={avgData} diff={diffData}/>}
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
+          {<Info record={momRecord} avg={avgData} diff={diffData} />}
         </Box>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3}}>
-          <MomForm data={recentRecord} recentUpdate={onUpdateRecent} onPostSuccess={updateChartData}/>
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
+          <MomForm
+            data={recentRecord}
+            recentUpdate={onUpdateRecent}
+            onPostSuccess={updateChartData}
+          />
         </Box>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
           <WeeklyWeightChart recordData={momRecord} />
         </Box>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          <ChangeChart recordData={momRecord} basisData={momBasis} babyData={babyData} diffUpdate={onDiffUpdate} avgUpdate={onAvgUpdate}/>
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
+          <ChangeChart
+            recordData={momRecord}
+            basisData={momBasis}
+            babyData={babyData}
+            diffUpdate={onDiffUpdate}
+            avgUpdate={onAvgUpdate}
+          />
         </Box>
       </Container>
     </>

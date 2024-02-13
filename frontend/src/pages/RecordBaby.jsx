@@ -77,10 +77,13 @@ function Info(props) {
             <Typography fontSize={23}> 머리둘레 상위 {percentile.circumferencePercentile}% </Typography>
           </>
         ) : (
-          <>
+          props.status === "A" ? 
+          (<Typography fontSize={34}> D+{dDay} </Typography>):(
+            <>
             <Typography fontSize={34}>임신 {props.targetTime} 주차</Typography>
             <Typography fontSize={28}> D-{pBirth} </Typography>
           </>
+          )
         )}
       </Box>
     </>
@@ -157,8 +160,7 @@ function RecordBaby() {
           await axios
             .get(
               `/api/growth/${gender + 1}/${recentRecordMonth}/${recentRecord.height}/${recentRecord.weight}/${
-                recentRecord.circumference
-              }`
+                recentRecord.circumference}`
             )
             .then((response) => {
               const data = response.data;
@@ -221,7 +223,10 @@ function RecordBaby() {
   }, [babyRecord]);
 
   const submitFunction = (data) => {
-    let arr = [...babyRecord];
+    let arr = [];
+    if(babyRecord) {
+      arr = [...babyRecord];
+    }
     if (recentRecord) {
       arr.pop();
       arr.push(data);

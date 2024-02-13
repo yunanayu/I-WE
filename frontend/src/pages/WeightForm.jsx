@@ -193,10 +193,12 @@ const BabyForm = React.forwardRef((props, ref) => {
   }, [props.isBorn]);
 
   useEffect(() => {
-    if (props.data && props.dateSelected) {
+    if (props.data) {
       setData(props.data);
-      setDateSelected(props.dateSelected);
       setRecentData(props.recentData);
+    }
+    if (props.dateSelected) {
+      setDateSelected(props.dateSelected);
       // console.log("아기기록 !!!!" + data);
       // console.log("선택 날짜 !!!! " + dateSelected);
     }
@@ -246,12 +248,14 @@ const BabyForm = React.forwardRef((props, ref) => {
       put();
       props.onSubmit(data);
     } else {
+      console.log(dateSelected);
       let todayDate =
         dateSelected.year() +
         "-" +
         ("0" + (dateSelected.month() + 1)).slice(-2) +
         "-" +
         ("0" + dateSelected.date()).slice(-2);
+        console.log(todayDate);
       const data = {
         babyNum: props.babyNum,
         weight: weight,
@@ -331,7 +335,7 @@ const BabyForm = React.forwardRef((props, ref) => {
             <TextField
               name="babyweight"
               fullWidth
-              label="g"
+              label="kg"
               type="number"
               inputProps={{ step: "0.1" }}
               value={weight || ""}
