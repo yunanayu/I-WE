@@ -97,7 +97,6 @@ function MemberCheckPage({ setSpouseStatus }) {
       </Box>
     </div>
 
-
   );
 }
 
