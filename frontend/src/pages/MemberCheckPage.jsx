@@ -71,9 +71,10 @@ function MemberCheckPage({ setSpouseStatus }) {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height:'70vh'  }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200px', width:'300px', backgroundColor: 'whitesmoke', margin: '20px', padding: '10px' }}>
-        <FormControl sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <FormLabel sx={{fontWeight:'bold', fontSize:'x-large'}} id="demo-radio-buttons-group-label">선택해주세요</FormLabel>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '300px', width:'300px', backgroundColor: 'whitesmoke', margin: '20px', padding: '10px', borderRadius:'15px' }}>
+        <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
+          <FormLabel sx={{ fontWeight:'bold', fontSize:'x-large',  mb:'30px'}} id="demo-radio-buttons-group-label">당신은 아이의?</FormLabel>
+          <br />
           <RadioGroup
             row
             aria-labelledby="demo-radio-buttons-group-label"
