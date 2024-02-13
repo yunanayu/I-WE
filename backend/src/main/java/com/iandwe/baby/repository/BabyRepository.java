@@ -14,4 +14,6 @@ public interface BabyRepository extends JpaRepository<Baby, Long> {
     List<Baby> findByMotherNumOrFatherNum(@Param("num") long num);
 
     Optional<Baby> findByNum(Long num);
+
+    void deleteByNum(long babyNum);
 }

@@ -11,6 +11,9 @@ import RangeSlider from "./RangeSlider";
 const MotherCheck = () => {
   const userNum = useMemberStore((state) => state.userNum);
   const babyList = useMemberStore((state) => state.babyList);
+  const motherNum = babyList[babyList.length -1].motherNum
+  const babyNum = babyList[babyList.length -1].num
+  console.log(babyNum)
   const [momCheckList, setMomCheckList] = useState([]);
   // 필터링 되어 저장되는 값
   const [vaccineList, setVaccineList] = useState([]);
@@ -75,7 +78,7 @@ const MotherCheck = () => {
           </Select>
           {/* <RangeSlider setSelectRange={setSelectRange} target="mother" /> */}
           {vaccineList.map((item, index) => {
-            return <CheckCard key={index} item={item} num={userNum} />;
+            return <CheckCard key={index} item={item} num={motherNum} />;
           })}
         </>
       )}

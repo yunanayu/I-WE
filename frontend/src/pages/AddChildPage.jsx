@@ -14,7 +14,6 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs from "dayjs";
 import 'dayjs/locale/ko'
-import { AutoFixOffSharp } from '@mui/icons-material';
 import useMemberStore from './../stores/userStore';
 
 function AddChild({ setSpouseStatus }) {
@@ -24,9 +23,19 @@ function AddChild({ setSpouseStatus }) {
   const [childGender, setChildGender] = useState("");
   const [pregnancyStatus, setPregnancyStatus] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [momBasicWeight, setMomBasicWeight] = useState("");
+  const [momBasicHeight, setMomBasicHeight] = useState("");
   const setBabyList = useMemberStore(state => state.setBabyList)
   const setUserNum = useMemberStore(state => state.setUserNum)
+  const setUserName = useMemberStore(state => state.setUserName)
   const setParentType = useMemberStore(state => state.setParentType)
+
+  const handleBasisMomWeightChange = (event) => {
+    setMomBasicWeight(event.target.value);
+  };
+  const handleBasisMomHeightChange = (event) => {
+    setMomBasicHeight(event.target.value);
+  };
 
   const handleChildNameChange = (event) => {
     setChildName(event.target.value);
@@ -34,7 +43,6 @@ function AddChild({ setSpouseStatus }) {
 
   const handlePregnancyDateChange = (date) => {
     const formattedDate = dayjs(date.$d).format("YYYY-MM-DD");
-    console.log(formattedDate)
     setPregnancyDate(formattedDate);
   };
 
@@ -64,6 +72,8 @@ function AddChild({ setSpouseStatus }) {
     }
 
     var userNum;
+    var parentType
+    var userName
     // 사용자 정보 요청해서 Authorization에 넣기
     try {
       const response = await axios.get('/api/member',
@@ -74,11 +84,20 @@ function AddChild({ setSpouseStatus }) {
         }
       );
       userNum = response.data.num;
-      // user type, pk 저장
-      setUserNum(response.data.num)
-      setParentType(response.data.parentType)
+      parentType = response.data.parentType;
+      userName = response.data.name;
     } catch(e) {
       console.log("회원정보 받아오기 실패")
+    }
+    // user type, pk, name 저장
+    setUserNum(userNum)
+    setParentType(parentType)
+    setUserName(userName)
+
+    const momBasis = {
+      motherNum: userNum,
+      basisWeight: momBasicWeight,
+      height: momBasicHeight,
     }
 
     const requestBaby = {
@@ -89,8 +108,8 @@ function AddChild({ setSpouseStatus }) {
       pregnancyDate: new Date(pregnancyDate), // 임신 날짜
       status: pregnancyStatus === "pregnancy" ? true : false, // 임신 상태인지 여부를 true 또는 false로 설정
     };
-    console.log(requestBaby);
 
+    var babyList = []
     // 아기정보 post
     try {
       const response = await axios.post(`/api/baby`, requestBaby, // requestBaby 정보 전달
@@ -100,64 +119,138 @@ function AddChild({ setSpouseStatus }) {
           }
         }
       );
-      setBabyList(...response.data)
+      setBabyList(response.data)
+      const babyInfo = response.data
+      babyList = response.data
 
     } catch(e) {
       console.log("아기정보 등록 실패")
     }
-    console.log("아기정보 등록 성공")
+    // setBabyList(...babyList)
+    console.log("아기정보 등록 성공");
+    try {
+      await axios.post(`/api/motherBasis/create`, momBasis, // requestBaby 정보 전달
+      {
+          headers: {
+            'Authorization' : code
+          }
+        }
+      );
+
+    } catch(e) {
+      console.log("엄마 기본정보 등록 실패")
+    }
     navigate("/");
   };  
 
   return (
-    <div>
-      <div>
-        <FormControl>
-          <FormLabel>현재 나의 상태</FormLabel>
-          <RadioGroup
-            name="pregnancy-status"
-            value={pregnancyStatus}
-            onChange={handlePregnancyStatusChange}
-          >
-            <FormControlLabel value="pregnancy" control={<Radio />} label="임신" />
-            <FormControlLabel value="nonpragnancy" control={<Radio />} label="출산" />
-          </RadioGroup>
-        </FormControl>
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '70vh',  }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '300px', width: '300px', backgroundColor: 'whitesmoke', margin: '20px', padding: '10px', borderRadius: '15px', flex: 1 }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <FormControl sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+        <FormLabel sx={{ pointerEvents: 'none', color: 'black', fontWeight: 'bold', fontSize: 'x-large' }} id="demo-radio-buttons-group-label">현재 당신은?</FormLabel>
+        <br />
+        <RadioGroup
+          row
+          defaultValue="bottom"
+          name="pregnancy-status"
+          value={pregnancyStatus}
+          onChange={handlePregnancyStatusChange}
+        >
+          <FormControlLabel value="pregnancy" control={<Radio />} label="임신 중" />
+          <FormControlLabel value="nonpragnancy" control={<Radio />} label="출산" />
+        </RadioGroup>
+      </FormControl>
+    </div>
 
-      {pregnancyStatus === "pregnancy" ? (
-        <>
-          <TextField
-            label="아이의 이름"
-            value={childName}
-            onChange={handleChildNameChange}
-          />
+    {pregnancyStatus === "pregnancy" ? (
+      <>
+        <div>
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'medium' }}>임신 전 당신의 몸무게는?</p>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            
+            <TextField
+              label="kg"
+              inputProps={{ step: "0.1" }}
+              value={momBasicWeight}
+              onChange={handleBasisMomWeightChange}
+            />
+          </div>
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'medium' }}>임신 전 당신의 키는?</p>
+
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField
+              label="cm"
+              value={momBasicHeight}
+              onChange={handleBasisMomHeightChange}
+            />
+          </div>
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }} id="demo-radio-buttons-group-label">아이의 이름은?</p>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField
+              label="아이 이름"
+              value={childName}
+              onChange={handleChildNameChange}
+            />
+          </div>
+
+
           <FormControl>
-            <FormLabel>성별</FormLabel>
+            <div>
+              <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }} id="demo-radio-buttons-group-label">아이의 성별은?</p>
+            </div>
             <RadioGroup
               name="child-gender"
               value={childGender}
               onChange={handleChildGenderChange}
             >
-              <FormControlLabel value="NONE" control={<Radio />} label="모름" />
-              <FormControlLabel value="MALE" control={<Radio />} label="남자" />
-              <FormControlLabel value="FEMALE" control={<Radio />} label="여자" />
+              <div>
+                <FormControlLabel value="NONE" control={<Radio />} label="모름" />
+                <FormControlLabel value="FEMALE" control={<Radio />} label="여자" />
+                <FormControlLabel value="MALE" control={<Radio />} label="남자" />
+              </div>
             </RadioGroup>
           </FormControl>
-          <div>
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-              <DemoContainer components={['DatePicker']}>
-                <DesktopDatePicker  
-                  label="임신 추측일" 
-                  value={pregnancyDate}
-                  onChange={handlePregnancyDateChange}/>
-              </DemoContainer>
-            </LocalizationProvider>
-          </div>
+        </div>
+        <div>
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }} id="demo-radio-buttons-group-label">아이의 성별은?</p>
+        </div>
+        <div>
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+            <DemoContainer components={['DatePicker']}>
+              <DesktopDatePicker
+                label="임신 추측일 (마지막 생리 날짜)"
+                value={pregnancyDate}
+                onChange={handlePregnancyDateChange}
+                shouldDisableDate={(day) => {
+                  return dayjs(day).isAfter(dayjs(), 'day');
+                }} />
+            </DemoContainer>
+          </LocalizationProvider>
+        </div>
+      </>
           
-        </>
       ) : pregnancyStatus === "nonpragnancy" ? (
         <>
+        <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'medium' }}>임신 전 당신의 몸무게는?</p>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            
+            <TextField
+              label="kg"
+              inputProps={{ step: "0.1" }}
+              value={momBasicWeight}
+              onChange={handleBasisMomWeightChange}
+            />
+          </div>
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'medium' }}>임신 전 당신의 키는?</p>
+
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <TextField
+              label="cm"
+              value={momBasicHeight}
+              onChange={handleBasisMomHeightChange}
+            />
+          </div>
           <FormControl>
             <FormLabel>성별</FormLabel>
             <RadioGroup
@@ -165,8 +258,8 @@ function AddChild({ setSpouseStatus }) {
               value={childGender}
               onChange={handleChildGenderChange}
             >
-              <FormControlLabel value="남자" control={<Radio />} label="남자" />
-              <FormControlLabel value="여자" control={<Radio />} label="여자" />
+              <FormControlLabel value="MALE" control={<Radio />} label="남자" />
+              <FormControlLabel value="FEMALE" control={<Radio />} label="여자" />
             </RadioGroup>
           </FormControl>
           <TextField
@@ -180,14 +273,18 @@ function AddChild({ setSpouseStatus }) {
                 <DesktopDatePicker  
                   label="출산일" 
                   value={birthDate}
-                  onChange={handleBirthDateChange}/>
+                  onChange={handleBirthDateChange}
+                  shouldDisableDate={(day) => {
+                    return dayjs(day).isAfter(dayjs(), 'day');
+                  }}/>
               </DemoContainer>
             </LocalizationProvider>
           </div>
         </>
       ) : null}
-
-      <Button variant="contained" onClick={handleAddChild}>아이 추가</Button>
+      <br />
+      <Button sx={{ backgroundColor: '#FBBBB8', color: 'white' }} variant="contained" onClick={handleAddChild}>우리 아이와 만나러 가기</Button>
+    </div>
     </div>
   );
 }
