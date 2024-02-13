@@ -24,13 +24,14 @@ const AddChild = () => {
     pregnancyDate: null,
     status: false,
   });
+  console.log(initState)
   const handleChange = (event) => {
     setInitState({...initState, [event.target.name] : event.target.value})
   };
   const dateInputBefore = useRef()
   const dateInputAfter = useRef()
 
-  const addChild = () => {
+  const addChild = (props) => {
     // if (initState.birth === null && initState.pregnancyDate) {
     //   if ()
     // }
@@ -50,6 +51,7 @@ const AddChild = () => {
     .then((res) => {
       // console.log(res)
       getBabyList(userNum)
+      props.setOpen(false)
     })
     .catch(err => console.log(err))
   };

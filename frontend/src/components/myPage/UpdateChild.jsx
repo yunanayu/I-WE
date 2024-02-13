@@ -101,7 +101,7 @@ const UpdateChild = (props) => {
       <Box>
       {status === 'before' &&
       <>
-      <TextField label='이름' name='name' onChange={handleChange} />
+      <TextField label='이름' value={baby.name} name='name' onChange={handleChange} />
       <FormControl>
         <FormLabel id="demo-controlled-radio-buttons-group">
           성별
@@ -139,7 +139,7 @@ const UpdateChild = (props) => {
           <DatePicker
             ref={dateInputBefore}
             label="임신 추측일"
-            value={today}
+            value={baby.pregnancyDate}
             onChange={(newValue) => setInitState({...initState, pregnancyDate:moment(newValue.$d).format('YYYY-MM-DD')})}
           />
         </DemoContainer>
@@ -179,7 +179,7 @@ const UpdateChild = (props) => {
           <DatePicker
             ref={dateInputAfter}
             label="출생일"
-            value={today}
+            value={baby.birth ? moment(baby.birth) : today}
             onChange={(newValue) => setInitState({...initState, birth:moment(newValue.$d).format('YYYY-MM-DD')})}
           />
         </DemoContainer>

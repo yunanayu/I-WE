@@ -25,6 +25,17 @@ const ReadChildCard = (props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const baby = props.baby
+  function calculateDueDate(pregnancyDate) {
+    // pregnancyDate를 JavaScript Date 객체로 변환
+    const startDate = new Date(pregnancyDate);
+  
+    // 출산 예정일을 계산하기 위해 임신 기간(280일)을 더함
+    const dueDate = new Date(startDate.getTime() + 280 * 24 * 60 * 60 * 1000);
+  
+    // 예정일을 원하는 형식으로 변환하여 반환
+    return dueDate.toLocaleDateString(); // 형식을 원하는 대로 변경할 수 있습니다.
+  }
+  
   console.log(baby)
   return (
     <Box>
@@ -34,12 +45,16 @@ const ReadChildCard = (props) => {
           아기 이름 : {baby.name}
         </Typography>
         {baby.birth === null ?
+        <>
         <Typography>임신추측일(마지막 생리일) : {baby.pregnancyDate}</Typography>
+        <Typography>출산 예정일: {calculateDueDate(baby.pregnancyDate)}</Typography>
+        </>
         :
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           출산일 : {baby.birth}
         </Typography>
         }
+        <Typography>성별: {baby.gender === 1 ? '남자' : (baby.gender === 2 ? '여자' : '모름')}</Typography>
       </CardContent>
       <Button onClick={handleOpen}>아기 수정</Button>
         <Modal
