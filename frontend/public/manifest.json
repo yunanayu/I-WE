@@ -1,22 +1,25 @@
 {
-  "short_name": "I&WE",
-  "name": "I&WE",
+  "short_name": "I&amp;WE",
+  "name": "I&amp;WE",
   "icons": [
-    
     {
       "src": "i_and_we.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "/i_and_we.png",
+      "src": "/icon1.png",
       "sizes": "256x256",
       "type": "image/png"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "description":"i_and_we_first_pjt",
+  "description": "i_and_we_first_pjt",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "id": "sh",
+  "dir": "auto",
+  "lang": "ko",
+  "orientation": "any"
 }
