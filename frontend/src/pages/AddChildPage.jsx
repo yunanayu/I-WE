@@ -100,7 +100,7 @@ function AddChild({ setSpouseStatus }) {
           }
         }
       );
-      setBabyList(...response.data)
+      setBabyList(response.data)
 
     } catch(e) {
       console.log("아기정보 등록 실패")

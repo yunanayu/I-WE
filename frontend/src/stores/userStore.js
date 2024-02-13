@@ -14,7 +14,7 @@ const useMemberStore = create(
   babyList : [],
   setBabyList : (babyinfo) => 
     set((prev) => ({
-    babyList: [...prev.babyList,babyinfo]
+    babyList: [...babyinfo]
       })),
   familyNum : 0, // 가족 code
   setFamilyNum : (code) => set({ familyNum: code}),

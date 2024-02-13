@@ -1,4 +1,5 @@
 import axios from "axios";
+import useMemberStore from "../stores/userStore";
 
 export const getUserInfo = async () => {
   try {
@@ -35,3 +36,16 @@ export const getUserNumType = async () => {
     throw error;
   }
 };
+
+export const getBabyList = (userNum) => {
+  axios({
+    method:'get',
+    url:`/api/baby/${userNum}`
+
+  })
+  .then((res) => {
+    console.log('아기목록',res.data)
+    useMemberStore.getState().setBabyList(res.data)
+  })
+  .catch((err) => console.log(err))
+}
