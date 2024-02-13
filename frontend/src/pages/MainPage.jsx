@@ -4,6 +4,7 @@ import logo from "../images/logo.png";
 import { Link } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
 import CardContent from '@mui/material/CardContent';
 import { Box, Typography, Card } from '@mui/material';
 import GoogleLogin from "./GoogleRedirectPage";
@@ -12,6 +13,7 @@ import NaverLogin from "./NaverRedirectPage";
 import mainprofile from '../images/mainprofile.png';
 import axios from 'axios';
 import moment from 'moment';
+import Carousel from "react-material-ui-carousel";
 import useMemberStore from '../stores/userStore';
 // import InfiniteScrollComponent from '../components/InfiniteScroll'
 
@@ -27,6 +29,7 @@ const Main = ({ onLoginStatusChange }) => {
   const setBabyList = useMemberStore(state => state.setBabyList)
   const userNum = useMemberStore(state => state.userNum)
   const setFamilyNum = useMemberStore(state => state.setFamilyNum)
+  console.log(babyList)
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -85,6 +88,7 @@ const Main = ({ onLoginStatusChange }) => {
 
   }, [babyList]);
 
+
   // 공유코드 저장
   useEffect(() => {
     const fetchData = async () => {
@@ -97,6 +101,7 @@ const Main = ({ onLoginStatusChange }) => {
         });
         const data = response.data.code;
         setFamilyNum(data)
+        console.log(data)
 
         }
       } catch (error) {
@@ -106,6 +111,21 @@ const Main = ({ onLoginStatusChange }) => {
 
     fetchData();
   }, [userNum]);
+
+  const carouselItems = [
+    {
+      image: "url_to_image_1",
+      caption: "Caption 1",
+    },
+    {
+      image: "url_to_image_2",
+      caption: "Caption 2",
+    },
+    {
+      image: "url_to_image_3",
+      caption: "Caption 3",
+    },
+  ];
 
   return (
     <>
@@ -121,13 +141,17 @@ const Main = ({ onLoginStatusChange }) => {
                   )}
                 </Typography>
               <Box sx={{ flexDirection: 'column', width: '50%', borderRadius: '50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
+              {/* <Carousel>
+                {carouselItems.map((photo, index) => (
+                  <img key={index} src={photo.url} alt={`Photo ${index}`} />
+                ))}
+              </Carousel> */}
                 <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
                 <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                   {babyName}
                 </Typography>
-                
                 <Typography margin="10px" variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                   (은)는 
                 </Typography>

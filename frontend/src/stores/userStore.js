@@ -70,6 +70,7 @@ export const setMember = async () => {
   useMemberStore.getState().setUserName(userInfo.name)
   useMemberStore.getState().setParentType(userInfo.parentType)
   useMemberStore.getState().setProfileImage(userInfo.profileImage)
+  useMemberStore.getState().setFamilyNum(userInfo.familyNum)
   useMemberStore.getState().setBabyList(babyInfo)
 }
 

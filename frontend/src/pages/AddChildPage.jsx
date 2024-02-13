@@ -29,6 +29,7 @@ function AddChild({ setSpouseStatus }) {
   const setUserNum = useMemberStore(state => state.setUserNum)
   const setUserName = useMemberStore(state => state.setUserName)
   const setParentType = useMemberStore(state => state.setParentType)
+  const setProfileImage = useMemberStore(state => state.setProfileImage)
 
   const handleBasisMomWeightChange = (event) => {
     setMomBasicWeight(event.target.value);
@@ -74,6 +75,7 @@ function AddChild({ setSpouseStatus }) {
     var userNum;
     var parentType
     var userName
+    var profileImage
     // 사용자 정보 요청해서 Authorization에 넣기
     try {
       const response = await axios.get('/api/member',
@@ -86,6 +88,8 @@ function AddChild({ setSpouseStatus }) {
       userNum = response.data.num;
       parentType = response.data.parentType;
       userName = response.data.name;
+      userName = response.data.name;
+      profileImage = response.data.profileImage;
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
@@ -93,6 +97,7 @@ function AddChild({ setSpouseStatus }) {
     setUserNum(userNum)
     setParentType(parentType)
     setUserName(userName)
+    setProfileImage(profileImage)
 
     const momBasis = {
       motherNum: userNum,
