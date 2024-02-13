@@ -1,38 +1,63 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import useMemberStore from '../stores/userStore';
 
-const CheckCodePage = () => {
-  // 입력받은 code
-  const [code, setCode] = useState('');
-  // 저장된 familyNum 확인하기
-  const userNum = useMemberStore(state => state.userNum)
-  const familyNum = useMemberStore(state => state.familyNum)
+function CheckCode({setSpouseStatus}) {
+  const navigate = useNavigate();
+  const [familycode, setfamilyCode] = useState('');
+  const cookieString = document.cookie;
+  const cookies = cookieString.split('; ');
+  console.log(familycode)
 
-  // 아빠가 입력한 familyNum이 기존에 존재하는지 확인해야함
-
-  const handleConfirm = async () => {
-    try {
-      // 입력한 코드 값 확인 로직
-      
-      // 기존에 존재하는 값과 동일한 경우에 '/'로 이동
-      if (code === familyNum) {
-        window.location.href = '/';
-      } else {
-        console.log('입력한 코드와 기존 코드가 일치하지 않습니다.');
+  const handleCheckCode = async () => {
+    var code;
+    for (const cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === 'token') {
+        code = cookieValue;
       }
-    } catch (error) {
-      console.log('코드 확인에 실패했습니다.', error);
     }
+
+    var userNum;
+
+    // 사용자 정보 요청해서 Authorization에 넣기
+    try {
+      const response = await axios.get('/api/member',
+        {
+          headers: {
+            'Authorization' : code
+          }
+        }
+      );
+      userNum = response.data.num;
+    } catch(e) {
+      console.log("회원정보 받아오기 실패")
+    }
+    console.log(userNum);
+
+    try {
+      const response = await axios.put(`/api/family/share`, {
+        fatherNum : userNum,
+        code: familycode
+      });
+
+      console.log(response.data);
+    } catch (error) {
+      console.log('코드 확인 실패', error);
+    }
+    console.log("코드 확인 성공")
+    navigate("/");
   };
 
   return (
-    <div>
-      <h1>코드 확인 페이지</h1>
-      <input type="text" value={code} onChange={(e) => setCode(e.target.value)} />
-      <button onClick={handleConfirm}>확인</button>
-    </div>
-  );
-};
+      <div>
+        <h1>코드 확인 페이지</h1>
+        <input type="text" value={familycode} onChange={(e) => setfamilyCode(e.target.value)} />
+        <button onClick={handleCheckCode}>확인</button>
+      </div>
+    );
 
-export default CheckCodePage;
+}
+
+export default CheckCode;

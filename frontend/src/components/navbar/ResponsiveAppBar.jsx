@@ -18,11 +18,10 @@ import useMemberStore, { useFcmStore } from "../../stores/userStore";
 
 const pages = [
   { name: "다이어리", link: "/diary" },
-  { name: "서비스찾기", link: "/service" },
+  { name: "병원찾기", link: "/hospital" },
   { name: "커뮤니티", link: "/community" },
   { name: "정보제공", link: "/infomain" },
   { name: "기록" },
-  { name: "꿀팁", link: "/tips" },
 ];
 const sub = [
   { name: "엄마기록", link: "/recordmom" },
@@ -37,6 +36,11 @@ function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElSub, setAnchorElSub] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const setUserName = useMemberStore(state => state.setUserName)
+  const userName = useMemberStore(state => state.userName);
+  const setProfileImage = useMemberStore(state => state.setProfileImage)
+  const profileImage = useMemberStore(state => state.profileImage);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -83,6 +87,8 @@ function ResponsiveAppBar() {
     cookies.remove(document.cookie); // 쿠키 삭제
     setUserNum(0);
     setBabyList([]);
+    setUserName('')
+    setProfileImage('')
     clearUserStorage();
     clearPushStorage();
     window.location.href = "/"; // 로그아웃 시 페이지 이동
@@ -91,25 +97,23 @@ function ResponsiveAppBar() {
   return (
     <AppBar position="sticky" sx={{ background: "#FBBBB8" }} elevation={4}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
+        <Toolbar disableGutters sx={{display:'flex', justifyContent:'space-between',}}>
+        <Box
             component={NavLink}
             to="/"
             onClick={handleHomeLinkClick}
-            sx={{
-              mr: 2,
+            sx={{             
               display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            <img src={icon1} alt="icon1" style={{ width: "50px", height: "50px" }} />
-          </Typography>
+            <img
+              src={icon1}
+              alt="icon1"
+              style={{ width: "50px", height: "50px" }}
+            />
+          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -118,7 +122,6 @@ function ResponsiveAppBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
             >
               <MenuIcon />
             </IconButton>
@@ -210,23 +213,26 @@ function ResponsiveAppBar() {
 
           <Typography
             variant="h5"
-            noWrap
             component={NavLink}
             to="/"
             onClick={handleHomeLinkClick}
             sx={{
-              mr: 2,
               display: { xs: "flex", md: "none" },
+              justifyContent:'center',
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              // color: "inherit",
               textDecoration: "none",
             }}
-          >
-            <img src={icon1} alt="icon1" style={{ width: "50px", height: "50px" }} />
-          </Typography>
+            >
+              <img
+                src={icon1}
+                alt="icon1"
+                style={{ width: "50px", height: "50px" }}
+              />
+            </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) =>
               page.name !== "기록" ? (
@@ -237,7 +243,6 @@ function ResponsiveAppBar() {
                   onClick={handleCloseNavMenu}
                   sx={{
                     my: 2,
-                    color: "white",
                     display: "block",
                     textDecoration: "none",
                     textAlign: "center",
@@ -292,47 +297,50 @@ function ResponsiveAppBar() {
               )
             )}
           </Box>
+          <Box sx={{display:'flex', alignItems:'center'}}>
+              <Box sx={{ fontSize: 'x-small', color:'gray' }}>
+                {userName} 님 반가워요!&nbsp;
+              </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src="/broken-image.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem
-                  key={setting}
-                  onClick={
-                    setting === "로그아웃"
-                      ? handleLogoutClick
-                      : setting === "마이페이지"
-                      ? () => {
-                          window.location.href = "/mypage";
-                        }
-                      : handleCloseUserMenu
-                  }
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="마이페이지">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  {profileImage ? (
+                    <Avatar src={profileImage} />
+                  ) : (
+                    <Avatar src="/broken-image.jpg" />
+                  )}
+                </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
                 >
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={setting === "로그아웃" ? handleLogoutClick : (setting === "마이페이지" ? () => { window.location.href = '/mypage' } : handleCloseUserMenu)}
+                    >
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+            </Box>
+
+          
         </Toolbar>
       </Container>
     </AppBar>

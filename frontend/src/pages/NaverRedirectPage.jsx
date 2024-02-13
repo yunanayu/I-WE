@@ -2,13 +2,17 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import naverlogin from "../images/naverlogin.png";
 import { useNavigate } from "react-router-dom";
+import { requestPermission } from "../FCM/firebase-messaging-sw";
+import { getUserInfo } from "../api/UserApi";
+import useMemberStore from "../stores/userStore";
 
 function NaverLogin({ setIsLoggedIn }) {
-  const BackURL = `http://localhost:8080/oauth2/authorization/naver`;
+  const BackURL = process.env.REACT_APP_NAVER_LOGIN_URL || `/oauth2/authorization/naver`;
   const navigate = useNavigate();
-
+  const setBabyList = useMemberStore(state => state.setBabyList)
+  const setUserNum = useMemberStore(state => state.setUserNum)
   const handleLogin = () => {
-    console.log("로그인눌림");
+    // console.log(process.env.REACT_APP_NAVER_LOGIN_URL);
     window.location.href = BackURL;
   };
 
@@ -18,19 +22,24 @@ function NaverLogin({ setIsLoggedIn }) {
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("accessToken");
         const status = urlParams.get("status");
-      
 
       if (code && status === 'success') {
-        console.log("토큰:", code);
+        // console.log("토큰:", code);
         document.cookie = `token=${code}`;
-        setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정      
+        setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정    
+        const userInfo = await getUserInfo()
+        userInfo.map((info) => {
+          setBabyList(info)
+          setUserNum(info.motherNum)
+        })
+        // 알림 허용 req 
+        requestPermission()
         navigate("/"); // 로그인이 완료되면 '/'로 이동
-      } else if (code && status === 'addInfo') {
-        // 홈으로 가기 전에 새로운 페이지로 이동 한 후 완료되면 '/'으로 이동
-        console.log("토큰:", code);
+      } 
+      else if (code && status === 'addInfo') {
+        // console.log("토큰:", code);
         document.cookie = `token=${code}`;
         setIsLoggedIn(true); // 로그인 성공 시 isLoggedIn 상태를 true로 설정
-      
         // 추가정보입력
         navigate("/addInfo"); // 로그인이 완료되면 '/'로 이동
       }
@@ -46,7 +55,7 @@ function NaverLogin({ setIsLoggedIn }) {
     (config) => {
       const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `${token}`;
       }
       return config;
     },
