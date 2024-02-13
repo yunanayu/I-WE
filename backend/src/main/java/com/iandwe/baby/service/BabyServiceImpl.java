@@ -75,6 +75,12 @@ public class BabyServiceImpl implements BabyService {
         return BabyReadResponseDto.from(baby);
     }
 
+    @Override
+    @Transactional
+    public void kill(long babyNum) {
+        babyRepository.deleteByNum(babyNum);
+    }
+
     private static boolean isMother(ParentType type) {
         return type.equals(ParentType.MOTHER);
     }

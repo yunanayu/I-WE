@@ -19,7 +19,8 @@ RUN npm run build
 # Set environment variable
 ENV REACT_APP_API_KEY=AIzaSyAJC_FtqavkZ_z_UpZ0lb-nprbuKBwTsKho \
     REACT_APP_APP_ID=1:26848a1112825:web:a5e61ab9c017d14ba1d028 \
-    REACT_APP_VAPID_KEY=BKEpSdvHt2E9enF3Mum9zwUd60yEEK5cZrhKDJOJcrWNqcYLPaqp0_AXFbsU0A78KT8Vh64o6IlWiUAVT4kUVnI
+    REACT_APP_VAPID_KEY=BKEpSdvHt2E9enF3Mum9zwUd60yEEK5cZrhKDJOJcrWNqcYLPaqp0_AXFbsU0A78KT8Vh64o6IlWiUAVT4kUVnI \
+    REACT_APP_KAKAO_LOGIN_URL=https://i10c108.p.ssafy.io/oauth2/authorization/kakao
 
 # Expose the port the app runs on
 

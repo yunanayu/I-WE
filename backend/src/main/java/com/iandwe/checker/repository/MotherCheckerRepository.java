@@ -10,6 +10,6 @@ public interface MotherCheckerRepository extends JpaRepository<MotherChecker, Lo
 
     List<MotherChecker> findByMotherNum(long motherNum);
 
-    Optional<MotherChecker> findByMotherNumAndEssentialNum(long motherNum, long essentialNum);
+    Optional<MotherChecker> findByMotherNumAndEssentialNumAndBabyNum(long motherNum, long essentialNum, long babyNum);
 
 }

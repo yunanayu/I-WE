@@ -1,5 +1,6 @@
 package com.iandwe.checker.controller;
 
+import com.iandwe.checker.dto.CheckerMotherResponseDto;
 import com.iandwe.checker.dto.CheckerResponseDto;
 import com.iandwe.checker.dto.CheckerUpdateRequestDto;
 import com.iandwe.checker.service.CheckerService;
@@ -23,7 +24,7 @@ public class CheckerContoller {
     }
 
     @GetMapping("/mother/{num}")
-    public ResponseEntity<List<CheckerResponseDto>> findByMotherNum(@PathVariable long num) {
+    public ResponseEntity<List<CheckerMotherResponseDto>> findByMotherNum(@PathVariable long num) {
         return new ResponseEntity<>(checkerService.findByMotherNum(num), HttpStatus.OK);
     }
 

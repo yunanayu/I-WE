@@ -13,4 +13,5 @@ public class CheckerUpdateRequestDto {
 
     private Boolean isComplete;
 
+    private Long babyNum;
 }
