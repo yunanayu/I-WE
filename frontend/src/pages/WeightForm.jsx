@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Box, Button, Typography, TextField } from "@mui/material";
+import { Box, Button, Typography, TextField, Stack } from "@mui/material";
 import axios from "axios";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
@@ -83,9 +83,11 @@ function MomForm(props) {
 
   return (
     <>
-      <Box component="form" sx={{ mt: 3 }} onSubmit={submitHandler}>
-        <Typography fontSize={28}> 오늘의 체중은? </Typography>
+      <Box component="form" sx={{ mt: 3, textAlign: "center",}} onSubmit={submitHandler}>
+        <Typography fontSize={24}> 오늘의 체중은? </Typography>
+        <Stack direction={"row"} spacing={2} sx={{ textAlign: "center", justifyContent: "center", mb: 2 }}>
         <TextField
+          sx={{width: "50%"}}
           name="momweight"
           fullWidth
           label="kg"
@@ -95,9 +97,10 @@ function MomForm(props) {
           onChange={changeWeight}
         ></TextField>
 
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+        <Button type="submit" variant="contained" sx={{ mb: 2, width: "20%" }}>
           기록하기
         </Button>
+        </Stack>
       </Box>
     </>
   );
@@ -193,10 +196,12 @@ const BabyForm = React.forwardRef((props, ref) => {
   }, [props.isBorn]);
 
   useEffect(() => {
-    if (props.data && props.dateSelected) {
+    if (props.data) {
       setData(props.data);
-      setDateSelected(props.dateSelected);
       setRecentData(props.recentData);
+    }
+    if (props.dateSelected) {
+      setDateSelected(props.dateSelected);
       // console.log("아기기록 !!!!" + data);
       // console.log("선택 날짜 !!!! " + dateSelected);
     }
@@ -246,12 +251,14 @@ const BabyForm = React.forwardRef((props, ref) => {
       put();
       props.onSubmit(data);
     } else {
+      console.log(dateSelected);
       let todayDate =
         dateSelected.year() +
         "-" +
         ("0" + (dateSelected.month() + 1)).slice(-2) +
         "-" +
         ("0" + dateSelected.date()).slice(-2);
+        console.log(todayDate);
       const data = {
         babyNum: props.babyNum,
         weight: weight,
@@ -331,7 +338,7 @@ const BabyForm = React.forwardRef((props, ref) => {
             <TextField
               name="babyweight"
               fullWidth
-              label="g"
+              label="kg"
               type="number"
               inputProps={{ step: "0.1" }}
               value={weight || ""}

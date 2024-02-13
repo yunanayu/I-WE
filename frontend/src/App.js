@@ -54,7 +54,7 @@ function App() {
 
   return (
     
-      <div className="App">
+      <div className="App" style={{marginBottom: 55}}>
         <CssBaseline/>
         {parentLoggedIn ? (
           <ResponsiveAppBar style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 999 }}/>
@@ -107,7 +107,7 @@ function App() {
             value={value}
             onChange={handleChange}
             position="fixed"
-            sx={{ width: '100%', backgroundColor: '#FBBBB8' }}
+            sx={{ width: '100%', backgroundColor: '#FBBBB8'}}
           >
             <BottomNavigationAction
               component={Link}

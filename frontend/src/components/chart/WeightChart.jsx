@@ -157,7 +157,7 @@ function WeeklyWeightChart(props) {
   return (
     <Box sx={{ width: "90%" }}>
       <Box sx={{ mt: 3, textAlign: "center" }}>
-        <Typography fontSize={28}> 날짜별 체중 </Typography>
+        <Typography fontSize={24}> 날짜별 체중 </Typography>
       </Box>
       <ToggleButtonGroup size="small" value={selectedInterval} exclusive onChange={handleToggleInterval} aria-label="select-interval" sx={{ mb: 3 }}>
         <ToggleButton value={1}>일별</ToggleButton>
@@ -330,18 +330,23 @@ function ChangeChart(props) {
       } else {
         setBmi(3);
       }
+    }
+    }, [momRecord, momBasis, babyData]);
+    
+    useEffect(() => {
       if (momRecord) {
-        const newData = generateData();
-        setChartData(newData);
-      }
+          const newData = generateData();
+          setChartData(newData);
+        }
+      }, [momWeight, momRecord])
+    useEffect(() => {
       if (chartData && lineData) {
         props.diffUpdate(chartData);
         props.avgUpdate(lineData);
       }
-    }
     // console.log("BABY DATA !!!!!!!!!!!!" + JSON.stringify(babyData));
     // console.log("WEEK !!!!! " + week);
-  }, [momRecord, momBasis, week, chartData, lineData, props]);
+  }, [chartData, lineData]);
 
   const generateData = () => {
     if (momWeight) {
@@ -386,7 +391,9 @@ function ChangeChart(props) {
         ld.unshift(dat);
         w++;
       }
-      ld.shift();
+      if(ld.length > 1){
+        ld.shift();
+      }
       setLineData(ld);
       // console.log("기준!!!!\n" + JSON.stringify(lineData));
 
@@ -396,6 +403,13 @@ function ChangeChart(props) {
           date: tmp[k + 1].date,
         });
       }
+      if(diff.length === 0) {
+        // console.log(JSON.stringify(momBasis));
+        diff.push({
+          weight: (momRecord[0].weight - momBasis.basisWeight),
+          date: momRecord[0].recordDate,
+        })
+      }
       // console.log("몸무게 변화율\n" + JSON.stringify(diff));
       return diff;
     }
@@ -404,7 +418,7 @@ function ChangeChart(props) {
   return (
     <Box sx={{ width: "90%" }}>
       <Box sx={{ mt: 3, textAlign: "center" }}>
-        <Typography fontSize={28}> 체중 증가율 </Typography>
+        <Typography fontSize={24}> 체중 증가율 </Typography>
       </Box>
       <Paper sx={{ width: "100%", height: 350 }}>
         {/* @ts-ignore */}

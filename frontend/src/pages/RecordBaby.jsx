@@ -68,19 +68,22 @@ function Info(props) {
 
   return (
     <>
-      <Box sx={{ ...setCenter, mt: 3, mb: 3 }}>
+      <Box sx={{mt: 3, mb: 3 }}>
         {props.status === "A" && percentile ? (
           <>
-            <Typography fontSize={34}> D+{dDay} </Typography>
-            <Typography fontSize={23}> 체중 상위 {percentile.weightPercentile}% </Typography>
-            <Typography fontSize={23}> 신장 상위 {percentile.heightPercentile}% </Typography>
-            <Typography fontSize={23}> 머리둘레 상위 {percentile.circumferencePercentile}% </Typography>
+            <Typography fontSize={34} sx={{ ...setCenter, }}> D+{dDay} </Typography>
+            <Typography fontSize={23} sx={{mb: 1}}> 체　　중 : 상위 {percentile.weightPercentile}% </Typography>
+            <Typography fontSize={23} sx={{mb: 1}}> 신　　장 : 상위 {percentile.heightPercentile}% </Typography>
+            <Typography fontSize={23}> 머리둘레 : 상위 {percentile.circumferencePercentile}% </Typography>
           </>
         ) : (
-          <>
+          props.status === "A" ? 
+          (<Typography fontSize={34}> D+{dDay} </Typography>):(
+            <>
             <Typography fontSize={34}>임신 {props.targetTime} 주차</Typography>
             <Typography fontSize={28}> D-{pBirth} </Typography>
           </>
+          )
         )}
       </Box>
     </>
@@ -157,8 +160,7 @@ function RecordBaby() {
           await axios
             .get(
               `/api/growth/${gender + 1}/${recentRecordMonth}/${recentRecord.height}/${recentRecord.weight}/${
-                recentRecord.circumference
-              }`
+                recentRecord.circumference}`
             )
             .then((response) => {
               const data = response.data;
@@ -221,7 +223,10 @@ function RecordBaby() {
   }, [babyRecord]);
 
   const submitFunction = (data) => {
-    let arr = [...babyRecord];
+    let arr = [];
+    if(babyRecord) {
+      arr = [...babyRecord];
+    }
     if (recentRecord) {
       arr.pop();
       arr.push(data);
@@ -266,9 +271,10 @@ function RecordBaby() {
                     color: "black",
                   }}
                 >
-                  오늘의 {babyName} 기록하기
+                  오늘 {babyName} 기록하기
                 </Button>
                 <Button
+                  style={{whiteSpace: "pre-line"}}
                   variant="outlined"
                   onClick={pictureOpen}
                   sx={{
@@ -280,7 +286,7 @@ function RecordBaby() {
                     color: "black",
                   }}
                 >
-                  {babyName} 사진보기
+                  {babyName}<br/>사진보기
                 </Button>
               </Stack>
               {/* 기록용 모달 */}
@@ -351,14 +357,14 @@ function RecordBaby() {
                 onClick={recordOpen}
                 sx={{
                   ...setCenter,
-                  width: "66vw",
+                  width: "60vw",
                   boxShadow: 3,
                   borderRadius: 5,
                   backgroundColor: "background.paper",
                   color: "black",
                 }}
               >
-                오늘의 {babyName} 기록하기
+                오늘 {babyName} 기록하기
               </Button>
               {/* 기록용 모달 */}
               <Modal

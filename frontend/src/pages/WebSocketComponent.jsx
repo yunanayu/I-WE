@@ -33,19 +33,11 @@ const Chat = () => {
         ${reset}
     `;
 
-
-    //webSocket
-    //webSocket
-    //webSocket
-    //webSocket
-    //webSocket
-    //webSocket
     const onText = event => {
         console.log(event.target.value);
         setMsg(event.target.value);
     }
 
-    
     const webSocketLogin = useCallback(() => {
         ws.current = new WebSocket("ws://localhost:8080/socket/chat");
 
@@ -54,7 +46,6 @@ const Chat = () => {
             setSocketData(dataSet);
         }
     });
-
 
     const send = useCallback(() => {
         if(!chkLog) {
@@ -91,14 +82,7 @@ const Chat = () => {
         }
         setMsg("");
     });
-    //webSocket
-    //webSocket
-    //webSocket
-    //webSocket
-    //webSocket
-    //webSocket
-
-
+    
     
     return (
         <>
