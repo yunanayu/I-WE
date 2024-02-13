@@ -1,5 +1,6 @@
 package com.iandwe.baby.controller;
 
+import com.google.api.Http;
 import com.iandwe.baby.dto.*;
 import com.iandwe.baby.service.BabyService;
 import com.iandwe.common.advice.response.ExceptionResponse;
@@ -44,6 +45,12 @@ public class BabyController {
     @PutMapping("/update")
     public ResponseEntity<BabyReadResponseDto> update(@RequestBody BabyUpdateRequestDto requestDto) {
         return new ResponseEntity<>(babyService.update(requestDto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{babyNum}")
+    public ResponseEntity<?> kill(@PathVariable long babyNum){
+        babyService.kill(babyNum);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
