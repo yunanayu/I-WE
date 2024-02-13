@@ -14,4 +14,5 @@ public interface BabyService {
 
     BabyReadResponseDto update(BabyUpdateRequestDto dto);
 
+    void kill(long babyNum);
 }

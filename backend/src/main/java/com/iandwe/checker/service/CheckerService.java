@@ -3,6 +3,7 @@ package com.iandwe.checker.service;
 import com.iandwe.baby.exception.NoBabyExistException;
 import com.iandwe.checker.domain.BabyChecker;
 import com.iandwe.checker.domain.MotherChecker;
+import com.iandwe.checker.dto.CheckerMotherResponseDto;
 import com.iandwe.checker.dto.CheckerResponseDto;
 import com.iandwe.checker.dto.CheckerUpdateRequestDto;
 import com.iandwe.checker.exception.NoCheckerExistException;
@@ -29,7 +30,7 @@ public class CheckerService {
 
     private final EssentialRepository essentialRepository;
 
-    public List<CheckerResponseDto> findByMotherNum(long num) {
+    public List<CheckerMotherResponseDto> findByMotherNum(long num) {
         List<MotherChecker> motherCheckers = motherCheckerRepository.findByMotherNum(num);
         if (isEmptyResult(motherCheckers)) {
             throw new NoMemberExistException();
@@ -37,7 +38,7 @@ public class CheckerService {
 
         return motherCheckers.stream().map(checker -> {
                     Essential essential = essentialRepository.findByNum(checker.getEssentialNum()).orElseThrow(NoEssentialExistException::new);
-                    return CheckerResponseDto.of(essential, checker.isComplete());
+                    return CheckerMotherResponseDto.of(essential, checker.isComplete(), checker.getBabyNum());
                 }
         ).collect(Collectors.toList());
     }
@@ -57,13 +58,13 @@ public class CheckerService {
     }
 
     @Transactional
-    public void updateComplete(CheckerUpdateRequestDto requestDto) {
+    public void updateComplete(CheckerUpdateRequestDto requestDto) { // update 넘어온 babyNum 처리
         if (requestDto.getTarget().equals("baby")) {
             BabyChecker babyChecker = babyCheckerRepository.findByBabyNumAndEssentialNum(requestDto.getTargetNum(), requestDto.getEssentialNum())
                     .orElseThrow(NoCheckerExistException::new);
             babyChecker.updateComplete(requestDto.getIsComplete());
         } else if (requestDto.getTarget().equals("mother")) {
-            MotherChecker motherChecker = motherCheckerRepository.findByMotherNumAndEssentialNum(requestDto.getTargetNum(), requestDto.getEssentialNum())
+            MotherChecker motherChecker = motherCheckerRepository.findByMotherNumAndEssentialNumAndBabyNum(requestDto.getTargetNum(), requestDto.getEssentialNum(), requestDto.getBabyNum())
                     .orElseThrow(NoCheckerExistException::new);
             motherChecker.updateComplete(requestDto.getIsComplete());
         }
