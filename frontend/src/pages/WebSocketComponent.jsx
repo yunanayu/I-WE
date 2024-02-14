@@ -14,8 +14,9 @@ const Chat = () => {
     const ws = useRef(null);    //webSocket을 담는 변수,
                                 //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
     useEffect(() => {
+        console.log(process.env.REACT_APP_WEB_SOCKET_URL);
         //실행될 작업
-        ws.current = new WebSocket("ws://localhost:8080/socket/chat");
+        ws.current = new WebSocket(process.env.REACT_APP_WEB_SOCKET_URL || 'wss://i10c108.p.ssafy.io/api/socket/chat');
         
         ws.current.onopen = () => {
             webSocketLogin();
@@ -47,7 +48,7 @@ const Chat = () => {
     }
 
     const webSocketLogin = useCallback(() => {
-        // ws.current = new WebSocket("ws://localhost:8080/socket/chat");
+        // ws.current = new WebSocket(process.env.WEB_SOCKET_URL || 'wss://i10c108.p.ssafy.io/socket/chat');
 
         ws.current.onmessage = (message) => {
             const dataSet = JSON.parse(message.data);
@@ -129,10 +130,6 @@ const Chat = () => {
                     // />
                 ))}
             </div>
-            <Input
-                placeholder="Type here..."
-            multiline={true}
-/>
             <input
                 placeholder='Enter your name'
                 type='text'
