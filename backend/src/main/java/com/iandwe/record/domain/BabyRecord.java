@@ -39,7 +39,7 @@ public class BabyRecord {
     private LocalDate recordDate;
 
     // 사진
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<String> images;
 
     public void update(BabyRecordUpdateRequestDto dto, List<String> images) {
