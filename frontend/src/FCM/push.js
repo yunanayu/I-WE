@@ -9,7 +9,8 @@ export const getPush = (babyNum) => {
     data:{
       num : useMemberStore.getState().userNum,
       title: 'ㅎㅇㅎㅇ',
-      content : 'ㅋㅎㅋㅎㅋㅎㅋㅎㅋ'
+      content : 'ㅋㅎㅋㅎㅋㅎㅋㅎㅋ',
+      key : ''
     }
   })
   .then((res) => {

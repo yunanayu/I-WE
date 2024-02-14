@@ -28,15 +28,16 @@ self.addEventListener("push", function (e) {
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
+  var data = 1
 self.addEventListener("notificationclick", function (event) {
   var url = "/infomain"; 
   if (key === 'info') {
     return  
   }
   else {
-    url = "/"
+    url = "/hospitalrecord"
   }
   console.log("notification click");
   event.notification.close();
-  event.waitUntil(clients.openWindow(url));
+  event.waitUntil(clients.openWindow(`${url}?data=${encodeURIComponent(data)}`));
 });
