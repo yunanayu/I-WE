@@ -1,14 +1,13 @@
 import axios from "axios"
 import useMemberStore from "../stores/userStore"
 
-export const getPush = () => {
+export const getPush = (babyNum) => {
   console.log(useMemberStore.getState().userNum)
   axios({
     method:'post',
     url:`api/cheat`,
     data:{
-      // num : useMemberStore.getState().userNum,
-      num : 1,
+      num : useMemberStore.getState().userNum,
       title: 'ㅎㅇㅎㅇ',
       content : 'ㅋㅎㅋㅎㅋㅎㅋㅎㅋ'
     }

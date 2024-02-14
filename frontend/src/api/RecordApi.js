@@ -80,8 +80,7 @@ export const changeComplete = (targetNum, essentialNum, target, isComplete) => {
     },
   })
     .then((res) => {
-      console.log('변경 완료')
-      // console.log(res)
+      window.alert('변경되었습니다.')
     })
     .catch((err) => console.log(err));
 } 
