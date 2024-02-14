@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useMemberStore from '../stores/userStore';
+import { requestPermission } from '../FCM/firebase-messaging-sw';
 
 function CheckCode({setSpouseStatus}) {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ function CheckCode({setSpouseStatus}) {
       console.log('코드 확인 실패', error);
     }
     console.log("코드 확인 성공")
+    requestPermission()
     navigate("/");
   };
 

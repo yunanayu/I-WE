@@ -15,6 +15,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs from "dayjs";
 import 'dayjs/locale/ko'
 import useMemberStore from './../stores/userStore';
+import { requestPermission } from '../FCM/firebase-messaging-sw';
 
 function AddChild({ setSpouseStatus }) {
   const navigate = useNavigate();
@@ -132,6 +133,7 @@ function AddChild({ setSpouseStatus }) {
       console.log("아기정보 등록 실패")
     }
     // setBabyList(...babyList)
+    requestPermission()
     console.log("아기정보 등록 성공");
     try {
       await axios.post(`/api/motherBasis/create`, momBasis, // requestBaby 정보 전달
