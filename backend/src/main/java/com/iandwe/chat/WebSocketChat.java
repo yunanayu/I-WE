@@ -35,7 +35,7 @@ public class WebSocketChat {
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
         logger.info("receive message : {}", message);
-
+//        logger.info("clients : {}",clients);
         for (Session s : clients) {
             logger.info("send data : {}", message);
             s.getBasicRemote().sendText(message);

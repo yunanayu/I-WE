@@ -119,13 +119,14 @@ function AddChild({ setSpouseStatus }) {
           }
         }
       );
+      setBabyList(response.data)
       const babyInfo = response.data
       babyList = response.data
 
     } catch(e) {
       console.log("아기정보 등록 실패")
     }
-    setBabyList(...babyList)
+    // setBabyList(...babyList)
     console.log("아기정보 등록 성공");
     try {
       await axios.post(`/api/motherBasis/create`, momBasis, // requestBaby 정보 전달

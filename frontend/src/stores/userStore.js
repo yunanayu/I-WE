@@ -18,7 +18,7 @@ const useMemberStore = create(
   babyList : [],
   setBabyList : (babyinfo) => 
     set((prev) => ({
-    babyList: [...prev.babyList,babyinfo]
+    babyList: [...babyinfo]
       })),
   familyNum : 0, // 가족 code
   setFamilyNum : (code) => set({ familyNum: code}),
@@ -46,18 +46,18 @@ export const useFcmStore = create(
   )
 )
 
-export const useBabyStore = create(
-  persist(
-    (set) => ({
-      bornbabyList :[],
-      setBornBabyList : () => set((state) => ({ bornbabyList: state.babyList.filter((baby) => baby.birth !== null) })),
-    }),
-    {
-      name: "baby",
-      storage: createJSONStorage(() => sessionStorage)
-    }
-  )
-)
+// export const useBabyStore = create(
+//   persist(
+//     (set) => ({
+//       bornbabyList :[],
+//       setBornBabyList : () => set((state) => ({ bornbabyList: state.babyList.filter((baby) => baby.birth !== null) })),
+//     }),
+//     {
+//       name: "baby",
+//       storage: createJSONStorage(() => sessionStorage)
+//     }
+//   )
+// )
 
 export default useMemberStore
 
@@ -70,6 +70,6 @@ export const setMember = async () => {
   useMemberStore.getState().setUserName(userInfo.name)
   useMemberStore.getState().setParentType(userInfo.parentType)
   useMemberStore.getState().setProfileImage(userInfo.profileImage)
-  useMemberStore.getState().setBabyList(...babyInfo)
+  useMemberStore.getState().setBabyList(babyInfo)
 }
 
