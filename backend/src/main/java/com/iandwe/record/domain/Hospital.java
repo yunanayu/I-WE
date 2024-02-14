@@ -58,14 +58,14 @@ public class Hospital {
         if (dto.getTargetNum() != null) {
             this.targetNum = dto.getTargetNum();
         }
-        if (dto.getTarget() != null) {
+        if (dto.getTitle() != null) {
             this.title = dto.getTitle();
         }
         if (dto.getHospitalName() != null) {
             this.hospitalName = dto.getHospitalName();
         }
-        if (dto.getTarget() != null) {
-            this.doctor = dto.getTarget();
+        if (dto.getDoctor() != null) {
+            this.doctor = dto.getDoctor();
         }
         if (dto.getHospitalDate() != null) {
             this.hospitalDate = dto.getHospitalDate();

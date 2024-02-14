@@ -3,27 +3,15 @@ import React, { useState, ChangeEvent, useEffect } from 'react';
 import moment from 'moment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import PregnantWomanIcon from '@mui/icons-material/PregnantWoman';
 import Container from '@mui/material/Container';
-import InputAdornment from '@mui/material/InputAdornment';
-import ChildCareIcon from '@mui/icons-material/ChildCare';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import FileUpload from '../../components/HospitalRecord/FileUpload';
 import HealingOutlinedIcon from '@mui/icons-material/HealingOutlined';
-import { ThemeProvider, createTheme } from '@mui/system';
 import axios from 'axios';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -37,11 +25,6 @@ const UpdateHospitalRecord = (props) => {
 
   const location = useLocation()
   const record = location.state.record
-  const target = location.state.record.target
-
-  const [value, setValue] = React.useState('mother');
-
-  const today = dayjs(moment(new Date()).format('YYYY-MM-DD'))  // 추후에 선택한 날짜로 변경하기
   const [state, setState] = useState({
     targetNum : record.targetNum,
     title :record.title,
@@ -85,7 +68,7 @@ const UpdateHospitalRecord = (props) => {
     }
   
   const handleChange = (event) => {
-    setState({...state, [event.target.name] : event.target.value})
+    setState({ ...state , [event.target.name] : event.target.value })
   };
   
   return (
@@ -100,11 +83,11 @@ const UpdateHospitalRecord = (props) => {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
-          value={record.target}
+          value={state.target}
           onChange={handleChange}
         >
-          <FormControlLabel value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
-          <FormControlLabel value="baby" control={<Radio />} label="아기" name='target' onChange={handleChange}/>
+          <FormControlLabel value="mother" control={<Radio />} label="엄마" name='target'/>
+          <FormControlLabel value="baby" control={<Radio />} label="아기" name='target'/>
         </RadioGroup>
       </FormControl>
       <Box sx={{display:'flex', width:'100%', pt:3 }}>
@@ -112,7 +95,7 @@ const UpdateHospitalRecord = (props) => {
           <DemoContainer components={['DatePicker']}>
             <DatePicker
               label="검진 날짜 선택"
-              value={moment(record.hospitalDate)}
+              value={moment(state.hospitalDate)}
               onChange={(newValue) => {
                 console.log(newValue)
                 setState({...state, selectDay : moment(newValue.$d).format('YYYY-MM-DD')})
@@ -126,8 +109,8 @@ const UpdateHospitalRecord = (props) => {
           <TextField
             id="outlined-controlled"
             name='title'
-            label={state.title == '' ? '검진목적을 입력하세요' : '검진목적'}
-            value={state.title == '' ? '' : state.title}
+            label={'검진목적'}
+            value={state.title}
             onChange={handleChange}
             sx={{width:'30%', pr:5}}
           />
@@ -142,17 +125,17 @@ const UpdateHospitalRecord = (props) => {
           <TextField
             id="outlined-controlled"
             name='hospitalName'
-            label={state.hospitalName == '' ? '병원이름을 입력하세요' : '병원이름'}
-            value={state.hospitalName == '' ? '' : state.hospitalName}
+            label={'병원이름'}
+            value={state.hospitalName}
             onChange={handleChange}
             sx={{width:'30%', pr:5}}
           />
           <TextField 
             id="outlined-basic" 
             name='doctorName'
-            variant="outlined" 
-            label={state.doctorName == '' ? '담당의사를 입력하세요' : '담당의사'}
-            value={state.doctorName == '' ? '' : state.doctorName}
+            // variant="outlined" 
+            label={'담당의사'}
+            value={state.doctorName}
             onChange={handleChange}
             sx={{width:'30%', pr:5}}
           />
@@ -205,7 +188,7 @@ const UpdateHospitalRecord = (props) => {
           label="의사소견"
           name='doctorOpinion'
           placeholder="의사소견"
-          value={record.comment == '' ? '' : record.comment}
+          value={state.doctorOpinion}
           multiline
           onChange={handleChange}
           sx={{width:'100%'}}
