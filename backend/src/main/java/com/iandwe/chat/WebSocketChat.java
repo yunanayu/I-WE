@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-@ServerEndpoint("/socket/chat")
+@ServerEndpoint("/api/socket/chat")
 public class WebSocketChat {
     private static Set<Session> clients = Collections.synchronizedSet(new HashSet<Session>());
     private static Logger logger = LoggerFactory.getLogger(WebSocketChat.class);
