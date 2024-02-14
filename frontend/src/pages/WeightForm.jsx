@@ -165,8 +165,7 @@ const BabyForm = React.forwardRef((props, ref) => {
   const babyName = useMemberStore((state) => state.babyList[0].name);
 
   const handleFileChange = (e) => {
-    const arr = Array.from(e.target.files);
-    setFile(arr[0].name);
+    setFile(Array.from(e.target.files));
   };
 
   const changeWeight = (e) => {
@@ -180,7 +179,6 @@ const BabyForm = React.forwardRef((props, ref) => {
   };
 
   const uploadFile = (e) => {
-    e.preventDefault();
     const formData = new FormData();
 
     file.map((file) => {
@@ -188,21 +186,7 @@ const BabyForm = React.forwardRef((props, ref) => {
     });
 
     console.log(Array.from(formData));
-
-    // URI 필요
-    axios
-      .post("/file/uploads", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
+  }
 
   useEffect(() => {
     if (props.isBorn) {
@@ -244,18 +228,39 @@ const BabyForm = React.forwardRef((props, ref) => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (update) {
-      const data = {
-        num: recentData.num,
-        babyNum: props.babyNum,
-        height: height,
-        weight: weight,
-        circumference: circumference,
-        recordDate: recentData.recordDate,
-      };
+      let data = new FormData();
+
+      if(file) {
+        const obj = {
+          num: recentData.num,
+          babyNum: props.babyNum,
+          height: height,
+          weight: weight,
+          circumference: circumference,
+          recordDate: recentData.recordDate,
+          babyImage: file.name
+        };
+        data.append("dto", obj);
+        data.append("files", file);
+      } else {
+        const obj = {
+          num: recentData.num,
+          babyNum: props.babyNum,
+          height: height,
+          weight: weight,
+          circumference: circumference,
+          recordDate: recentData.recordDate,
+        };
+        data.append("dto", obj);
+      }
       console.log(data);
       const put = async () => {
         await axios
-          .put("/api/babyRecord/update", data)
+          .put("/api/babyRecord/update", data, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            } 
+      })
           .then((response) => {
             console.log("UPDATE OK\n" + response);
           })
@@ -273,17 +278,38 @@ const BabyForm = React.forwardRef((props, ref) => {
         ("0" + (dateSelected.month() + 1)).slice(-2) +
         "-" +
         ("0" + dateSelected.date()).slice(-2);
-      console.log(todayDate);
-      const data = {
-        babyNum: props.babyNum,
-        weight: weight,
-        height: height,
-        circumference: circumference,
-        recordDate: todayDate,
-      };
+      let data = new FormData();
+      if(file) {
+        const obj = {
+          num: recentData.num,
+          babyNum: props.babyNum,
+          height: height,
+          weight: weight,
+          circumference: circumference,
+          recordDate: recentData.recordDate,
+          babyImage: file.name
+        };
+        data.append("dto", obj);
+        data.append("files", file);
+      } else {
+        const obj = {
+          num: recentData.num,
+          babyNum: props.babyNum,
+          height: height,
+          weight: weight,
+          circumference: circumference,
+          recordDate: recentData.recordDate,
+        };
+        data.append("dto", obj);
+      }
+      console.log(JSON.stringify(data));
       const update = async () => {
         await axios
-          .post("/api/babyRecord/create", data)
+          .post("/api/babyRecord/create", data, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            } 
+          })
           .then((response) => {
             console.log("POST OK\n" + response);
           })
@@ -354,6 +380,7 @@ const BabyForm = React.forwardRef((props, ref) => {
               <Button
                 component="label"
                 variant="contained"
+                tabIndex={-1}
                 startIcon={<CloudUploadIcon />}
                 fullWidth
               >
@@ -393,7 +420,7 @@ const BabyForm = React.forwardRef((props, ref) => {
         </Box>
       </Box>
     </div>
-  );
+  )
 });
 
 export { MomForm, BabyForm };

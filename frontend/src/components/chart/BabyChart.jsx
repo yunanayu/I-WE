@@ -205,7 +205,6 @@ const HeightChart = (props) => {
       let d = [...percentile.height25thPercentiles].reverse().slice(5 - heightData.length, percentile.length);
       let e = [...percentile.height1stPercentiles].reverse().slice(5 - heightData.length, percentile.length);
       let f = [...heightData];
-      console.log(f);
 
       const data = {
         labels: heightData.map((obj) => {
