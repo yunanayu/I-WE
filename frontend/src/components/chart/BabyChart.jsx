@@ -221,7 +221,7 @@ const HeightChart = (props) => {
             backgroundColor: "rgba(255, 99, 132, 0.5)",
           },
           {
-            label: "체중",
+            label: "신장",
             data: f.map((obj) => {
               return obj.height;
             }),
