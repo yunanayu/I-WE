@@ -133,7 +133,6 @@ function AddChild({ setSpouseStatus }) {
       console.log("아기정보 등록 실패")
     }
     // setBabyList(...babyList)
-    requestPermission()
     console.log("아기정보 등록 성공");
     try {
       await axios.post(`/api/motherBasis/create`, momBasis, // requestBaby 정보 전달
@@ -147,6 +146,7 @@ function AddChild({ setSpouseStatus }) {
     } catch(e) {
       console.log("엄마 기본정보 등록 실패")
     }
+    requestPermission()
     navigate("/");
   };  
 
