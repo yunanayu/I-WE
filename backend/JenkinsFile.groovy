@@ -26,9 +26,9 @@ pipeline {
         stage('Add Env') {
             steps {
                 dir('./backend') {
-                    sh 'chmod +w src/main/resources'
                     withCredentials([file(credentialsId: 'key', variable: 'key')]) {
-                        sh 'cp ${key}  src/main/resources/application-key.properties'
+                        sh 'chmod +w src/main/resources'
+                        sh 'cp ${key} src/main/resources/application-key.properties'
                     }
                 }
             }
