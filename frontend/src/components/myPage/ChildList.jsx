@@ -28,7 +28,7 @@ const ChildList = () => {
   console.log(babyList);
   return (
     <Container sx={{ mb: 5, pb: 5 }}>
-      <Box sx={{ m: 5 }}>
+      <Box sx={{ ml: 2, mt:5, mb:1 }}>
         <Typography variant="h4" gutterBottom>
           {userName}님의 아기
         </Typography>

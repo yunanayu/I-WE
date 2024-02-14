@@ -35,10 +35,10 @@ const UpdateChild = (props) => {
 
   useEffect(()=> {
     if (baby.status) {
-      setStatus('before')
+      setStatus('after')
     }
     else{
-      setStatus('after')
+      setStatus('before')
     }
   }, [])
 
@@ -76,7 +76,7 @@ const UpdateChild = (props) => {
           <FormControlLabel
             onClick={() => {
               setStatus("before")
-              setInitState({...initState, status: false,})
+              setInitState({...initState, status: false, birth:''})
             }}
             value="before"
             control={<Radio />}
@@ -137,7 +137,7 @@ const UpdateChild = (props) => {
           <DatePicker
             ref={dateInputBefore}
             label="임신 추측일"
-            value={baby.pregnancyDate}
+            value={baby.pregnancyDate? moment(baby.pregnancyDate) : today}
             onChange={(newValue) => setInitState({...initState, pregnancyDate:moment(newValue.$d).format('YYYY-MM-DD')})}
           />
         </DemoContainer>
