@@ -39,7 +39,11 @@ function MomForm(props) {
       props.recentUpdate(data);
     } else {
       let todayDate =
-        today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
+        today.getFullYear() +
+        "-" +
+        ("0" + (today.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + today.getDate()).slice(-2);
       // console.log(todayDate);
       const data = {
         motherNum: motherNum, // 계정정보에서 motherNum 받아오기
@@ -83,23 +87,35 @@ function MomForm(props) {
 
   return (
     <>
-      <Box component="form" sx={{ mt: 3, textAlign: "center",}} onSubmit={submitHandler}>
-        <Typography fontSize={24}> 오늘의 체중은? </Typography>
-        <Stack direction={"row"} spacing={2} sx={{ textAlign: "center", justifyContent: "center", mb: 2 }}>
-        <TextField
-          sx={{width: "50%"}}
-          name="momweight"
-          fullWidth
-          label="kg"
-          type="number"
-          inputProps={{ step: "0.1" }}
-          value={weight || ""}
-          onChange={changeWeight}
-        ></TextField>
+      <Box
+        component="form"
+        sx={{ mt: 3, textAlign: "center" }}
+        onSubmit={submitHandler}
+      >
+        <Typography style={{ color: 'black', fontWeight: 'bold', fontSize: 'large', marginBottom: 2 }}> 오늘의 체중은? </Typography>
+        <Stack
+          direction={"row"}
+          spacing={2}
+          sx={{ textAlign: "center", justifyContent: "center", mb: 2 }}
+        >
+          <TextField
+            sx={{ width: "50%" }}
+            name="momweight"
+            fullWidth
+            label="kg"
+            type="number"
+            inputProps={{ step: "0.1" }}
+            value={weight || ""}
+            onChange={changeWeight}
+          ></TextField>
 
-        <Button type="submit" variant="contained" sx={{ mb: 2, width: "20%" }}>
-          기록하기
-        </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ mb: 2, width: "20%" }}
+          >
+            기록
+          </Button>
         </Stack>
       </Box>
     </>
@@ -120,7 +136,6 @@ const BabyForm = React.forwardRef((props, ref) => {
     bgcolor: "background.paper",
     borderColor: "text.primary",
     m: 1,
-    border: 1,
     width: "66vw",
   };
 
@@ -258,7 +273,7 @@ const BabyForm = React.forwardRef((props, ref) => {
         ("0" + (dateSelected.month() + 1)).slice(-2) +
         "-" +
         ("0" + dateSelected.date()).slice(-2);
-        console.log(todayDate);
+      console.log(todayDate);
       const data = {
         babyNum: props.babyNum,
         weight: weight,
@@ -284,46 +299,6 @@ const BabyForm = React.forwardRef((props, ref) => {
   return (
     <div>
       <Box component="form" onSubmit={submitHandler}>
-        {isBorn ? (
-          <Box
-            maxWidth="sm"
-            margin={5}
-            sx={{
-              ...commonStyles,
-              ...setCenter,
-              borderRadius: 3,
-              width: "40vw",
-              height: 120,
-            }}
-          >
-            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} sx={{ width: "25vw" }}>
-              오늘의 {babyName}
-              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-            </Button>
-          </Box>
-        ) : (
-          <Box
-            maxWidth="sm"
-            margin={5}
-            sx={{
-              ...commonStyles,
-              ...setCenter,
-              borderRadius: 3,
-              width: "40vw",
-              height: 120,
-            }}
-          >
-            <Button
-              component="label"
-              variant="contained"
-              startIcon={<CloudUploadIcon />}
-              sx={{ width: "25vw", textAlign: "center" }}
-            >
-              초음파 사진
-              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-            </Button>
-          </Box>
-        )}
         <Box
           maxWidth="sm"
           sx={{
@@ -334,7 +309,7 @@ const BabyForm = React.forwardRef((props, ref) => {
           }}
         >
           <Box sx={{ mt: 3, mb: 3 }}>
-            <Typography fontSize={20}> 몸무게 </Typography>
+            <Typography style={{ color: 'black', fontWeight: 'bold', fontSize: 'medium' }}> 몸무게 </Typography>
             <TextField
               name="babyweight"
               fullWidth
@@ -344,7 +319,7 @@ const BabyForm = React.forwardRef((props, ref) => {
               value={weight || ""}
               onChange={changeWeight}
             ></TextField>
-            <Typography fontSize={20}> 키 </Typography>
+            <Typography style={{ color: 'black', fontWeight: 'bold', fontSize: 'medium' }}> 키 </Typography>
             <TextField
               name="babyheight"
               fullWidth
@@ -354,7 +329,7 @@ const BabyForm = React.forwardRef((props, ref) => {
               value={height || ""}
               onChange={changeHeight}
             ></TextField>
-            <Typography fontSize={20}> 머리둘레 </Typography>
+            <Typography style={{ color: 'black', fontWeight: 'bold', fontSize: 'medium' }}> 머리둘레 </Typography>
             <TextField
               name="babyhead"
               fullWidth
@@ -365,7 +340,54 @@ const BabyForm = React.forwardRef((props, ref) => {
               onChange={changeCircumference}
             ></TextField>
           </Box>
-          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, width: "25vw" }}>
+          {isBorn ? (
+            <Box
+              maxWidth="sm"
+              margin={1}
+              sx={{
+                ...commonStyles,
+                ...setCenter,
+                borderRadius: 3,
+                width: "40vw",
+              }}
+            >
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+                fullWidth
+              >
+                오늘의 사진
+                <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+              </Button>
+            </Box>
+          ) : (
+            <Box
+              maxWidth="sm"
+              margin={1}
+              sx={{
+                ...commonStyles,
+                ...setCenter,
+                borderRadius: 3,
+                width: "40vw",
+              }}
+            >
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+                fullWidth
+              >
+                초음파 사진
+                <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+              </Button>
+            </Box>
+          )}
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ mt: 3, mb: 2, width: "25vw" }}
+          >
             기록하기
           </Button>
         </Box>

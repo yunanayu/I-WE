@@ -69,6 +69,8 @@ const Info = (props) => {
         setMsg3("빠르게 증가하고 있어요.");
         setMsg4("식사량의 조절이 필요해요.");
       }
+    } else {
+      setMsg(`기록을 추가해보세요`);
     }
     // console.log(111);
   }, [avgData, diffData]);

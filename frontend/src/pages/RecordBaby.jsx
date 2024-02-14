@@ -36,7 +36,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "60vw",
+  width: "75vw",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -297,8 +297,8 @@ function RecordBaby() {
                 </Button>
               </Stack>
               {/* 기록용 모달 */}
-              <Modal open={record} onClose={recordClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-                <Box>
+              <Modal open={record} onClose={recordClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description" >
+                <Box >
                   <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
                     <Box sx={{ ...setCenter, ...style }}>
                       <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
