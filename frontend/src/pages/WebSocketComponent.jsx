@@ -15,7 +15,9 @@ const Chat = () => {
     const setUserName = useMemberStore(state => state.setUserName)
     const ws = useRef(null);
     useEffect(() => {
-        ws.current = new WebSocket("ws://localhost:8080/api/socket/chat");
+
+        console.log(process.env.REACT_APP_WEB_SOCKET_URL);
+        ws.current = new WebSocket(process.env.REACT_APP_WEB_SOCKET_URL || 'wss://i10c108.p.ssafy.io/api/socket/chat');
         
         ws.current.onopen = () => {
             socketDataListner();
@@ -44,7 +46,7 @@ const Chat = () => {
         console.log(event.target.value);
         setMsg(event.target.value);
     }
-
+    
     const socketDataListner = useCallback(() => {
         ws.current.onmessage = (message) => {
             const dataSet = JSON.parse(message.data);
