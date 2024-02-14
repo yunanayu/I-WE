@@ -31,6 +31,7 @@ const ReadChildCard = (props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const baby = props.baby
+  console.log(baby)
   function calculateDueDate(pregnancyDate) {
     // pregnancyDate를 JavaScript Date 객체로 변환
     const startDate = new Date(pregnancyDate);
@@ -47,39 +48,58 @@ const ReadChildCard = (props) => {
       window.alert('삭제할수없습니다.')
     }
     else {
-      // window.confirm()
-      axios.delete(`api/baby/kill/${baby.num}`)
-      .then((res) => {
-        console.log(res)
-        window.alert('삭제되었습니다.')
-        getBabyList(userNum)
-      })
-      .catch(err => console.log(err))
+      if (window.confirm('삭제하시겠습니까?') ) {
+        axios.delete(`api/baby/kill/${baby.num}`)
+        .then((res) => {
+          window.alert('삭제되었습니다.')
+          getBabyList(userNum)
+        })
+        .catch(err => console.log(err))
+      }
     }
   }
   
-  console.log(baby)
   return (
     <Box>
       <Card sx={{ minWidth: 275, mb:2}}>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          아기 이름 : {baby.name}
-        </Typography>
+        <Box sx={{display:'flex'}}>
+          <Typography variant="body1" gutterBottom>아이정보</Typography>
+          <IconButton sx={{justifyConten:'right'}} onClick={handleOpen}><EditOutlinedIcon /></IconButton>
+        </Box>
         {baby.birth === null ?
-        <>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">임신추측일(마지막 생리일) : {baby.pregnancyDate}</Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">출산 예정일: {calculateDueDate(baby.pregnancyDate)}</Typography>
-        </>
+        <Box sx={{display:'flex'}}>
+          <Box>
+            <Typography gutterBottom>태명</Typography>
+            <Typography gutterBottom>성별</Typography>
+            <Typography gutterBottom>출산 예정일</Typography>
+          </Box>
+          <Box sx={{justifyContent:'center', ml:2}}>
+            {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">임신추측일(마지막 생리일) : {baby.pregnancyDate}</Typography> */}
+            <Typography color="text.secondary" gutterBottom>{baby.name}</Typography>
+            <Typography color="text.secondary" gutterBottom>{baby.gender === 1 ? '남자' : (baby.gender === 2 ? '여자' : '미정')}</Typography>
+            <Typography color="text.secondary" gutterBottom>{calculateDueDate(baby.pregnancyDate)}</Typography>          
+          </Box>
+        </Box>
         :
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          생일 : {baby.birth}
-        </Typography>
+        <Box sx={{display:'flex'}}>
+        <Box>
+          <Typography gutterBottom>이름</Typography>
+          <Typography gutterBottom>성별</Typography>
+          <Typography gutterBottom>생년월일</Typography>
+        </Box>
+        <Box sx={{justifyContent:'center', ml:2}}>
+          {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">임신추측일(마지막 생리일) : {baby.pregnancyDate}</Typography> */}
+          <Typography color="text.secondary" gutterBottom>{baby.name}</Typography>
+          <Typography color="text.secondary" gutterBottom>{baby.gender === 1 ? '남자' : (baby.gender === 2 ? '여자' : '미정')}</Typography>
+          <Typography color="text.secondary" gutterBottom>{baby.birth}</Typography>          
+        </Box>
+      </Box>
         }
-        <Typography>성별: {baby.gender === 1 ? '남자' : (baby.gender === 2 ? '여자' : '미정')}</Typography>
       </CardContent>
-      <IconButton onClick={handleOpen}><EditOutlinedIcon /></IconButton>
       <IconButton onClick={() => goDelete()}><DeleteOutlineOutlinedIcon /></IconButton>
+
+      
         <Modal
             open={open}
             onClose={handleClose}
@@ -87,7 +107,7 @@ const ReadChildCard = (props) => {
             aria-describedby="modal-modal-description"
         >
         <Box sx={style}>
-            <UpdateChild baby={baby}/>
+            <UpdateChild setOpen={setOpen} baby={baby}/>
         </Box>
         </Modal>
     </Card>

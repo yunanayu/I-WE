@@ -10,8 +10,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from "moment";
 import SendIcon from '@mui/icons-material/Send';
 import { getBabyList } from "../../api/UserApi";
+import { useNavigate } from "react-router-dom";
 
-const AddChild = () => {
+const AddChild = (props) => {
+  console.log(props)
+  const navigate = useNavigate()
   const userNum = useMemberStore(state => state.userNum)
   const BabyList = useMemberStore((state) => state.babyList);
   const motherNum = BabyList[0].motherNum;
@@ -31,7 +34,7 @@ const AddChild = () => {
   const dateInputBefore = useRef()
   const dateInputAfter = useRef()
 
-  const addChild = (props) => {
+  const addChild = () => {
     // if (initState.birth === null && initState.pregnancyDate) {
     //   if ()
     // }
@@ -49,7 +52,7 @@ const AddChild = () => {
       },
     })
     .then((res) => {
-      // console.log(res)
+      window.alert('등록되었습니다!')
       getBabyList(userNum)
       props.setOpen(false)
     })
