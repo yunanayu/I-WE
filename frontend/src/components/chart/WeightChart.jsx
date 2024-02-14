@@ -213,8 +213,15 @@ function WeeklyWeightChart(props) {
 function ChangeChart(props) {
   const momRecord = props.recordData;
   const momBasis = props.basisData;
-  const babyData = props.babyData;
-  const status = props.status;
+  const [babyData, setBabyData] = useState();
+  const [status, setStatus] = useState();
+  const [babyIndex, setBabyIndex] = useState();
+
+  useEffect(() => {
+    setBabyData(props.babyData);
+    setStatus(props.status);
+    setBabyIndex(props.babyIndex);
+  }, [props])
 
   // [주차][비만도 => 저체중, 평균, 과제충, 비만]
   const recommendWeightStart = [
@@ -320,7 +327,7 @@ function ChangeChart(props) {
       });
       setMomWeight(weightArr);
       setBasis(momBasis);
-      setWeek(babyData[0].targetTime.substr(1));
+      setWeek(babyData[babyIndex].targetTime.substr(1));
       const bmi = (momBasis.basisWeight / (momBasis.height * momBasis.height)).toFixed(1);
       if (bmi < 18.5) {
         setBmi(0);

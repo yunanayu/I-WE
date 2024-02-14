@@ -6,6 +6,10 @@ import { MomForm } from "./WeightForm";
 import { Typography } from "@mui/material";
 import axios from "axios";
 import useMemberStore from "../stores/userStore";
+import FormControl from "@mui/joy/FormControl";
+import Radio from "@mui/joy/Radio";
+import RadioGroup from "@mui/joy/RadioGroup";
+import Sheet from "@mui/joy/Sheet";
 
 // 가운데 정렬 css
 const setCenter = {
@@ -118,9 +122,24 @@ function RecordMom() {
   const [babyData, setBabyData] = useState(null);
   const [avgData, setAvgData] = useState();
   const [diffData, setDiffData] = useState();
-  const motherNum = useMemberStore((state) => state.babyList[0].motherNum);
-  const babyNum = useMemberStore((state) => state.babyList[0].num);
-  const status = useMemberStore((state) => state.babyList[0].targetTime).substr(0, 1);
+  const [babyIndex, setBabyIndex] = useState(0);
+  const [babyNum, setBabyNum] = useState(
+    useMemberStore((state) => state.babyList[babyIndex].num)
+  );
+  const [status, setStatus] = useState(useMemberStore((state) => state.babyList[babyIndex].targetTime).substr(0, 1));
+
+  const babyList = useMemberStore((state) => state.babyList);
+  // console.log(JSON.stringify(babyList));
+  const motherNum = useMemberStore((state) => state.userNum);
+
+  const babyChange = (e) => {
+    // console.log(babyList.findIndex((baby) => baby.num + "" === e.target.value));
+    setBabyIndex(
+      babyList.findIndex((baby) => baby.num + "" === e.target.value)
+    );
+    setBabyNum(e.target.value);
+    setStatus(babyList[babyList.findIndex((baby) => baby.num + "" === e.target.value)].targetTime.substr(0, 1));
+  };  
 
   useEffect(() => {
     const initData = async () => {
@@ -150,12 +169,15 @@ function RecordMom() {
       await axios.get(`/api/baby/${babyNum}`).then((response) => {
         let bData = response.data;
         setBabyData(bData);
+      })
+      .catch((error) => {
+        console.log("GET BABY DATA ERROR\n" + error);
       });
     };
     initData();
     initBasis();
     initBabyData();
-  }, []);
+  }, [babyNum]);
 
   const onUpdateRecent = (data) => {
     setRecentRecord(data);
@@ -192,6 +214,43 @@ function RecordMom() {
   return (
     <>
       <Container maxWidth="lg" sx={{ ...setCenter }}>
+      <FormControl>
+      <RadioGroup
+        overlay
+        name="member"
+        orientation="horizontal"
+        sx={{ gap: 2 }}
+        onChange={babyChange}
+        value={babyNum}
+      >
+        {babyList.map((baby) => (
+          <Sheet
+            component="label"
+            key={baby.num}
+            variant="outlined"
+            sx={{
+              p: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              boxShadow: 'sm',
+              borderRadius: 'md',
+            }}
+          >
+            <Radio
+              value={baby.num || ""}
+              variant="soft"
+              sx={{
+                mb: 2,
+              }}
+            />
+            <Typography level="body-sm" sx={{ mt: 1 }}>
+              {baby.name}
+            </Typography>
+          </Sheet>
+        ))}
+      </RadioGroup>
+    </FormControl>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           {<Info record={momRecord} avg={avgData} diff={diffData} />}
         </Box>
@@ -202,7 +261,7 @@ function RecordMom() {
           <WeeklyWeightChart recordData={momRecord} />
         </Box>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          <ChangeChart recordData={momRecord} basisData={momBasis} babyData={babyData} diffUpdate={onDiffUpdate} avgUpdate={onAvgUpdate} status={status} />
+          <ChangeChart recordData={momRecord} basisData={momBasis} babyData={babyData} babyIndex={babyIndex} diffUpdate={onDiffUpdate} avgUpdate={onAvgUpdate} status={status} />
         </Box>
       </Container>
     </>
