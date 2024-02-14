@@ -14,7 +14,7 @@ export const getPush = () => {
     }
   })
   .then((res) => {
-    console.log(res.data)
+    // console.log(res.data)
     console.log('요청 완료')
   })
   .catch(err => console.log(err))

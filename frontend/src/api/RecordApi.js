@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const getCheck = (userNum, target) => {
   const res = axios.get(`/api/check/${target}/${userNum}`)
   return res.data
