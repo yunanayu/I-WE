@@ -19,10 +19,11 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import FormControl from "@mui/joy/FormControl";
-import Radio from "@mui/joy/Radio";
-import RadioGroup from "@mui/joy/RadioGroup";
-import Sheet from "@mui/joy/Sheet";
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Radio from '@mui/joy/Radio';
+import RadioGroup from '@mui/joy/RadioGroup';
+import Sheet from '@mui/joy/Sheet';
 import "dayjs/locale/ko";
 import dayjs from "dayjs";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -114,10 +115,7 @@ function Info(props) {
         ) : (
           <>
             <Typography fontSize={34}>임신 {props.targetTime} 주차</Typography>
-            <Typography fontSize={28} textAlign={"center"}>
-              {" "}
-              D-{pBirth}{" "}
-            </Typography>
+            <Typography fontSize={28}> D-{pBirth} </Typography>
           </>
         )}
       </Box>
@@ -305,48 +303,8 @@ function RecordBaby() {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ ...setCenter }}>
-        <FormControl>
-          <RadioGroup
-            overlay
-            name="member"
-            orientation="horizontal"
-            sx={{ gap: 2 }}
-            onChange={babyChange}
-            value={babyNum}
-          >
-            {babyList.map((baby) => (
-              <Sheet
-                component="label"
-                key={baby.num}
-                variant="outlined"
-                sx={{
-                  p: 2,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  boxShadow: "sm",
-                  borderRadius: "md",
-                }}
-              >
-                <Radio
-                  value={baby.num || ""}
-                  variant="soft"
-                  sx={{
-                    mb: 2,
-                  }}
-                />
-                <Typography level="body-sm" sx={{ mt: 1 }}>
-                  {baby.name}
-                </Typography>
-              </Sheet>
-            ))}
-          </RadioGroup>
-        </FormControl>
-        <Box
-          maxWidth="md"
-          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
-        >
+      <Container maxWidth="lg" sx={{ ...setCenter, background: "skyblue" }}>
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           {
             <Info
               born={born}
