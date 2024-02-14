@@ -13,6 +13,16 @@ const Chat = () => {
 
     const ws = useRef(null);    //webSocket을 담는 변수,
                                 //컴포넌트가 변경될 때 객체가 유지되어야하므로 'ref'로 저장
+
+    const webSocketLogin = useCallback(() => {
+        // ws.current = new WebSocket(process.env.WEB_SOCKET_URL || 'wss://i10c108.p.ssafy.io/socket/chat');
+
+        ws.current.onmessage = (message) => {
+            const dataSet = JSON.parse(message.data);
+            setSocketData(dataSet);
+        }
+    }, []);
+
     useEffect(() => {
         console.log(process.env.REACT_APP_WEB_SOCKET_URL);
         //실행될 작업
@@ -26,14 +36,15 @@ const Chat = () => {
         return ()=>{
 
         }
-    }, []);
+    }, [webSocketLogin]);
 
     useEffect(() => {
         if(socketData !== undefined) {
             // const tempData = chatt.concat(socketData);
             // console.log("tempData : "+tempData);
             // setChatt(tempData);
-            setChatt(chatt.concat(socketData));
+            // setChatt(chatt.concat(socketData));
+            setChatt(prevChatt => [...prevChatt, socketData]);
         }
     }, [socketData]);
 
@@ -46,15 +57,6 @@ const Chat = () => {
         console.log(event.target.value);
         setMsg(event.target.value);
     }
-
-    const webSocketLogin = useCallback(() => {
-        // ws.current = new WebSocket(process.env.WEB_SOCKET_URL || 'wss://i10c108.p.ssafy.io/socket/chat');
-
-        ws.current.onmessage = (message) => {
-            const dataSet = JSON.parse(message.data);
-            setSocketData(dataSet);
-        }
-    });
 
     const send = useCallback(() => {
         if(!chkLog) {
