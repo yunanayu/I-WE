@@ -15,6 +15,7 @@ import { getBabyList } from "../../api/UserApi";
 const UpdateChild = (props) => {
   const userNum = useMemberStore(state => state.userNum)
   const baby = props.baby
+  console.log(baby)
   const motherNum = baby.motherNum;
   const [status, setStatus] = useState(null)
   const today = dayjs(moment(new Date()).format('YYYY-MM-DD'))
@@ -34,17 +35,14 @@ const UpdateChild = (props) => {
 
   useEffect(()=> {
     if (baby.status) {
-      setStatus('before')
+      setStatus('after')
     }
     else{
-      setStatus('after')
+      setStatus('before')
     }
   }, [])
 
   const addChild = () => {
-    // if (initState.birth === null && initState.pregnancyDate) {
-    //   if ()
-    // }
     // console.log(initState)
     axios({
       method: "put",
@@ -59,8 +57,9 @@ const UpdateChild = (props) => {
       },
     })
     .then((res) => {
-      // console.log(res)
+      window.alert('수정되었습니다.')
       getBabyList(userNum)
+      props.setOpen(false)
     })
     .catch(err => console.log(err))
   };
@@ -79,7 +78,7 @@ const UpdateChild = (props) => {
           <FormControlLabel
             onClick={() => {
               setStatus("before")
-              setInitState({...initState, status: false,})
+              setInitState({...initState, status: false, birth:''})
             }}
             value="before"
             control={<Radio />}
@@ -101,7 +100,7 @@ const UpdateChild = (props) => {
       <Box>
       {status === 'before' &&
       <>
-      <TextField label='이름' value={baby.name} name='name' onChange={handleChange} />
+      <TextField label='태명' value={baby.name} name='name' onChange={handleChange} />
       <FormControl>
         <FormLabel id="demo-controlled-radio-buttons-group">
           성별
@@ -110,23 +109,24 @@ const UpdateChild = (props) => {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
+          value={initState.gender}
         >
           <FormControlLabel
-            value="0"
+            value={0}
             control={<Radio />}
             label="모름"
             name="gender"
             onChange={handleChange}
           />
           <FormControlLabel
-            value="1"
+            value={1}
             control={<Radio />}
             label="남자"
             name="gender"
             onChange={handleChange}
           />
           <FormControlLabel
-            value="2"
+            value={2}
             control={<Radio />}
             label="여자"
             name="gender"
@@ -139,7 +139,8 @@ const UpdateChild = (props) => {
           <DatePicker
             ref={dateInputBefore}
             label="임신 추측일"
-            value={baby.pregnancyDate}
+            name="pregnancyDate"
+            value={baby.pregnancyDate? moment(baby.pregnancyDate) : today}
             onChange={(newValue) => setInitState({...initState, pregnancyDate:moment(newValue.$d).format('YYYY-MM-DD')})}
           />
         </DemoContainer>
@@ -148,7 +149,7 @@ const UpdateChild = (props) => {
       }
       {status === 'after' &&
       <>
-      <TextField label='이름' name='name' onChange={handleChange} />
+      <TextField label='이름' defaultValue={baby.name} name='name' onChange={handleChange} />
       <FormControl>
         <FormLabel id="demo-controlled-radio-buttons-group">
           성별
@@ -157,16 +158,17 @@ const UpdateChild = (props) => {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
+          value={initState.gender}
         >
           <FormControlLabel
-            value="1"
+            value={1}
             control={<Radio />}
             label="남자"
             name="gender"
             onChange={handleChange}
           />
           <FormControlLabel
-            value="2"
+            value={2}
             control={<Radio />}
             label="여자"
             name="gender"
@@ -179,6 +181,7 @@ const UpdateChild = (props) => {
           <DatePicker
             ref={dateInputAfter}
             label="출생일"
+            name="birth"
             value={baby.birth ? moment(baby.birth) : today}
             onChange={(newValue) => setInitState({...initState, birth:moment(newValue.$d).format('YYYY-MM-DD')})}
           />
