@@ -57,7 +57,9 @@ const UpdateChild = (props) => {
       },
     })
     .then((res) => {
+      window.alert('수정되었습니다.')
       getBabyList(userNum)
+      props.setOpen(false)
     })
     .catch(err => console.log(err))
   };
@@ -98,7 +100,7 @@ const UpdateChild = (props) => {
       <Box>
       {status === 'before' &&
       <>
-      <TextField label='이름' value={baby.name} name='name' onChange={handleChange} />
+      <TextField label='태명' value={baby.name} name='name' onChange={handleChange} />
       <FormControl>
         <FormLabel id="demo-controlled-radio-buttons-group">
           성별
@@ -137,6 +139,7 @@ const UpdateChild = (props) => {
           <DatePicker
             ref={dateInputBefore}
             label="임신 추측일"
+            name="pregnancyDate"
             value={baby.pregnancyDate? moment(baby.pregnancyDate) : today}
             onChange={(newValue) => setInitState({...initState, pregnancyDate:moment(newValue.$d).format('YYYY-MM-DD')})}
           />
@@ -178,6 +181,7 @@ const UpdateChild = (props) => {
           <DatePicker
             ref={dateInputAfter}
             label="출생일"
+            name="birth"
             value={baby.birth ? moment(baby.birth) : today}
             onChange={(newValue) => setInitState({...initState, birth:moment(newValue.$d).format('YYYY-MM-DD')})}
           />

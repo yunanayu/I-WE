@@ -107,7 +107,7 @@ const ReadChildCard = (props) => {
             aria-describedby="modal-modal-description"
         >
         <Box sx={style}>
-            <UpdateChild baby={baby}/>
+            <UpdateChild setOpen={setOpen} baby={baby}/>
         </Box>
         </Modal>
     </Card>
