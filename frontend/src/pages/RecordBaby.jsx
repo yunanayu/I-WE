@@ -36,7 +36,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "60vw",
+  width: "75vw",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -68,22 +68,30 @@ function Info(props) {
 
   return (
     <>
-      <Box sx={{mt: 3, mb: 3 }}>
+      <Box sx={{ mt: 3, mb: 3 }}>
         {props.status === "A" && percentile ? (
           <>
-            <Typography fontSize={34} sx={{ ...setCenter, }}> D+{dDay} </Typography>
-            <Typography fontSize={23} sx={{mb: 1}}> 체　　중 : 상위 {percentile.weightPercentile}% </Typography>
-            <Typography fontSize={23} sx={{mb: 1}}> 신　　장 : 상위 {percentile.heightPercentile}% </Typography>
+            <Typography fontSize={34} sx={{ ...setCenter }}>
+              {" "}
+              D+{dDay}{" "}
+            </Typography>
+            <Typography fontSize={23} sx={{ mb: 1 }}>
+              {" "}
+              체　　중 : 상위 {percentile.weightPercentile}%{" "}
+            </Typography>
+            <Typography fontSize={23} sx={{ mb: 1 }}>
+              {" "}
+              신　　장 : 상위 {percentile.heightPercentile}%{" "}
+            </Typography>
             <Typography fontSize={23}> 머리둘레 : 상위 {percentile.circumferencePercentile}% </Typography>
           </>
+        ) : props.status === "A" ? (
+          <Typography fontSize={34}> D+{dDay} </Typography>
         ) : (
-          props.status === "A" ? 
-          (<Typography fontSize={34}> D+{dDay} </Typography>):(
-            <>
+          <>
             <Typography fontSize={34}>임신 {props.targetTime} 주차</Typography>
             <Typography fontSize={28}> D-{pBirth} </Typography>
           </>
-          )
         )}
       </Box>
     </>
@@ -132,7 +140,7 @@ function RecordBaby() {
   const pregnancyDate = useMemberStore((state) => state.babyList[0].pregnancyDate);
   const birthDate = useMemberStore((state) => state.babyList[0].birth);
   const gender = useMemberStore((state) => state.babyList[0].gender);
-  console.log(status);
+
   const [recentRecordMonth, setRecentRecordMonth] = useState();
   const [born, setBorn] = useState(false);
   const [babyRecord, setBabyRecord] = useState(null);
@@ -158,10 +166,7 @@ function RecordBaby() {
         setBorn(true);
         const init2 = async () => {
           await axios
-            .get(
-              `/api/growth/${gender + 1}/${recentRecordMonth}/${recentRecord.height}/${recentRecord.weight}/${
-                recentRecord.circumference}`
-            )
+            .get(`/api/growth/${gender + 1}/${recentRecordMonth}/${recentRecord.height}/${recentRecord.weight}/${recentRecord.circumference}`)
             .then((response) => {
               const data = response.data;
               setPercentileRecord(data);
@@ -207,7 +212,7 @@ function RecordBaby() {
         babyRecord.map((r) => {
           return {
             recordDate: r.recordDate,
-            height: r.weight,
+            height: r.height,
           };
         })
       );
@@ -224,7 +229,7 @@ function RecordBaby() {
 
   const submitFunction = (data) => {
     let arr = [];
-    if(babyRecord) {
+    if (babyRecord) {
       arr = [...babyRecord];
     }
     if (recentRecord) {
@@ -274,7 +279,7 @@ function RecordBaby() {
                   오늘 {babyName} 기록하기
                 </Button>
                 <Button
-                  style={{whiteSpace: "pre-line"}}
+                  style={{ whiteSpace: "pre-line" }}
                   variant="outlined"
                   onClick={pictureOpen}
                   sx={{
@@ -286,51 +291,30 @@ function RecordBaby() {
                     color: "black",
                   }}
                 >
-                  {babyName}<br/>사진보기
+                  {babyName}
+                  <br />
+                  사진보기
                 </Button>
               </Stack>
               {/* 기록용 모달 */}
-              <Modal
-                open={record}
-                onClose={recordClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box>
+              <Modal open={record} onClose={recordClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description" >
+                <Box >
                   <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
                     <Box sx={{ ...setCenter, ...style }}>
                       <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
                         <Stack direction={"row"} spacing={2}>
                           {dayjs(date).format("YYYY-MM-DD")}
-                          <ButtonDatePicker
-                            value={date}
-                            onChange={(newValue) => setDate(newValue)}
-                            format={"YYYY-MM-DD"}
-                          />
+                          <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
                         </Stack>
                       </Typography>
-                      {
-                        <BabyForm
-                          data={babyRecord}
-                          recentData={recentRecord}
-                          dateSelected={date}
-                          babyNum={babyNum}
-                          isBorn={born}
-                          onSubmit={submitFunction}
-                        />
-                      }
+                      {<BabyForm data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />}
                     </Box>
                   </LocalizationProvider>
                 </Box>
               </Modal>
 
               {/* 사진용 모달 */}
-              <Modal
-                open={picture}
-                onClose={pictureClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
+              <Modal open={picture} onClose={pictureClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                 <Box sx={{ ...setCenter, ...style }}>
                   <Typography id="modal-modal-title" variant="h6" component="h2">
                     {babyName}의 사진
@@ -367,35 +351,17 @@ function RecordBaby() {
                 오늘 {babyName} 기록하기
               </Button>
               {/* 기록용 모달 */}
-              <Modal
-                open={record}
-                onClose={recordClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
+              <Modal open={record} onClose={recordClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                 <Box>
                   <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
                     <Box sx={{ ...setCenter, ...style }}>
                       <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
                         <Stack direction={"row"} spacing={2}>
                           {dayjs(date).format("YYYY-MM-DD")}
-                          <ButtonDatePicker
-                            value={date}
-                            onChange={(newValue) => setDate(newValue)}
-                            format={"YYYY-MM-DD"}
-                          />
+                          <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
                         </Stack>
                       </Typography>
-                      {
-                        <BabyForm
-                          data={babyRecord}
-                          recentData={recentRecord}
-                          dateSelected={date}
-                          babyNum={babyNum}
-                          isBorn={born}
-                          onSubmit={submitFunction}
-                        />
-                      }
+                      {<BabyForm data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />}
                     </Box>
                   </LocalizationProvider>
                 </Box>

@@ -13,6 +13,8 @@ function KakaoLogin({ setIsLoggedIn }) {
   const setBabyList = useMemberStore(state => state.setBabyList)
   const setUserNum = useMemberStore(state => state.setUserNum)
   const setParentType = useMemberStore(state => state.setParentType)
+  const setProfileImage = useMemberStore(state => state.setProfileImage)
+
   const handleLogin = () => {
     console.log("로그인눌림");
     console.log(process.env.REACT_APP_KAKAO_LOGIN_URL);
