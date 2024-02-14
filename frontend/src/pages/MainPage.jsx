@@ -29,7 +29,6 @@ const Main = ({ onLoginStatusChange }) => {
   const setBabyList = useMemberStore(state => state.setBabyList)
   const userNum = useMemberStore(state => state.userNum)
   const setFamilyNum = useMemberStore(state => state.setFamilyNum)
-  console.log(babyList)
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);

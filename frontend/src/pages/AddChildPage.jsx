@@ -15,6 +15,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs from "dayjs";
 import 'dayjs/locale/ko'
 import useMemberStore from './../stores/userStore';
+import { requestPermission } from '../FCM/firebase-messaging-sw';
 
 function AddChild({ setSpouseStatus }) {
   const navigate = useNavigate();
@@ -145,6 +146,7 @@ function AddChild({ setSpouseStatus }) {
     } catch(e) {
       console.log("엄마 기본정보 등록 실패")
     }
+    requestPermission()
     navigate("/");
   };  
 

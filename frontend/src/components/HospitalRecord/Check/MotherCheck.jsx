@@ -21,7 +21,7 @@ const MotherCheck = () => {
   const [selectRange, setSelectRange] = useState([0, 40]);
   useEffect(() => {
     axios
-      .get(`/api/check/mother/${userNum}`)
+      .get(`/api/check/mother/${userNum}/${babyNum}`)
       .then((res) => {
         setMomCheckList(sortList(res.data));
         setVaccineList(sortList(res.data));
