@@ -191,7 +191,7 @@ function RecordMom() {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ ...setCenter, background: "pink" }}>
+      <Container maxWidth="lg" sx={{ ...setCenter }}>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           {<Info record={momRecord} avg={avgData} diff={diffData} />}
         </Box>
