@@ -17,23 +17,34 @@ const CodeSharePage = () => {
   return (
     <ThemeProvider
       theme={theme}
-      sx={{ display: "flex", justifyContent: "center" }}
+      sx={{ display: "flex", justifyContent: "center"}}
     >
-      <Box sx={{borderRadius:3, backgroundColor:'#f5f5f5', p:1}}>
-        <Typography
+      <Typography
           margin="10px"
-          variant="h5"
+          variant="h6"
           align="center"
-          sx={{ mt: 4, mb: 2, color: "gray" }}
+          sx={{ mt: 4, color: "gray" }}
         >
-        {familyNum}
-        </Typography>
+        가족코드로 아빠에게<br />사랑하는 아이를 공유해보세요!
+      </Typography>
+      <Box sx={{ display: "flex", justifyContent: "center", flexDirection:'column', alignItems:'center' }}>
+        <Box sx={{backgroundColor:'#f5f5f5', p:1 , width:"90%", borderRadius:'10px', margin:'30px'}}>
+          <Typography
+            margin="10px"
+            variant="h5"
+            align="center"
+            sx={{ mt: 2, mb: 2, color: "gray", fontWeight:'bold' }}
+          >
+          {familyNum}
+          </Typography>
+        </Box>
+        <CopyToClipboard text={familyNum}>
+          <Button variant="outlined" sx={{borderColor:'#bdbdbd',color:'black', width:'80%'}} onClick={handleCopy}>
+            가족 코드 복사
+          </Button>
+        </CopyToClipboard>
       </Box>
-      <CopyToClipboard text={familyNum}>
-        <Button variant="outlined" sx={{borderColor:'#bdbdbd',color:'black', width:'80%'}} onClick={handleCopy}>
-          코드 복사
-        </Button>
-      </CopyToClipboard>
+      
     </ThemeProvider>
   );
 };

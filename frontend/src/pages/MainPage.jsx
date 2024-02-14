@@ -162,52 +162,22 @@ const Main = ({ onLoginStatusChange }) => {
                   )}
                 </Typography>
               </Box>
+              {/* 엄마카드정보 */}
               <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%"}}>
-                <Card sx={{ width: "90%", margin: "5px 5px 5px 5px",}}>
-                  <CardContent sx={{margin:"5px", }}>
-                    <Typography variant="h6" component="div">
-                      이 시기에 엄마는요!
-                    </Typography>
-                    < br/>
-                    <Typography variant="body2">
-                      - 어때요
-                      <br />
-                      - 그리고 어때요
-                      <br />
-                      - 정보리스트
-                    </Typography>
-                    <br />
-                    <Box style={{textAlign: 'right'}}>
-                      <Link to='/infomom'>
-                        <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>더 궁금해요!</Button>
-                      </Link>
-                    </Box>
-                  </CardContent>
-                </Card>
-                <Card sx={{ width: "90%", margin: "5px 5px 5px 5px" }}>
-                  <CardContent >
-                    <Typography variant="h6" component="div">
-                      이 시기에 아이는요!
-                    </Typography>
-                    <Typography variant="body2">
-                      - 어때요
-                      <br />
-                      - 그리고 어때요
-                      <br />
-                      - 정보리스트
-                    </Typography>
-                    <br />
-                    <Box style={{textAlign: 'right'}}>
-                      <Link to='/infobaby'>
-                        <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>더 궁금해요!</Button>
-                      </Link>
+                <Typography variant="h6" component="div" sx={{ fontWeight: 'bold',mb: '20px' }}>
+                  이 시기에 엄마는요!
+                </Typography>
+                <Card sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width: "90%", padding: "15px 15px 0px 15px" }}>
+                  {/* {getMomBodyInfothree()} */}
+                  <CardContent>
+                    <Box style={{ textAlign: 'right' }}>
+                      {/* <Button onClick={handleClickOpen('mommore')} size="small" style={{ backgroundColor: '#FBBBB8', color: 'white' }}>궁금해요!</Button> */}
                     </Box>
                   </CardContent>
                 </Card>
               </Box>
             </Box>
           </Box>
-          {/* <InfiniteScrollComponent /> */}
           </ThemeProvider>
         </>
       ) : (
