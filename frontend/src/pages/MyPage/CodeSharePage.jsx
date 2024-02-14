@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, Button, Typography } from "@mui/material";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import useMemberStore from "../../stores/userStore";
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 
 const theme = createTheme({
   typography: {
@@ -12,7 +13,6 @@ const theme = createTheme({
 
 const CodeSharePage = () => {
   const familyNum = useMemberStore((state) => state.familyNum);
-  console.log(familyNum)
   const handleCopy = () => {};
   return (
     <ThemeProvider
@@ -40,7 +40,7 @@ const CodeSharePage = () => {
         </Box>
         <CopyToClipboard text={familyNum}>
           <Button variant="outlined" sx={{borderColor:'#bdbdbd',color:'black', width:'80%'}} onClick={handleCopy}>
-            가족 코드 복사
+            가족 코드 복사 <ContentCopyOutlinedIcon/>
           </Button>
         </CopyToClipboard>
       </Box>

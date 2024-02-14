@@ -31,7 +31,6 @@ const ReadChildCard = (props) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const baby = props.baby
-  console.log(baby)
   function calculateDueDate(pregnancyDate) {
     // pregnancyDate를 JavaScript Date 객체로 변환
     const startDate = new Date(pregnancyDate);
@@ -63,7 +62,7 @@ const ReadChildCard = (props) => {
     <Box>
       <Card sx={{ minWidth: 275, mb:2}}>
       <CardContent>
-        <Box sx={{display:'flex'}}>
+        <Box sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
           <Typography variant="body1" gutterBottom>아이정보</Typography>
           <IconButton sx={{justifyConten:'right'}} onClick={handleOpen}><EditOutlinedIcon /></IconButton>
         </Box>
@@ -97,7 +96,9 @@ const ReadChildCard = (props) => {
       </Box>
         }
       </CardContent>
-      <IconButton onClick={() => goDelete()}><DeleteOutlineOutlinedIcon /></IconButton>
+      <Box sx={{ textAlign:'right'}}>
+        <IconButton onClick={() => goDelete()}><DeleteOutlineOutlinedIcon /></IconButton>
+      </Box>
 
       
         <Modal

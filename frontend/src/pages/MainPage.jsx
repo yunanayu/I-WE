@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import icon from "../images/icon.png";
 import logo from "../images/logo.png";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import { Box, Typography, Card } from '@mui/material';
+import Button from '@mui/material/Button';
 import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
@@ -110,23 +111,21 @@ const Main = ({ onLoginStatusChange }) => {
 
   // 엄마 info데이터 가져오기
   useEffect(() => {
-    if(userNum !== 0){
-      const fetchData = async () => {
+    const fetchData = async () => {
+      console.log(date);
       try {
         const mombodyinforesponse = await axios({
           method: 'get',
           url: `/api/info/mother/p/${date}`
         });
         const mombodyinfodata = mombodyinforesponse.data;
+        console.log(mombodyinfodata);
         setMombodyInfo(mombodyinfodata);
       } catch (error) {
         console.log(error);
       }
     };
-  
     fetchData();
-    }
-    
   }, [date]);
   
   const getMomBodyInfothree = () => {
@@ -150,7 +149,6 @@ const Main = ({ onLoginStatusChange }) => {
 
   // 아기 info데이터 가져오기
   useEffect(() => {
-    if(userNum !== 0){
       const fetchData = async () => {
       try {
         const babybodyinforesponse = await axios({
@@ -165,7 +163,7 @@ const Main = ({ onLoginStatusChange }) => {
     };
   
     fetchData();
-    }
+    
     
   }, [date]);
 
@@ -270,16 +268,14 @@ const Main = ({ onLoginStatusChange }) => {
                 <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%"}}>
                   <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mb: '10px' }}>
                     이 시기에 엄마는요!
-                    <ControlPointIcon onClick={handleIconClick} style={{ textAlign: 'right' }}/>
-                    <Box >
-                    </Box>
+                                       
                   </Typography>
                   <Card sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width: "90%", padding: "15px 15px 15px 15px" }}>
                     {getMomBodyInfothree()}
                   </Card>
                 </Box>
                 {/* 아기 카드 정보 */}
-                <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%"}}>
+                <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%", mb:'5px'}}>
                   <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mt:'10px', mb: '10px' }}>
                     이 시기에 아기는요!
                   </Typography>
@@ -287,6 +283,9 @@ const Main = ({ onLoginStatusChange }) => {
                     {getBabyBodyInfothree()}
                   </Card>
                 </Box>
+                <div style={{ textAlign: 'right', margin:'10px 20px', alignItems:'center' }}>
+                  <Button sx={{ backgroundColor: '#FBBBB8', color: 'gray' }} variant="contained" onClick={handleIconClick}>더알아보기<ArrowCircleRightOutlinedIcon></ArrowCircleRightOutlinedIcon></Button>
+                </div> 
               </Box>
             </Box>
           </Box>
