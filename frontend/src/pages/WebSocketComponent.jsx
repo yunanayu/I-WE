@@ -7,12 +7,10 @@ import useMemberStore from "../stores/userStore";
 
 const Chat = () => {
     const [msg, setMsg] = useState("");
-    const [name, setName] = useState("");
     const [chat, setChat] = useState([]);
     const [chkLog, setChkLog] = useState(false);
     const [socketData, setSocketData] = useState();
     const userName = useMemberStore(state => state.userName);
-    const setUserName = useMemberStore(state => state.setUserName)
     const ws = useRef(null);
 
     const socketDataListner = useCallback(() => {
@@ -24,7 +22,7 @@ const Chat = () => {
 
     useEffect(() => {
         ws.current = new WebSocket(process.env.REACT_APP_WEB_SOCKET_URL || `wss://i10c108.p.ssafy.io/api/socket/chat`);
-        
+
         ws.current.onopen = () => {
             socketDataListner();
             setChkLog(true);
@@ -56,20 +54,13 @@ const Chat = () => {
 
     const send = useCallback(() => {
         if(!chkLog) {
-            if(name === "") {
-                alert("이름을 입력하세요.");
-                document.getElementById("name").focus();
-                return;
-            }
             socketDataListner();
             setChkLog(true);
         }
-        setUserName(name)
-        console.log("userName : " + userName)
 
         if(msg !== ''){
             const data = {
-                name,
+                name:userName,
                 msg,
                 date: new Date().toLocaleString(),
             }; 
@@ -101,6 +92,9 @@ const Chat = () => {
             <br />
             <div style={{ marginBottom: '20px' }}>
                 {chat.map((message, index) => (
+                    console.log("message.name : " + message.name),
+                    console.log("userName : " + userName),
+
                     <MessageBox 
                         key={index}
                         position={message.name===userName?'left':'right'}
@@ -108,18 +102,11 @@ const Chat = () => {
                         title={message.name}
                         text = {message.msg}
                     >
-                </MessageBox>
+                    </MessageBox>
                 ))}
             </div>
-            {/* <input
-                placeholder='Enter your name'
-                type='text'
-                style={{ padding: '10px', marginBottom: '10px', width: '100%', border: '1px solid #ccc', borderRadius: '5px' }}
-                id='name'
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-            /> */}
-            <div style={{ display: 'flex' }}>
+            <div 
+                style={{ display: 'flex' }}>
                 <textarea
                     style={{ padding: '10px', marginRight: '10px', flex: '1', border: '1px solid #ccc', borderRadius: '5px' }}
                     id='msg'
