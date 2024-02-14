@@ -26,7 +26,7 @@ const Chat = () => {
     useEffect(() => {
         console.log(process.env.REACT_APP_WEB_SOCKET_URL);
         //실행될 작업
-        ws.current = new WebSocket(process.env.REACT_APP_WEB_SOCKET_URL || 'wss://i10c108.p.ssafy.io/api/socket/chat');
+        ws.current = new WebSocket(process.env.REACT_APP_WEB_SOCKET_URL || `wss://i10c108.p.ssafy.io/api/socket/chat`);
         
         ws.current.onopen = () => {
             webSocketLogin();
