@@ -14,10 +14,16 @@ const Chat = () => {
     const userName = useMemberStore(state => state.userName);
     const setUserName = useMemberStore(state => state.setUserName)
     const ws = useRef(null);
-    useEffect(() => {
 
-        console.log(process.env.REACT_APP_WEB_SOCKET_URL);
-        ws.current = new WebSocket(process.env.REACT_APP_WEB_SOCKET_URL || 'wss://i10c108.p.ssafy.io/api/socket/chat');
+    const socketDataListner = useCallback(() => {
+        ws.current.onmessage = (message) => {
+            const dataSet = JSON.parse(message.data);
+            setSocketData(dataSet);
+        }
+    }, []);
+
+    useEffect(() => {
+        ws.current = new WebSocket(process.env.REACT_APP_WEB_SOCKET_URL || `wss://i10c108.p.ssafy.io/api/socket/chat`);
         
         ws.current.onopen = () => {
             socketDataListner();
@@ -29,11 +35,12 @@ const Chat = () => {
             setChkLog(false);
             console.log("socket closed");
         }
-    }, []);
+    }, [socketDataListner]);
 
     useEffect(() => {
         if(socketData !== undefined) {
-            setChat(chat.concat(socketData));
+            setChat(prevChatt => [...prevChatt, socketData]);
+
         }
     }, [socketData]);
 
@@ -46,13 +53,6 @@ const Chat = () => {
         console.log(event.target.value);
         setMsg(event.target.value);
     }
-    
-    const socketDataListner = useCallback(() => {
-        ws.current.onmessage = (message) => {
-            const dataSet = JSON.parse(message.data);
-            setSocketData(dataSet);
-        }
-    });
 
     const send = useCallback(() => {
         if(!chkLog) {
@@ -111,14 +111,14 @@ const Chat = () => {
                 </MessageBox>
                 ))}
             </div>
-            <input
+            {/* <input
                 placeholder='Enter your name'
                 type='text'
                 style={{ padding: '10px', marginBottom: '10px', width: '100%', border: '1px solid #ccc', borderRadius: '5px' }}
                 id='name'
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-            />
+            /> */}
             <div style={{ display: 'flex' }}>
                 <textarea
                     style={{ padding: '10px', marginRight: '10px', flex: '1', border: '1px solid #ccc', borderRadius: '5px' }}
