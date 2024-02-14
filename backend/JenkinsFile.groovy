@@ -27,7 +27,7 @@ pipeline {
             steps {
                 dir('./backend') {
                     withCredentials([file(credentialsId: 'key', variable: 'key')]) {
-                        sh 'chmod +wx src/main/resources'
+                        sh 'chmod a=wx src/main/resources'
                         sh 'cp ${key} src/main/resources/application-key.properties'
                     }
                 }
