@@ -43,7 +43,7 @@ public class AlarmService {
         Member mother = memberRepository.findByNum(baby.getMotherNum()).orElseThrow(NoMemberExistException::new);
         if (essential.isRange(baby.getTargetTime())) {
             sendEmail(EmailDto.of(mother, essential));
-            sendFCM(FCMDto.of(mother, essential)); // 필요정보 : token, title, content
+            sendFCM(FCMDto.of(mother, essential, "main")); // 필요정보 : token, title, content
         }
     }
 
@@ -54,7 +54,7 @@ public class AlarmService {
 
         if (essential.isRange(baby.getTargetTime())) {
             sendEmail(EmailDto.of(mother, essential));
-            sendFCM(FCMDto.of(mother, essential)); // 필요정보 : token, title, content
+            sendFCM(FCMDto.of(mother, essential, "main")); // 필요정보 : token, title, content
         }
     }
 

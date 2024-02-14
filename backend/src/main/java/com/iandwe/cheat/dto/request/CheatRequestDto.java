@@ -15,4 +15,5 @@ public class CheatRequestDto {
 
     private String content;
 
+    private String key;
 }
