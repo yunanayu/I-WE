@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Add Env') {
             steps {
-                dir('backend') {
+                dir('./backend') {
                     withCredentials([file(credentialsId: 'key', variable: 'key')]) {
                         sh 'cp ${key}  src/main/resources/application-key.properties'
                     }
