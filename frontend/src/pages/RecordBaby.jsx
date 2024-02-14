@@ -115,7 +115,7 @@ function Info(props) {
         ) : (
           <>
             <Typography fontSize={34}>임신 {props.targetTime} 주차</Typography>
-            <Typography fontSize={28}> D-{pBirth} </Typography>
+            <Typography fontSize={28} textAlign={'center'}> D-{pBirth} </Typography>
           </>
         )}
       </Box>
@@ -164,22 +164,15 @@ function RecordBaby() {
   const recordClose = () => setRecord(false);
   const [date, setDate] = useState(dayjs());
   const [babyIndex, setBabyIndex] = useState(0);
-  const [babyNum, setBabyNum] = useState(
-    useMemberStore((state) => state.babyList[babyIndex].num)
-  );
+  const [babyNum, setBabyNum] = useState(useMemberStore((state) => state.babyList[babyIndex].num));
+
 
   const babyList = useMemberStore((state) => state.babyList);
   const motherNum = useMemberStore((state) => state.userNum);
-  const targetTime = useMemberStore(
-    (state) => state.babyList[babyIndex].targetTime
-  ).substr(1);
-  const status = useMemberStore(
-    (state) => state.babyList[babyIndex].targetTime
-  ).substr(0, 1);
+  const targetTime = useMemberStore((state) => state.babyList[babyIndex].targetTime).substr(1);
+  const status = useMemberStore((state) => state.babyList[babyIndex].targetTime).substr(0, 1);
   const babyName = useMemberStore((state) => state.babyList[babyIndex].name);
-  const pregnancyDate = useMemberStore(
-    (state) => state.babyList[babyIndex].pregnancyDate
-  );
+  const pregnancyDate = useMemberStore((state) => state.babyList[babyIndex].pregnancyDate);
   const birthDate = useMemberStore((state) => state.babyList[babyIndex].birth);
   const gender = useMemberStore((state) => state.babyList[babyIndex].gender);
 
@@ -303,8 +296,48 @@ function RecordBaby() {
 
   return (
     <>
-      <Container maxWidth="lg" sx={{ ...setCenter, background: "skyblue" }}>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+      <Container maxWidth="lg" sx={{ ...setCenter }}>
+        <FormControl>
+          <RadioGroup
+            overlay
+            name="member"
+            orientation="horizontal"
+            sx={{ gap: 2 }}
+            onChange={babyChange}
+            value={babyNum}
+          >
+            {babyList.map((baby) => (
+              <Sheet
+                component="label"
+                key={baby.num}
+                variant="outlined"
+                sx={{
+                  p: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  boxShadow: "sm",
+                  borderRadius: "md",
+                }}
+              >
+                <Radio
+                  value={baby.num || ""}
+                  variant="soft"
+                  sx={{
+                    mb: 2,
+                  }}
+                />
+                <Typography level="body-sm" sx={{ mt: 1 }}>
+                  {baby.name}
+                </Typography>
+              </Sheet>
+            ))}
+          </RadioGroup>
+        </FormControl>
+        <Box
+          maxWidth="md"
+          sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}
+        >
           {
             <Info
               born={born}
