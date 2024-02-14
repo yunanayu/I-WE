@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -29,17 +30,14 @@ public class BabyRecordCreateRequestDto {
     // 날짜
     private LocalDate recordDate;
 
-    // 사진
-    private String babyImage;
-
-    public BabyRecord toEntity() {
+    public BabyRecord toEntity(List<String> images) {
         return BabyRecord.builder()
                 .babyNum(babyNum)
                 .height(height)
                 .weight(weight)
                 .circumference(circumference)
                 .recordDate(recordDate)
-                .babyImage(babyImage)
+                .images(images)
                 .build();
     }
 }

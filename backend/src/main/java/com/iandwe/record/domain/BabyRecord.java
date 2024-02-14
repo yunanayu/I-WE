@@ -2,16 +2,14 @@ package com.iandwe.record.domain;
 
 import com.iandwe.record.dto.BabyRecordUpdateRequestDto;
 import com.iandwe.record.dto.MotherRecordUpdateRequestDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -41,9 +39,10 @@ public class BabyRecord {
     private LocalDate recordDate;
 
     // 사진
-    private String babyImage;
+    @ElementCollection
+    private List<String> images;
 
-    public void update(BabyRecordUpdateRequestDto dto) {
+    public void update(BabyRecordUpdateRequestDto dto, List<String> images) {
         if (dto.getBabyNum() != null) {
             this.babyNum = dto.getBabyNum();
         }
@@ -59,8 +58,8 @@ public class BabyRecord {
         if (dto.getRecordDate() != null) {
             this.recordDate = dto.getRecordDate();
         }
-        if (dto.getBabyImage() != null) {
-            this.babyImage = dto.getBabyImage();
+        if (images != null && !images.isEmpty()) {
+            this.images = images;
         }
     }
 }
