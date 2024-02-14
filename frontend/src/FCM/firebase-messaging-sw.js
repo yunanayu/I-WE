@@ -70,6 +70,9 @@ export async function requestPermission() {
   //   self.registration.showNotification(notificationTitle,
   //     notificationOptions);
   // });
+
+
+  
    // 사용자가 구독을 취소할 때마다 토큰 삭제
   // window.addEventListener('beforeunload', async () => {
   //   console.log("페이지를 떠날 때 토큰을 삭제합니다.");
