@@ -141,11 +141,21 @@ const Main = ({ onLoginStatusChange }) => {
                   )}
                 </Typography>
               <Box sx={{ flexDirection: 'column', width: '50%', borderRadius: '50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
-              {/* <Carousel>
-                {carouselItems.map((photo, index) => (
-                  <img key={index} src={photo.url} alt={`Photo ${index}`} />
-                ))}
-              </Carousel> */}
+              <Carousel
+                emulateTouch
+                swipeable
+                onSwipe={handleSwipe}
+              >
+                <div>
+                  <img src={`사진1 URL?babyNum=${babyNum}`} alt="사진1" />
+                </div>
+                <div>
+                  <img src={`사진2 URL?babyNum=${babyNum}`} alt="사진2" />
+                </div>
+                <div>
+                  <img src={`사진3 URL?babyNum=${babyNum}`} alt="사진3" />
+                </div>
+              </Carousel>
                 <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
