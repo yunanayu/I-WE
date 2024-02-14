@@ -30,6 +30,7 @@ import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecor
 import InfoSection from "./components/Infos/InfoSection";
 import ChildList from "./components/myPage/ChildList";
 import CodeSharePage from "./pages/MyPage/CodeSharePage";
+import TestPage from "./FCM/TestPage";
 
 
 function App() {
@@ -104,6 +105,8 @@ function App() {
             <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
             <Route path="/babylist" element={<ChildList />} />
             <Route path="/codeshare" element={<CodeSharePage />} />
+            {/* 삭제 예정 */}
+            <Route path="/test" element={<TestPage />} />
           </Routes>
         </div>
         {parentLoggedIn && (

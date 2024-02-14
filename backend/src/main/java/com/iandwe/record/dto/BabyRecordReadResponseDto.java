@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Builder
@@ -33,7 +34,7 @@ public class BabyRecordReadResponseDto {
     private LocalDate recordDate;
 
     // 사진
-    private String babyImage;
+    private List<String> images;
 
     public static BabyRecordReadResponseDto from(BabyRecord babyRecord) {
         return BabyRecordReadResponseDto.builder()
@@ -43,7 +44,7 @@ public class BabyRecordReadResponseDto {
                 .weight(babyRecord.getWeight())
                 .circumference(babyRecord.getCircumference())
                 .recordDate(babyRecord.getRecordDate())
-                .babyImage(babyRecord.getBabyImage())
+                .images(babyRecord.getImages())
                 .build();
     }
 }

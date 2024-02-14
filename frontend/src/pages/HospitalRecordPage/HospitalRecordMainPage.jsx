@@ -11,6 +11,20 @@ import axios from 'axios';
 import { getEssential } from '../../api/RecordApi';
 import useMemberStore from '../../stores/userStore';
 
+// 현재 URL을 가져옵니다.
+var url = window.location.href;
+
+// URL에서 쿼리 매개변수를 추출합니다.
+var queryString = url.split('?')[1];
+
+// 쿼리 매개변수를 파싱하여 데이터를 추출합니다.
+var queryParams = new URLSearchParams(queryString);
+var data = queryParams.get('data');
+
+// 추출된 데이터를 사용합니다.
+console.log(data);
+
+
 
 export function replaceAWithNumber(inputString) {
   // 'A' 또는 'B'를 제거하고 나머지 문자열에서 숫자만 추출합니다.

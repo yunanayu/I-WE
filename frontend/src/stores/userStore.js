@@ -25,7 +25,7 @@ const useMemberStore = create(
     }),
     {
       name: "member",
-      storage: createJSONStorage(() => sessionStorage)
+      storage: createJSONStorage(() => localStorage)
     }
   )
 )

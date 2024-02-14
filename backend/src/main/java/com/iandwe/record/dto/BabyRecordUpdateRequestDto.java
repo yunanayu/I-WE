@@ -29,6 +29,4 @@ public class BabyRecordUpdateRequestDto {
     // 날짜
     private LocalDate recordDate;
 
-    // 사진
-    private String babyImage;
 }
