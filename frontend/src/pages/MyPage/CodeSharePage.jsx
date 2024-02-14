@@ -9,8 +9,10 @@ const theme = createTheme({
     fontFamily: "Nanum Gothic, sans-serif",
   },
 });
+
 const CodeSharePage = () => {
   const familyNum = useMemberStore((state) => state.familyNum);
+  console.log(familyNum)
   const handleCopy = () => {};
   return (
     <ThemeProvider

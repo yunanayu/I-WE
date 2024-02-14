@@ -100,7 +100,7 @@ function App() {
             <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
             <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
             <Route path="/babylist" element={<ChildList />} />
-            <Route path="/codeshare" element={<CodeSharePage />} />
+            <Route path="/codeshare" element={<CodeSharePage onLoginStatusChange={handleLoginStatusChange}/>} />
           </Routes>
         </div>
         {parentLoggedIn && (

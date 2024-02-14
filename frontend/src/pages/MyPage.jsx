@@ -16,6 +16,7 @@ import KeyboardArrowRightSharpIcon from "@mui/icons-material/KeyboardArrowRightS
 function MyPage() {
   const navigate = useNavigate();
   const profileImage = useMemberStore(state => state.profileImage)
+  const familyNum = useMemberStore((state) => state.familyNum);
   const userName = useMemberStore(state => state.userName)
   return (
     <Container>

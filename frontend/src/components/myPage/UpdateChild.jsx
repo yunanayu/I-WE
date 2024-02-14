@@ -65,6 +65,8 @@ const UpdateChild = (props) => {
   };
   return (
     <Container>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
       <FormControl>
         <FormLabel id="demo-controlled-radio-buttons-group">
           임신 여부
@@ -142,6 +144,7 @@ const UpdateChild = (props) => {
             name="pregnancyDate"
             value={baby.pregnancyDate? moment(baby.pregnancyDate) : today}
             onChange={(newValue) => setInitState({...initState, pregnancyDate:moment(newValue.$d).format('YYYY-MM-DD')})}
+            disableFuture
           />
         </DemoContainer>
       </LocalizationProvider>
@@ -184,15 +187,20 @@ const UpdateChild = (props) => {
             name="birth"
             value={baby.birth ? moment(baby.birth) : today}
             onChange={(newValue) => setInitState({...initState, birth:moment(newValue.$d).format('YYYY-MM-DD')})}
+            disableFuture 
           />
         </DemoContainer>
       </LocalizationProvider>
       </>
       }
       </Box>
-      <Button variant="contained" endIcon={<SendIcon />} onClick={addChild}>
-        등록하기
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button color="#fcafaf" variant="contained" endIcon={<SendIcon />} onClick={addChild}>
+            등록하기
+          </Button>
+        </div>
+        </div>
+      </div>
     </Container>
   );
 };

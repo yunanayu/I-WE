@@ -50,8 +50,6 @@ function MemberCheckPage({ setSpouseStatus }) {
           }
         }
       );
-
-      console.log(response);
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }

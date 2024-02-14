@@ -4,18 +4,21 @@ import logo from "../images/logo.png";
 import { Link } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import CardContent from '@mui/material/CardContent';
 import { Box, Typography, Card } from '@mui/material';
 import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
 import mainprofile from '../images/mainprofile.png';
+import b1 from '../images/1.jpg';
 import axios from 'axios';
 import moment from 'moment';
-import Carousel from "react-material-ui-carousel";
+import { Swiper, SwiperSlide } from 'swiper/react';
 import useMemberStore from '../stores/userStore';
-// import InfiniteScrollComponent from '../components/InfiniteScroll'
+import 'swiper/css';
+import 'swiper/css/effect-cards';
+import './styles.css';
+import { EffectCards } from 'swiper/modules';
 
 const theme = createTheme({
   typography: {
@@ -29,6 +32,8 @@ const Main = ({ onLoginStatusChange }) => {
   const setBabyList = useMemberStore(state => state.setBabyList)
   const userNum = useMemberStore(state => state.userNum)
   const setFamilyNum = useMemberStore(state => state.setFamilyNum)
+  const babyCnt = babyList.length;
+  const [babyNum, setBabyNum] = useState(0); // 선택된 아이의 번호
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -51,9 +56,14 @@ const Main = ({ onLoginStatusChange }) => {
   
   },  [onLoginStatusChange]);
 
+  
+
   const [babyName, setBabyName] = useState([]);
+  // 임신 시
   const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
   const [daysSinceBirth, setDaysSinceBirth] = useState(null);
+
+  // 출산 시
   const [daysAfterBirth, setDaysAfterBirth] = useState(null);
   const [daysBeforeBirth, setDaysBeforeBirth] = useState(null);
 
@@ -62,10 +72,10 @@ const Main = ({ onLoginStatusChange }) => {
     const fetchData = async () => {
       try {
         const info = babyList
-        const babyname = info[0].name
+        const babyname = info[babyNum].name
         setBabyName(babyname);
-        const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
-        const birthDate = moment(info[0].birth, 'YYYY-MM-DD');
+        const pregnancyDate = moment(info[babyNum].pregnancyDate, 'YYYY-MM-DD');
+        const birthDate = moment(info[babyNum].birth, 'YYYY-MM-DD');
         const today = moment();
         const pregnancydays = today.diff(pregnancyDate, 'days');
         const birthdays = today.diff(birthDate, 'days');
@@ -74,6 +84,8 @@ const Main = ({ onLoginStatusChange }) => {
         // 출산예정일
         const suggestDate = (280 - pregnancydays);
         // 출산 후 
+
+        
 
         setDaysBeforeBirth(suggestDate);
         setDaysAfterBirth(birthdays);
@@ -87,12 +99,11 @@ const Main = ({ onLoginStatusChange }) => {
 
   }, [babyList]);
 
-
   // 공유코드 저장
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if(isLoggedIn){
+        if(userNum){
           const response = await axios({
           method: 'get',
           // userNum
@@ -100,31 +111,14 @@ const Main = ({ onLoginStatusChange }) => {
         });
         const data = response.data.code;
         setFamilyNum(data)
-        console.log(data)
-
         }
       } catch (error) {
         console.log(error);
       }
     };
-
     fetchData();
   }, [userNum]);
-
-  const carouselItems = [
-    {
-      image: "url_to_image_1",
-      caption: "Caption 1",
-    },
-    {
-      image: "url_to_image_2",
-      caption: "Caption 2",
-    },
-    {
-      image: "url_to_image_3",
-      caption: "Caption 3",
-    },
-  ];
+  
 
   return (
     <>
@@ -133,30 +127,27 @@ const Main = ({ onLoginStatusChange }) => {
         <ThemeProvider theme={theme}>
           <Box sx={{ width:'100%' , display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: 6,}}>
             <Box sx={{ display: 'flex',  alignItems: 'center', flexDirection: 'column' }}>
-              <Typography margin="10px" variant="h3" align="center" sx={{ mb: 2, color: 'gray' }}>
-                  {daysSincePregnancy ? (
-                    ` D - ${daysBeforeBirth}`
-                    ) : ( daysSinceBirth ? `D + ${daysAfterBirth}` : ''
-                  )}
-                </Typography>
-              <Box sx={{ flexDirection: 'column', width: '50%', borderRadius: '50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
-              <Carousel
-                emulateTouch
-                swipeable
-                onSwipe={handleSwipe}
-              >
-                <div>
-                  <img src={`사진1 URL?babyNum=${babyNum}`} alt="사진1" />
-                </div>
-                <div>
-                  <img src={`사진2 URL?babyNum=${babyNum}`} alt="사진2" />
-                </div>
-                <div>
-                  <img src={`사진3 URL?babyNum=${babyNum}`} alt="사진3" />
-                </div>
-              </Carousel>
-                <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-              </Box>
+            <Swiper
+              effect={'cards'}
+              grabCursor={true}
+              modules={[EffectCards]}
+              className="mySwiper"
+              onSlideChange={(swiper) => {
+                setBabyNum(swiper.activeIndex);
+              }}
+            >
+              {babyList.map((baby, index) => (
+                <SwiperSlide key={index}>
+                  <div style={{display:'flex', flexDirection:'column'}}>
+                    {daysSincePregnancy ? `D - ${daysBeforeBirth}` : daysSinceBirth ? `D + ${daysAfterBirth}` : ''}
+                    <img src={b1} alt={baby.name} />
+                    {baby.pregnancyDate}
+                    {baby.birth}
+                    {baby.name}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
                 <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
                   {babyName}
@@ -237,7 +228,7 @@ const Main = ({ onLoginStatusChange }) => {
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: 8, padding: 4, width: '50%' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
                 <div style={{ flex: 1 }}>
-                    <KakaoLogin setIsLoggedIn={setIsLoggedIn} onSuccess={handleKakaoLoginSuccess} sx={{ width: '100%' }} />
+                    <KakaoLogin onSuccess={handleKakaoLoginSuccess} sx={{ width: '100%' }} />
                   </div>
                   <div style={{ flex: 1 }}>
                     <NaverLogin setIsLoggedIn={setIsLoggedIn} onSuccess={handleNaverLoginSuccess} sx={{ width: '100%' }} />

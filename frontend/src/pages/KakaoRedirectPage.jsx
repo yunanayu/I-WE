@@ -16,8 +16,6 @@ function KakaoLogin({ setIsLoggedIn }) {
   const setProfileImage = useMemberStore(state => state.setProfileImage)
 
   const handleLogin = () => {
-    console.log("로그인눌림");
-    console.log(process.env.REACT_APP_KAKAO_LOGIN_URL);
     window.location.href = BackURL;
   };
 
