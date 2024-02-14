@@ -70,29 +70,32 @@ function MemberCheckPage({ setSpouseStatus }) {
   };
 
   return (
-    <Box sx={{ backgroundColor: 'whitesmoke', margin: '20px', padding: '10px' }}>
-  <FormControl>
-    <FormLabel id="demo-radio-buttons-group-label">선택해주세요</FormLabel>
-    <RadioGroup
-      display="flex"
-      aria-labelledby="demo-radio-buttons-group-label"
-      defaultValue=""
-      name="radio-buttons-group"
-      value={selectedMember}
-      onChange={handleSelectMember}
-    >
-      <FormControlLabel value="MOTHER" control={<Radio />} label="엄마" />
-      <FormControlLabel value="FATHER" control={<Radio />} label="아빠" />
-    </RadioGroup>
-    <Button
-      size="small"
-      sx={{ backgroundColor: '#FBBBB8', color: 'white' }}
-      onClick={handleConfirm}
-    >
-      확인
-    </Button>
-  </FormControl>
-</Box>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height:'70vh'  }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '300px', width:'300px', backgroundColor: 'whitesmoke', margin: '20px', padding: '10px', borderRadius:'15px' }}>
+        <FormControl sx={{ display: 'flex', justifyContent: 'center' }}>
+          <FormLabel sx={{ pointerEvents: 'none', color:'black', fontWeight:'bold', fontSize:'x-large',  mb:'30px'}} id="demo-radio-buttons-group-label">당신은 아이의?</FormLabel>
+          <br />
+          <RadioGroup
+            row
+            name="position"
+            defaultValue="bottom"
+            value={selectedMember}
+            onChange={handleSelectMember}
+          >
+            <FormControlLabel labelPlacement="bottom" value="MOTHER" control={<Radio />} label="엄마" />
+            <FormControlLabel labelPlacement="bottom" value="FATHER" control={<Radio />} label="아빠" />
+          </RadioGroup>
+          <br />
+          <Button
+            size="mid"
+            sx={{ backgroundColor: '#FBBBB8', color: 'white' }}
+            onClick={handleConfirm}
+          >
+            다음  →
+          </Button>
+        </FormControl>
+      </Box>
+    </div>
 
   );
 }

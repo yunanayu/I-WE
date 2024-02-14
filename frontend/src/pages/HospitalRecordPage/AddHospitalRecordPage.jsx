@@ -33,23 +33,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Option } from '@mui/joy';
 import useMemberStore from '../../stores/userStore';
 
-const babyList = [
-  {name:'서싸피'},
-  {name:'이싸피'},
-  {name:'박싸피'},
-  {name:'정싸피'},
-  {name:'전싸피'},
-  {name:'최사피'},
-]
-
 const AddMomRecordPage = () => {
   const babyList = useMemberStore(state => state.babyList)
+  const motherNum = babyList[0].motherNum
   const navigate = useNavigate()
   const [target, setTarget] = useState('')
   const location = useLocation()
   const selectedDay = location.state.selectedDay
-
+  const bornBabyList = babyList.filter((baby) => baby.status);
   const [value, setValue] = React.useState('mother');
+  const [targetNum, setTargetNum] = useState(0)
 
   const today = dayjs(moment(new Date()).format('YYYY-MM-DD'))  // 추후에 선택한 날짜로 변경하기
   const [state, setState] = useState({
@@ -61,6 +54,7 @@ const AddMomRecordPage = () => {
     checkupResult: '',
     doctorOpinion: '',
     target : '',
+    targetNum : 0,
   })
   useEffect(() => {
 
@@ -110,10 +104,16 @@ const AddMomRecordPage = () => {
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
         >
-          <FormControlLabel onClick={()=> setTarget('mother')} value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
+          <FormControlLabel onClick={()=> {setTarget('mother')}} value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
           <FormControlLabel onClick={()=> setTarget('baby')} value="baby" control={<Radio />} label="아기" name='target' onChange={handleChange}/>
         </RadioGroup>
       </FormControl>
+      {/* {bornBabyList.length !== 0 
+      && 
+      <Select variant="plain" placeholder="아기 선택">
+        {bornBabyList.map((baby) => (
+          <Option name='targetNum' onClick={handleChange} value={baby.num}>{baby.name}</Option>))}
+      </Select>} */}
 
       <Box sx={{display:'flex', width:'100%', pt:3 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -122,7 +122,6 @@ const AddMomRecordPage = () => {
               label="검진 날짜 선택"
               value={today}
               onChange={(newValue) => {
-                console.log(newValue)
                 setState({...state, selectDay : moment(newValue.$d).format('YYYY-MM-DD')})
               }}
               sx={{

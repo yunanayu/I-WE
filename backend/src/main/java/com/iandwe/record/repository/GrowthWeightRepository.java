@@ -5,10 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface GrowthWeightRepository extends JpaRepository<GrowthWeight, Long>  {
-//    Optional<GrowthWeight> findByGenderAndMonth(int gender, int month);
 
     @Query("select w from GrowthWeight w " +
             "where w.gender = :gender " +

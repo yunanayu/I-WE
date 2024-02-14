@@ -1,29 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  LineController,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, LineController, LineElement, PointElement, Title, Tooltip, Legend } from "chart.js";
 import { BoxPlotController, BoxAndWiskers } from "@sgratzl/chartjs-chart-boxplot";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BoxPlotController,
-  BoxAndWiskers,
-  LineController,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BoxPlotController, BoxAndWiskers, LineController, LineElement, PointElement, Title, Tooltip, Legend);
 
 const WeightChart = (props) => {
   const [weightRecord, setWeightRecord] = useState();
@@ -101,13 +80,7 @@ const WeightChart = (props) => {
             type: "boxplot",
             label: "체중 백분위수",
             order: 2,
-            data: Array.from({ length: weightData.length >= 5 ? 5 : weightData.length }, () => [
-              a.pop(),
-              b.pop(),
-              c.pop().weight,
-              d.pop(),
-              e.pop(),
-            ]),
+            data: Array.from({ length: weightData.length >= 5 ? 5 : weightData.length }, () => [a.pop(), b.pop(), c.pop().weight, d.pop(), e.pop()]),
 
             borderColor: "rgb(255, 99, 132)",
             backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -240,15 +213,9 @@ const HeightChart = (props) => {
         datasets: [
           {
             type: "boxplot",
-            label: "체중 백분위수 차트",
+            label: "신장 백분위수 차트",
             order: 2,
-            data: Array.from({ length: heightData.length >= 5 ? 5 : heightData.length }, () => [
-              a.pop(),
-              b.pop(),
-              c.pop().height,
-              d.pop(),
-              e.pop(),
-            ]),
+            data: Array.from({ length: heightData.length >= 5 ? 5 : heightData.length }, () => [a.pop(), b.pop(), c.pop().height, d.pop(), e.pop()]),
 
             borderColor: "rgb(255, 99, 132)",
             backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -383,13 +350,7 @@ const HeadChart = (props) => {
             type: "boxplot",
             label: "머리둘레 백분위 차트",
             order: 2,
-            data: Array.from({ length: headData.length >= 5 ? 5 : headData.length }, () => [
-              a.pop(),
-              b.pop(),
-              c.pop().head,
-              d.pop(),
-              e.pop(),
-            ]),
+            data: Array.from({ length: headData.length >= 5 ? 5 : headData.length }, () => [a.pop(), b.pop(), c.pop().head, d.pop(), e.pop()]),
 
             borderColor: "rgb(255, 99, 132)",
             backgroundColor: "rgba(255, 99, 132, 0.5)",

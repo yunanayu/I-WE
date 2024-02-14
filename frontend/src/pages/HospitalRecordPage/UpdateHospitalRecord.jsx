@@ -66,7 +66,7 @@ const UpdateHospitalRecord = (props) => {
           targetNum : state.targetNum,  // pk
           title : state.title,   // 간단 정보
           hospitalName : state.hospitalName,  //
-          doctor :' state.doctorName',
+          doctor : state.doctorName,
           hospitalDate : state.selectDay,
           content : state.checkupItem,
           result : state.checkupResult,

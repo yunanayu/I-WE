@@ -36,6 +36,7 @@ const CheckCard = (props) => {
   const babyList = useMemberStore(state => state.babyList)
   const item = props.item
   const num = props.num
+  console.log(props)
   const [complete, setComplete] = useState(item.complete)
   const [date, setDate] = useState({start:'', end:''})
   const updateComplete = () => {
@@ -43,7 +44,7 @@ const CheckCard = (props) => {
     if (item.target === 'baby') {
       changeComplete(num,item.essentialNum, 'baby', !item.complete )
     } else {
-    changeComplete(num,item.essentialNum, 'mother', !item.complete )
+    changeComplete(num, item.essentialNum, item.target, !item.complete )
     }
   }
 

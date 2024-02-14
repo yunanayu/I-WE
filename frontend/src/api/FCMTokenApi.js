@@ -9,6 +9,7 @@ export const goDeviceToken = (token) => {
       }
     })
     .then((res)=>{
+      console.log('토큰 전송 완료')
     })
     .catch((err) => console.log(err))
 

@@ -157,7 +157,7 @@ function WeeklyWeightChart(props) {
   return (
     <Box sx={{ width: "90%" }}>
       <Box sx={{ mt: 3, textAlign: "center" }}>
-        <Typography fontSize={28}> 날짜별 체중 </Typography>
+        <Typography fontSize={24}> 날짜별 체중 </Typography>
       </Box>
       <ToggleButtonGroup size="small" value={selectedInterval} exclusive onChange={handleToggleInterval} aria-label="select-interval" sx={{ mb: 3 }}>
         <ToggleButton value={1}>일별</ToggleButton>
@@ -165,7 +165,7 @@ function WeeklyWeightChart(props) {
         <ToggleButton value={3}>월별</ToggleButton>
       </ToggleButtonGroup>
 
-      <Paper sx={{ width: "100%", height: 300, paddingBottom: 1 }} elevation={3}>
+      <Paper sx={{ width: "100%", height: 300, paddingBottom: 1, mb: 2 }} elevation={3}>
         {/* @ts-ignore */}
         {chartData && ( // Render only if there is data
           <ResponsiveChartContainer
@@ -213,7 +213,15 @@ function WeeklyWeightChart(props) {
 function ChangeChart(props) {
   const momRecord = props.recordData;
   const momBasis = props.basisData;
-  const babyData = props.babyData;
+  const [babyData, setBabyData] = useState();
+  const [status, setStatus] = useState();
+  const [babyIndex, setBabyIndex] = useState();
+
+  useEffect(() => {
+    setBabyData(props.babyData);
+    setStatus(props.status);
+    setBabyIndex(props.babyIndex);
+  }, [props])
 
   // [주차][비만도 => 저체중, 평균, 과제충, 비만]
   const recommendWeightStart = [
@@ -319,7 +327,7 @@ function ChangeChart(props) {
       });
       setMomWeight(weightArr);
       setBasis(momBasis);
-      setWeek(babyData[0].targetTime.substr(1));
+      setWeek(babyData[babyIndex].targetTime.substr(1));
       const bmi = (momBasis.basisWeight / (momBasis.height * momBasis.height)).toFixed(1);
       if (bmi < 18.5) {
         setBmi(0);
@@ -330,18 +338,23 @@ function ChangeChart(props) {
       } else {
         setBmi(3);
       }
-      if (momRecord) {
-        const newData = generateData();
-        setChartData(newData);
-      }
-      if (chartData && lineData) {
-        props.diffUpdate(chartData);
-        props.avgUpdate(lineData);
-      }
+    }
+  }, [momRecord, momBasis, babyData]);
+
+  useEffect(() => {
+    if (momRecord) {
+      const newData = generateData();
+      setChartData(newData);
+    }
+  }, [momWeight, momRecord]);
+  useEffect(() => {
+    if (chartData && lineData) {
+      props.diffUpdate(chartData);
+      props.avgUpdate(lineData);
     }
     // console.log("BABY DATA !!!!!!!!!!!!" + JSON.stringify(babyData));
     // console.log("WEEK !!!!! " + week);
-  }, [momRecord, momBasis, week, chartData, lineData, props]);
+  }, [chartData, lineData]);
 
   const generateData = () => {
     if (momWeight) {
@@ -378,15 +391,19 @@ function ChangeChart(props) {
           weight: (sum / s).toFixed(1),
           date: week - w,
         });
-        let dat = {
+        let dat;
+        dat = {
           start: recommendWeightStart[week][bmi],
           end: recommendWeightEnd[week][bmi],
           week: week - w,
         };
+
         ld.unshift(dat);
         w++;
       }
-      ld.shift();
+      if (ld.length > 1) {
+        ld.shift();
+      }
       setLineData(ld);
       // console.log("기준!!!!\n" + JSON.stringify(lineData));
 
@@ -394,6 +411,13 @@ function ChangeChart(props) {
         diff.push({
           weight: (tmp[k + 1].weight - tmp[k].weight).toFixed(1),
           date: tmp[k + 1].date,
+        });
+      }
+      if (diff.length === 0) {
+        // console.log(JSON.stringify(momBasis));
+        diff.push({
+          weight: momRecord[0].weight - momBasis.basisWeight,
+          date: momRecord[0].recordDate,
         });
       }
       // console.log("몸무게 변화율\n" + JSON.stringify(diff));
@@ -404,9 +428,9 @@ function ChangeChart(props) {
   return (
     <Box sx={{ width: "90%" }}>
       <Box sx={{ mt: 3, textAlign: "center" }}>
-        <Typography fontSize={28}> 체중 증가율 </Typography>
+        <Typography fontSize={24}> 체중 증가율 </Typography>
       </Box>
-      <Paper sx={{ width: "100%", height: 350 }}>
+      <Paper sx={{ width: "100%", height: 350, paddingBottom: 1, mb: 2 }}>
         {/* @ts-ignore */}
         {chartData && lineData && (
           <ResponsiveChartContainer
@@ -418,16 +442,20 @@ function ChangeChart(props) {
                 label: "증가율",
                 id: "weight",
               },
-              {
-                type: "line",
-                data: lineData.map((data) => data.start),
-                label: "추천 최소치",
-              },
-              {
-                type: "line",
-                data: lineData.map((data) => data.end),
-                label: "추천 최대치",
-              },
+              status === "B"
+                ? {
+                    type: "line",
+                    data: lineData.map((data) => data.start),
+                    label: "추천 최소치",
+                  }
+                : {},
+              status === "B"
+                ? {
+                    type: "line",
+                    data: lineData.map((data) => data.end),
+                    label: "추천 최대치",
+                  }
+                : {},
             ]}
             xAxis={[
               {
@@ -443,9 +471,9 @@ function ChangeChart(props) {
             ]}
           >
             <BarPlot />
-            <LinePlot />
-            <MarkPlot />
-            <ChartsXAxis label="주차" position="bottom" axisId="x-axis-id" />
+            {status === "B" ? <LinePlot /> : <></>}
+            {status === "B" ? <MarkPlot /> : <></>}
+            <ChartsXAxis label={status === "A" ? "개월" : "주차"} position="bottom" axisId="x-axis-id" />
             <ChartsYAxis label="평균 체중 변화량" position="left" axisId="y-axis-id" />
             <ChartsLegend position={{ vertical: "top", horizontal: "right" }} />
             <ChartsTooltip trigger="axis" />
