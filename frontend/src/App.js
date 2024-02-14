@@ -9,6 +9,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import CssBaseline from '@mui/material/CssBaseline';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import TalkIcon from '@mui/icons-material/ChatBubble'
 
 import RecordBaby from "./pages/RecordBaby";
 import RecordMom from "./pages/RecordMom";
@@ -19,6 +20,7 @@ import CheckCode from "./pages/CheckCodePage";
 import AddChild from "./pages/AddChildPage";
 import MyPage from "./pages/MyPage";
 import DiaryPage from "./pages/DiaryPage"
+import Chat from "./pages/WebSocketComponent"
 import FindHospital from "./pages/FindHospitalPage"
 import Community from "./pages/CommunityPage";
 
@@ -94,6 +96,7 @@ function App() {
             <Route path="/diary" element={<DiaryPage />} />
             <Route path="/hospital" element={<FindHospital />} />
             <Route path="/community" element={<Community />} />
+            <Route path="/chat" element={<Chat />} />
 
             <Route path="/recordmom" element={<RecordMom />} />
             <Route path="/recordbaby" element={<RecordBaby />} />
@@ -149,6 +152,15 @@ function App() {
               icon={<NotificationsIcon/>}
               style={{ color: value === 'alert' ? 'white' : 'inherit' }}
               onClick={() => setValue('alert')}
+            />
+            <BottomNavigationAction
+              component={Link}
+              to="/chat"
+              label="chat"
+              value="chat"
+              icon={<TalkIcon/>}
+              style={{ color: value === 'chat' ? 'white' : 'inherit' }}
+              onClick={() => setValue('chat')}
             />
             </BottomNavigation>
           </div>
