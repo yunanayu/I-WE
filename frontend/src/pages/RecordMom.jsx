@@ -83,29 +83,24 @@ const Info = (props) => {
     <>
       <Box sx={{ p: 3, textAlign: "center" }}>
         <Typography fontSize={20} variant="body2" style={{ whiteSpace: "pre-line" }}>
-          {" "}
-          {msg}{" "}
+          {msg}
         </Typography>
         <Typography fontSize={26} variant="body2" style={{ whiteSpace: "pre-line" }}>
-          {" "}
-          {msg5}{" "}
+          {msg5}
         </Typography>
         {msg2 && (
           <Typography fontSize={20} variant="body2" style={{ whiteSpace: "pre-line" }} sx={{ mt: 1 }}>
-            {" "}
-            {msg2}{" "}
+            {msg2}
           </Typography>
         )}
         {msg3 && (
           <Typography fontSize={20} variant="body2" style={{ whiteSpace: "pre-line" }}>
-            {" "}
-            {msg3}{" "}
+            {msg3}
           </Typography>
         )}
         {msg4 && (
           <Typography fontSize={16} variant="body2" style={{ whiteSpace: "pre-line" }} sx={{ mt: 1 }}>
-            {" "}
-            {msg4}{" "}
+            {msg4}
           </Typography>
         )}
       </Box>
@@ -127,14 +122,14 @@ function RecordMom() {
   const [status, setStatus] = useState(useMemberStore((state) => state.babyList[babyIndex].targetTime).substr(0, 1));
 
   const babyList = useMemberStore((state) => state.babyList);
-  // console.log(JSON.stringify(babyList));
+  console.log(JSON.stringify(babyList));
   const motherNum = useMemberStore((state) => state.userNum);
 
   const babyChange = (e) => {
     // console.log(babyList.findIndex((baby) => baby.num + "" === e.target.value));
-    setBabyIndex(babyList.findIndex((baby) => baby.num + "" === e.target.value));
+    setBabyIndex(babyList.findIndex((baby) => Number(baby.num)  === Number(e.target.value)));
     setBabyNum(e.target.value);
-    setStatus(babyList[babyList.findIndex((baby) => baby.num + "" === e.target.value)].targetTime.substr(0, 1));
+    setStatus(babyList[babyList.findIndex((baby) => Number(baby.num) === Number(e.target.value))].targetTime.substr(0, 1));
   };
 
   useEffect(() => {
@@ -161,9 +156,21 @@ function RecordMom() {
           console.log("GET MOM BASIS ERROR\n" + error);
         });
     };
-   
+    const initBabyData = async () => {
+      await axios
+        .get(`/api/baby/${babyNum}`)
+        .then((response) => {
+          let bData = response.data;
+          setBabyData([...bData]);
+        })
+        .catch((error) => {
+          setBabyData();
+          console.log("GET BABY DATA ERROR\n" + error);
+        });
+    };
     initData();
     initBasis();
+    initBabyData();
   }, [babyNum]);
 
   const onUpdateRecent = (data) => {

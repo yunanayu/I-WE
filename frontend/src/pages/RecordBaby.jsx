@@ -66,11 +66,6 @@ function Info(props) {
     } else {
       setPercentile();
     }
-    if(!props.recentRecord){
-      setPercentile();
-    } else if(props.recentRecord.babyNum !== props.babyNum) {
-      setPercentile();
-    }
   }, [props.percentile, props.babyNum, props.recentRecord]);
 
   tmp.setMonth(tmp.getMonth() - 3);
