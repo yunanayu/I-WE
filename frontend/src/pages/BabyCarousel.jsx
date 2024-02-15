@@ -27,7 +27,7 @@ const BabyCarousel = (props) => {
   
   return (
     <Box sx={{ width: "100%" }}>
-      {url ? <Carousel
+      {url && url.length > 0 ? <Carousel
         showArrows={true}
         centerMode={true}
         centerSlidePercentage={10}
@@ -57,7 +57,7 @@ const BabyCarousel = (props) => {
             <img src={content.image} width={250} height={350} alt={content.recordDate} key={content.num} />
           </Stack>
         ))}
-      </Carousel> : <Typography fontSize={26} variant="body2" style={{ whiteSpace: "pre-line" }}> 기록된 사진이 없습니다. </Typography>}
+      </Carousel> : <Typography fontSize={26} variant="body2" style={{ whiteSpace: "pre-line", textAlign: "center" }}> 기록된 사진이<br/>없습니다. </Typography>}
     </Box>
   );
 };

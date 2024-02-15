@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useMemberStore from "./../../stores/userStore";
 import axios from "axios";
 import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -15,10 +15,10 @@ import { getBabyList } from "../../api/UserApi";
 const UpdateChild = (props) => {
   const userNum = useMemberStore(state => state.userNum)
   const baby = props.baby
-  console.log(baby)
+  const today = dayjs(new Date())
+  const [value, setValue]= useState(today)
   const motherNum = baby.motherNum;
   const [status, setStatus] = useState(null)
-  const today = dayjs(moment(new Date()).format('YYYY-MM-DD'))
   const [initState, setInitState] = useState({
     name: baby.name,
     gender: baby.gender,
@@ -26,7 +26,6 @@ const UpdateChild = (props) => {
     pregnancyDate: baby.pregnancyDate,
     status: baby.status,
   });
-  console.log(initState)
   const handleChange = (event) => {
     setInitState({...initState, [event.target.name] : event.target.value})
   };
@@ -35,15 +34,16 @@ const UpdateChild = (props) => {
 
   useEffect(()=> {
     if (baby.status) {
+      setValue(dayjs(baby.birth))
       setStatus('after')
     }
     else{
+      setValue(dayjs(baby.pregnancyDate))
       setStatus('before')
     }
   }, [])
 
   const addChild = () => {
-    // console.log(initState)
     axios({
       method: "put",
       url: `/api/baby/update`,
@@ -147,8 +147,11 @@ const UpdateChild = (props) => {
             ref={dateInputBefore}
             label="임신 추측일"
             name="pregnancyDate"
-            value={baby.pregnancyDate? moment(baby.pregnancyDate) : today}
-            onChange={(newValue) => setInitState({...initState, pregnancyDate:moment(newValue.$d).format('YYYY-MM-DD')})}
+            // value={baby.pregnancyDate? moment(baby.pregnancyDate) : today}
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue)
+              setInitState({...initState, pregnancyDate:moment(newValue.$d).format('YYYY-MM-DD')})}}
           />
         </DemoContainer>
       </LocalizationProvider>
@@ -193,8 +196,11 @@ const UpdateChild = (props) => {
             ref={dateInputAfter}
             label="출생일"
             name="birth"
-            value={baby.birth ? moment(baby.birth) : today}
-            onChange={(newValue) => setInitState({...initState, birth:moment(newValue.$d).format('YYYY-MM-DD')})}
+            // value={baby.birth ? moment(baby.birth) : today}
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue)
+              setInitState({...initState, birth:moment(newValue.$d).format('YYYY-MM-DD')})}}
           />
         </DemoContainer>
       </LocalizationProvider>

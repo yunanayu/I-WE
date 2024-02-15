@@ -339,14 +339,16 @@ function ChangeChart(props) {
         setBmi(3);
       }
     }
-  }, [momRecord, momBasis, babyData]);
+  }, [momRecord, momBasis, babyData, babyIndex]);
 
   useEffect(() => {
     if (momRecord) {
       const newData = generateData();
       setChartData(newData);
     }
-  }, [momWeight, momRecord]);
+    console.log(JSON.stringify(chartData));
+  }, [momWeight, momRecord, babyIndex]);
+
   useEffect(() => {
     if (chartData && lineData) {
       props.diffUpdate(chartData);
@@ -391,6 +393,7 @@ function ChangeChart(props) {
           weight: (sum / s).toFixed(1),
           date: week - w,
         });
+        // console.log("2222222222" + JSON.stringify(tmp));
         let dat;
         dat = {
           start: recommendWeightStart[week][bmi],
@@ -417,7 +420,7 @@ function ChangeChart(props) {
         // console.log(JSON.stringify(momBasis));
         diff.push({
           weight: momRecord[0].weight - momBasis.basisWeight,
-          date: momRecord[0].recordDate,
+          date: week,
         });
       }
       // console.log("몸무게 변화율\n" + JSON.stringify(diff));
@@ -442,20 +445,20 @@ function ChangeChart(props) {
                 label: "증가율",
                 id: "weight",
               },
-              status === "B"
+              (status === "B"
                 ? {
                     type: "line",
                     data: lineData.map((data) => data.start),
                     label: "추천 최소치",
                   }
-                : {},
-              status === "B"
+                : {}),
+              (status === "B"
                 ? {
                     type: "line",
                     data: lineData.map((data) => data.end),
                     label: "추천 최대치",
                   }
-                : {},
+                : {}),
             ]}
             xAxis={[
               {

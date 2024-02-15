@@ -48,7 +48,7 @@ const WeightChart = (props) => {
       };
       m--;
       arr.push(obj);
-      for (let i = weightRecord.length - 1; i >= (weightRecord.length >= 5 ? weightRecord.length - 6 : 0); i--) {
+      for (let i = weightRecord.length - 1; i>=0; i--) {
         if (new Date(arr[0].recordDate).getMonth() !== new Date(weightRecord[i].recordDate).getMonth()) {
           const obj = {
             weight: weightRecord[i].weight,
@@ -58,6 +58,7 @@ const WeightChart = (props) => {
           arr.unshift(obj);
           m--;
         }
+        if(arr.length >= 5) break;
       }
       setWeightData(arr);
     }
@@ -182,7 +183,7 @@ const HeightChart = (props) => {
       };
       m--;
       arr.push(obj);
-      for (let i = heightRecord.length - 1; i >= (heightRecord.length >= 5 ? heightRecord.length - 6 : 0); i--) {
+      for (let i = heightRecord.length - 1; i >= 0; i--) {
         if (new Date(arr[0].recordDate).getMonth() !== new Date(heightRecord[i].recordDate).getMonth()) {
           const obj = {
             height: heightRecord[i].height,
@@ -192,6 +193,7 @@ const HeightChart = (props) => {
           arr.unshift(obj);
           m--;
         }
+        if(arr.length >= 5) break;
       }
       setHeightData(arr);
     }
@@ -317,7 +319,7 @@ const HeadChart = (props) => {
       };
       m--;
       arr.push(obj);
-      for (let i = headRecord.length - 1; i >= (headRecord.length >= 5 ? headRecord.length - 6 : 0); i--) {
+      for (let i = headRecord.length - 1; i >= 0; i--) {
         if (new Date(arr[0].recordDate).getMonth() !== new Date(headRecord[i].recordDate).getMonth()) {
           const obj = {
             head: headRecord[i].head,
@@ -327,6 +329,7 @@ const HeadChart = (props) => {
           arr.unshift(obj);
           m--;
         }
+        if(arr.length >= 5) break; 
       }
       setHeadData(arr);
     }

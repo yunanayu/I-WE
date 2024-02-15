@@ -44,7 +44,12 @@ function MomForm(props) {
       put();
     } else {
       let recent;
-      let todayDate = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
+      let todayDate =
+        today.getFullYear() +
+        "-" +
+        ("0" + (today.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + today.getDate()).slice(-2);
       // console.log(todayDate);
       let data = {
         motherNum: motherNum, // 계정정보에서 motherNum 받아오기
@@ -76,7 +81,11 @@ function MomForm(props) {
     if (recent) {
       // console.log("최근 데이터 " + JSON.stringify(recent));
       const recentDate = new Date(recent.recordDate);
-      if (recentDate.getDay() === today.getDay() && recentDate.getMonth() === today.getMonth() && recentDate.getFullYear() === today.getFullYear()) {
+      if (
+        recentDate.getDay() === today.getDay() &&
+        recentDate.getMonth() === today.getMonth() &&
+        recentDate.getFullYear() === today.getFullYear()
+      ) {
         setUpdate(true);
         setWeight(recent.weight);
       }
@@ -85,9 +94,27 @@ function MomForm(props) {
 
   return (
     <>
-      <Box component="form" sx={{ mt: 3, textAlign: "center" }} onSubmit={submitHandler}>
-        <Typography style={{ color: "black", fontWeight: "bold", fontSize: "large", marginBottom: 2 }}> 오늘의 체중은? </Typography>
-        <Stack direction={"row"} spacing={2} sx={{ textAlign: "center", justifyContent: "center", mb: 2 }}>
+      <Box
+        component="form"
+        sx={{ mt: 3, textAlign: "center" }}
+        onSubmit={submitHandler}
+      >
+        <Typography
+          style={{
+            color: "black",
+            fontWeight: "bold",
+            fontSize: "large",
+            marginBottom: 2,
+          }}
+        >
+          {" "}
+          오늘의 체중은?{" "}
+        </Typography>
+        <Stack
+          direction={"row"}
+          spacing={2}
+          sx={{ textAlign: "center", justifyContent: "center", mb: 2 }}
+        >
           <TextField
             sx={{ width: "50%" }}
             name="momweight"
@@ -99,7 +126,11 @@ function MomForm(props) {
             onChange={changeWeight}
           ></TextField>
 
-          <Button type="submit" variant="contained" sx={{ mb: 2, width: "20%" }}>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ mb: 2, width: "20%" }}
+          >
             기록
           </Button>
         </Stack>
@@ -178,7 +209,7 @@ const BabyForm = React.forwardRef((props, ref) => {
     if (props.isBorn) {
       setIsBorn(true);
     }
-  }, [props.isBorn]);
+  }, [props.isBorn, props.babyNum]);
 
   useEffect(() => {
     if (props.data) {
@@ -196,7 +227,11 @@ const BabyForm = React.forwardRef((props, ref) => {
     if (recentData) {
       // console.log("최근 데이터 " + JSON.stringify(recent));
       const recentDate = new Date(recentData.recordDate);
-      if (recentDate.getDay() === today.getDay() && recentDate.getMonth() === today.getMonth() && recentDate.getFullYear() === today.getFullYear()) {
+      if (
+        recentDate.getDay() === today.getDay() &&
+        recentDate.getMonth() === today.getMonth() &&
+        recentDate.getFullYear() === today.getFullYear()
+      ) {
         setUpdate(true);
         setWeight(recentData.weight);
         setHeight(recentData.height);
@@ -214,34 +249,34 @@ const BabyForm = React.forwardRef((props, ref) => {
       let data = new FormData();
       if (file) {
         const obj = {
-          "num": recentData.num,
-          "babyNum": props.babyNum,
-          "height": height,
-          "weight": weight,
-          "circumference": circumference,
-          "recordDate": recentData.recordDate,
+          num: recentData.num,
+          babyNum: props.babyNum,
+          height: height,
+          weight: weight,
+          circumference: circumference,
+          recordDate: recentData.recordDate,
         };
         const json = JSON.stringify(obj);
         const blob = new Blob([json], {
-          type: 'application/json'
-        })
+          type: "application/json",
+        });
         data.append("dto", blob);
         file.map((file) => {
           data.append("files", file);
-        })
+        });
       } else {
         const obj = {
-          "num": recentData.num,
-          "babyNum": props.babyNum,
-          "height": height,
-          "weight": weight,
-          "circumference": circumference,
-          "recordDate": recentData.recordDate,
+          num: recentData.num,
+          babyNum: props.babyNum,
+          height: height,
+          weight: weight,
+          circumference: circumference,
+          recordDate: recentData.recordDate,
         };
         const json = JSON.stringify(obj);
         const blob = new Blob([json], {
-          type: 'application/json'
-        })
+          type: "application/json",
+        });
         data.append("dto", blob);
         data.append("files", null);
       }
@@ -254,7 +289,7 @@ const BabyForm = React.forwardRef((props, ref) => {
           })
           .then((response) => {
             props.onSubmit(update, response.data);
-            console.log("UPDATE OK\n" + response);
+            console.log("UPDATE OK\n" + JSON.stringify(response.data));
           })
           .catch((error) => {
             console.log("UPDATE FAIL\n" + error);
@@ -262,47 +297,53 @@ const BabyForm = React.forwardRef((props, ref) => {
       };
       put();
     } else {
-      let date = dateSelected.year() + "-" + ("0" + (dateSelected.month() + 1)).slice(-2) + "-" + ("0" + dateSelected.date()).slice(-2);
+      let date =
+        dateSelected.year() +
+        "-" +
+        ("0" + (dateSelected.month() + 1)).slice(-2) +
+        "-" +
+        ("0" + dateSelected.date()).slice(-2);
       console.log(date);
       let data = new FormData();
       if (file) {
         const obj = {
-          "babyNum": props.babyNum,
-          "height": height,
-          "weight": weight,
-          "circumference": circumference,
-          "recordDate": date,
+          babyNum: props.babyNum,
+          height: height,
+          weight: weight,
+          circumference: circumference,
+          recordDate: date,
         };
         const json = JSON.stringify(obj);
         const blob = new Blob([json], {
-          type: 'application/json'
-        })
+          type: "application/json",
+        });
         data.append("dto", blob);
         file.map((file) => {
           data.append("files", file);
-        })
+        });
         console.log(data);
       } else {
         const obj = {
-          "babyNum": props.babyNum,
-          "height": height,
-          "weight": weight,
-          "circumference": circumference,
-         "recordDate": date,
+          babyNum: props.babyNum,
+          height: height,
+          weight: weight,
+          circumference: circumference,
+          recordDate: date,
         };
         const json = JSON.stringify(obj);
         const blob = new Blob([json], {
-          type: 'application/json'
-        })
+          type: "application/json",
+        });
         data.append("dto", blob);
         data.append("files", null);
       }
       const post = async () => {
-        await axios.post("/api/babyRecord/create", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+        await axios
+          .post("/api/babyRecord/create", data, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
           .then((response) => {
             props.onSubmit(update, response.data);
             console.log("POST OK\n" + JSON.stringify(response));
@@ -328,7 +369,12 @@ const BabyForm = React.forwardRef((props, ref) => {
           }}
         >
           <Box sx={{ mt: 3, mb: 3 }}>
-            <Typography style={{ color: "black", fontWeight: "bold", fontSize: "medium" }}> 몸무게 </Typography>
+            <Typography
+              style={{ color: "black", fontWeight: "bold", fontSize: "medium" }}
+            >
+              {" "}
+              몸무게{" "}
+            </Typography>
             <TextField
               name="babyweight"
               fullWidth
@@ -338,7 +384,12 @@ const BabyForm = React.forwardRef((props, ref) => {
               value={weight || ""}
               onChange={changeWeight}
             ></TextField>
-            <Typography style={{ color: "black", fontWeight: "bold", fontSize: "medium" }}> 키 </Typography>
+            <Typography
+              style={{ color: "black", fontWeight: "bold", fontSize: "medium" }}
+            >
+              {" "}
+              키{" "}
+            </Typography>
             <TextField
               name="babyheight"
               fullWidth
@@ -348,7 +399,12 @@ const BabyForm = React.forwardRef((props, ref) => {
               value={height || ""}
               onChange={changeHeight}
             ></TextField>
-            <Typography style={{ color: "black", fontWeight: "bold", fontSize: "medium" }}> 머리둘레 </Typography>
+            <Typography
+              style={{ color: "black", fontWeight: "bold", fontSize: "medium" }}
+            >
+              {" "}
+              머리둘레{" "}
+            </Typography>
             <TextField
               name="babyhead"
               fullWidth
@@ -370,10 +426,36 @@ const BabyForm = React.forwardRef((props, ref) => {
                 width: "40vw",
               }}
             >
-              <Button component="label" variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />} fullWidth>
-                오늘의 사진
-                <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-              </Button>
+              {props.gender === 2 ? (
+                <Button
+                  component="label"
+                  variant="contained"
+                  tabIndex={-1}
+                  startIcon={<CloudUploadIcon />}
+                  fullWidth
+                  sx={{ backgroundColor: "#FBBBB8" }}
+                >
+                  오늘의 사진
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                </Button>
+              ) : (
+                <Button
+                  component="label"
+                  variant="contained"
+                  tabIndex={-1}
+                  startIcon={<CloudUploadIcon />}
+                  fullWidth
+                >
+                  오늘의 사진
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                </Button>
+              )}
             </Box>
           ) : (
             <Box
@@ -385,16 +467,44 @@ const BabyForm = React.forwardRef((props, ref) => {
                 borderRadius: 3,
                 width: "40vw",
               }}
+            >{props.gender === 2 ? (<Button
+              component="label"
+              variant="contained"
+              startIcon={<CloudUploadIcon />}
+              fullWidth
+              sx={{backgroundColor: "#FBBBB8"}}
             >
-              <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} fullWidth>
-                초음파 사진
-                <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-              </Button>
+              초음파 사진
+              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+            </Button>) : (<Button
+              component="label"
+              variant="contained"
+              startIcon={<CloudUploadIcon />}
+              fullWidth
+            >
+              초음파 사진
+              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+            </Button>)}
+              
             </Box>
           )}
-          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, width: "25vw" }}>
-            기록하기
-          </Button>
+          {props.gender === 2 ? (
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2, width: "25vw", backgroundColor: "#FBBBB8" }}
+            >
+              기록하기
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2, width: "25vw" }}
+            >
+              기록하기
+            </Button>
+          )}
         </Box>
       </Box>
     </div>

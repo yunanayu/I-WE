@@ -60,7 +60,7 @@ const Info = (props) => {
       setWeek(props.avg[props.avg.length - 1].week);
       // eslint-disable-next-line no-useless-concat
       setMsg(`체중이 지난주보다`);
-      setMsg5(`${latestDiffData.weight}kg 증가했어요.`);
+      setMsg5(Number(latestDiffData.weight).toFixed(1) + "kg 증가했어요.");
 
       if (latestDiffData.weight >= start && latestDiffData.weight <= end) {
         setMsg2("체중이 평균 범위 내에서 증가하고 있어요.");
@@ -83,29 +83,24 @@ const Info = (props) => {
     <>
       <Box sx={{ p: 3, textAlign: "center" }}>
         <Typography fontSize={20} variant="body2" style={{ whiteSpace: "pre-line" }}>
-          {" "}
-          {msg}{" "}
+          {msg}
         </Typography>
         <Typography fontSize={26} variant="body2" style={{ whiteSpace: "pre-line" }}>
-          {" "}
-          {msg5}{" "}
+          {msg5}
         </Typography>
         {msg2 && (
           <Typography fontSize={20} variant="body2" style={{ whiteSpace: "pre-line" }} sx={{ mt: 1 }}>
-            {" "}
-            {msg2}{" "}
+            {msg2}
           </Typography>
         )}
         {msg3 && (
           <Typography fontSize={20} variant="body2" style={{ whiteSpace: "pre-line" }}>
-            {" "}
-            {msg3}{" "}
+            {msg3}
           </Typography>
         )}
         {msg4 && (
           <Typography fontSize={16} variant="body2" style={{ whiteSpace: "pre-line" }} sx={{ mt: 1 }}>
-            {" "}
-            {msg4}{" "}
+            {msg4}
           </Typography>
         )}
       </Box>
@@ -127,14 +122,14 @@ function RecordMom() {
   const [status, setStatus] = useState(useMemberStore((state) => state.babyList[babyIndex].targetTime).substr(0, 1));
 
   const babyList = useMemberStore((state) => state.babyList);
-  // console.log(JSON.stringify(babyList));
+  console.log(JSON.stringify(babyList));
   const motherNum = useMemberStore((state) => state.userNum);
 
   const babyChange = (e) => {
     // console.log(babyList.findIndex((baby) => baby.num + "" === e.target.value));
-    setBabyIndex(babyList.findIndex((baby) => baby.num + "" === e.target.value));
+    setBabyIndex(babyList.findIndex((baby) => Number(baby.num)  === Number(e.target.value)));
     setBabyNum(e.target.value);
-    setStatus(babyList[babyList.findIndex((baby) => baby.num + "" === e.target.value)].targetTime.substr(0, 1));
+    setStatus(babyList[babyList.findIndex((baby) => Number(baby.num) === Number(e.target.value))].targetTime.substr(0, 1));
   };
 
   useEffect(() => {
@@ -166,9 +161,10 @@ function RecordMom() {
         .get(`/api/baby/${babyNum}`)
         .then((response) => {
           let bData = response.data;
-          setBabyData(bData);
+          setBabyData([...bData]);
         })
         .catch((error) => {
+          setBabyData();
           console.log("GET BABY DATA ERROR\n" + error);
         });
     };
@@ -253,7 +249,7 @@ function RecordMom() {
             <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
               <WeeklyWeightChart recordData={momRecord} />
             </Box>
-            <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+            <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, mb:15 }}>
               <ChangeChart
                 recordData={momRecord}
                 basisData={momBasis}
