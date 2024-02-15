@@ -12,5 +12,5 @@ public interface MotherRecordService {
 
     List<MotherRecordReadReponseDto> findAllByMotherNum(long motherNum);
 
-    Boolean update(MotherRecordUpdateRequestDto dto);
+    MotherRecordReadReponseDto update(MotherRecordUpdateRequestDto dto);
 }

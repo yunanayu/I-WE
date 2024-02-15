@@ -14,7 +14,7 @@ public interface BabyRecordService {
 
     List<BabyRecordReadResponseDto> findAllByBabyNum(long babyNum);
 
-    Boolean update(BabyRecordUpdateRequestDto dto, List<MultipartFile> files);
+    BabyRecordReadResponseDto update(BabyRecordUpdateRequestDto dto, List<MultipartFile> files);
 
     BabyRecordReadResponseDto create(List<MultipartFile> files, BabyRecordCreateRequestDto dto);
 }

@@ -30,8 +30,8 @@ public class MotherRecordController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody MotherRecordUpdateRequestDto dto) {
-        motherRecordService.update(dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<MotherRecordReadReponseDto> update(@RequestBody MotherRecordUpdateRequestDto dto) {
+        MotherRecordReadReponseDto responseDto = motherRecordService.update(dto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

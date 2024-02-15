@@ -254,7 +254,7 @@ const BabyForm = React.forwardRef((props, ref) => {
           })
           .then((response) => {
             props.onSubmit(update, response.data);
-            console.log("UPDATE OK\n" + response);
+            console.log("UPDATE OK\n" + JSON.stringify(response.data));
           })
           .catch((error) => {
             console.log("UPDATE FAIL\n" + error);

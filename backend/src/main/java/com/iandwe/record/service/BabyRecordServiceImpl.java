@@ -48,15 +48,18 @@ public class BabyRecordServiceImpl implements BabyRecordService {
 
     @Override
     @Transactional
-    public Boolean update(BabyRecordUpdateRequestDto dto, List<MultipartFile> files) {
+    public BabyRecordReadResponseDto update(BabyRecordUpdateRequestDto dto, List<MultipartFile> files) {
         BabyRecord babyRecord = babyRecordRepository.findByNum(dto.getNum())
                 .orElseThrow(NoRecordExistException::new);
-        // files 를 string 으로 바군 후 update 진행, null 과 empty 확인
+
+        List<String> images = new ArrayList<>();
         if (files != null && !files.isEmpty()) {
-            List<String> images = uploader.storeImages("record", files);
-            babyRecord.update(dto, images);
+            images = uploader.storeImages("record", files);
         }
-        return true;
+
+        babyRecord.update(dto, images);
+
+        return BabyRecordReadResponseDto.from(babyRecord);
     }
 
     @Override
