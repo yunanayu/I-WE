@@ -247,10 +247,7 @@ function RecordBaby() {
     let arr = [];
     if (babyRecord) {
       arr = [...babyRecord];
-    }
-    if (recentRecord) {
       arr.pop();
-      arr.push(data);
     }
     setRecentRecord(data);
     arr.push(data);
