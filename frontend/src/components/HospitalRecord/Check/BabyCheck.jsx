@@ -29,6 +29,7 @@ const BabyCheck = () => {
       .catch((err) => console.error(err));
   }, [selectBaby]);
 
+  console.log(vaccineList)
   useEffect(() => {
     if (type === "all") {
       setVaccineList(babyCheck);
@@ -40,6 +41,10 @@ const BabyCheck = () => {
       setVaccineList(list);
     }
   }, [type]);
+
+  useEffect(() => {
+
+  }, [vaccineList, babyCheck])
   return (
     <Box>
       {bornBabyList.length === 0 ? (

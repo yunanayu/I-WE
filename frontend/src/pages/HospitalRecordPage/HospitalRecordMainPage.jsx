@@ -48,7 +48,7 @@ const HospitalRecordMainPage = () => {
   const userNum = useMemberStore(state => state.userNum)
   const babyList = useMemberStore(state => state.babyList)
   const parentType = useMemberStore(state => state.parentType)
-  
+  const bornBabyList = babyList.filter((baby) => baby.status);
   const [babyrecord, setBabyrecord] = useState([])
   const [momrecord, setMomrecord] = useState([])
   console.log(babyrecord)
@@ -66,12 +66,15 @@ const HospitalRecordMainPage = () => {
     .catch((err) => console.log(err))
   }
 
-    babyList.map((baby) => {
+  bornBabyList.map((baby) => {
       axios.get(`api/hospital/baby/${baby.num}`)
       .then((res) => {
         console.log(res.data)
-        setBabyrecord([...babyrecord,...res.data])
+        setBabyrecord((prevRecords) => [...prevRecords, ...res.data]);
+        // setBabyrecord([...babyrecord,...res.data])
+        // setBabyrecord(res.data)
       })
+      .catch(err => console.log(err))
     })
   },[])
 
