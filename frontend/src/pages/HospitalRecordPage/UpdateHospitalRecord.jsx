@@ -25,6 +25,7 @@ const UpdateHospitalRecord = (props) => {
 
   const location = useLocation()
   const record = location.state.record
+  const [value, setValue] = useState(dayjs(record.hospitalDate))
   const [state, setState] = useState({
     targetNum : record.targetNum,
     title :record.title,
@@ -72,8 +73,8 @@ const UpdateHospitalRecord = (props) => {
   };
   
   return (
-    <Container sx={{pt:10,  border:1,}}>
-      <Box sx={{display:'flex', pb:2}}>
+    <Container sx={{pt:5, mb:3, pb:8}}>
+      <Box sx={{display:'flex', pb:3}}>
         <Typography variant='h3'>검진 기록하기 </Typography>
         <HealingOutlinedIcon fontSize='large'/>
       </Box>
@@ -95,9 +96,9 @@ const UpdateHospitalRecord = (props) => {
           <DemoContainer components={['DatePicker']}>
             <DatePicker
               label="검진 날짜 선택"
-              value={moment(state.hospitalDate)}
+              value={value}
               onChange={(newValue) => {
-                console.log(newValue)
+                setValue(newValue)
                 setState({...state, selectDay : moment(newValue.$d).format('YYYY-MM-DD')})
               }}
               sx={{
@@ -140,17 +141,10 @@ const UpdateHospitalRecord = (props) => {
             sx={{width:'30%', pr:5}}
           />
         </Box>
-        {/* <Box>
-          <Typography 
-          variant='h5'
-          >검진사진</Typography>
-          <FileUpload />
-        </Box> */}
         <Box>
           <Typography variant='h5'>검진내용</Typography>
           <TextField
           id="outlined-textarea"
-          // label="검진결과"
           name='checkupItem'
           placeholder="검진내용"
           value={state.checkupItem}
@@ -195,6 +189,9 @@ const UpdateHospitalRecord = (props) => {
         />
       </Box>
       <Box sx={{display:'flex', justifyContent:'right'}}>
+        <Button  variant="outlined" sx={{borderColor:'#FBBBB8', color:'#FBBBB8', mr:1}} onClick={() => navigate('/hospitalrecord')}>
+          취소하기
+        </Button>
         <Button  variant="outlined" sx={{borderColor:'#FBBBB8', color:'#FBBBB8'}} onClick={submit}>
           수정하기
         </Button>

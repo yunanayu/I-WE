@@ -331,7 +331,7 @@ const Main = ({ onLoginStatusChange }) => {
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: 8, padding: 4, width: '50%' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
                 <div style={{ flex: 1 }}>
-                    <KakaoLogin onSuccess={handleKakaoLoginSuccess} sx={{ width: '100%' }} />
+                    <KakaoLogin setIsLoggedIn={setIsLoggedIn} onSuccess={handleKakaoLoginSuccess} sx={{ width: '100%' }} />
                   </div>
                   <div style={{ flex: 1 }}>
                     <NaverLogin setIsLoggedIn={setIsLoggedIn} onSuccess={handleNaverLoginSuccess} sx={{ width: '100%' }} />

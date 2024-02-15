@@ -25,7 +25,6 @@ const ChildList = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   useEffect(() => {}, [babyList]);
-  console.log(babyList);
   return (
     <Container sx={{ mb: 5, pb: 5 }}>
       <Box sx={{ ml: 2, mt:5, mb:1 }}>
