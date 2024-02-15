@@ -319,6 +319,7 @@ function ChangeChart(props) {
 
   useEffect(() => {
     if (momRecord && momBasis && babyData) {
+      console.log(JSON.stringify(babyData));
       const weightArr = momRecord.map((obj) => {
         return {
           weight: obj.weight,
@@ -347,6 +348,7 @@ function ChangeChart(props) {
       setChartData(newData);
     }
   }, [momWeight, momRecord]);
+
   useEffect(() => {
     if (chartData && lineData) {
       props.diffUpdate(chartData);

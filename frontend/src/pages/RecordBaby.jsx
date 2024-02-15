@@ -59,13 +59,19 @@ function Info(props) {
   const pregnancyDate = new Date(props.pregnancyDate);
   const tmp = new Date(pregnancyDate);
   const [percentile, setPercentile] = useState();
+
   useEffect(() => {
     if (props.percentile) {
       setPercentile(props.percentile);
     } else {
       setPercentile();
     }
-  }, [props.percentile]);
+    if(!props.recentRecord){
+      setPercentile();
+    } else if(props.recentRecord.babyNum !== props.babyNum) {
+      setPercentile();
+    }
+  }, [props.percentile, props.babyNum, props.recentRecord]);
 
   tmp.setMonth(tmp.getMonth() - 3);
   tmp.setFullYear(tmp.getFullYear() + 1);
@@ -182,13 +188,17 @@ function RecordBaby() {
               setPercentileRecord(data);
             })
             .catch((error) => {
+              setRecentRecord();
+              setRecentRecordMonth();
+              setPercentileRecord();
               console.log(error);
             });
         };
         init2();
       } else {
-        setBorn(false);
-      }
+          setBorn(false);
+        }
+      console.log(born);
     }
   }, [status, recentRecord, babyNum, recentRecordMonth]);
 
@@ -203,11 +213,11 @@ function RecordBaby() {
           // console.log(JSON.stringify(response.data));
         })
         .catch((error) => {
-          console.log("GET BABY RECORD ERROR\n" + error);
           setBabyRecord();
           setRecentRecord();
           setRecentRecordMonth();
           setPercentileRecord();
+          console.log("GET BABY RECORD ERROR\n" + error);
         });
     };
     init();
@@ -314,6 +324,7 @@ function RecordBaby() {
               pregnancyDate={pregnancyDate}
               birthDate={birthDate}
               percentile={percentileRecord}
+              babyNum={babyNum}
             />
           }
         </Box>

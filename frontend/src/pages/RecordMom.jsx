@@ -161,20 +161,9 @@ function RecordMom() {
           console.log("GET MOM BASIS ERROR\n" + error);
         });
     };
-    const initBabyData = async () => {
-      await axios
-        .get(`/api/baby/${babyNum}`)
-        .then((response) => {
-          let bData = response.data;
-          setBabyData(bData);
-        })
-        .catch((error) => {
-          console.log("GET BABY DATA ERROR\n" + error);
-        });
-    };
+   
     initData();
     initBasis();
-    initBabyData();
   }, [babyNum]);
 
   const onUpdateRecent = (data) => {
