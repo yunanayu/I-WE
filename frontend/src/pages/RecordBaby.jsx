@@ -47,10 +47,26 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "75vw",
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "1px solid #000",
+  borderRadius:"10px",
   boxShadow: 24,
   p: 4,
 };
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "Dongle, sans-serif",
+    fontWeightRegular: 400,
+    fontStyleRegular: 'normal',
+  },
+});
+const wordtheme = createTheme({
+  typography: {
+    fontFamily: 'Poor Story, system-ui',
+    fontWeightRegular: 400,
+    fontStyleRegular: 'normal',
+  },
+});
 
 // 평균과 비교하여 메세지 출력
 function Info(props) {
@@ -84,24 +100,30 @@ function Info(props) {
       <Box sx={{ mt: 3, mb: 3 }}>
         {props.status === "A" && percentile ? (
           <>
-            <Typography fontSize={34} sx={{ ...setCenter }}>
+          <Box>
+            <Typography theme={theme} fontSize={36} sx={{ ...setCenter }}>
               D+{dDay}
             </Typography>
-            <Typography fontSize={23} sx={{ mb: 1 }}>
-              체　　중 : 상위 {percentile.weightPercentile}%
-            </Typography>
-            <Typography fontSize={23} sx={{ mb: 1 }}>
-              신　　장 : 상위 {percentile.heightPercentile}%
-            </Typography>
-            <Typography fontSize={23}> 머리둘레 : 상위 {percentile.circumferencePercentile}% </Typography>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <Typography theme={theme} fontSize={30} textAlign="center" sx={{ margin: '0px' }}>
+                체　　중 : 상위 {percentile.weightPercentile}%
+              </Typography>
+              <Typography theme={theme} fontSize={30} textAlign="center" sx={{ margin: '0px' }}>
+                신　　장 : 상위 {percentile.heightPercentile}%
+              </Typography>
+              <Typography theme={theme} fontSize={30} textAlign="center" sx={{ margin: '0px' }}>
+                머리둘레 : 상위 {percentile.circumferencePercentile}%
+              </Typography>
+            </Box>
+          </Box>
+            
           </>
         ) : props.status === "A" ? (
-          <Typography fontSize={34}> D+{dDay} </Typography>
+          <Typography theme={theme} fontSize={34}> D+{dDay} </Typography>
         ) : (
           <>
-            <Typography fontSize={34}>임신 {props.targetTime} 주차</Typography>
-            <Typography fontSize={28} textAlign={"center"}>
-              D-{pBirth}
+            <Typography theme={theme} fontSize={40} textAlign={"center"}>
+              임신 {props.targetTime} 주차 <br /> D-{pBirth -1}
             </Typography>
           </>
         )}
@@ -290,7 +312,7 @@ function RecordBaby() {
                 key={baby.num}
                 variant="outlined"
                 sx={{
-                  p: 2,
+                  p: 1,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -301,9 +323,6 @@ function RecordBaby() {
                 <Radio
                   value={baby.num || ""}
                   variant="soft"
-                  sx={{
-                    mb: 2,
-                  }}
                 />
                 <Typography level="body-sm" sx={{ mt: 1 }}>
                   {baby.name}
@@ -312,7 +331,7 @@ function RecordBaby() {
             ))}
           </RadioGroup>
         </FormControl>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, height:'200px' }}>
           {
             <Info
               born={born}
@@ -332,6 +351,7 @@ function RecordBaby() {
           <>
             <Box maxWidth="md" sx={{ ...setCenter }}>
               <Stack direction={"row"} spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+                
                 <Button
                   variant="outlined"
                   onClick={recordOpen}
@@ -344,7 +364,8 @@ function RecordBaby() {
                     color: "black",
                   }}
                 >
-                  오늘 {babyName} 기록하기
+                  오늘의 {babyName} 
+                  <br />기록하기
                 </Button>
                 <Button
                   style={{ whiteSpace: "pre-line" }}
@@ -372,7 +393,7 @@ function RecordBaby() {
                       <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
                         <Stack direction={"row"} spacing={2}>
                           {dayjs(date).format("YYYY-MM-DD")}
-                          <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
+                          <ButtonDatePicker disableFuture value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
                         </Stack>
                       </Typography>
                       <BabyForm gender={gender} data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
@@ -386,6 +407,7 @@ function RecordBaby() {
                 <Box sx={{ ...setCenter, ...style }}>
                   <Typography id="modal-modal-title" variant="h6" component="h2">
                     {babyName}의 사진
+                    <img src={heart2} width="40" height="30" alt="하트 이미지" />
                   </Typography>
                   {babyRecord ? (
                     <BabyCarousel babyRecord={babyRecord}></BabyCarousel>
@@ -409,7 +431,9 @@ function RecordBaby() {
               {babyRecord ? (
                 <WeightChart weightRecord={weightRecord} percentile={percentileRecord} month={recentRecordMonth} />
               ) : (
-                <Typography>기록이 없습니다.</Typography>
+                <Typography theme={wordtheme} id="modal-modal-description" variant="h5" component="h2" sx={{ mb: '20px', fontWeight: 'bold' }}>
+                  아이의 오늘을 <br /> 기록해주세요
+                </Typography>
               )}
             </Box>
             {babyRecord ? (
@@ -457,6 +481,8 @@ function RecordBaby() {
                   borderRadius: 5,
                   backgroundColor: "background.paper",
                   color: "black",
+                  mt:'5px',
+                  mb:'5px'
                 }}
               >
                 오늘 {babyName} 기록하기
@@ -469,7 +495,7 @@ function RecordBaby() {
                       <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
                         <Stack direction={"row"} spacing={2}>
                           {dayjs(date).format("YYYY-MM-DD")}
-                          <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
+                          <ButtonDatePicker disableFuture value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
                         </Stack>
                       </Typography>
                       <BabyForm gender={gender} data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
@@ -479,14 +505,16 @@ function RecordBaby() {
               </Modal>
             </Box>
             <Box maxWidth="md" sx={{ ...setCenter, ...commonStyles, borderRadius: 3, mb: 15 }}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
+              <Typography theme={wordtheme} id="modal-modal-title" variant="h5" component="h2" sx={{ mt:'10px'}}>
                 {babyName}의 사진
+                <img src={heart2} width="40" height="30" alt="하트 이미지" />
               </Typography>
+              <br />
               {babyRecord ? (
                 <BabyCarousel babyRecord={babyRecord}></BabyCarousel>
               ) : (
-                <Typography id="modal-modal-description" variant="h6" component="h2">
-                  기록이 없습니다.
+                <Typography theme={wordtheme} id="modal-modal-description" variant="h5" component="h2" sx={{ mb: '20px', fontWeight: 'bold' }}>
+                  아이의 오늘을 <br /> 기록해주세요
                 </Typography>
               )}
             </Box>

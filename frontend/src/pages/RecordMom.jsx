@@ -227,9 +227,6 @@ function RecordMom() {
                 <Radio
                   value={baby.num || ""}
                   variant="soft"
-                  sx={{
-                    mb: 2,
-                  }}
                 />
                 <Typography level="body-sm" sx={{ mt: 1 }}>
                   {baby.name}
@@ -263,7 +260,7 @@ function RecordMom() {
           </>
         ) : (
           <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-            <Typography m={3}>기록이 없습니다.</Typography>
+            <Typography m={3}>나를 기록해보세요</Typography>
           </Box>
         )}
       </Container>
