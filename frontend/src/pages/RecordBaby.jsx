@@ -243,15 +243,25 @@ function RecordBaby() {
     }
   }, [babyRecord]);
 
-  const submitFunction = (data) => {
-    let arr = [];
-    if (babyRecord) {
-      arr = [...babyRecord];
-      arr.pop();
+  const submitFunction = (update, data) => {
+    if(update) {
+      setRecentRecord(data);
+      setBabyRecord((prevRecord) => {
+        let updatedRecord = [];
+        if (babyRecord) {
+          updatedRecord = prevRecord.slice(0, -1);
+        }
+        updatedRecord.push(data);
+        return updatedRecord;
+      });
+    } else {
+      setRecentRecord(data);
+      if(babyRecord){
+        setBabyRecord([...babyRecord, data]);
+      } else {
+        setBabyRecord([data]);
+      }
     }
-    setRecentRecord(data);
-    arr.push(data);
-    setBabyRecord([...arr]);
     recordClose();
   };
 
