@@ -39,10 +39,12 @@ public class MotherRecordServiceImpl implements MotherRecordService {
 
     @Override
     @Transactional
-    public Boolean update(MotherRecordUpdateRequestDto dto) {
+    public MotherRecordReadReponseDto update(MotherRecordUpdateRequestDto dto) {
         MotherRecord motherRecord = motherRecordRepository.findByNum(dto.getNum())
                 .orElseThrow(NoRecordExistException::new);
+
         motherRecord.update(dto);
-        return true;
+
+        return MotherRecordReadReponseDto.from(motherRecord);
     }
 }
