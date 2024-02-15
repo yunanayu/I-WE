@@ -1,9 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage, deleteToken, onBackgroundMessage  } from "firebase/messaging";
+import { getMessaging, getToken, onMessage, deleteToken  } from "firebase/messaging";
 import { goDeviceToken } from "../api/FCMTokenApi";
 import { useFcmStore } from "../stores/userStore";
 import { toBeChecked } from "@testing-library/jest-dom/matchers";
+import { onBackgroundMessage } from "firebase/messaging/sw";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -55,6 +56,10 @@ export async function requestPermission() {
   onMessage(messaging, (payload) => {
     console.log("메시지가 도착했습니다.", payload);
   });
+
+  onBackgroundMessage(messaging, (payload) => {
+    console.log("메시지가 도착했습니다.", payload);
+  })
 
   // 알림 거부 코드 짜기
 
