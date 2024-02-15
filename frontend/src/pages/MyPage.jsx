@@ -16,26 +16,31 @@ import KeyboardArrowRightSharpIcon from "@mui/icons-material/KeyboardArrowRightS
 function MyPage() {
   const navigate = useNavigate();
   const profileImage = useMemberStore(state => state.profileImage)
+  const familyNum = useMemberStore((state) => state.familyNum);
   const userName = useMemberStore(state => state.userName)
   return (
     <Container>
-        <Typography variant="h6" gutterBottom sx={{m:5}}>마이페이지</Typography>
-      <Box sx={{display:'flex', m:5,}}>
+      <Box sx={{display:'flex',justifyContent:'center', textAlign:'center'}}>
+      </Box>
+      <Box sx={{display:'flex', m:5, alignItems:'center', justifyContent:'space-evenly', width:'80%' }}>
         {profileImage ? (
           <Avatar sx={{ width: 56, height: 56 }} src={profileImage} />
         ) : (
           <Avatar sx={{ width: 56, height: 56 }} src="/broken-image.jpg" />
         )}
-        <Typography sx={{ml:2, pt:1}}>{userName} 님 반갑습니다!</Typography>
+        <div style={{display:'flex', textAlign:'center'}}>
+          <Typography variant="h5" sx={{fontWeight:'bold', textAlign:'center'}}>{userName}</Typography>
+          <Typography variant="h6"> 님 반갑습니다!</Typography>
+        </div>
       </Box>
       <Divider sx={{mb:2}}/>
       <Box sx={{ width: 400 }}>
-        <Typography variant="caption" display="block" gutterBottom sx={{pl:2}}>나의 가족</Typography>
+        <Typography variant="caption" display="block" gutterBottom sx={{pl:2}}>나의 정보</Typography>
         <nav aria-label="secondary mailbox folders">
           <List>
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate("/codeshare")}>
-                <ListItemText primary="가족 코드 보기" />
+                <ListItemText primary="가족 코드" />
                 <KeyboardArrowRightSharpIcon color="disabled" />
               </ListItemButton>
             </ListItem>

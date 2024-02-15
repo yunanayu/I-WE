@@ -1,25 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import icon from "../images/icon.png";
 import logo from "../images/logo.png";
-import { Link } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import CardContent from '@mui/material/CardContent';
+import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import { Box, Typography, Card } from '@mui/material';
+import Button from '@mui/material/Button';
 import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
-import mainprofile from '../images/mainprofile.png';
+import b1 from '../images/1.jpg';
+import heart from '../images/heart.png';
+import heart2 from '../images/heart2.png';
+
 import axios from 'axios';
 import moment from 'moment';
-import Carousel from "react-material-ui-carousel";
+import { Swiper, SwiperSlide } from 'swiper/react';
 import useMemberStore from '../stores/userStore';
-// import InfiniteScrollComponent from '../components/InfiniteScroll'
+import 'swiper/css';
+import 'swiper/css/effect-cards';
+import './styles.css';
+import { EffectCards } from 'swiper/modules';
 
 const theme = createTheme({
   typography: {
     fontFamily: 'Nanum Gothic, sans-serif',
+  },
+});
+
+const wordtheme = createTheme({
+  typography: {
+    fontFamily: 'Poor Story, system-ui',
+    fontWeightRegular: 400,
+    fontStyleRegular: 'normal',
   },
 });
 
@@ -29,6 +41,8 @@ const Main = ({ onLoginStatusChange }) => {
   const setBabyList = useMemberStore(state => state.setBabyList)
   const userNum = useMemberStore(state => state.userNum)
   const setFamilyNum = useMemberStore(state => state.setFamilyNum)
+  const babyCnt = babyList.length;
+  const [babyNum, setBabyNum] = useState(0); // 선택된 아이의 번호
 
   const handleKakaoLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -48,29 +62,43 @@ const Main = ({ onLoginStatusChange }) => {
       setIsLoggedIn(false);
       onLoginStatusChange(false);
     }
-  
   },  [onLoginStatusChange]);
 
   const [babyName, setBabyName] = useState([]);
+  const [date, setDate] = useState(0) //선택한 아기의 날짜
+  // 임신 시
   const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
   const [daysSinceBirth, setDaysSinceBirth] = useState(null);
+  // 출산 시
   const [daysAfterBirth, setDaysAfterBirth] = useState(null);
   const [daysBeforeBirth, setDaysBeforeBirth] = useState(null);
+  const [monthSinceBirth, setMonthsSinceBirth] = useState(null)
+  // 엄마 정보
+  const [mombodyInfo, setMombodyInfo] = useState([]);
+  // 아기 정보
+  const [babybodyInfo, setBabybodyInfo] = useState([]);
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const info = babyList
-        const babyname = info[0].name
+        const babyname = info[babyNum].name
         setBabyName(babyname);
-        const pregnancyDate = moment(info[0].pregnancyDate, 'YYYY-MM-DD');
-        const birthDate = moment(info[0].birth, 'YYYY-MM-DD');
+        const pregnancyDate = moment(info[babyNum].pregnancyDate, 'YYYY-MM-DD');
+        const birthDate = moment(info[babyNum].birth, 'YYYY-MM-DD');
         const today = moment();
         const pregnancydays = today.diff(pregnancyDate, 'days');
         const birthdays = today.diff(birthDate, 'days');
         const pregnancyweeks = Math.floor(pregnancydays / 7 + 1)
         const birthweeks = Math.floor(birthdays / 7 + 1)
+        const birthmonths = Math.floor(birthdays / 30);
+
+        if (info[babyNum].pregnancyDate === null){ // 출산 개월
+          setDate(`A${birthmonths}`);
+        } else if (info[babyNum].birth === null){ // 임신 주차
+          setDate(`B${pregnancyweeks}`);
+        }
         // 출산예정일
         const suggestDate = (280 - pregnancydays);
         // 출산 후 
@@ -79,20 +107,100 @@ const Main = ({ onLoginStatusChange }) => {
         setDaysAfterBirth(birthdays);
         setDaysSincePregnancy(pregnancyweeks);
         setDaysSinceBirth(birthweeks)
+        setMonthsSinceBirth(birthmonths)
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
+  }, [babyList, babyNum]);
 
-  }, [babyList]);
+  // 엄마 info데이터 가져오기
+  useEffect(() => {
+    if(userNum !== 0){
+      if(date !== 0){
+        const fetchData = async () => {
+        try {
+          const mombodyinforesponse = await axios({
+            method: 'get',
+            url: `/api/info/mother/p/${date}`
+          });
+          const mombodyinfodata = mombodyinforesponse.data;
+          setMombodyInfo(mombodyinfodata);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
+      }
+      
+    }
+  }, [date]);
+  
+  const getMomBodyInfothree = () => {
+    if (mombodyInfo.length > 0) {
+      const selectedMombodyInfo = mombodyInfo
+        .filter((info, i) => i < 1) // 최대 1개의 요소만 추출
+        .map((info, i) => {
+          const content = info.content.length > 100 ? `${info.content.slice(0, 100)}...` : info.content;
+          return (
+            <div key={i}>
+              - {content}
+              <br />
+            </div>
+          );
+        });
+      return selectedMombodyInfo;
+    }
+    return null;
+  };
+  
 
+  // 아기 info데이터 가져오기
+  useEffect(() => {
+    if(userNum !== 0){
+      if(date !== 0){
+        const fetchData = async () => {
+        try {
+          const babybodyinforesponse = await axios({
+            method: 'get',
+            url: `/api/info/baby/p/${date}`
+          });
+          const babybodyinfodata = babybodyinforesponse.data;
+          setBabybodyInfo(babybodyinfodata);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
+      }
+    }
+      
+  }, [date]);
+
+  const getBabyBodyInfothree = () => {
+    if (babybodyInfo.length > 0) {
+      const selectedBabybodyInfo = babybodyInfo
+        .filter((info, i) => i < 1) // 최대 1개의 요소만 추출
+        .map((info, i) => {
+          const content = info.content.length > 100 ? `${info.content.slice(0, 100)}...` : info.content;
+          return (
+            <div key={i}>
+              - {content}
+              <br />
+            </div>
+          );
+        });
+      return selectedBabybodyInfo;
+    }
+    return null;
+  };
 
   // 공유코드 저장
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if(isLoggedIn){
+        if(userNum){
           const response = await axios({
           method: 'get',
           // userNum
@@ -100,114 +208,110 @@ const Main = ({ onLoginStatusChange }) => {
         });
         const data = response.data.code;
         setFamilyNum(data)
-        console.log(data)
-
         }
       } catch (error) {
         console.log(error);
       }
     };
-
     fetchData();
   }, [userNum]);
 
-  const carouselItems = [
-    {
-      image: "url_to_image_1",
-      caption: "Caption 1",
-    },
-    {
-      image: "url_to_image_2",
-      caption: "Caption 2",
-    },
-    {
-      image: "url_to_image_3",
-      caption: "Caption 3",
-    },
-  ];
+  // 아기 이름에 따라 는/이는
+    const particle = (() => {
+      if (babyName && babyName.length > 0) {
+        const lastChar = babyName[babyName.length - 1];
+        if (lastChar) {
+          return lastChar.match(/[가-힣]/) ? (lastChar.charCodeAt(0) - 0xac00) % 28 > 0 ? '이는' : '는' : '';
+        }
+      }
+      return '';
+    })();
+
+    const handleIconClick = () => {
+      window.location.href = '/infomain';
+    };
 
   return (
     <>
       {isLoggedIn ? (
         <>
         <ThemeProvider theme={theme}>
-          <Box sx={{ width:'100%' , display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: 6,}}>
-            <Box sx={{ display: 'flex',  alignItems: 'center', flexDirection: 'column' }}>
-              <Typography margin="10px" variant="h3" align="center" sx={{ mb: 2, color: 'gray' }}>
-                  {daysSincePregnancy ? (
-                    ` D - ${daysBeforeBirth}`
-                    ) : ( daysSinceBirth ? `D + ${daysAfterBirth}` : ''
-                  )}
-                </Typography>
-              <Box sx={{ flexDirection: 'column', width: '50%', borderRadius: '50%', backgroundColor: 'gray', mt: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', borderWidth: '3px', borderStyle: 'solid' }}>
-              {/* <Carousel>
-                {carouselItems.map((photo, index) => (
-                  <img key={index} src={photo.url} alt={`Photo ${index}`} />
+          <Box sx={{ width:'100%' , display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: 8, mb:8}}>
+            <Box sx={{ display: 'flex',  alignItems: 'center', flexDirection: 'column'}}>
+              <Swiper
+                effect={'cards'}
+                grabCursor={true}
+                modules={[EffectCards]}
+                className="mySwiper"
+                onSlideChange={(swiper) => {
+                  setBabyNum(swiper.activeIndex);
+                }}
+              >
+                {babyList.map((baby, index) => (
+                  <SwiperSlide key={index}>
+                    <div style={{display:'flex', flexDirection:'column'}}>
+                      {daysSincePregnancy ? `D - ${daysBeforeBirth}` : daysSinceBirth ? `D + ${daysAfterBirth}` : ''}
+                      <img src={b1} alt={baby.name} />
+                      {baby.pregnancyDate}
+                      {baby.birth}
+                      <br />
+                      {baby.name}
+                    </div>
+                  </SwiperSlide>
                 ))}
-              </Carousel> */}
-                <img src={mainprofile} alt="mainprofile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-              </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
-                <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+              </Swiper>
+              <Box sx={{ display: 'flex', flexDirection: 'row',alignItems: 'baseline',}}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline',ml:'40px' }}>
+              <Typography
+                margin="10px"
+                variant="h4"
+                align="center"
+                theme={wordtheme}
+                sx={{ mt: 4, mb: 2, color: 'gray',fontFamily: 'Poor Story, system-ui',fontStyle: 'normal', fontWeight:'bold' }}
+              >
                   {babyName}
                 </Typography>
-                <Typography margin="10px" variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
-                  (은)는 
+                <Typography margin="10px" theme={wordtheme} variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray', fontWeight:'bold' }}>
+                  {particle}
                 </Typography>
-                <Typography margin="10px" variant="h5" align="center" sx={{ mt: 4, mb: 2, color: 'gray' }}>
+                <Typography margin="10px" theme={wordtheme} variant="h4" align="center" sx={{ mt: 2, mb: 2, color: 'gray', fontWeight:'bold' }}>
                   {daysSincePregnancy ? (
-                    `${daysSincePregnancy} 주차 입니다`
-                    ) : ( daysSinceBirth ? `${Math.floor(daysSinceBirth / 4)}개월 입니다` : ''
+                    `${daysSincePregnancy} 주차`
+                    ) : ( daysSinceBirth ? `${monthSinceBirth}개월` : ''
                   )}
+                                  
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%"}}>
-                <Card sx={{ width: "90%", margin: "5px 5px 5px 5px",}}>
-                  <CardContent sx={{margin:"5px", }}>
-                    <Typography variant="h6" component="div">
-                      이 시기에 엄마는요!
-                    </Typography>
-                    < br/>
-                    <Typography variant="body2">
-                      - 어때요
-                      <br />
-                      - 그리고 어때요
-                      <br />
-                      - 정보리스트
-                    </Typography>
-                    <br />
-                    <Box style={{textAlign: 'right'}}>
-                      <Link to='/infomom'>
-                        <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>더 궁금해요!</Button>
-                      </Link>
-                    </Box>
-                  </CardContent>
-                </Card>
-                <Card sx={{ width: "90%", margin: "5px 5px 5px 5px" }}>
-                  <CardContent >
-                    <Typography variant="h6" component="div">
-                      이 시기에 아이는요!
-                    </Typography>
-                    <Typography variant="body2">
-                      - 어때요
-                      <br />
-                      - 그리고 어때요
-                      <br />
-                      - 정보리스트
-                    </Typography>
-                    <br />
-                    <Box style={{textAlign: 'right'}}>
-                      <Link to='/infobaby'>
-                        <Button size="small" style={{backgroundColor: '#FBBBB8', color: 'white'}}>더 궁금해요!</Button>
-                      </Link>
-                    </Box>
-                  </CardContent>
-                </Card>
+              <img src={heart} width="50" height="50" alt="하트 이미지" />
+              </Box>
+              <Box sx={{backgroundColor:'whitesmoke', borderRadius:'10%', margin:'10px 10px 60px 10px',}}>
+                {/* 엄마카드정보 */}
+                <Box sx={{ display: 'flex', alignItems:'center',  justifyContent:'center', flexDirection: 'column', width:"100%"}}>
+                  <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mt:'10px', mb: '10px' }}>
+                    이 시기에 엄마는요!
+                    <img src={heart2} width="40" height="30" alt="하트 이미지" />
+                  </Typography>
+                  <Card sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width: "90%", padding: "15px 15px 15px 15px" }}>
+                    {getMomBodyInfothree()}
+                  </Card>
+                </Box>
+                {/* 아기 카드 정보 */}
+                <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%", mb:'5px'}}>
+                  <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mt:'10px', mb: '10px' }}>
+                    이 시기에 아기는요!
+                    <img src={heart2} width="40" height="30" alt="하트 이미지" />
+                  </Typography>
+                  <Card sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width: "90%", padding: "15px 15px 15px 15px" }}>
+                    {getBabyBodyInfothree()}
+                  </Card>
+                </Box>
+                <div style={{ textAlign: 'right', margin:'10px 20px', alignItems:'center' }}>
+                  <Button sx={{ backgroundColor: '#FBBBB8', color: 'gray' }} variant="contained" onClick={handleIconClick}>더알아보기<ArrowCircleRightOutlinedIcon></ArrowCircleRightOutlinedIcon></Button>
+                </div> 
               </Box>
             </Box>
           </Box>
-          {/* <InfiniteScrollComponent /> */}
-          </ThemeProvider>
+        </ThemeProvider>
         </>
       ) : (
         <>
@@ -227,7 +331,7 @@ const Main = ({ onLoginStatusChange }) => {
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: 8, padding: 4, width: '50%' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
                 <div style={{ flex: 1 }}>
-                    <KakaoLogin setIsLoggedIn={setIsLoggedIn} onSuccess={handleKakaoLoginSuccess} sx={{ width: '100%' }} />
+                    <KakaoLogin onSuccess={handleKakaoLoginSuccess} sx={{ width: '100%' }} />
                   </div>
                   <div style={{ flex: 1 }}>
                     <NaverLogin setIsLoggedIn={setIsLoggedIn} onSuccess={handleNaverLoginSuccess} sx={{ width: '100%' }} />

@@ -155,12 +155,12 @@ function AddChild({ setSpouseStatus }) {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '300px', width: '300px', backgroundColor: 'whitesmoke', margin: '60px 20px', padding: '10px', borderRadius: '15px', flex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <FormControl sx={{ display: 'flex', justifyContent: 'center', alignItems:'center',textAlign: 'center' }}>
-            <div style={{ position: 'fixed', top: 90 }}>
+            {/* <div style={{ position: 'fixed', top: 90 }}> */}
             <FormLabel sx={{ fixed:'top',pointerEvents: 'none', color: 'black', fontWeight: 'bold', fontSize: 'x-large' }} id="demo-radio-buttons-group-label">현재 당신은?</FormLabel>
             <br />
             <RadioGroup
               row
-              defaultValue="bottom"
+              defaultValue="pregnancy"
               name="pregnancy-status"
               value={pregnancyStatus}
               onChange={handlePregnancyStatusChange}
@@ -168,13 +168,13 @@ function AddChild({ setSpouseStatus }) {
               <FormControlLabel value="pregnancy" control={<Radio />} label="임신 중" />
               <FormControlLabel value="nonpragnancy" control={<Radio />} label="출산" />
             </RadioGroup>
-            </div>
+            {/* </div> */}
           </FormControl>
         </div>
 
         {pregnancyStatus === "pregnancy" ? (
           <>
-            <div style={{margin:'50px 0px 0px '}}>
+            <div style={{margin:'10px 0px 0px '}}>
               <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }}>임신 전 당신의 몸무게는?</p>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 
@@ -193,10 +193,10 @@ function AddChild({ setSpouseStatus }) {
                   onChange={handleBasisMomHeightChange}
                 />
               </div>
-              <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }} id="demo-radio-buttons-group-label">아이의 이름은?</p>
+              <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }} id="demo-radio-buttons-group-label">아이의 태명은?</p>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <TextField
-                  label="아이 이름"
+                  label="아이 태명"
                   value={childName}
                   onChange={handleChildNameChange}
                 />
@@ -210,7 +210,7 @@ function AddChild({ setSpouseStatus }) {
                   onChange={handleChildGenderChange}
                 >
                   <div style={{display:'flex', justifyContent:'center', flexDirection: 'column'}}>
-                    <FormControlLabel value="NONE" control={<Radio />} label="모름" />
+                    {/* <FormControlLabel value="NONE" control={<Radio />} label="모름" /> */}
                     <div style={{display:'flex', justifyContent:'space-between'}}>
                     <FormControlLabel value="MALE" control={<Radio />} label="남자" />
                     <FormControlLabel value="FEMALE" control={<Radio />} label="여자" />
@@ -235,11 +235,13 @@ function AddChild({ setSpouseStatus }) {
                 </DemoContainer>
               </LocalizationProvider>
             </div>
+            <br />
+            <Button sx={{ backgroundColor: '#FBBBB8', color: 'white' }} variant="contained" onClick={handleAddChild}>우리 아이와 만나러 가기</Button>
           </>
           
         ) : pregnancyStatus === "nonpragnancy" ? (
           <>
-            <div style={{margin:'50px 0px 0px '}}>
+            <div style={{margin:'10px 0px 0px '}}>
               <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }}>임신 전 당신의 몸무게는?</p>
               <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <TextField
@@ -296,13 +298,13 @@ function AddChild({ setSpouseStatus }) {
                     }}/>
                 </DemoContainer>
               </LocalizationProvider>
+
             </div>
+            <br />
+            <Button sx={{ backgroundColor: '#FBBBB8', color: 'white' }} variant="contained" onClick={handleAddChild}>우리 아이와 만나러 가기</Button>
           </>
         ) : null}
-      <br />
-      <div style={{ position: 'fixed', bottom: 80 }}>
-        <Button sx={{ backgroundColor: '#FBBBB8', color: 'white' }} variant="contained" onClick={handleAddChild}>우리 아이와 만나러 가기</Button>
-      </div>
+      
     </div>
     </div>
   );

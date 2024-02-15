@@ -19,12 +19,16 @@
     }
   ],
   "start_url": ".",
-  "display": "standalone",
-  "description": "i_and_we_first_pjt",
   "theme_color": "#000000",
   "background_color": "#ffffff",
-  "id": "sh",
+  "description": "i_and_we_first_pjt",
   "dir": "auto",
-  "lang": "ko",
-  "orientation": "any"
+  "display": "standalone",
+  "orientation": "any",
+  "scope": ".",
+  "categories": [],
+  "screenshots": [],
+  "shortcuts":[],
+  "id": "sh",
+  "lang": "ko"
 }

@@ -1,0 +1,91 @@
+#app { height: 100% }
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+body {
+  background: #eee;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #fff;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper {
+  width: 240px;
+  height: 320px;
+}
+
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.swiper-slide:nth-child(1n) {
+  background-color: rgb(255, 182, 182);
+}
+
+.swiper-slide:nth-child(2n) {
+  background-color: rgb(175, 218, 253);
+}
+
+.swiper-slide:nth-child(3n) {
+  background-color: rgb(183, 238, 166);
+}
+
+.swiper-slide:nth-child(4n) {
+  background-color: rgb(255, 220, 173);
+}
+
+.swiper-slide:nth-child(5n) {
+  background-color: rgb(246, 249, 175);
+}
+
+.swiper-slide:nth-child(6n) {
+  background-color: rgb(253, 158, 238);
+}
+
+.swiper-slide:nth-child(7n) {
+  background-color: rgb(189, 190, 255);
+}
+
+.swiper-slide:nth-child(8n) {
+  background-color: rgb(255, 155, 189);
+}
+
+.swiper-slide:nth-child(9n) {
+  background-color: rgb(218, 12, 218);
+}
+
+.swiper-slide:nth-child(10n) {
+  background-color: rgb(203, 255, 232);
+}
