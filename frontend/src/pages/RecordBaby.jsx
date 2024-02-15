@@ -175,6 +175,7 @@ function RecordBaby() {
     if (recentRecordMonth) {
       if (status === "A") {
         setBorn(true);
+        console.log("recent record: \n" + JSON.stringify(recentRecord));
         const init2 = async () => {
           await axios
             .get(`/api/growth/${gender + 1}/${recentRecordMonth}/${recentRecord.height}/${recentRecord.weight}/${recentRecord.circumference}`)
