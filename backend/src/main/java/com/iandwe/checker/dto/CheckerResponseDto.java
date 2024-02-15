@@ -1,5 +1,6 @@
 package com.iandwe.checker.dto;
 
+import com.iandwe.checker.domain.BabyChecker;
 import com.iandwe.essential.domain.Essential;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,16 +29,19 @@ public class CheckerResponseDto {
 
     private String target;
 
-    public static CheckerResponseDto of(Essential essential, boolean isComplete){
+    private Long babyNum;
+
+    public static CheckerResponseDto of(Essential essential, BabyChecker babyChecker) {
         return CheckerResponseDto.builder()
                 .essentialNum(essential.getNum())
                 .title(essential.getTitle())
                 .description(essential.getDescription())
-                .complete(isComplete)
+                .complete(babyChecker.isComplete())
                 .startTime(essential.getStartTime())
                 .endTime(essential.getEndTime())
                 .category(essential.getCategory())
                 .target(essential.getTarget())
+                .babyNum(babyChecker.getBabyNum())
                 .build();
     }
 }

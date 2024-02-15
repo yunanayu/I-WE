@@ -38,7 +38,7 @@ public class CheckerService {
 
         return motherCheckers.stream().map(checker -> {
                     Essential essential = essentialRepository.findByNum(checker.getEssentialNum()).orElseThrow(NoEssentialExistException::new);
-                    return CheckerMotherResponseDto.of(essential, checker.isComplete(), checker.getBabyNum());
+                    return CheckerMotherResponseDto.of(essential, checker);
                 }
         ).collect(Collectors.toList());
     }
@@ -52,7 +52,7 @@ public class CheckerService {
         return babyCheckers.stream().map(checker -> {
                     Essential essential = essentialRepository.findByNum(checker.getEssentialNum())
                             .orElseThrow(NoEssentialExistException::new);
-                    return CheckerResponseDto.of(essential, checker.isComplete());
+                    return CheckerResponseDto.of(essential, checker);
                 }
         ).collect(Collectors.toList());
     }
