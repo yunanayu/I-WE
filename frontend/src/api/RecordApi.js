@@ -84,3 +84,23 @@ export const changeComplete = (targetNum, essentialNum, target, isComplete) => {
     })
     .catch((err) => console.log(err));
 } 
+
+
+
+export const momChangeComplete = (targetNum, essentialNum, target, isComplete, babyNum) => {
+  axios({
+    method: 'put',
+    url: `/api/check/complete`,
+    data: {
+      targetNum: targetNum,
+      essentialNum: essentialNum,
+      target: target,
+      isComplete: isComplete,
+      babyNum :babyNum
+    },
+  })
+    .then((res) => {
+      window.alert('변경되었습니다.')
+    })
+    .catch((err) => console.log(err));
+} 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { changeComplete } from '../../../api/RecordApi';
+import { changeComplete, momChangeComplete } from '../../../api/RecordApi';
 import useMemberStore from '../../../stores/userStore';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -36,7 +36,7 @@ const CheckCard = (props) => {
   const babyList = useMemberStore(state => state.babyList)
   const item = props.item
   const num = props.num
-  console.log(props)
+  const babyNum = props.babyNum
   const [complete, setComplete] = useState(item.complete)
   const [date, setDate] = useState({start:'', end:''})
   const updateComplete = () => {
@@ -44,7 +44,7 @@ const CheckCard = (props) => {
     if (item.target === 'baby') {
       changeComplete(num,item.essentialNum, 'baby', !item.complete )
     } else {
-    changeComplete(num, item.essentialNum, item.target, !item.complete )
+    momChangeComplete(num, item.essentialNum, item.target, !item.complete , babyNum)
     }
   }
 

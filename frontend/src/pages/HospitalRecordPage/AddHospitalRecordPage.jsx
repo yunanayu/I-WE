@@ -17,7 +17,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
@@ -30,7 +29,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Option } from '@mui/joy';
+import { Option, Select } from '@mui/joy';
 import useMemberStore from '../../stores/userStore';
 
 const AddMomRecordPage = () => {
@@ -41,9 +40,6 @@ const AddMomRecordPage = () => {
   const location = useLocation()
   const selectedDay = location.state.selectedDay
   const bornBabyList = babyList.filter((baby) => baby.status);
-  const [value, setValue] = React.useState('mother');
-  const [targetNum, setTargetNum] = useState(0)
-
   const today = dayjs(moment(new Date()).format('YYYY-MM-DD'))  // 추후에 선택한 날짜로 변경하기
   const [state, setState] = useState({
     selectDay : selectedDay,
@@ -56,9 +52,8 @@ const AddMomRecordPage = () => {
     target : '',
     targetNum : 0,
   })
-  useEffect(() => {
+  console.log(state)
 
-  }, [target])
     const submit = () => {
       axios({
         method:'post',
@@ -66,7 +61,7 @@ const AddMomRecordPage = () => {
         data:{
           target : state.target,  // baby or mother
           // targetNum 수정하기
-          targetNum : 1,  // pk
+          targetNum : state.targetNum,  // pk
           title : state.title,   // 간단 정보
           hospitalName : state.hospitalName,  //
           doctor : state.doctorName,
@@ -104,17 +99,25 @@ const AddMomRecordPage = () => {
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
         >
-          <FormControlLabel onClick={()=> {setTarget('mother')}} value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
+          <FormControlLabel 
+          onClick={()=> {
+            setState({...state, targetNum:motherNum})
+          }}
+          value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
           <FormControlLabel onClick={()=> setTarget('baby')} value="baby" control={<Radio />} label="아기" name='target' onChange={handleChange}/>
         </RadioGroup>
       </FormControl>
-      {/* {bornBabyList.length !== 0 
-      && 
+      {(target === 'baby' && bornBabyList !== 0 )?
       <Select variant="plain" placeholder="아기 선택">
         {bornBabyList.map((baby) => (
-          <Option name='targetNum' onClick={handleChange} value={baby.num}>{baby.name}</Option>))}
-      </Select>} */}
-
+          <Option name='targetNum' 
+          onClick={() => {
+            setState({...state, targetNum:baby.num})
+            }} value={baby.num}>{baby.name}</Option>))}
+      </Select>
+      :
+      <></>
+      }
       <Box sx={{display:'flex', width:'100%', pt:3 }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={['DatePicker']}>
