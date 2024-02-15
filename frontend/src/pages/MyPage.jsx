@@ -28,8 +28,9 @@ function MyPage() {
         ) : (
           <Avatar sx={{ width: 56, height: 56 }} src="/broken-image.jpg" />
         )}
-        <div style={{display:'flex', }}>
-          <Typography sx={{ml:2, pt:1, }}>{userName} 님 반갑습니다!</Typography>
+        <div style={{display:'flex', textAlign:'center' }}>
+          <Typography variant="h5" sx={{fontWeight:'bold', textAlign:'center'}}>{userName}</Typography>
+          <Typography variant="h6"> 님 반갑습니다!</Typography>
         </div>
       </Box>
       <Divider sx={{mb:2}}/>

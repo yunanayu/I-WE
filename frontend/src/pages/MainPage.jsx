@@ -24,6 +24,14 @@ const theme = createTheme({
   },
 });
 
+const wordtheme = createTheme({
+  typography: {
+    fontFamily: 'Poor Story, system-ui',
+    fontWeightRegular: 400,
+    fontStyleRegular: 'normal',
+  },
+});
+
 const Main = ({ onLoginStatusChange }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const babyList  = useMemberStore(state => state.babyList)
@@ -51,22 +59,17 @@ const Main = ({ onLoginStatusChange }) => {
       setIsLoggedIn(false);
       onLoginStatusChange(false);
     }
-  
   },  [onLoginStatusChange]);
-
-  
 
   const [babyName, setBabyName] = useState([]);
   const [date, setDate] = useState(0) //선택한 아기의 날짜
   // 임신 시
   const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
   const [daysSinceBirth, setDaysSinceBirth] = useState(null);
-
   // 출산 시
   const [daysAfterBirth, setDaysAfterBirth] = useState(null);
   const [daysBeforeBirth, setDaysBeforeBirth] = useState(null);
   const [monthSinceBirth, setMonthsSinceBirth] = useState(null)
-
   // 엄마 정보
   const [mombodyInfo, setMombodyInfo] = useState([]);
   // 아기 정보
@@ -111,21 +114,24 @@ const Main = ({ onLoginStatusChange }) => {
 
   // 엄마 info데이터 가져오기
   useEffect(() => {
-    const fetchData = async () => {
-      console.log(date);
-      try {
-        const mombodyinforesponse = await axios({
-          method: 'get',
-          url: `/api/info/mother/p/${date}`
-        });
-        const mombodyinfodata = mombodyinforesponse.data;
-        console.log(mombodyinfodata);
-        setMombodyInfo(mombodyinfodata);
-      } catch (error) {
-        console.log(error);
+    if(userNum !== 0){
+      if(date !== 0){
+        const fetchData = async () => {
+        try {
+          const mombodyinforesponse = await axios({
+            method: 'get',
+            url: `/api/info/mother/p/${date}`
+          });
+          const mombodyinfodata = mombodyinforesponse.data;
+          setMombodyInfo(mombodyinfodata);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
       }
-    };
-    fetchData();
+      
+    }
   }, [date]);
   
   const getMomBodyInfothree = () => {
@@ -149,22 +155,24 @@ const Main = ({ onLoginStatusChange }) => {
 
   // 아기 info데이터 가져오기
   useEffect(() => {
-      const fetchData = async () => {
-      try {
-        const babybodyinforesponse = await axios({
-          method: 'get',
-          url: `/api/info/baby/p/${date}`
-        });
-        const babybodyinfodata = babybodyinforesponse.data;
-        setBabybodyInfo(babybodyinfodata);
-      } catch (error) {
-        console.log(error);
+    if(userNum !== 0){
+      if(date !== 0){
+        const fetchData = async () => {
+        try {
+          const babybodyinforesponse = await axios({
+            method: 'get',
+            url: `/api/info/baby/p/${date}`
+          });
+          const babybodyinfodata = babybodyinforesponse.data;
+          setBabybodyInfo(babybodyinfodata);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
       }
-    };
-  
-    fetchData();
-    
-    
+    }
+      
   }, [date]);
 
   const getBabyBodyInfothree = () => {
@@ -250,7 +258,13 @@ const Main = ({ onLoginStatusChange }) => {
                 ))}
               </Swiper>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
-                <Typography margin="10px" variant="h4" align="center" sx={{ mt: 4, mb: 2, color: 'gray', fontWeight:'bold' }}>
+              <Typography
+                margin="10px"
+                variant="h4"
+                align="center"
+                theme={wordtheme}
+                sx={{ mt: 4, mb: 2, color: 'gray',fontFamily: 'Poor Story, system-ui',fontStyle: 'normal', fontWeight:'bold' }}
+              >
                   {babyName}
                 </Typography>
                 <Typography margin="10px" variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray', fontWeight:'bold' }}>
