@@ -33,6 +33,7 @@ import { Option, Select } from '@mui/joy';
 import useMemberStore from '../../stores/userStore';
 
 const AddMomRecordPage = () => {
+  // ㅎㅇㅎㅇ
   const babyList = useMemberStore(state => state.babyList)
   const motherNum = babyList[0].motherNum 
   const navigate = useNavigate()
