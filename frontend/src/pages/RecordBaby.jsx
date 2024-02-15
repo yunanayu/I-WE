@@ -201,7 +201,7 @@ function RecordBaby() {
           setBabyRecord(response.data);
           const recent = response.data[response.data.length - 1];
           setRecentRecord(recent);
-          console.log(JSON.stringify(response.data));
+          // console.log(JSON.stringify(response.data));
         })
         .catch((error) => {
           console.log("GET BABY RECORD ERROR\n" + error);
@@ -243,18 +243,25 @@ function RecordBaby() {
     }
   }, [babyRecord]);
 
-  const submitFunction = (data) => {
-    let arr = [];
-    if (babyRecord) {
-      arr = [...babyRecord];
+  const submitFunction = (update, data) => {
+    if(update) {
+      setRecentRecord(data);
+      setBabyRecord((prevRecord) => {
+        let updatedRecord = [];
+        if (babyRecord) {
+          updatedRecord = prevRecord.slice(0, -1);
+        }
+        updatedRecord.push(data);
+        return updatedRecord;
+      });
+    } else {
+      setRecentRecord(data);
+      if(babyRecord){
+        setBabyRecord([...babyRecord, data]);
+      } else {
+        setBabyRecord([data]);
+      }
     }
-    if (recentRecord) {
-      arr.pop();
-      arr.push(data);
-    }
-    setRecentRecord(data);
-    arr.push(data);
-    setBabyRecord([...arr]);
     recordClose();
   };
 

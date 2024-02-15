@@ -34,6 +34,7 @@ function MomForm(props) {
         await axios
           .put(`/api/motherRecord/update`, data)
           .then((response) => {
+            props.recentUpdate(response.data);
             console.log("UPDATE OK\n" + response);
           })
           .catch((error) => {
@@ -41,11 +42,11 @@ function MomForm(props) {
           });
       };
       put();
-      props.recentUpdate(data);
     } else {
+      let recent;
       let todayDate = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
       // console.log(todayDate);
-      const data = {
+      let data = {
         motherNum: motherNum, // 계정정보에서 motherNum 받아오기
         weight: weight,
         recordDate: todayDate,
@@ -54,13 +55,14 @@ function MomForm(props) {
         await axios
           .post("/api/motherRecord/create", data)
           .then((response) => {
-            console.log("POST OK\n" + response);
+            recent = response.data;
+            props.onPostSuccess(recent);
+            console.log("POST OK\n" + JSON.stringify(response.data));
           })
           .catch((error) => {
             console.log("POST FAIL\n" + error);
           });
       post();
-      props.onPostSuccess(data);
     }
   };
 
@@ -199,7 +201,7 @@ const BabyForm = React.forwardRef((props, ref) => {
         setWeight(recentData.weight);
         setHeight(recentData.height);
         setCircumference(recentData.circumference);
-        setFile(recentData.image);
+        setFile(Array.from(recentData.images));
         setUpdate(true);
       }
     }
@@ -210,7 +212,6 @@ const BabyForm = React.forwardRef((props, ref) => {
     if (update) {
       console.log(dateSelected);
       let data = new FormData();
-
       if (file) {
         const obj = {
           "num": recentData.num,
@@ -225,7 +226,9 @@ const BabyForm = React.forwardRef((props, ref) => {
           type: 'application/json'
         })
         data.append("dto", blob);
-        data.append("files", file);
+        file.map((file) => {
+          data.append("files", file);
+        })
       } else {
         const obj = {
           "num": recentData.num,
@@ -240,6 +243,7 @@ const BabyForm = React.forwardRef((props, ref) => {
           type: 'application/json'
         })
         data.append("dto", blob);
+        data.append("files", null);
       }
       const put = async () => {
         await axios
@@ -249,6 +253,7 @@ const BabyForm = React.forwardRef((props, ref) => {
             },
           })
           .then((response) => {
+            props.onSubmit(update, response.data);
             console.log("UPDATE OK\n" + response);
           })
           .catch((error) => {
@@ -256,12 +261,10 @@ const BabyForm = React.forwardRef((props, ref) => {
           });
       };
       put();
-      props.onSubmit();
     } else {
       let date = dateSelected.year() + "-" + ("0" + (dateSelected.month() + 1)).slice(-2) + "-" + ("0" + dateSelected.date()).slice(-2);
       console.log(date);
       let data = new FormData();
-      let record;
       if (file) {
         const obj = {
           "babyNum": props.babyNum,
@@ -292,7 +295,7 @@ const BabyForm = React.forwardRef((props, ref) => {
           type: 'application/json'
         })
         data.append("dto", blob);
-        data.append("files", []);
+        data.append("files", null);
       }
       const post = async () => {
         await axios.post("/api/babyRecord/create", data, {
@@ -301,14 +304,14 @@ const BabyForm = React.forwardRef((props, ref) => {
           },
         })
           .then((response) => {
-            console.log("POST OK\n" + response);
+            props.onSubmit(update, response.data);
+            console.log("POST OK\n" + JSON.stringify(response));
           })
           .catch((error) => {
             console.log("POST FAIL\n" + error);
           });
       };
       post();
-      props.onSubmit();
     }
   };
 

@@ -2,41 +2,32 @@ import React, { useState, useEffect } from "react";
 import Carousel from "react-material-ui-carousel";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 
-const BabyCarousel = () => {
-  const imageData = [
-    {
-      label: "Image 1",
-      alt: "image1",
-      url: "https://picsum.photos/200/300",
-    },
+const BabyCarousel = (props) => {
+  const [url, setUrl] = useState();
 
-    {
-      label: "Image 2",
-      alt: "image2",
-      url: "https://picsum.photos/200/300",
-    },
+  useEffect(() => {
+    let arr = [];
+    if(props.babyRecord) {
+      let j = 0;
+      for(let i=0; i<props.babyRecord.length; i++) {
+        if(props.babyRecord[i].images.length > 0){
+          for(let k=0; k<props.babyRecord[i].images.length; k++) {
+            arr.push({
+              "num" : j++,
+              "recordDate" : props.babyRecord[i].recordDate,
+              "image" : props.babyRecord[i].images[k]
+            })
+          }
+        }
+      }
+      setUrl([...arr]);
+    }
+  }, [props.babyRecord])
 
-    {
-      label: "Image 3",
-      alt: "image3",
-      url: "https://picsum.photos/200/300",
-    },
-
-    {
-      label: "Image 4",
-      alt: "image4",
-      url: "https://picsum.photos/200/300",
-    },
-
-    {
-      label: "Image 5",
-      alt: "image5",
-      url: "https://picsum.photos/200/300",
-    },
-  ];
+  
   return (
     <Box sx={{ width: "100%" }}>
-      <Carousel
+      {url ? <Carousel
         showArrows={true}
         centerMode={true}
         centerSlidePercentage={10}
@@ -51,9 +42,9 @@ const BabyCarousel = () => {
           alignItems: "center",
         }}
       >
-        {imageData.map((content) => (
+        {url.map((content) => (
           <Stack
-            key={content.label}
+            key={content.num}
             sx={{
               displayplay: "flex",
               justifyContent: "center",
@@ -61,12 +52,12 @@ const BabyCarousel = () => {
             }}
           >
             <Typography variant="h5" color="#112b23" mb={3}>
-              {content.label}
+              {content.recordDate}
             </Typography>
-            <img src={content.url} width={250} height={350} alt={content.alt} key={content.label} />
+            <img src={content.image} width={250} height={350} alt={content.recordDate} key={content.num} />
           </Stack>
         ))}
-      </Carousel>
+      </Carousel> : <Typography fontSize={26} variant="body2" style={{ whiteSpace: "pre-line" }}> 기록된 사진이 없습니다. </Typography>}
     </Box>
   );
 };
