@@ -15,6 +15,7 @@ import KeyboardArrowRightSharpIcon from "@mui/icons-material/KeyboardArrowRightS
 // familyNum 받아오기
 function MyPage() {
   const navigate = useNavigate();
+  const parentType = useMemberStore(state => state.parentType)
   const profileImage = useMemberStore(state => state.profileImage)
   const familyNum = useMemberStore((state) => state.familyNum);
   const userName = useMemberStore(state => state.userName)
@@ -38,12 +39,14 @@ function MyPage() {
         <Typography variant="caption" display="block" gutterBottom sx={{pl:2}}>나의 정보</Typography>
         <nav aria-label="secondary mailbox folders">
           <List>
+          {parentType !== "FATHER" && (
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate("/codeshare")}>
                 <ListItemText primary="가족 코드" />
                 <KeyboardArrowRightSharpIcon color="disabled" />
               </ListItemButton>
             </ListItem>
+          )}
             <Divider />
             <ListItem disablePadding>
               <ListItemButton>

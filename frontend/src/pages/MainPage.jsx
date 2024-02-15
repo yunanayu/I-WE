@@ -308,7 +308,7 @@ const Main = ({ onLoginStatusChange }) => {
                   </Card>
                 </Box>
                 <div style={{ textAlign: 'right', margin:'10px 20px', alignItems:'center' }}>
-                  <Button sx={{ backgroundColor: '#FBBBB8', color: 'gray' }} variant="contained" onClick={handleIconClick}>더알아보기<ArrowCircleRightOutlinedIcon></ArrowCircleRightOutlinedIcon></Button>
+                  <Button sx={{ backgroundColor: '#FBBBB8', color: 'whitesmoke' }} variant="contained" onClick={handleIconClick}>더알아보기<ArrowCircleRightOutlinedIcon></ArrowCircleRightOutlinedIcon></Button>
                 </div> 
               </Box>
             </Box>

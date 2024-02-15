@@ -24,9 +24,19 @@ const wordtheme = createTheme({
 function CheckCode({setSpouseStatus}) {
   const navigate = useNavigate();
   const [familycode, setfamilyCode] = useState('');
+  // const [childName, setChildName] = useState("");
+  // const [pregnancyDate, setPregnancyDate] = useState("");
+  // const [childGender, setChildGender] = useState("");
+  // const [pregnancyStatus, setPregnancyStatus] = useState("");
+  // const [birthDate, setBirthDate] = useState("");
+  const setBabyList = useMemberStore(state => state.setBabyList)
+  const setUserNum = useMemberStore(state => state.setUserNum)
+  const setUserName = useMemberStore(state => state.setUserName)
+  const setParentType = useMemberStore(state => state.setParentType)
+  const setProfileImage = useMemberStore(state => state.setProfileImage)
   const cookieString = document.cookie;
   const cookies = cookieString.split('; ');
-  console.log(familycode)
+  // console.log(familycode)
 
   const handleCheckCode = async () => {
     var code;
@@ -38,7 +48,9 @@ function CheckCode({setSpouseStatus}) {
     }
 
     var userNum;
-
+    var parentType
+    var userName
+    var profileImage
     // 사용자 정보 요청해서 Authorization에 넣기
     try {
       const response = await axios.get('/api/member',
@@ -49,10 +61,18 @@ function CheckCode({setSpouseStatus}) {
         }
       );
       userNum = response.data.num;
+      parentType = response.data.parentType;
+      userName = response.data.name;
+      profileImage = response.data.profileImage;
     } catch(e) {
       console.log("회원정보 받아오기 실패")
     }
-    console.log(userNum);
+    // user type, pk, name 저장
+    setUserNum(userNum)
+    setParentType(parentType)
+    setUserName(userName)
+    setProfileImage(profileImage)
+    // console.log(userNum);
 
     try {
       const response = await axios.put(`/api/family/share`, {
@@ -64,6 +84,17 @@ function CheckCode({setSpouseStatus}) {
       console.log('코드 확인 실패', error);
     }
     console.log("코드 확인 성공")
+    var babyList = []
+    try {
+      const response = await axios.get(`/api/baby/${userNum}`);
+      const babyInfo = response.data;
+      setBabyList(response.data)
+      console.log(babyInfo);
+      // babyList = response.data
+    }catch (error) {
+      console.log('아기 리스트받아오기 실패', error);
+    }
+    console.log("아기 리스트받아오기 성공")
     requestPermission()
     navigate("/");
   };

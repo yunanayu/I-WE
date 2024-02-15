@@ -27,6 +27,7 @@ const style = {
 const ReadChildCard = (props) => {
   const userNum = useMemberStore(state => state.userNum)
   const babyList = useMemberStore(state => state.babyList)
+  const parentType = useMemberStore((state) => state.parentType);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -41,6 +42,8 @@ const ReadChildCard = (props) => {
     // 예정일을 원하는 형식으로 변환하여 반환
     return dueDate.toLocaleDateString(); // 형식을 원하는 대로 변경할 수 있습니다.
   }
+
+  console.log(babyList)
 
   const goDelete = () => {
     if (babyList.length <= 1) {
@@ -64,7 +67,9 @@ const ReadChildCard = (props) => {
       <CardContent>
         <Box sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
           <Typography variant="body1" gutterBottom>아이정보</Typography>
+          {parentType !== "FATHER" && (
           <IconButton sx={{justifyConten:'right'}} onClick={handleOpen}><EditOutlinedIcon /></IconButton>
+          )}
         </Box>
         {baby.birth === null ?
         <Box sx={{display:'flex'}}>
