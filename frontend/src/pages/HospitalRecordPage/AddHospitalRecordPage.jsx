@@ -34,7 +34,7 @@ import useMemberStore from '../../stores/userStore';
 
 const AddMomRecordPage = () => {
   const babyList = useMemberStore(state => state.babyList)
-  const motherNum = babyList[0].motherNum
+  const motherNum = babyList[0].motherNum 
   const navigate = useNavigate()
   const [target, setTarget] = useState('')
   const location = useLocation()
@@ -52,9 +52,8 @@ const AddMomRecordPage = () => {
     target : '',
     targetNum : 0,
   })
-  console.log(state)
-
     const submit = () => {
+      console.log(state.targetNum)
       axios({
         method:'post',
         url : `api/hospital/create`,
@@ -85,10 +84,16 @@ const AddMomRecordPage = () => {
   const handleChange = (event) => {
     setState({...state, [event.target.name] : event.target.value})
   };
+
+  useEffect(() => {
+    if (state.target === 'mother') {
+      setState({...state, targetNum:motherNum})
+    }
+  },[state.target])
   
   return (
-    <Container sx={{pt:10,  border:1,}}>
-      <Box sx={{display:'flex', pb:2}}>
+    <Container sx={{pt:5, mb:3, pb:8}}>
+      <Box sx={{display:'flex', pb:3,}}>
         <Typography variant='h3'>검진 기록하기 </Typography>
         <HealingOutlinedIcon fontSize='large'/>
       </Box>
@@ -100,20 +105,18 @@ const AddMomRecordPage = () => {
           name="row-radio-buttons-group"
         >
           <FormControlLabel 
-          onClick={()=> {
-            setState({...state, targetNum:motherNum})
-          }}
           value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
           <FormControlLabel onClick={()=> setTarget('baby')} value="baby" control={<Radio />} label="아기" name='target' onChange={handleChange}/>
         </RadioGroup>
       </FormControl>
-      {(target === 'baby' && bornBabyList !== 0 )?
+      {(target === "baby" && bornBabyList !== 0 )?
       <Select variant="plain" placeholder="아기 선택">
         {bornBabyList.map((baby) => (
           <Option name='targetNum' 
           onClick={() => {
             setState({...state, targetNum:baby.num})
-            }} value={baby.num}>{baby.name}</Option>))}
+            }} 
+          value={baby.num}>{baby.name}</Option>))}
       </Select>
       :
       <></>
@@ -167,10 +170,6 @@ const AddMomRecordPage = () => {
             sx={{width:'30%', pr:5}}
           />
         </Box>
-        {/* <Box>
-          <Typography variant='h5'>검진사진</Typography>
-          <FileUpload />
-        </Box> */}
         <Box>
           <Typography variant='h5'>검진내용</Typography>
           <TextField
@@ -188,7 +187,6 @@ const AddMomRecordPage = () => {
           <Typography variant='h5'>검진결과</Typography>
           <TextField
           id="outlined-textarea"
-          // label="검진결과"
           name='checkupResult'
           placeholder="검진결과"
           onChange={handleChange}
@@ -198,8 +196,6 @@ const AddMomRecordPage = () => {
           </TextField>
         </Box>
       </Box>
-      {/* ------------------------------------------------------------------------------------------------------- */}
-
       <Box sx={{pb:5}}>
         <Box sx={{display:'flex', pb:3, pt:4}}>
           <LocalHospitalIcon fontSize='large'/>
@@ -216,6 +212,9 @@ const AddMomRecordPage = () => {
         />
       </Box>
       <Box sx={{display:'flex', justifyContent:'right'}}>
+        <Button  variant="outlined" sx={{borderColor:'#FBBBB8', color:'#FBBBB8', mr:1}} onClick={() => navigate('/hospitalrecord')}>
+          취소하기
+        </Button>
         <Button  variant="outlined" sx={{borderColor:'#FBBBB8', color:'#FBBBB8'}} onClick={submit}>
           등록하기
         </Button>

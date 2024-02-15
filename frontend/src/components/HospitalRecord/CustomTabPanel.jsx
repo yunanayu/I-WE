@@ -151,7 +151,7 @@ export default function BasicTabs(props) {
             <div>
               <Button
                 onClick={() =>
-                  navigate("/momhospitalrecord", {
+                  navigate("/addrecord", {
                     state: { selectedDay: props.selectedDay },
                   })
                 }
@@ -180,7 +180,7 @@ export default function BasicTabs(props) {
               })}
               <Button
                 onClick={() =>
-                  navigate("/momhospitalrecord", {
+                  navigate("/addrecord", {
                     state: { selectedDay: props.selectedDay },
                   })
                 }
