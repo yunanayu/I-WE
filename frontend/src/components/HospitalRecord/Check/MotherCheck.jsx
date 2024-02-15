@@ -13,7 +13,6 @@ const MotherCheck = () => {
   const babyList = useMemberStore((state) => state.babyList);
   const motherNum = babyList[babyList.length -1].motherNum
   const babyNum = babyList[babyList.length -1].num
-  console.log(babyNum)
   const [momCheckList, setMomCheckList] = useState([]);
   // 필터링 되어 저장되는 값
   const [vaccineList, setVaccineList] = useState([]);
@@ -21,10 +20,13 @@ const MotherCheck = () => {
   const [selectRange, setSelectRange] = useState([0, 40]);
   useEffect(() => {
     axios
-      .get(`/api/check/mother/${userNum}/${babyNum}`)
+      .get(`/api/check/mother/${userNum}`)
       .then((res) => {
-        setMomCheckList(sortList(res.data));
-        setVaccineList(sortList(res.data));
+        const list = res.data.filter((item) => {
+          return item.babyNum === babyNum
+        })
+        setMomCheckList(sortList(list));
+        setVaccineList(sortList(list));
       })
       .catch((err) => console.log(err));
   }, []);
@@ -38,25 +40,6 @@ const MotherCheck = () => {
       setVaccineList(list);
     }
   }, [type]);
-
-  // useEffect(() => {
-  //   if (type === "all") {
-  //     setVaccineList(momCheckList);
-  //   } else {
-  //     const filteredList = momCheckList.filter(
-  //       (item) => item.category === type
-  //     );
-  //     setVaccineList(filteredList);
-  //   }
-  // }, [type, momCheckList]);
-
-  // useEffect(() => {
-  //   const filteredList = momCheckList.filter((item) => {
-  //     const { startTime, endTime } = item;
-  //     return startTime >= selectRange[0] && endTime <= selectRange[1];
-  //   });
-  //   setVaccineList(filteredList);
-  // }, [selectRange, momCheckList]);
 
   return (
     <Box>
@@ -78,7 +61,7 @@ const MotherCheck = () => {
           </Select>
           {/* <RangeSlider setSelectRange={setSelectRange} target="mother" /> */}
           {vaccineList.map((item, index) => {
-            return <CheckCard key={index} item={item} num={motherNum} />;
+            return <CheckCard key={index} item={item} num={motherNum} babyNum={babyNum} />;
           })}
         </>
       )}

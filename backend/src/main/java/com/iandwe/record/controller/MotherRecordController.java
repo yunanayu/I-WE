@@ -19,9 +19,9 @@ public class MotherRecordController {
     private final MotherRecordService motherRecordService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody MotherRecordCreateRequestDto dto) {
-        motherRecordService.create(dto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<MotherRecordReadReponseDto> create(@RequestBody MotherRecordCreateRequestDto dto) {
+        MotherRecordReadReponseDto responseDto = motherRecordService.create(dto);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{motherNum}")

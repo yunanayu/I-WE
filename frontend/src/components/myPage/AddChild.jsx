@@ -72,7 +72,7 @@ const AddChild = (props) => {
           <FormControlLabel
             onClick={() => {
               setStatus("before")
-              setInitState({...initState, status: false, pregnancyDate:'', birth:''})
+              setInitState({...initState, status: false, pregnancyDate:moment(new Date()).format('YYYY-MM-DD'), birth:''})
             }}
             value="before"
             control={<Radio />}
@@ -82,7 +82,7 @@ const AddChild = (props) => {
           <FormControlLabel
             onClick={() => {
               setStatus("after")
-              setInitState({...initState, status: true, pregnancyDate:'', birth:''})
+              setInitState({...initState, status: true, pregnancyDate:'', birth:moment(new Date()).format('YYYY-MM-DD')})
           }}
             value="after"
             control={<Radio />}

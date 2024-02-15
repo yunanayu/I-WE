@@ -16,5 +16,5 @@ public interface BabyRecordService {
 
     Boolean update(BabyRecordUpdateRequestDto dto, List<MultipartFile> files);
 
-    void create(List<MultipartFile> files, BabyRecordCreateRequestDto dto);
+    BabyRecordReadResponseDto create(List<MultipartFile> files, BabyRecordCreateRequestDto dto);
 }

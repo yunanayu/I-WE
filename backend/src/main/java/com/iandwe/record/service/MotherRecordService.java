@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MotherRecordService {
 
-    Boolean create(MotherRecordCreateRequestDto dto);
+    MotherRecordReadReponseDto create(MotherRecordCreateRequestDto dto);
 
     List<MotherRecordReadReponseDto> findAllByMotherNum(long motherNum);
 
