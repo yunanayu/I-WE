@@ -25,7 +25,7 @@ public class BabyRecordController {
 //    }
 
     @PostMapping("/create")
-    public ResponseEntity<BabyRecordReadResponseDto> create(@RequestPart(value = "files") List<MultipartFile> files,
+    public ResponseEntity<BabyRecordReadResponseDto> create(@RequestPart(value = "files", required = false) List<MultipartFile> files,
                                     @RequestPart(value = "dto") BabyRecordCreateRequestDto dto) {
         BabyRecordReadResponseDto responseDto = babyRecordService.create(files, dto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
@@ -38,7 +38,7 @@ public class BabyRecordController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestPart(value = "files") List<MultipartFile> files,
+    public ResponseEntity<?> update(@RequestPart(value = "files", required = false) List<MultipartFile> files,
                                     @RequestPart(value = "dto") BabyRecordUpdateRequestDto dto) {
         babyRecordService.update(dto, files);
         return new ResponseEntity<>(HttpStatus.OK);
