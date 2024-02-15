@@ -26,6 +26,7 @@ import AddMomRecordPage from "./pages/HospitalRecordPage/AddHospitalRecordPage";
 import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecord";
 import ChildList from "./components/myPage/ChildList";
 import CodeSharePage from "./pages/MyPage/CodeSharePage";
+import TestPage from './FCM/TestPage';
 
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
             <Route path="/addrecord" element={<AddMomRecordPage />} />
             <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
             <Route path="/babylist" element={<ChildList />} />
+            <Route path="/test" element={<TestPage />} />
             <Route path="/codeshare" element={<CodeSharePage onLoginStatusChange={handleLoginStatusChange}/>} />
           </Routes>
         </div>
