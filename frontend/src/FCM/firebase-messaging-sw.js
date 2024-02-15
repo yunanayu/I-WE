@@ -57,9 +57,9 @@ export async function requestPermission() {
     console.log("메시지가 도착했습니다.", payload);
   });
 
-  onBackgroundMessage(messaging, (payload) => {
-    console.log("메시지가 도착했습니다.", payload);
-  })
+  // onBackgroundMessage(messaging, (payload) => {
+  //   console.log("메시지가 도착했습니다.", payload);
+  // })
 
   // 알림 거부 코드 짜기
 
