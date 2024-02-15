@@ -43,9 +43,10 @@ function MomForm(props) {
       put();
       props.recentUpdate(data);
     } else {
+      let recent;
       let todayDate = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
       // console.log(todayDate);
-      const data = {
+      let data = {
         motherNum: motherNum, // 계정정보에서 motherNum 받아오기
         weight: weight,
         recordDate: todayDate,
@@ -54,13 +55,14 @@ function MomForm(props) {
         await axios
           .post("/api/motherRecord/create", data)
           .then((response) => {
-            console.log("POST OK\n" + response);
+            console.log("POST OK\n" + JSON.stringify(response.data));
+            recent = response.data;
+            props.onPostSuccess(recent);
           })
           .catch((error) => {
             console.log("POST FAIL\n" + error);
           });
       post();
-      props.onPostSuccess(data);
     }
   };
 
@@ -249,18 +251,18 @@ const BabyForm = React.forwardRef((props, ref) => {
           })
           .then((response) => {
             console.log("UPDATE OK\n" + response);
+            props.onSubmit(response.data);
+
           })
           .catch((error) => {
             console.log("UPDATE FAIL\n" + error);
           });
       };
       put();
-      props.onSubmit();
     } else {
       let date = dateSelected.year() + "-" + ("0" + (dateSelected.month() + 1)).slice(-2) + "-" + ("0" + dateSelected.date()).slice(-2);
       console.log(date);
       let data = new FormData();
-      let record;
       if (file) {
         const obj = {
           "babyNum": props.babyNum,
@@ -300,14 +302,14 @@ const BabyForm = React.forwardRef((props, ref) => {
           },
         })
           .then((response) => {
-            console.log("POST OK\n" + response);
+            console.log("POST OK\n" + JSON.stringify(response));
+            props.onSubmit(response.data);
           })
           .catch((error) => {
             console.log("POST FAIL\n" + error);
           });
       };
       post();
-      props.onSubmit();
     }
   };
 
