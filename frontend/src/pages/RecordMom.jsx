@@ -253,7 +253,7 @@ function RecordMom() {
             <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
               <WeeklyWeightChart recordData={momRecord} />
             </Box>
-            <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+            <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, mb:15 }}>
               <ChangeChart
                 recordData={momRecord}
                 basisData={momBasis}

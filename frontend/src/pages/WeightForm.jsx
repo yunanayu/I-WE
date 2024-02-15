@@ -467,16 +467,25 @@ const BabyForm = React.forwardRef((props, ref) => {
                 borderRadius: 3,
                 width: "40vw",
               }}
+            >{props.gender === 2 ? (<Button
+              component="label"
+              variant="contained"
+              startIcon={<CloudUploadIcon />}
+              fullWidth
+              sx={{backgroundColor: "#FBBBB8"}}
             >
-              <Button
-                component="label"
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
-                fullWidth
-              >
-                초음파 사진
-                <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-              </Button>
+              초음파 사진
+              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+            </Button>) : (<Button
+              component="label"
+              variant="contained"
+              startIcon={<CloudUploadIcon />}
+              fullWidth
+            >
+              초음파 사진
+              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+            </Button>)}
+              
             </Box>
           )}
           {props.gender === 2 ? (

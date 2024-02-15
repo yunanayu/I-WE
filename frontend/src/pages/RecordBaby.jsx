@@ -425,6 +425,7 @@ function RecordBaby() {
                   ...setCenter,
                   borderRadius: 3,
                   height: 400,
+                  mb: 15
                 }}
               >
                 <HeadChart headRecord={headRecord} percentile={percentileRecord} month={recentRecordMonth} />
@@ -467,7 +468,7 @@ function RecordBaby() {
                 </Box>
               </Modal>
             </Box>
-            <Box maxWidth="md" sx={{ ...setCenter, ...commonStyles, borderRadius: 3 }}>
+            <Box maxWidth="md" sx={{ ...setCenter, ...commonStyles, borderRadius: 3, mb: 15 }}>
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 {babyName}의 사진
               </Typography>
