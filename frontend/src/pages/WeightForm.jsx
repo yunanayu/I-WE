@@ -34,6 +34,7 @@ function MomForm(props) {
         await axios
           .put(`/api/motherRecord/update`, data)
           .then((response) => {
+            props.recentUpdate(response.data);
             console.log("UPDATE OK\n" + response);
           })
           .catch((error) => {
@@ -41,7 +42,6 @@ function MomForm(props) {
           });
       };
       put();
-      props.recentUpdate(data);
     } else {
       let recent;
       let todayDate = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
@@ -55,9 +55,9 @@ function MomForm(props) {
         await axios
           .post("/api/motherRecord/create", data)
           .then((response) => {
-            console.log("POST OK\n" + JSON.stringify(response.data));
             recent = response.data;
             props.onPostSuccess(recent);
+            console.log("POST OK\n" + JSON.stringify(response.data));
           })
           .catch((error) => {
             console.log("POST FAIL\n" + error);
@@ -253,9 +253,8 @@ const BabyForm = React.forwardRef((props, ref) => {
             },
           })
           .then((response) => {
+            props.onSubmit(update, response.data);
             console.log("UPDATE OK\n" + response);
-            props.onSubmit(response.data);
-
           })
           .catch((error) => {
             console.log("UPDATE FAIL\n" + error);
@@ -305,8 +304,8 @@ const BabyForm = React.forwardRef((props, ref) => {
           },
         })
           .then((response) => {
+            props.onSubmit(update, response.data);
             console.log("POST OK\n" + JSON.stringify(response));
-            props.onSubmit(response.data);
           })
           .catch((error) => {
             console.log("POST FAIL\n" + error);
