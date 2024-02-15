@@ -9,6 +9,9 @@ import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
 import b1 from '../images/1.jpg';
+import heart from '../images/heart.png';
+import heart2 from '../images/heart2.png';
+
 import axios from 'axios';
 import moment from 'moment';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -233,8 +236,8 @@ const Main = ({ onLoginStatusChange }) => {
       {isLoggedIn ? (
         <>
         <ThemeProvider theme={theme}>
-          <Box sx={{ width:'100%' , display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: 6,}}>
-            <Box sx={{ display: 'flex',  alignItems: 'center', flexDirection: 'column' }}>
+          <Box sx={{ width:'100%' , display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: 8, mb:8}}>
+            <Box sx={{ display: 'flex',  alignItems: 'center', flexDirection: 'column'}}>
               <Swiper
                 effect={'cards'}
                 grabCursor={true}
@@ -257,7 +260,8 @@ const Main = ({ onLoginStatusChange }) => {
                   </SwiperSlide>
                 ))}
               </Swiper>
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row',alignItems: 'baseline',}}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline',ml:'40px' }}>
               <Typography
                 margin="10px"
                 variant="h4"
@@ -267,22 +271,25 @@ const Main = ({ onLoginStatusChange }) => {
               >
                   {babyName}
                 </Typography>
-                <Typography margin="10px" variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray', fontWeight:'bold' }}>
+                <Typography margin="10px" theme={wordtheme} variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray', fontWeight:'bold' }}>
                   {particle}
                 </Typography>
-                <Typography margin="10px" variant="h4" align="center" sx={{ mt: 4, mb: 2, color: 'gray', fontWeight:'bold' }}>
+                <Typography margin="10px" theme={wordtheme} variant="h4" align="center" sx={{ mt: 2, mb: 2, color: 'gray', fontWeight:'bold' }}>
                   {daysSincePregnancy ? (
                     `${daysSincePregnancy} 주차`
                     ) : ( daysSinceBirth ? `${monthSinceBirth}개월` : ''
                   )}
+                                  
                 </Typography>
               </Box>
-              <Box sx={{backgroundColor:'whitesmoke'}}>
+              <img src={heart} width="50" height="50" alt="하트 이미지" />
+              </Box>
+              <Box sx={{backgroundColor:'whitesmoke', borderRadius:'10%', margin:'10px 10px 60px 10px',}}>
                 {/* 엄마카드정보 */}
-                <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%"}}>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mb: '10px' }}>
+                <Box sx={{ display: 'flex', alignItems:'center',  justifyContent:'center', flexDirection: 'column', width:"100%"}}>
+                  <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mt:'10px', mb: '10px' }}>
                     이 시기에 엄마는요!
-                                       
+                    <img src={heart2} width="40" height="30" alt="하트 이미지" />
                   </Typography>
                   <Card sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width: "90%", padding: "15px 15px 15px 15px" }}>
                     {getMomBodyInfothree()}
@@ -292,6 +299,7 @@ const Main = ({ onLoginStatusChange }) => {
                 <Box sx={{ display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'column', width:"100%", mb:'5px'}}>
                   <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mt:'10px', mb: '10px' }}>
                     이 시기에 아기는요!
+                    <img src={heart2} width="40" height="30" alt="하트 이미지" />
                   </Typography>
                   <Card sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width: "90%", padding: "15px 15px 15px 15px" }}>
                     {getBabyBodyInfothree()}

@@ -183,6 +183,7 @@ const UpdateChild = (props) => {
           </div>
         </RadioGroup>
       </FormControl>
+      
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={['DatePicker']}>
         <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }} id="demo-radio-buttons-group-label">출생일</p>
@@ -198,6 +199,7 @@ const UpdateChild = (props) => {
       </>
       }
       </Box>
+      <br />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Button variant="contained" endIcon={<SendIcon />} onClick={addChild} style={{ backgroundColor: '#fcafaf' }}>
             수정하기

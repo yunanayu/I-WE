@@ -194,8 +194,9 @@ const AddChild = (props) => {
         </>
         }
         </Box>
+        <br />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant="contained" endIcon={<SendIcon />} onClick={addChild} style={{ backgroundColor: '#fcafaf' }}>
+          <Button variant="contained" endIcon={<SendIcon />} onClick={addChild} style={{ backgroundColor: '#fcafaf'}}>
             등록하기
           </Button>
         </div>

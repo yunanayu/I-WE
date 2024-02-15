@@ -22,13 +22,13 @@ function MyPage() {
     <Container>
       <Box sx={{display:'flex',justifyContent:'center', textAlign:'center'}}>
       </Box>
-      <Box sx={{display:'flex', m:5, alignItems:'center', justifyContent:'space-evenly'}}>
+      <Box sx={{display:'flex', m:5, alignItems:'center', justifyContent:'space-evenly', width:'80%' }}>
         {profileImage ? (
           <Avatar sx={{ width: 56, height: 56 }} src={profileImage} />
         ) : (
           <Avatar sx={{ width: 56, height: 56 }} src="/broken-image.jpg" />
         )}
-        <div style={{display:'flex', textAlign:'center' }}>
+        <div style={{display:'flex', textAlign:'center'}}>
           <Typography variant="h5" sx={{fontWeight:'bold', textAlign:'center'}}>{userName}</Typography>
           <Typography variant="h6"> 님 반갑습니다!</Typography>
         </div>

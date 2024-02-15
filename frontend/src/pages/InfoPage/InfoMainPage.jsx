@@ -419,7 +419,7 @@ export default function InfoMain() {
               overlay
               name="member"
               orientation="horizontal"
-              sx={{ gap: 2 }}
+              sx={{ display:'flex',justifyContent:'center', gap: 2 }}
               onChange={babyChange}
               value={babyNum}
             >
@@ -441,6 +441,7 @@ export default function InfoMain() {
                     value={baby.num || ""}
                     variant="soft"
                     sx={{
+                      height:'0px',
                       mb: 2,
                     }}
                   />

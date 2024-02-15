@@ -4,6 +4,7 @@ import reset from 'styled-reset';
 import { MessageBox, SystemMessage, ChatList, Input } from 'react-chat-elements';
 import 'react-chat-elements/dist/main.css';
 import useMemberStore from "../stores/userStore";
+import heart3 from '../images/heart3.png'
 
 const Chat = () => {
     const [msg, setMsg] = useState("");
@@ -88,7 +89,9 @@ const Chat = () => {
         <>
             <GlobalStyle/>
             <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
-            <h1 style={{ textAlign: 'center', color: '#333' }}>{userName}'s Chat!</h1>
+            {/* <h1 style={{ textAlign: 'center', color: '#333' }}>{userName}'s Chat!</h1> */}
+            <h1 style={{ textAlign: 'center', color: '#333' }}>우리들의 이야기<img src={heart3} width="30" height="30" alt="heartimg" /></h1>
+            
             <br />
             <div style={{ marginBottom: '20px' }}>
                 {chat.map((message, index) => (
@@ -97,7 +100,7 @@ const Chat = () => {
 
                     <MessageBox 
                         key={index}
-                        position={message.name===userName?'left':'right'}
+                        position={message.name===userName?'right':'left'}
                         type={"text"}
                         title={message.name}
                         text = {message.msg}

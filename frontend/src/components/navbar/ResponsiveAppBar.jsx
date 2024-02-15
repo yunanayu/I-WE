@@ -96,7 +96,7 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar position="sticky" sx={{ background: "#FBBBB8" }} elevation={4}>
-      <Container maxWidth="xl">
+      <Container>
         <Toolbar disableGutters sx={{display:'flex', justifyContent:'space-between',}}>
         <Box
             component={NavLink}

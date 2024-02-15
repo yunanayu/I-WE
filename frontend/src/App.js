@@ -4,9 +4,7 @@ import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import HomeIcon from '@mui/icons-material/Home';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import CssBaseline from '@mui/material/CssBaseline';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import TalkIcon from '@mui/icons-material/ChatBubble'
@@ -27,10 +25,8 @@ import Community from "./pages/CommunityPage";
 import HospitalRecordMainPage from "./pages/HospitalRecordPage/HospitalRecordMainPage";
 import AddMomRecordPage from "./pages/HospitalRecordPage/AddHospitalRecordPage";
 import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecord";
-import InfoSection from "./components/Infos/InfoSection";
 import ChildList from "./components/myPage/ChildList";
 import CodeSharePage from "./pages/MyPage/CodeSharePage";
-import TestPage from "./FCM/TestPage";
 
 
 function App() {
@@ -104,13 +100,7 @@ function App() {
             <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
             <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
             <Route path="/babylist" element={<ChildList />} />
-<<<<<<< HEAD
             <Route path="/codeshare" element={<CodeSharePage onLoginStatusChange={handleLoginStatusChange}/>} />
-=======
-            <Route path="/codeshare" element={<CodeSharePage />} />
-            {/* 삭제 예정 */}
-            <Route path="/test" element={<TestPage />} />
->>>>>>> ad369ef4c72708e31a764b99f57ede127dc14b43
           </Routes>
         </div>
         {parentLoggedIn && (
@@ -138,15 +128,6 @@ function App() {
               icon={<CalendarMonthIcon/>}
               style={{ color: value === 'calendar' ? 'white' : 'inherit' }}
               onClick={() => setValue('calendar')}
-            />
-            <BottomNavigationAction
-              component={Link}
-              to="/community"
-              label="board"
-              value="board"
-              icon={<ContentPasteIcon/>}
-              style={{ color: value === 'board' ? 'white' : 'inherit' }}
-              onClick={() => setValue('board')}
             />
             <BottomNavigationAction
               component={Link}
