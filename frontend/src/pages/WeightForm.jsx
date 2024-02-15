@@ -201,7 +201,7 @@ const BabyForm = React.forwardRef((props, ref) => {
         setWeight(recentData.weight);
         setHeight(recentData.height);
         setCircumference(recentData.circumference);
-        setFile(recentData.image);
+        setFile(Array.from(recentData.images));
         setUpdate(true);
       }
     }
@@ -226,7 +226,9 @@ const BabyForm = React.forwardRef((props, ref) => {
           type: 'application/json'
         })
         data.append("dto", blob);
-        data.append("files", file);
+        file.map((file) => {
+          data.append("files", file);
+        })
       } else {
         const obj = {
           "num": recentData.num,
@@ -241,6 +243,7 @@ const BabyForm = React.forwardRef((props, ref) => {
           type: 'application/json'
         })
         data.append("dto", blob);
+        data.append("files", null);
       }
       const put = async () => {
         await axios
@@ -293,7 +296,7 @@ const BabyForm = React.forwardRef((props, ref) => {
           type: 'application/json'
         })
         data.append("dto", blob);
-        data.append("files", []);
+        data.append("files", null);
       }
       const post = async () => {
         await axios.post("/api/babyRecord/create", data, {
