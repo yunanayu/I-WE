@@ -39,6 +39,8 @@ const WeightChart = (props) => {
 
   useEffect(() => {
     if (weightRecord) {
+      console.log("record\n" + JSON.stringify(weightRecord));
+      console.log("백분위\n" + JSON.stringify(percentile));
       let arr = [];
       let m = props.month;
       let obj = {
