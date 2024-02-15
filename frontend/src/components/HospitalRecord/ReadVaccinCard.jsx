@@ -292,18 +292,18 @@ const ReadVaccinCard = (props) => {
   return (
     <Card sx={{ pb: 3, mb: 3 }}>
       <CardContent sx={{ display: 'flex', justifyContent: 'center', textAlign:'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {props.vaccine.category === '접종' ? <VaccinesOutlinedIcon fontSize="large" /> : <LocalHospitalOutlinedIcon fontSize="large" />}
-            {props.vaccine.target === 'baby' ? <ChildCareIcon fontSize="large" /> : <PregnantWomanIcon fontSize="large" />}
-            <Typography variant="h6" component="div" sx={{ pl: 2, flexWrap: 'wrap' , textAlign:'center'  }}>
-              {/* {props.vaccine.title} */}
-              {props.vaccine.title.split(' ').reduce((prev, curr) => {
-                  const isNewLineNeeded = (prev.length + curr.length > 5) || (prev.length > 0 && prev.length + curr.length === 5);
-                  return isNewLineNeeded ? `${prev}\n${curr}` : `${prev} ${curr}`;
-                })}
-            </Typography>
-          </Box>
-        <IconButton onClick={updateComplete}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {props.vaccine.category === '접종' ? <VaccinesOutlinedIcon fontSize="large" /> : <LocalHospitalOutlinedIcon fontSize="large" />}
+          {props.vaccine.target === 'baby' ? <ChildCareIcon fontSize="large" /> : <PregnantWomanIcon fontSize="large" />}
+          <Typography variant="h6" component="div" sx={{ pl: 2, flexWrap: 'wrap' , textAlign:'center'  }}>
+            {/* {props.vaccine.title} */}
+            {props.vaccine.title.split(' ').reduce((prev, curr) => {
+                const isNewLineNeeded = (prev.length + curr.length > 5) || (prev.length > 0 && prev.length + curr.length === 5);
+                return isNewLineNeeded ? `${prev}\n${curr}` : `${prev} ${curr}`;
+              })}
+          </Typography>
+        </Box>
+        <IconButton onClick={updateComplete} style={{ fontSize: '2rem'}}>
           {initState ? <CheckCircleOutlineTwoToneIcon /> : <RadioButtonUncheckedTwoToneIcon />}
         </IconButton>
       </CardContent>
