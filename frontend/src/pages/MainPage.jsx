@@ -9,6 +9,7 @@ import GoogleLogin from "./GoogleRedirectPage";
 import KakaoLogin from "./KakaoRedirectPage";
 import NaverLogin from "./NaverRedirectPage";
 import b1 from '../images/1.jpg';
+import b2 from '../images/2.jpg';
 import heart from '../images/heart.png';
 import heart2 from '../images/heart2.png';
 
@@ -77,9 +78,6 @@ const Main = ({ onLoginStatusChange }) => {
   const [mombodyInfo, setMombodyInfo] = useState([]);
   // 아기 정보
   const [babybodyInfo, setBabybodyInfo] = useState([]);
-
-  console.log(userNum)
-  console.log(babyList)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -177,7 +175,6 @@ const Main = ({ onLoginStatusChange }) => {
       fetchData();
       }
     }
-      
   }, [date]);
 
   const getBabyBodyInfothree = () => {
@@ -251,14 +248,14 @@ const Main = ({ onLoginStatusChange }) => {
               >
                 {babyList.map((baby, index) => (
                   <SwiperSlide key={index}>
-                    <div style={{display:'flex', flexDirection:'column'}}>
-                      {daysSincePregnancy ? `D - ${daysBeforeBirth}` : daysSinceBirth ? `D + ${daysAfterBirth}` : ''}
-                      <img src={b1} alt={baby.name} />
-                      {baby.pregnancyDate}
-                      {baby.birth}
-                      <br />
-                      {baby.name}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      {daysSincePregnancy ? <div style={{ textAlign: 'center' }}>D - {daysBeforeBirth}</div> : daysSinceBirth ? <div style={{ textAlign: 'center' }}>D + {daysAfterBirth}</div> : ''}
+                      {baby.gender === 1 ? <img src={b2} alt={baby.name} style={{ borderRadius: '50%' }} /> : baby.gender === 2 ? <img src={b1} alt={baby.name} style={{ borderRadius: '50%' }} /> : null}
+                      <div style={{ textAlign: 'center' }}>{baby.pregnancyDate}</div>
+                      <div style={{ textAlign: 'center' }}>{baby.birth}</div>
+                      <div style={{ textAlign: 'center' }}>{baby.name}</div>
                     </div>
+
                   </SwiperSlide>
                 ))}
               </Swiper>

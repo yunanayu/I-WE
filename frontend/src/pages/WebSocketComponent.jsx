@@ -13,6 +13,7 @@ const Chat = () => {
     const [chkLog, setChkLog] = useState(false);
     const [socketData, setSocketData] = useState();
     const userName = useMemberStore(state => state.userName);
+    const parentType = useMemberStore(state => state.parentType)
     const ws = useRef(null);
 
     const socketDataListner = useCallback(() => {

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { WeightChart, HeightChart, HeadChart } from "../components/chart/BabyChart";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import { BabyForm } from "./WeightForm";
 import { BabyCarousel } from "./BabyCarousel";
 import { Button, Divider, IconButton, Modal, Stack, Typography } from "@mui/material";
@@ -18,6 +20,7 @@ import dayjs from "dayjs";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import axios from "axios";
 import useMemberStore from "../stores/userStore";
+import heart2 from '../images/heart3.png';
 
 dayjs.locale("ko");
 // 가운데 정렬 css
@@ -48,6 +51,21 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "Dongle, sans-serif",
+    fontWeightRegular: 400,
+    fontStyleRegular: 'normal',
+  },
+});
+const wordtheme = createTheme({
+  typography: {
+    fontFamily: 'Poor Story, system-ui',
+    fontWeightRegular: 400,
+    fontStyleRegular: 'normal',
+  },
+});
 
 // 평균과 비교하여 메세지 출력
 function Info(props) {
@@ -100,10 +118,7 @@ function Info(props) {
           <Typography fontSize={34}> D+{dDay} </Typography>
         ) : (
           <>
-            <Typography fontSize={34}>임신 {props.targetTime} 주차</Typography>
-            <Typography fontSize={28} textAlign={"center"}>
-              D-{pBirth}
-            </Typography>
+            <Typography theme={theme} fontSize={40} textAlign={"center"}>임신 {props.targetTime} 주차 <br /> D-{pBirth -1}</Typography>
           </>
         )}
       </Box>
@@ -302,9 +317,6 @@ function RecordBaby() {
                 <Radio
                   value={baby.num || ""}
                   variant="soft"
-                  sx={{
-                    mb: 2,
-                  }}
                 />
                 <Typography level="body-sm" sx={{ mt: 1 }}>
                   {baby.name}
@@ -313,7 +325,7 @@ function RecordBaby() {
             ))}
           </RadioGroup>
         </FormControl>
-        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
+        <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, height:'100px' }}>
           {
             <Info
               born={born}
@@ -345,7 +357,7 @@ function RecordBaby() {
                     color: "black",
                   }}
                 >
-                  오늘 {babyName} 기록하기
+                  오늘의 {babyName} 기록하기
                 </Button>
                 <Button
                   style={{ whiteSpace: "pre-line" }}
@@ -373,7 +385,7 @@ function RecordBaby() {
                       <Typography id="modal-modal-title" variant="h6" component="h2" sx={setCenter}>
                         <Stack direction={"row"} spacing={2}>
                           {dayjs(date).format("YYYY-MM-DD")}
-                          <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
+                          <ButtonDatePicker disableFuture value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
                         </Stack>
                       </Typography>
                       <BabyForm gender={gender} data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
@@ -458,9 +470,11 @@ function RecordBaby() {
                   borderRadius: 5,
                   backgroundColor: "background.paper",
                   color: "black",
+                  mt:'5px',
+                  mb:'5px'
                 }}
               >
-                오늘 {babyName} 기록하기
+                오늘의 {babyName} 기록하기
               </Button>
               {/* 기록용 모달 */}
               <Modal open={record} onClose={recordClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
@@ -480,15 +494,19 @@ function RecordBaby() {
               </Modal>
             </Box>
             <Box maxWidth="md" sx={{ ...setCenter, ...commonStyles, borderRadius: 3, mb: 15 }}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
+              <Typography theme={wordtheme} id="modal-modal-title" variant="h5" component="h2" sx={{ mt:'10px'}}>
                 {babyName}의 사진
+                <img src={heart2} width="40" height="30" alt="하트 이미지" />
+
               </Typography>
+              <br />
               {babyRecord ? (
                 <BabyCarousel babyRecord={babyRecord}></BabyCarousel>
               ) : (
-                <Typography id="modal-modal-description" variant="h6" component="h2">
-                  기록이 없습니다.
+                <Typography theme={wordtheme} id="modal-modal-description" variant="h5" component="h2" sx={{ mb: '20px', fontWeight: 'bold' }}>
+                  아이의 오늘을 <br /> 기록해주세요
                 </Typography>
+
               )}
             </Box>
           </>
