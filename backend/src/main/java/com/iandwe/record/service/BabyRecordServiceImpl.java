@@ -1,5 +1,6 @@
 package com.iandwe.record.service;
 
+import com.iandwe.baby.dto.BabyReadResponseDto;
 import com.iandwe.file.util.S3Uploader;
 import com.iandwe.record.domain.BabyRecord;
 import com.iandwe.record.dto.BabyRecordCreateRequestDto;
@@ -56,9 +57,10 @@ public class BabyRecordServiceImpl implements BabyRecordService {
     }
 
     @Override
-    public void create(List<MultipartFile> files, BabyRecordCreateRequestDto dto) {
+    public BabyRecordReadResponseDto create(List<MultipartFile> files, BabyRecordCreateRequestDto dto) {
         List<String> images = uploader.storeImages("record", files);
         BabyRecord babyRecord = dto.toEntity(images);
         babyRecordRepository.save(babyRecord);
+        return BabyRecordReadResponseDto.from(babyRecord);
     }
 }

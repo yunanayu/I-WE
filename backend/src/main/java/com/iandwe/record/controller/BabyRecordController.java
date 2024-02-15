@@ -25,10 +25,10 @@ public class BabyRecordController {
 //    }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestPart(value = "files") List<MultipartFile> files,
+    public ResponseEntity<BabyRecordReadResponseDto> create(@RequestPart(value = "files") List<MultipartFile> files,
                                     @RequestPart(value = "dto") BabyRecordCreateRequestDto dto) {
-        babyRecordService.create(files, dto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        BabyRecordReadResponseDto responseDto = babyRecordService.create(files, dto);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
 
