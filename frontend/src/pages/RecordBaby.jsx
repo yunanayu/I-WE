@@ -201,6 +201,7 @@ function RecordBaby() {
           setBabyRecord(response.data);
           const recent = response.data[response.data.length - 1];
           setRecentRecord(recent);
+          console.log(JSON.stringify(response.data));
         })
         .catch((error) => {
           console.log("GET BABY RECORD ERROR\n" + error);

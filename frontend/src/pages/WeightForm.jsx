@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles";
 import useMemberStore from "../stores/userStore";
 import "dayjs/locale/ko";
 import dayjs from "dayjs";
+import { files } from "@storybook/addon-knobs";
 
 dayjs.locale("ko");
 
@@ -212,28 +213,34 @@ const BabyForm = React.forwardRef((props, ref) => {
 
       if (file) {
         const obj = {
-          num: recentData.num,
-          babyNum: props.babyNum,
-          height: height,
-          weight: weight,
-          circumference: circumference,
-          recordDate: recentData.recordDate,
-          babyImage: file[0].name,
+          "num": recentData.num,
+          "babyNum": props.babyNum,
+          "height": height,
+          "weight": weight,
+          "circumference": circumference,
+          "recordDate": recentData.recordDate,
         };
-        data.append("dto", obj);
+        const json = JSON.stringify(obj);
+        const blob = new Blob([json], {
+          type: 'application/json'
+        })
+        data.append("dto", blob);
         data.append("files", file);
       } else {
         const obj = {
-          num: recentData.num,
-          babyNum: props.babyNum,
-          height: height,
-          weight: weight,
-          circumference: circumference,
-          recordDate: recentData.recordDate,
+          "num": recentData.num,
+          "babyNum": props.babyNum,
+          "height": height,
+          "weight": weight,
+          "circumference": circumference,
+          "recordDate": recentData.recordDate,
         };
-        data.append("dto", obj);
+        const json = JSON.stringify(obj);
+        const blob = new Blob([json], {
+          type: 'application/json'
+        })
+        data.append("dto", blob);
       }
-      console.log(data);
       const put = async () => {
         await axios
           .put("/api/babyRecord/update", data, {
@@ -249,39 +256,49 @@ const BabyForm = React.forwardRef((props, ref) => {
           });
       };
       put();
-      props.onSubmit(data);
+      props.onSubmit();
     } else {
       let date = dateSelected.year() + "-" + ("0" + (dateSelected.month() + 1)).slice(-2) + "-" + ("0" + dateSelected.date()).slice(-2);
       console.log(date);
       let data = new FormData();
+      let record;
       if (file) {
         const obj = {
-          babyNum: props.babyNum,
-          height: height,
-          weight: weight,
-          circumference: circumference,
-          recordDate: date,
-          babyImage: file[0].name,
+          "babyNum": props.babyNum,
+          "height": height,
+          "weight": weight,
+          "circumference": circumference,
+          "recordDate": date,
         };
-        data.append("dto", obj);
-        data.append("files", file);
+        const json = JSON.stringify(obj);
+        const blob = new Blob([json], {
+          type: 'application/json'
+        })
+        data.append("dto", blob);
+        file.map((file) => {
+          data.append("files", file);
+        })
+        console.log(data);
       } else {
         const obj = {
-          babyNum: props.babyNum,
-          height: height,
-          weight: weight,
-          circumference: circumference,
-          recordDate: date,
+          "babyNum": props.babyNum,
+          "height": height,
+          "weight": weight,
+          "circumference": circumference,
+         "recordDate": date,
         };
-        console.log(JSON.stringify(obj));
-        data.append("dto", obj);
+        const json = JSON.stringify(obj);
+        const blob = new Blob([json], {
+          type: 'application/json'
+        })
+        data.append("dto", blob);
         data.append("files", []);
       }
       const post = async () => {
-        await axios({
-          method: "post",
-          url: "/api/babyRecord/create",
-          data: data,
+        await axios.post("/api/babyRecord/create", data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         })
           .then((response) => {
             console.log("POST OK\n" + response);
@@ -291,7 +308,7 @@ const BabyForm = React.forwardRef((props, ref) => {
           });
       };
       post();
-      props.onSubmit(data);
+      props.onSubmit();
     }
   };
 
