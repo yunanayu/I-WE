@@ -210,7 +210,6 @@ const BabyForm = React.forwardRef((props, ref) => {
     if (update) {
       console.log(dateSelected);
       let data = new FormData();
-
       if (file) {
         const obj = {
           "num": recentData.num,
