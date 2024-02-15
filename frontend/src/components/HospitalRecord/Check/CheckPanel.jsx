@@ -26,7 +26,7 @@ const CheckPanel = () => {
   const [selectTarget, setSelectTarget] = useState(null);
 
   return (
-    <Box>
+    <Box sx={{mb:2}}>
       <Select placeholder="대상을 선택해주세요" variant="plain">
         <Option value="baby" onClick={() => setSelectTarget("baby")}>
           아기
