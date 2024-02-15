@@ -8,7 +8,6 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CssBaseline from '@mui/material/CssBaseline';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import TalkIcon from '@mui/icons-material/ChatBubble'
-
 import RecordBaby from "./pages/RecordBaby";
 import RecordMom from "./pages/RecordMom";
 import MainPage from "./pages/MainPage";
@@ -97,7 +96,7 @@ function App() {
             <Route path="/recordmom" element={<RecordMom />} />
             <Route path="/recordbaby" element={<RecordBaby />} />
             <Route path="/hospitalrecord" element={<HospitalRecordMainPage />} />
-            <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
+            <Route path="/addrecord" element={<AddMomRecordPage />} />
             <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
             <Route path="/babylist" element={<ChildList />} />
             <Route path="/codeshare" element={<CodeSharePage onLoginStatusChange={handleLoginStatusChange}/>} />
