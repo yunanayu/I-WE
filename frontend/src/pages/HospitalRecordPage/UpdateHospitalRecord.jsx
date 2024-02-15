@@ -18,6 +18,13 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import { useLocation, useNavigate } from 'react-router-dom';
+import PersonIcon from '@mui/icons-material/Person';
+import CheckIcon from '@mui/icons-material/Check';
+import FeedIcon from '@mui/icons-material/Feed';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import DescriptionIcon from '@mui/icons-material/Description';
+import FaceIcon from '@mui/icons-material/Face';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const UpdateHospitalRecord = (props) => {
 
@@ -73,13 +80,13 @@ const UpdateHospitalRecord = (props) => {
   };
   
   return (
-    <Container sx={{pt:5, mb:3, pb:8}}>
+    <Container sx={{ padding:3, margin:2, pb:8 }}>
       <Box sx={{display:'flex', pb:3}}>
-        <Typography variant='h3'>검진 기록하기 </Typography>
+      <Typography sx={{fontWeight:'bold'}} variant='h4'>검진 기록 수정하기 </Typography>
         <HealingOutlinedIcon fontSize='large'/>
       </Box>
       <FormControl>
-        <FormLabel id="demo-controlled-radio-buttons-group">검진 대상</FormLabel>
+      <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'x-large' }}><PersonIcon/> 검진 대상</p>
         <RadioGroup
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
@@ -91,8 +98,9 @@ const UpdateHospitalRecord = (props) => {
           <FormControlLabel value="baby" control={<Radio />} label="아기" name='target'/>
         </RadioGroup>
       </FormControl>
-      <Box sx={{display:'flex', width:'100%', pt:3 }}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Box sx={{display:'flex', flexDirection:'column', width:'100%', pt:3 }}>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+      <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'x-large' }}><CalendarMonthIcon/> 검진 날짜</p>
           <DemoContainer components={['DatePicker']}>
             <DatePicker
               label="검진 날짜 선택"
@@ -102,35 +110,37 @@ const UpdateHospitalRecord = (props) => {
                 setState({...state, selectDay : moment(newValue.$d).format('YYYY-MM-DD')})
               }}
               sx={{
-                width:'10%'
+                width:'60%'
               }}
               />
           </DemoContainer>
         </LocalizationProvider>
+        <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'x-large' }}><CheckIcon/> 검진 목적</p>
+
           <TextField
             id="outlined-controlled"
             name='title'
             label={'검진목적'}
             value={state.title}
             onChange={handleChange}
-            sx={{width:'30%', pr:5}}
+            sx={{width:'70%', pr:5, mt:1}}
           />
-
       </Box>
       <Box>
         <Box sx={{display:'flex', pt:4}}>
-
-          <Typography variant='h4'>병원정보</Typography>
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'x-large' }}><LocalHospitalIcon/> 병원정보</p>
         </Box>
-        <Box sx={{ display:'flex', pb:4, width:'100%', pt:5 }}>
+        <Box sx={{ display:'flex',flexDirection:'column', pb:4, width:'100%'}}>
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }}><FiberManualRecordIcon/> 병원명</p>
           <TextField
             id="outlined-controlled"
             name='hospitalName'
             label={'병원이름'}
             value={state.hospitalName}
             onChange={handleChange}
-            sx={{width:'30%', pr:5}}
+            sx={{width:'70%', pr:5}}
           />
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }}><FiberManualRecordIcon/> 담당의사</p>
           <TextField 
             id="outlined-basic" 
             name='doctorName'
@@ -138,11 +148,11 @@ const UpdateHospitalRecord = (props) => {
             label={'담당의사'}
             value={state.doctorName}
             onChange={handleChange}
-            sx={{width:'30%', pr:5}}
+            sx={{width:'70%', pr:5}}
           />
         </Box>
         <Box>
-          <Typography variant='h5'>검진내용</Typography>
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'x-large' }}><DescriptionIcon/> 검진내용</p>
           <TextField
           id="outlined-textarea"
           name='checkupItem'
@@ -150,12 +160,12 @@ const UpdateHospitalRecord = (props) => {
           value={state.checkupItem}
           onChange={handleChange}
           multiline
-          sx={{width:'100%'}}
+          sx={{width:'90%'}}
           >
           </TextField>
         </Box>
         <Box>
-          <Typography variant='h5'>검진결과</Typography>
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'x-large' }}><FeedIcon/> 검진결과</p>
           <TextField
           id="outlined-textarea"
           value={state.checkupResult}
@@ -164,7 +174,7 @@ const UpdateHospitalRecord = (props) => {
           placeholder="검진결과"
           onChange={handleChange}
           multiline
-          sx={{width:'100%'}}
+          sx={{width:'90%'}}
           >
 
           </TextField>
@@ -173,9 +183,8 @@ const UpdateHospitalRecord = (props) => {
       {/* ------------------------------------------------------------------------------------------------------- */}
 
       <Box sx={{pb:5}}>
-        <Box sx={{display:'flex', pb:3, pt:4}}>
-          <LocalHospitalIcon fontSize='large'/>
-          <Typography variant='h4'>의사소견</Typography>
+        <Box sx={{display:'flex', pt:2}}>
+          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'x-large' }}><FaceIcon fontSize='large'/> 의사소견</p>
         </Box>
       <TextField
           id="outlined-textarea"
@@ -188,7 +197,7 @@ const UpdateHospitalRecord = (props) => {
           sx={{width:'100%'}}
         />
       </Box>
-      <Box sx={{display:'flex', justifyContent:'right'}}>
+      <Box sx={{display:'flex', justifyContent:'right', mr:4, mb:4}}>
         <Button  variant="outlined" sx={{borderColor:'#FBBBB8', color:'#FBBBB8', mr:1}} onClick={() => navigate('/hospitalrecord')}>
           취소하기
         </Button>
