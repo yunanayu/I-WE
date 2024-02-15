@@ -26,6 +26,7 @@ public class FCMSender {
 //                .setToken("cgGubJTMjjohJqTNawwrpx:APA91bHXPVI_yrSwy6wZbXq3GxmrFVE5V9WJWUD8z9-YgLQrjMy3U6LFgmdVbIETCmQpM9bSileQdRm8ZYBbnoe_D04Ww_XzJGnhTLdoQUsnWb3NanvJeph_tTfmxEioBTvbiFLss-J6")
                 .setToken(fcmDto.getFcmToken())
                 .setNotification(notification)
+                .putData("key", fcmDto.getKey())
                 .build();
 
         try {

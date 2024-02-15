@@ -23,6 +23,16 @@ pipeline {
                 git branch : 'develop', credentialsId: 'SSAFYC108', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12C108.git'
             }
         }
+        stage('Add Env') {
+            steps {
+                dir('./backend') {
+                    withCredentials([file(credentialsId: 'key', variable: 'key')]) {
+                        sh 'chmod -R a=rwx src/main/resources'
+                        sh 'cp ${key} src/main/resources/application-key.properties'
+                    }
+                }
+            }
+        }
         stage('FE-Install') {
             steps {
                 echo '##### FE Install #####'

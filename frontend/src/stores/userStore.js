@@ -9,7 +9,7 @@ const useMemberStore = create(
     (set) => ({
   userNum : 0,  // 엄마 num
   parentType : null,
-  userName : null,
+  userName : "joon",
   profileImage : null,
   setUserNum : (num) => set({ userNum: num}),
   setUserName : (name) => set({ userName: name}),
@@ -25,7 +25,7 @@ const useMemberStore = create(
     }),
     {
       name: "member",
-      storage: createJSONStorage(() => sessionStorage)
+      storage: createJSONStorage(() => localStorage)
     }
   )
 )

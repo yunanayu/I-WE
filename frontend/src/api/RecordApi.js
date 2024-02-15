@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const getCheck = (userNum, target) => {
   const res = axios.get(`/api/check/${target}/${userNum}`)
   return res.data
@@ -79,8 +80,7 @@ export const changeComplete = (targetNum, essentialNum, target, isComplete) => {
     },
   })
     .then((res) => {
-      console.log('변경 완료')
-      // console.log(res)
+      window.alert('변경되었습니다.')
     })
     .catch((err) => console.log(err));
 } 

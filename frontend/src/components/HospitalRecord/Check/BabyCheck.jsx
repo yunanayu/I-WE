@@ -6,6 +6,7 @@ import axios from "axios";
 import CheckCard from "./CheckCard";
 import { sortList } from "./CheckPanel";
 import RangeSlider from './RangeSlider'
+import { cleanString } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 
 
 const BabyCheck = () => {
@@ -13,6 +14,7 @@ const BabyCheck = () => {
   const [babyCheck, setBabyCheck] = useState([]);
   const [vaccineList, setVaccineList] = useState([]);
   const [selectBaby, setSelectBaby] = useState(null);
+  console.log(selectBaby)
   const [type, setType] = useState("all");
   const [selectRange, setSelectRange] = useState([0, 24]);
   const bornBabyList = BabyList.filter((baby) => baby.status);

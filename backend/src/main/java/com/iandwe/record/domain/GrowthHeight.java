@@ -26,4 +26,8 @@ public class GrowthHeight {
     @ElementCollection(fetch = FetchType.LAZY)
     private List<Float> heights;
 
+    public String getPercentile(float height) {
+
+        return "";
+    }
 }

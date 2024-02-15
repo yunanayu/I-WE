@@ -22,11 +22,14 @@ public class FCMDto {
 
     private String body;
 
-    public static FCMDto of(Member member, Essential essential) {
+    private String key;
+
+    public static FCMDto of(Member member, Essential essential, String key) {
         return FCMDto.builder()
                 .fcmToken(member.getFcmToken())
                 .title(getTitleMessage(member.getName(), essential.getTitle()))
                 .body(getBodyMessage())
+                .key(key)
                 .build();
     }
 
@@ -35,6 +38,7 @@ public class FCMDto {
                 .fcmToken(token)
                 .title(dto.getTitle())
                 .body(dto.getContent())
+                .key(dto.getKey())
                 .build();
     }
 }

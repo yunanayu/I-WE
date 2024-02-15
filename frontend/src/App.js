@@ -9,6 +9,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import CssBaseline from '@mui/material/CssBaseline';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import TalkIcon from '@mui/icons-material/ChatBubble'
 
 import RecordBaby from "./pages/RecordBaby";
 import RecordMom from "./pages/RecordMom";
@@ -19,6 +20,7 @@ import CheckCode from "./pages/CheckCodePage";
 import AddChild from "./pages/AddChildPage";
 import MyPage from "./pages/MyPage";
 import DiaryPage from "./pages/DiaryPage"
+import Chat from "./pages/WebSocketComponent"
 import FindHospital from "./pages/FindHospitalPage"
 import Community from "./pages/CommunityPage";
 
@@ -28,6 +30,7 @@ import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecor
 import InfoSection from "./components/Infos/InfoSection";
 import ChildList from "./components/myPage/ChildList";
 import CodeSharePage from "./pages/MyPage/CodeSharePage";
+import TestPage from "./FCM/TestPage";
 
 
 function App() {
@@ -93,6 +96,7 @@ function App() {
             <Route path="/diary" element={<DiaryPage />} />
             <Route path="/hospital" element={<FindHospital />} />
             <Route path="/community" element={<Community />} />
+            <Route path="/chat" element={<Chat />} />
 
             <Route path="/recordmom" element={<RecordMom />} />
             <Route path="/recordbaby" element={<RecordBaby />} />
@@ -100,7 +104,13 @@ function App() {
             <Route path="/momhospitalrecord" element={<AddMomRecordPage />} />
             <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
             <Route path="/babylist" element={<ChildList />} />
+<<<<<<< HEAD
             <Route path="/codeshare" element={<CodeSharePage onLoginStatusChange={handleLoginStatusChange}/>} />
+=======
+            <Route path="/codeshare" element={<CodeSharePage />} />
+            {/* 삭제 예정 */}
+            <Route path="/test" element={<TestPage />} />
+>>>>>>> ad369ef4c72708e31a764b99f57ede127dc14b43
           </Routes>
         </div>
         {parentLoggedIn && (
@@ -146,6 +156,15 @@ function App() {
               icon={<NotificationsIcon/>}
               style={{ color: value === 'alert' ? 'white' : 'inherit' }}
               onClick={() => setValue('alert')}
+            />
+            <BottomNavigationAction
+              component={Link}
+              to="/chat"
+              label="chat"
+              value="chat"
+              icon={<TalkIcon/>}
+              style={{ color: value === 'chat' ? 'white' : 'inherit' }}
+              onClick={() => setValue('chat')}
             />
             </BottomNavigation>
           </div>
