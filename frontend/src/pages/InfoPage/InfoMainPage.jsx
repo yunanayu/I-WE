@@ -17,6 +17,7 @@ import FormControl from "@mui/joy/FormControl";
 import Radio from "@mui/joy/Radio";
 import RadioGroup from "@mui/joy/RadioGroup";
 import Sheet from "@mui/joy/Sheet";
+import heart2 from '../../images/heart2.png';
 
 const theme = createTheme({
   typography: {
@@ -504,6 +505,7 @@ export default function InfoMain() {
             sx={{ fontWeight: "bold", mb: "20px" }}
           >
             이 시기에 아이는요!
+            <img src={heart2} width="40" height="30" alt="하트 이미지" />
           </Typography>
           <Card
             sx={{
@@ -587,6 +589,7 @@ export default function InfoMain() {
               sx={{ fontWeight: "bold", mb: "20px" }}
             >
               이 시기에 엄마는요!
+              <img src={heart2} width="40" height="30" alt="하트 이미지" />
             </Typography>
             <Card
               sx={{
@@ -628,6 +631,7 @@ export default function InfoMain() {
             sx={{ fontWeight: "bold", mb: "20px" }}
           >
             아이를 위해서는요!
+            <img src={heart2} width="40" height="30" alt="하트 이미지" />
           </Typography>
           <Card
             sx={{

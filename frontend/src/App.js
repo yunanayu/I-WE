@@ -4,10 +4,12 @@ import ResponsiveAppBar from "./components/navbar/ResponsiveAppBar";
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import HomeIcon from '@mui/icons-material/Home';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CssBaseline from '@mui/material/CssBaseline';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import TalkIcon from '@mui/icons-material/ChatBubble'
+import VaccinesIcon from '@mui/icons-material/Vaccines';
+import Face3Icon from '@mui/icons-material/Face3';
+import PersonIcon from '@mui/icons-material/Person';
+import ChildCareIcon from '@mui/icons-material/ChildCare';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import RecordBaby from "./pages/RecordBaby";
 import RecordMom from "./pages/RecordMom";
 import MainPage from "./pages/MainPage";
@@ -48,6 +50,16 @@ function App() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const [hovered, setHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
   };
 
   return (
@@ -113,7 +125,7 @@ function App() {
             <BottomNavigationAction
               component={Link}
               to="/"
-              label="Home"
+              label="메인"
               value="home"
               icon={<HomeIcon />}
               style={{ color: value === 'home' ? 'white' : 'inherit' }}
@@ -121,30 +133,39 @@ function App() {
             />
             <BottomNavigationAction
               component={Link}
-              to="/diary"
-              label="calendar"
-              value="calendar"
-              icon={<CalendarMonthIcon/>}
-              style={{ color: value === 'calendar' ? 'white' : 'inherit' }}
-              onClick={() => setValue('calendar')}
+              to="/hospitalrecord"
+              label="병원기록"
+              value="hospital"
+              icon={<VaccinesIcon />}
+              style={{ color: value === 'hospital' ? 'white' : 'inherit' }}
+              onClick={() => setValue('hospital')}
             />
             <BottomNavigationAction
               component={Link}
-              to="/alert"
-              label="alert"
-              value="alert"
-              icon={<NotificationsIcon/>}
-              style={{ color: value === 'alert' ? 'white' : 'inherit' }}
-              onClick={() => setValue('alert')}
+              to="/recordmom"
+              label="엄마기록"
+              value="mom"
+              icon={<Face3Icon/>}
+              style={{ color: value === 'mom' ? 'white' : 'inherit' }}
+              onClick={() => setValue('mom')}
             />
             <BottomNavigationAction
               component={Link}
-              to="/chat"
-              label="chat"
-              value="chat"
-              icon={<TalkIcon/>}
-              style={{ color: value === 'chat' ? 'white' : 'inherit' }}
-              onClick={() => setValue('chat')}
+              to="/recordbaby"
+              label="아기기록"
+              value="baby"
+              icon={<ChildCareIcon/>}
+              style={{ color: value === 'baby' ? 'white' : 'inherit' }}
+              onClick={() => setValue('baby')}
+            />
+            <BottomNavigationAction
+              component={Link}
+              to="/mypage"
+              label="내정보"
+              value="mypage"
+              icon={<AssignmentIndIcon/>}
+              style={{ color: value === 'mypage' ? 'white' : 'inherit' }}
+              onClick={() => setValue('mypage')}
             />
             </BottomNavigation>
           </div>

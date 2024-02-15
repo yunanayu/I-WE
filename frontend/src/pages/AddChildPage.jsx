@@ -89,7 +89,6 @@ function AddChild({ setSpouseStatus }) {
       userNum = response.data.num;
       parentType = response.data.parentType;
       userName = response.data.name;
-      userName = response.data.name;
       profileImage = response.data.profileImage;
     } catch(e) {
       console.log("회원정보 받아오기 실패")

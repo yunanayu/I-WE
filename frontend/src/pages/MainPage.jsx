@@ -78,6 +78,8 @@ const Main = ({ onLoginStatusChange }) => {
   // 아기 정보
   const [babybodyInfo, setBabybodyInfo] = useState([]);
 
+  console.log(userNum)
+  console.log(babyList)
 
   useEffect(() => {
     const fetchData = async () => {
