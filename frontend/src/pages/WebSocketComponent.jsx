@@ -5,6 +5,7 @@ import { MessageBox, SystemMessage, ChatList, Input } from 'react-chat-elements'
 import 'react-chat-elements/dist/main.css';
 import useMemberStore from "../stores/userStore";
 import heart3 from '../images/heart3.png'
+import SendIcon from '@mui/icons-material/Send';
 
 const Chat = () => {
     const [msg, setMsg] = useState("");
@@ -123,7 +124,7 @@ const Chat = () => {
                     style={{ padding: '10px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer', width: '100px' }}
                     id='btnSend'
                     onClick={send}
-                />
+                ></input>
             </div>
         </div>
         </>

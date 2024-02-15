@@ -69,6 +69,7 @@ export const updateComplete = async (data) => {
 
 
 export const changeComplete = (targetNum, essentialNum, target, isComplete) => {
+  console.log(targetNum)
   axios({
     method: 'put',
     url: `/api/check/complete`,
@@ -77,6 +78,26 @@ export const changeComplete = (targetNum, essentialNum, target, isComplete) => {
       essentialNum: essentialNum,
       target: target,
       isComplete: isComplete,
+    },
+  })
+    .then((res) => {
+      window.alert('변경되었습니다.')
+    })
+    .catch((err) => console.log(err));
+} 
+
+
+
+export const momChangeComplete = (targetNum, essentialNum, target, isComplete, babyNum) => {
+  axios({
+    method: 'put',
+    url: `/api/check/complete`,
+    data: {
+      targetNum: targetNum,
+      essentialNum: essentialNum,
+      target: target,
+      isComplete: isComplete,
+      babyNum :babyNum
     },
   })
     .then((res) => {

@@ -14,7 +14,6 @@ const BabyCheck = () => {
   const [babyCheck, setBabyCheck] = useState([]);
   const [vaccineList, setVaccineList] = useState([]);
   const [selectBaby, setSelectBaby] = useState(null);
-  console.log(selectBaby)
   const [type, setType] = useState("all");
   const [selectRange, setSelectRange] = useState([0, 24]);
   const bornBabyList = BabyList.filter((baby) => baby.status);
@@ -40,6 +39,9 @@ const BabyCheck = () => {
       setVaccineList(list);
     }
   }, [type]);
+
+  useEffect(() => {
+  }, [vaccineList, babyCheck])
   return (
     <Box>
       {bornBabyList.length === 0 ? (

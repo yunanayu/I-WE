@@ -20,10 +20,10 @@ public class MotherRecordServiceImpl implements MotherRecordService {
 
     @Override
     @Transactional
-    public Boolean create(MotherRecordCreateRequestDto dto) {
+    public MotherRecordReadReponseDto create(MotherRecordCreateRequestDto dto) {
         MotherRecord motherRecord = dto.toEntity();
         motherRecordRepository.save(motherRecord);
-        return true;
+        return MotherRecordReadReponseDto.from(motherRecord);
     }
 
     @Override

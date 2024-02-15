@@ -10,6 +10,7 @@ import '../../FCM/firebase-messaging-sw'
 import axios from 'axios';
 import { getEssential } from '../../api/RecordApi';
 import useMemberStore from '../../stores/userStore';
+import moment from 'moment';
 
 // 현재 URL을 가져옵니다.
 var url = window.location.href;
@@ -22,7 +23,7 @@ var queryParams = new URLSearchParams(queryString);
 var data = queryParams.get('data');
 
 // 추출된 데이터를 사용합니다.
-console.log(data);
+// console.log(data);
 
 
 
@@ -38,18 +39,18 @@ export const recordContext = createContext();
 const HospitalRecordMainPage = () => {
   const navigate = useNavigate()
 
+  const today = moment(new Date()).format("YYYY-MM-DD")
   // 이거 꼭 재설정
   const [initState, setInitState] = useState([])
   const [dayList,setDayList] = useState([])
-  const [selectedDay, setSelectedDay] = useState()
+  const [selectedDay, setSelectedDay] = useState(today)
   const [recordList, setRecordList] = useState([])
   const userNum = useMemberStore(state => state.userNum)
   const babyList = useMemberStore(state => state.babyList)
   const parentType = useMemberStore(state => state.parentType)
-  
+  const bornBabyList = babyList.filter((baby) => baby.status);
   const [babyrecord, setBabyrecord] = useState([])
   const [momrecord, setMomrecord] = useState([])
-
   useEffect(() => {
     setInitState([...babyrecord,...momrecord])
   }, [momrecord,babyrecord])
@@ -64,11 +65,14 @@ const HospitalRecordMainPage = () => {
     .catch((err) => console.log(err))
   }
 
-    babyList.map((baby) => {
+  bornBabyList.map((baby) => {
       axios.get(`api/hospital/baby/${baby.num}`)
       .then((res) => {
-        setBabyrecord([...babyrecord,...res.data])
+        setBabyrecord((prevRecords) => [...prevRecords, ...res.data]);
+        // setBabyrecord([...babyrecord,...res.data])
+        // setBabyrecord(res.data)
       })
+      .catch(err => console.log(err))
     })
   },[])
 

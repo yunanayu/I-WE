@@ -16,7 +16,7 @@ self.addEventListener("push", function (e) {
   const data = e.data.json().data
   const resultData = e.data.json().notification;
   const notificationTitle = resultData.title;
-  const notificationOptions = {
+  const notificationOptions = { 
     body: resultData.body,
     // icon: resultData.image,
     icon: "/icon1.png",
@@ -31,13 +31,35 @@ self.addEventListener("push", function (e) {
   var data = 1
 self.addEventListener("notificationclick", function (event) {
   var url = "/infomain"; 
-  if (key === 'info') {
-    return  
+
+  if (key === 'chat') {
+    url = '/chat'
+  }
+  else if (key === 'info') {
+    url = '/infomain'
+  }
+  else if (key === 'record') {
+    url ='/hospitalrecord'
+  }
+  else if (key === 'momWeight' ) {
+    url='/recordmom'
+  }
+  else if (key === 'tip' ) {
+    // url = '/tip'
+    url = '/'
+  }
+  else if (key === 'picture') {
+    // url = `/`
+    url = '/recordbaby'
+  }
+  else if (key === 'babydata') {
+    url = '/recordbaby'
   }
   else {
-    url = "/hospitalrecord"
+    url = "/"
   }
   console.log("notification click");
   event.notification.close();
-  event.waitUntil(clients.openWindow(`${url}?data=${encodeURIComponent(data)}`));
+  // event.waitUntil(clients.openWindow(`${url}?data=${encodeURIComponent(data)}`));
+  event.waitUntil(clients.openWindow(url));
 });

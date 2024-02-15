@@ -64,74 +64,76 @@ const AddChild = (props) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <FormControl>
           <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large', mt:'10px' }} id="demo-radio-buttons-group-label">아기 상태</p>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-          >
-            <FormControlLabel
-              onClick={() => {
-                setStatus("before")
-                setInitState({...initState, status: false, pregnancyDate:'', birth:''})
-              }}
-              value="before"
-              control={<Radio />}
-              label="임신"
-              name="precnancy"
-            />
-            <FormControlLabel
-              onClick={() => {
-                setStatus("after")
-                setInitState({...initState, status: true, pregnancyDate:'', birth:''})
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+        >
+          <FormControlLabel
+            onClick={() => {
+              setStatus("before")
+              setInitState({...initState, status: false, pregnancyDate:moment(new Date()).format('YYYY-MM-DD'), birth:''})
             }}
-              value="after"
-              control={<Radio />}
-              label="출산"
-              name="precnancy"
-            />
-          </RadioGroup>
-        </FormControl>
-        <Box>
-        {status === 'before' &&
-        <>
-        <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large', mt:'10px' }} id="demo-radio-buttons-group-label">이름</p>
-        <div>
-          <TextField label='이름' name='name' onChange={handleChange} />
-        </div>
-        <FormControl>
+            value="before"
+            control={<Radio />}
+            label="임신"
+            name="precnancy"
+          />
+          <FormControlLabel
+            onClick={() => {
+              setStatus("after")
+              setInitState({...initState, status: true, pregnancyDate:'', birth:moment(new Date()).format('YYYY-MM-DD')})
+          }}
+            value="after"
+            control={<Radio />}
+            label="출산"
+            name="precnancy"
+          />
+        </RadioGroup>
+      </FormControl>
+      <Box>
+      {status === 'before' &&
+      <>
+      <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large', mt:'10px' }} id="demo-radio-buttons-group-label">이름</p>
+      <div>
+        <TextField label='이름' name='name' onChange={handleChange} />
+      </div>
+      <FormControl>
         <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large', mt:'10px' }} id="demo-radio-buttons-group-label">성별</p>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-          >
-            <div style={{display:'flex', justifyContent:'center', flexDirection: 'column'}}>
-              <FormControlLabel
-                value="0"
-                control={<Radio />}
-                label="모름"
-                name="gender"
-                onChange={handleChange}
-              />
-              <div style={{display:'flex', justifyContent:'space-between'}}>
-                <FormControlLabel
-                  value="1"
-                  control={<Radio />}
-                  label="남자"
-                  name="gender"
-                  onChange={handleChange}
-                />
-                <FormControlLabel
-                  value="2"
-                  control={<Radio />}
-                  label="여자"
-                  name="gender"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          </RadioGroup>
-        </FormControl>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+        >
+          <div style={{display:'flex', flexDirection:'column'}}>
+          <FormControlLabel
+            value="0"
+            control={<Radio />}
+            label="모름"
+            name="gender"
+            onChange={handleChange}
+          />
+          <div style={{display:'flex', justifyContent:'space-between'}} >
+            <FormControlLabel
+            value="1"
+            control={<Radio />}
+            label="남자"
+            name="gender"
+            onChange={handleChange}
+          />
+          <FormControlLabel
+            value="2"
+            control={<Radio />}
+            label="여자"
+            name="gender"
+            onChange={handleChange}
+          />
+          </div>
+          
+          </div>
+        </RadioGroup>
+      </FormControl>
+      <div style={{ mt:'10px' }}>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
           <br />
           <DemoContainer components={['DatePicker']} >
@@ -145,61 +147,64 @@ const AddChild = (props) => {
             />
           </DemoContainer>
         </LocalizationProvider>
-        </>
-        }
-        {status === 'after' &&
-        <>
-        <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large', mt:'10px' }} id="demo-radio-buttons-group-label">이름</p>
+      </div>
+      </>
+      }
+      {status === 'after' &&
+      <>
+      <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large', mt:'10px' }} id="demo-radio-buttons-group-label">이름</p>
+      <div>
         <TextField label='이름' name='name' onChange={handleChange} />
-        <FormControl>
-          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large', mt:'10px' }} id="demo-radio-buttons-group-label">성별</p>
-          <RadioGroup
-            row
-            aria-labelledby="demo-row-radio-buttons-group-label"
-            name="row-radio-buttons-group"
-          >
-            <div style={{display:'flex', justifyContent:'space-between'}}>
-              <FormControlLabel
-                value="1"
-                control={<Radio />}
-                label="남자"
-                name="gender"
-                onChange={handleChange}
-              />
-              <FormControlLabel
-                value="2"
-                control={<Radio />}
-                label="여자"
-                name="gender"
-                onChange={handleChange}
-              />
-            </div>
-          </RadioGroup>
-        </FormControl>
-        <div style={{ mt:'10px' }}>
-          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-          <DemoContainer components={['DatePicker']}>
-          <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }} id="demo-radio-buttons-group-label">출생일</p>
-            <DesktopDatePicker
-              ref={dateInputAfter}
-              label="출생일"
-              value={today}
-              onChange={(newValue) => setInitState({...initState,  birth:moment(newValue.$d).format('YYYY-MM-DD')})}
-              disableFuture 
-            />
-          </DemoContainer>
-        </LocalizationProvider>
-        </div>
-        
-        </>
-        }
-        </Box>
+      </div>
+      <FormControl>
+        <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large', mt:'10px' }} id="demo-radio-buttons-group-label">성별</p>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+        >
+          <div style={{display:'flex', justifyContent:'space-between'}}>
+          <FormControlLabel
+            value="1"
+            control={<Radio />}
+            label="남자"
+            name="gender"
+            onChange={handleChange}
+          />
+          <FormControlLabel
+            value="2"
+            control={<Radio />}
+            label="여자"
+            name="gender"
+            onChange={handleChange}
+          />
+          </div>
+        </RadioGroup>
         <br />
+      </FormControl>
+      <div style={{ mt:'10px' }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+        <DemoContainer components={['DatePicker']}>
+        <p style={{ color: 'black', fontWeight: 'bold', fontSize: 'large' }} id="demo-radio-buttons-group-label">출생일</p>
+          <DesktopDatePicker
+            ref={dateInputAfter}
+            label="출생일"
+            value={today}
+            onChange={(newValue) => setInitState({...initState,  birth:moment(newValue.$d).format('YYYY-MM-DD')})}
+            disableFuture 
+          />
+        </DemoContainer>
+      </LocalizationProvider>
+      </div>
+      </>
+      }
+      </Box>
+      <br />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Button variant="contained" endIcon={<SendIcon />} onClick={addChild} style={{ backgroundColor: '#fcafaf'}}>
             등록하기
           </Button>
-        </div>
+          </div>
         </div>
       </div>
     </Container>

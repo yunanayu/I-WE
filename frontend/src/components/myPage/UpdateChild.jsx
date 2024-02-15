@@ -138,6 +138,7 @@ const UpdateChild = (props) => {
             </div>
           </div>
         </RadioGroup>
+      <br />
       </FormControl>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={['DatePicker']}>
@@ -182,6 +183,7 @@ const UpdateChild = (props) => {
             />
           </div>
         </RadioGroup>
+      <br />
       </FormControl>
       
       <LocalizationProvider dateAdapter={AdapterDayjs}>
