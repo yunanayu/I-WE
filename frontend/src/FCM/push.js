@@ -103,7 +103,7 @@ export const getPush7 = (babyNum) => {
     url:`api/cheat`,
     data:{
       num : useMemberStore.getState().userNum,
-      title: '20주차에 돌입했어요!!!',
+      title: '20주차에 돌입했어요.',
       content : '아기의 청력 발달이 거의 완성 되었습니다. 이제 밖에서 들리는 소리와 리듬에 반응을 보이는 태아를 위해 엄마나 아빠가 읽어주는 동시는 좋은 태교 방법입니다. 엄마 아빠의 목소리, 그 속에 담긴 리듬감이 이제 몸의 발달에서 점차 뇌의 발달로 집중되는 아기에게는 더 없이 좋은 뇌 자극법일 수 있습니다.',
       key : 'picture'
     }
