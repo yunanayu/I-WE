@@ -150,7 +150,6 @@ function RecordBaby() {
   const pregnancyDate = useMemberStore((state) => state.babyList[babyIndex].pregnancyDate);
   const birthDate = useMemberStore((state) => state.babyList[babyIndex].birth);
   const gender = useMemberStore((state) => state.babyList[babyIndex].gender);
-
   const [recentRecordMonth, setRecentRecordMonth] = useState();
   const [born, setBorn] = useState(false);
   const [babyRecord, setBabyRecord] = useState(null);
@@ -168,10 +167,10 @@ function RecordBaby() {
         return (d.getFullYear() - b.getFullYear()) * 12 + d.getMonth() - b.getMonth() + 1;
       });
     }
-  }, [recentRecord]);
+  }, [recentRecord, birthDate]);
 
   useEffect(() => {
-    if (recentRecordMonth) {
+    if (recentRecordMonth && recentRecordMonth < 200) {
       if (status === "A") {
         setBorn(true);
         console.log("recent record: \n" + JSON.stringify(recentRecord));
@@ -191,7 +190,7 @@ function RecordBaby() {
         setBorn(false);
       }
     }
-  }, [status, recentRecord, recentRecordMonth, babyNum]);
+  }, [status, recentRecord, babyNum, recentRecordMonth]);
 
   useEffect(() => {
     const init = async () => {
