@@ -22,7 +22,7 @@ function AddChild({ setSpouseStatus }) {
   const [childName, setChildName] = useState("");
   const [pregnancyDate, setPregnancyDate] = useState("");
   const [childGender, setChildGender] = useState("");
-  const [pregnancyStatus, setPregnancyStatus] = useState("");
+  const [pregnancyStatus, setPregnancyStatus] = useState("pregnancy");
   const [birthDate, setBirthDate] = useState("");
   const [momBasicWeight, setMomBasicWeight] = useState("");
   const [momBasicHeight, setMomBasicHeight] = useState("");
@@ -88,7 +88,6 @@ function AddChild({ setSpouseStatus }) {
       );
       userNum = response.data.num;
       parentType = response.data.parentType;
-      userName = response.data.name;
       userName = response.data.name;
       profileImage = response.data.profileImage;
     } catch(e) {

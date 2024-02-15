@@ -21,6 +21,7 @@ const style = {
 const ChildList = () => {
   const userName = useMemberStore((state) => state.userName);
   const babyList = useMemberStore((state) => state.babyList);
+  const parentType = useMemberStore((state) => state.parentType);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -35,14 +36,15 @@ const ChildList = () => {
       {babyList.map((baby) => {
         return <ReadChildCard baby={baby} />;
       })}
-      <Box sx={{ display: "flex" }}>
+      {parentType !== "FATHER" && (
+        <div>
+          <Box sx={{ display: "flex" }}>
         <Box sx={{ justifyContent: "right", textAlign:'right' }}>
           <Fab color="#FBBBB8" aria-label="add">
             <AddIcon onClick={handleOpen} />
           </Fab>
         </Box>
       </Box>
-      {/* <Button onClick={handleOpen}>아기 등록하기</Button> */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -53,6 +55,9 @@ const ChildList = () => {
           <AddChild setOpen={setOpen} />
         </Box>
       </Modal>
+        </div>
+      
+      )}
     </Container>
   );
 };

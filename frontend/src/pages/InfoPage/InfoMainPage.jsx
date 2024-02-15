@@ -17,6 +17,7 @@ import FormControl from "@mui/joy/FormControl";
 import Radio from "@mui/joy/Radio";
 import RadioGroup from "@mui/joy/RadioGroup";
 import Sheet from "@mui/joy/Sheet";
+import heart2 from '../../images/heart2.png';
 
 const theme = createTheme({
   typography: {
@@ -48,7 +49,7 @@ export default function InfoMain() {
   // 더 알아보기 누르면 나오는 창
 
   const [open, setOpen] = useState(false);
-  const [scroll, setScroll] = useState("more");
+  const [scroll, setScroll] = useState("babymore");
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -106,8 +107,7 @@ export default function InfoMain() {
         <Box key={week}>
           {babybodyInfo.map((info, i) => (
             <div key={i}>
-              - {info.content}
-              <br />
+              - {info.content} <br />
               <br />
             </div>
           ))}
@@ -119,8 +119,7 @@ export default function InfoMain() {
         <Box key={month}>
           {babybodyInfo.map((info, i) => (
             <div key={i}>
-              - {info.content}
-              <br />
+              - {info.content} <br />
               <br />
             </div>
           ))}
@@ -141,7 +140,7 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
-            <br />- {info.content}
+            - {info.content} <br />
             <br />
           </div>
         ));
@@ -152,7 +151,7 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
-            <br />- {info.content}
+            - {info.content} <br />
             <br />
           </div>
         ));
@@ -192,7 +191,7 @@ export default function InfoMain() {
         <Box key={week}>
           {mombodyInfo.map((info, i) => (
             <div key={i}>
-              <br />- {info.content}
+              - {info.content} <br />
               <br />
             </div>
           ))}
@@ -204,7 +203,7 @@ export default function InfoMain() {
         <Box key={month}>
           {mombodyInfo.map((info, i) => (
             <div key={i}>
-              <br />- {info.content}
+              - {info.content} <br />
               <br />
             </div>
           ))}
@@ -242,7 +241,7 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
-            <br />- {info.content}
+            - {info.content} <br />
             <br />
           </div>
         ));
@@ -253,7 +252,7 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
-            <br />- {info.content}
+            - {info.content} <br />
             <br />
           </div>
         ));
@@ -276,7 +275,7 @@ export default function InfoMain() {
         <Box key={week}>
           {babysugInfo.map((info, i) => (
             <div key={i}>
-              <br />- {info.content}
+              - {info.content} <br />
               <br />
             </div>
           ))}
@@ -288,7 +287,7 @@ export default function InfoMain() {
         <Box key={month}>
           {babysugInfo.map((info, i) => (
             <div key={i}>
-              <br />- {info.content}
+              - {info.content} <br />
               <br />
             </div>
           ))}
@@ -327,7 +326,7 @@ export default function InfoMain() {
         <Box key={week}>
           {momsugInfo.map((info, i) => (
             <div key={i}>
-              <br />- {info.content}
+              - {info.content} <br />
               <br />
             </div>
           ))}
@@ -339,7 +338,7 @@ export default function InfoMain() {
         <Box key={month}>
           {momsugInfo.map((info, i) => (
             <div key={i}>
-              <br />- {info.content}
+              - {info.content} <br />
               <br />
             </div>
           ))}
@@ -376,7 +375,7 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
-            <br />- {info.content}
+            - {info.content} <br />
             <br />
           </div>
         ));
@@ -387,7 +386,7 @@ export default function InfoMain() {
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
           <div key={i}>
-            <br />- {info.content}
+            - {info.content} <br />
             <br />
           </div>
         ));
@@ -504,6 +503,7 @@ export default function InfoMain() {
             sx={{ fontWeight: "bold", mb: "20px" }}
           >
             이 시기에 아이는요!
+            <img src={heart2} width="40" height="30" alt="하트 이미지" />
           </Typography>
           <Card
             sx={{
@@ -524,6 +524,7 @@ export default function InfoMain() {
                 >
                   궁금해요!
                 </Button>
+                <React.Fragment>
                 <Dialog
                   open={open}
                   onClose={handleClose}
@@ -546,11 +547,13 @@ export default function InfoMain() {
                       정보 더알아보기
                     </DialogTitle>
                   )}
-
-                  <DialogContent dividers={scroll === "babymore"}>
-                    <DialogContentText
+                
+                <DialogContent dividers={scroll === "babymore"}>                    
+                <DialogContentText
                       id="scroll-dialog-description"
+                      ref={descriptionElementRef}
                       tabIndex={-1}
+                      sx={{ maxHeight: '500px', overflowY: 'auto' }}
                     >
                       {scroll === "babymore" && getBabyBodyInfo()}
                       {scroll === "mommore" && getMomBodyInfo()}
@@ -566,6 +569,7 @@ export default function InfoMain() {
                     <Button onClick={handleClose}>닫기</Button>
                   </DialogActions>
                 </Dialog>
+                </React.Fragment>
               </Box>
             </CardContent>
           </Card>
@@ -587,6 +591,7 @@ export default function InfoMain() {
               sx={{ fontWeight: "bold", mb: "20px" }}
             >
               이 시기에 엄마는요!
+              <img src={heart2} width="40" height="30" alt="하트 이미지" />
             </Typography>
             <Card
               sx={{
@@ -628,6 +633,7 @@ export default function InfoMain() {
             sx={{ fontWeight: "bold", mb: "20px" }}
           >
             아이를 위해서는요!
+            <img src={heart2} width="40" height="30" alt="하트 이미지" />
           </Typography>
           <Card
             sx={{

@@ -17,17 +17,16 @@ import { Cookies } from "react-cookie";
 import useMemberStore, { useFcmStore } from "../../stores/userStore";
 
 const pages = [
-  { name: "다이어리", link: "/diary" },
-  { name: "병원찾기", link: "/hospital" },
-  { name: "커뮤니티", link: "/community" },
   { name: "정보제공", link: "/infomain" },
-  { name: "기록" },
-];
-const sub = [
   { name: "엄마기록", link: "/recordmom" },
   { name: "아기기록", link: "/recordbaby" },
   { name: "병원기록", link: "/hospitalrecord" },
 ];
+// const sub = [
+//   { name: "엄마기록", link: "/recordmom" },
+//   { name: "아기기록", link: "/recordbaby" },
+//   { name: "병원기록", link: "/hospitalrecord" },
+// ];
 const settings = ["마이페이지", "로그아웃"];
 
 function ResponsiveAppBar() {
@@ -144,7 +143,7 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) =>
-                page.name !== "기록" ? (
+                // page.name !== "기록" ? (
                   <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                     <Typography
                       component={NavLink}
@@ -158,21 +157,21 @@ function ResponsiveAppBar() {
                       {page.name}
                     </Typography>
                   </MenuItem>
-                ) : (
-                  <MenuItem key={page.name} onClick={handleOpenSubMenu}>
-                    <Typography
-                      component={NavLink}
-                      to={page.link}
-                      textAlign="center"
-                      sx={{
-                        textDecoration: "none",
-                        color: "gray",
-                      }}
-                    >
-                      {page.name}
-                    </Typography>
-                  </MenuItem>
-                )
+              //   ) : (
+              //     <MenuItem key={page.name} onClick={handleOpenSubMenu}>
+              //       <Typography
+              //         component={NavLink}
+              //         to={page.link}
+              //         textAlign="center"
+              //         sx={{
+              //           textDecoration: "none",
+              //           color: "gray",
+              //         }}
+              //       >
+              //         {page.name}
+              //       </Typography>
+              //     </MenuItem>
+              //   )
               )}
             </Menu>
             <Menu
@@ -193,7 +192,7 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {sub.map((page) => (
+              {/* {sub.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseSubMenu}>
                   <Typography
                     component={NavLink}
@@ -207,7 +206,7 @@ function ResponsiveAppBar() {
                     {page.name}
                   </Typography>
                 </MenuItem>
-              ))}
+              ))} */}
             </Menu>
           </Box>
 
@@ -277,7 +276,7 @@ function ResponsiveAppBar() {
                       "aria-labelledby": "basic-button",
                     }}
                   >
-                    {sub.map((page) => (
+                    {/* {sub.map((page) => (
                       <MenuItem key={page.name} onClick={handleClose}>
                         <Typography
                           component={NavLink}
@@ -291,7 +290,7 @@ function ResponsiveAppBar() {
                           {page.name}
                         </Typography>
                       </MenuItem>
-                    ))}
+                    ))} */}
                   </Menu>
                 </>
               )
@@ -339,8 +338,6 @@ function ResponsiveAppBar() {
               </Menu>
             </Box>
             </Box>
-
-          
         </Toolbar>
       </Container>
     </AppBar>

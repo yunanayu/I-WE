@@ -13,7 +13,7 @@ import { Box, Typography, Card } from '@mui/material';
 
 function MemberCheckPage({ setSpouseStatus }) {
   const navigate = useNavigate();
-  const [selectedMember, setSelectedMember] = useState(""); // 선택된 멤버 (FATHER, MOTHER)
+  const [selectedMember, setSelectedMember] = useState("MOTHER"); // 선택된 멤버 (FATHER, MOTHER)
   const setUserNum = useMemberStore(state => state.setUserNum)
 
   const handleSelectMember = (event) => {
@@ -76,7 +76,7 @@ function MemberCheckPage({ setSpouseStatus }) {
           <RadioGroup
             row
             name="position"
-            defaultValue="bottom"
+            defaultValue="MOTHER"            
             value={selectedMember}
             onChange={handleSelectMember}
           >

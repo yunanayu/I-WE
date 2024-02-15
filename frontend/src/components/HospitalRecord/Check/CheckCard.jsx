@@ -97,8 +97,11 @@ const CheckCard = (props) => {
                 })}
             </Typography>
           </Box>
-        <IconButton onClick={updateComplete}>
-          {complete ? <CheckCircleOutlineTwoToneIcon /> : <RadioButtonUncheckedTwoToneIcon />}
+        <IconButton
+          onClick={updateComplete}
+          style={{ fontSize: '2rem' }}
+        >
+          {complete ? <CheckCircleOutlineTwoToneIcon fontSize="large" style={{ color: 'green' }} /> : <RadioButtonUncheckedTwoToneIcon fontSize="large" />}
         </IconButton>
       </CardContent>
       <div>
