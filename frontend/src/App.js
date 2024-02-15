@@ -28,6 +28,9 @@ import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecor
 import ChildList from "./components/myPage/ChildList";
 import CodeSharePage from "./pages/MyPage/CodeSharePage";
 
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js");
+}
 
 function App() {
   const [parentLoggedIn, setParentLoggedIn] = useState(false);
