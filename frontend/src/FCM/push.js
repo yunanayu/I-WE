@@ -96,7 +96,8 @@ export const getPush4 = (babyNum) => {
     data:{
       num : useMemberStore.getState().userNum,
       title: '20주차의 아기는요!',
-      content : '양수의 양이 늘어나 자유롭게 움직이므로 위치가 자주 변하며 태동이 확실해집니다.'
+      content : '양수의 양이 늘어나 자유롭게 움직이므로 위치가 자주 변하며 태동이 확실해집니다.',
+      key:'info'
     }
   })
   .then((res) => {

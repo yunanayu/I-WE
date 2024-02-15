@@ -15,7 +15,7 @@ const TestPage = () => {
       {/* 2. 접종 정보 */}
       <Button onClick={() => getPush2(babyNum)}>엄마 권유 20주차 엄마아빠둘다</Button>
       <Button onClick={() => getPush4(babyNum)}>엄마 아빠에게 아가 상태 공유 20주차</Button>
-      <Button onClick={() => getPush4(babyNum)}>엄마 아빠에게 아가 상태 공유 27주차</Button>
+      <Button onClick={() => getPush7(babyNum)}>엄마 아빠에게 아가 상태 공유 27주차</Button>
       </Box>
       <Typography>엄마 아빠 버튼 각각 누르면 됨</Typography>
       <Box  sx={{display : 'flex'}}>
