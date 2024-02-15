@@ -79,12 +79,14 @@ function Info(props) {
   const [percentile, setPercentile] = useState();
 
   useEffect(() => {
-    if (props.percentile) {
+    setPercentile();
+    if (props.percentile && props.recentRecord) {
       setPercentile(props.percentile);
     } else {
       setPercentile();
     }
-  }, [props.percentile, props.babyNum, props.recentRecord]);
+    console.log(percentile);
+  }, [props.percentile, props.babyNum, props.recentRecord, percentile]);
 
   tmp.setMonth(tmp.getMonth() - 3);
   tmp.setFullYear(tmp.getFullYear() + 1);
@@ -92,7 +94,6 @@ function Info(props) {
   const pBirth = Math.ceil(Math.abs(today.getTime() - tmp.getTime()) / (1000 * 60 * 60 * 24)) - 1;
 
   const dDay = Math.ceil(Math.abs(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24)) - 1;
-
   return (
     <>
       {props.born && percentile ? (
