@@ -203,40 +203,44 @@ const BabyForm = React.forwardRef((props, ref) => {
 
   useEffect(() => {
     if (recentData) {
-      // console.log("최근 데이터 " + JSON.stringify(recent));
+      // console.log("최근 데이터 " + JSON.stringify(recentData));
       const recentDate = new Date(recentData.recordDate);
-<<<<<<< Updated upstream
-      if (recentDate.getDay() === today.getDay() && recentDate.getMonth() === today.getMonth() && recentDate.getFullYear() === today.getFullYear()) {
-=======
       const sel = new Date(dateSelected);
-      if (
-        recentDate.getDay() === sel.getDay() &&
-        recentDate.getMonth() === sel.getMonth() &&
-        recentDate.getFullYear() === sel.getFullYear()
-      ) {
->>>>>>> Stashed changes
+      console.log(today.getDate());
+      console.log(recentDate);
+      if (recentDate.getDate() === today.getDate() && recentDate.getMonth() === today.getMonth() && recentDate.getFullYear() === today.getFullYear()) {
         setUpdate(true);
         setWeight(recentData.weight);
         setHeight(recentData.height);
         setCircumference(recentData.circumference);
         setFile(Array.from(recentData.images));
-        setUpdate(true);
       }
     }
   }, [recentData, dateSelected]);
 
   useEffect(() => {
-    if(data && dateSelected) {
+    if (data && dateSelected) {
       const idx = data.findIndex((record) => {
         const r = new Date(record.recordDate);
-        const d = new Date(dateSelected)
-        return (r.getDay() === d.getDay() &&
-        r.getMonth() === d.getMonth() &&
-        r.getFullYear() === d.getFullYear())
+        const d = new Date(dateSelected);
+        return r.getDate() === d.getDate() && r.getMonth() === d.getMonth() && r.getFullYear() === d.getFullYear();
       });
       console.log(idx);
+      if (idx !== -1) {
+        setUpdate(true);
+        setWeight(data[idx].weight);
+        setHeight(data[idx].height);
+        setCircumference(data[idx].circumference);
+        setFile(Array.from(data[idx].images));
+      } else {
+        setUpdate(false);
+        setWeight();
+        setHeight();
+        setCircumference();
+        setFile();
+      }
     }
-  })
+  }, [dateSelected]);
 
   useEffect(() => {});
 

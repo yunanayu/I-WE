@@ -127,7 +127,7 @@ function RecordMom() {
 
   const babyChange = (e) => {
     // console.log(babyList.findIndex((baby) => baby.num + "" === e.target.value));
-    setBabyIndex(babyList.findIndex((baby) => Number(baby.num)  === Number(e.target.value)));
+    setBabyIndex(babyList.findIndex((baby) => Number(baby.num) === Number(e.target.value)));
     setBabyNum(e.target.value);
     setStatus(babyList[babyList.findIndex((baby) => Number(baby.num) === Number(e.target.value))].targetTime.substr(0, 1));
   };
@@ -242,14 +242,14 @@ function RecordMom() {
           {<Info record={momRecord} avg={avgData} diff={diffData} />}
         </Box>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          <MomForm data={recentRecord} recentUpdate={onUpdateRecent} onPostSuccess={updateChartData} />
+          <MomForm babyNum={babyNum} data={recentRecord} recentUpdate={onUpdateRecent} onPostSuccess={updateChartData} />
         </Box>
         {momRecord ? (
           <>
             <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
               <WeeklyWeightChart recordData={momRecord} />
             </Box>
-            <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, mb:15 }}>
+            <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, mb: 15 }}>
               <ChangeChart
                 recordData={momRecord}
                 basisData={momBasis}

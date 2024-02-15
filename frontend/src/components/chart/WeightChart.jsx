@@ -69,7 +69,9 @@ function WeeklyWeightChart(props) {
         // console.log(length);
         if (length < 6) {
           let tmp = momWeight.slice(0 - length);
-          return tmp;
+          return tmp.map((obj) => {
+            return { ...obj, date: obj.date.substr(5) };
+          });
         }
         let tmp = momWeight.slice(-6);
         return tmp.map((obj) => {
@@ -221,7 +223,7 @@ function ChangeChart(props) {
     setBabyData(props.babyData);
     setStatus(props.status);
     setBabyIndex(props.babyIndex);
-  }, [props])
+  }, [props]);
 
   // [주차][비만도 => 저체중, 평균, 과제충, 비만]
   const recommendWeightStart = [
@@ -445,20 +447,20 @@ function ChangeChart(props) {
                 label: "증가율",
                 id: "weight",
               },
-              (status === "B"
+              status === "B"
                 ? {
                     type: "line",
                     data: lineData.map((data) => data.start),
                     label: "추천 최소치",
                   }
-                : {}),
-              (status === "B"
+                : {},
+              status === "B"
                 ? {
                     type: "line",
                     data: lineData.map((data) => data.end),
                     label: "추천 최대치",
                   }
-                : {}),
+                : {},
             ]}
             xAxis={[
               {
