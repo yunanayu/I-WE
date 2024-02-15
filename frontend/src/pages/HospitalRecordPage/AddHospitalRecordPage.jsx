@@ -35,7 +35,6 @@ import useMemberStore from '../../stores/userStore';
 const AddMomRecordPage = () => {
   const babyList = useMemberStore(state => state.babyList)
   const motherNum = babyList[0].motherNum 
-  console.log(motherNum)
   const navigate = useNavigate()
   const [target, setTarget] = useState('')
   const location = useLocation()
@@ -53,8 +52,6 @@ const AddMomRecordPage = () => {
     target : '',
     targetNum : 0,
   })
-  console.log(state)
-  console.log(state.targetNum)
     const submit = () => {
       console.log(state.targetNum)
       axios({
@@ -92,7 +89,7 @@ const AddMomRecordPage = () => {
     if (state.target === 'mother') {
       setState({...state, targetNum:motherNum})
     }
-  },[target])
+  },[state.target])
   
   return (
     <Container sx={{pt:5, mb:3, pb:8}}>
@@ -108,9 +105,6 @@ const AddMomRecordPage = () => {
           name="row-radio-buttons-group"
         >
           <FormControlLabel 
-          onClick={()=> {
-            setState({...state, targetNum:motherNum})
-          }}
           value="mother" control={<Radio />} label="엄마" name='target' onChange={handleChange} />
           <FormControlLabel onClick={()=> setTarget('baby')} value="baby" control={<Radio />} label="아기" name='target' onChange={handleChange}/>
         </RadioGroup>
@@ -176,10 +170,6 @@ const AddMomRecordPage = () => {
             sx={{width:'30%', pr:5}}
           />
         </Box>
-        {/* <Box>
-          <Typography variant='h5'>검진사진</Typography>
-          <FileUpload />
-        </Box> */}
         <Box>
           <Typography variant='h5'>검진내용</Typography>
           <TextField
