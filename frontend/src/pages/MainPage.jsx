@@ -235,7 +235,7 @@ const Main = ({ onLoginStatusChange }) => {
       {isLoggedIn ? (
         <>
         <ThemeProvider theme={theme}>
-          <Box sx={{ width:'100%' , display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: 8, mb:8}}>
+          <Box sx={{ width:'100%' , display: 'flex', justifyContent: 'center', alignItems: 'center', height: '150vh', mt: 8, mb:8}}>
             <Box sx={{ display: 'flex',  alignItems: 'center', flexDirection: 'column'}}>
               <Swiper
                 effect={'cards'}

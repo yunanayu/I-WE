@@ -127,7 +127,7 @@ function RecordMom() {
 
   const babyChange = (e) => {
     // console.log(babyList.findIndex((baby) => baby.num + "" === e.target.value));
-    setBabyIndex(babyList.findIndex((baby) => Number(baby.num)  === Number(e.target.value)));
+    setBabyIndex(babyList.findIndex((baby) => Number(baby.num) === Number(e.target.value)));
     setBabyNum(e.target.value);
     setStatus(babyList[babyList.findIndex((baby) => Number(baby.num) === Number(e.target.value))].targetTime.substr(0, 1));
   };
@@ -227,9 +227,6 @@ function RecordMom() {
                 <Radio
                   value={baby.num || ""}
                   variant="soft"
-                  sx={{
-                    mb: 2,
-                  }}
                 />
                 <Typography level="body-sm" sx={{ mt: 1 }}>
                   {baby.name}
@@ -242,14 +239,14 @@ function RecordMom() {
           {<Info record={momRecord} avg={avgData} diff={diffData} />}
         </Box>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          <MomForm data={recentRecord} recentUpdate={onUpdateRecent} onPostSuccess={updateChartData} />
+          <MomForm babyNum={babyNum} data={recentRecord} recentUpdate={onUpdateRecent} onPostSuccess={updateChartData} />
         </Box>
         {momRecord ? (
           <>
             <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
               <WeeklyWeightChart recordData={momRecord} />
             </Box>
-            <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, mb:15 }}>
+            <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3, mb: 15 }}>
               <ChangeChart
                 recordData={momRecord}
                 basisData={momBasis}
@@ -263,7 +260,7 @@ function RecordMom() {
           </>
         ) : (
           <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-            <Typography m={3}>기록이 없습니다.</Typography>
+            <Typography m={3}>나를 기록해보세요</Typography>
           </Box>
         )}
       </Container>
