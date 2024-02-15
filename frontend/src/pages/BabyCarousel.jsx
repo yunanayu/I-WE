@@ -27,7 +27,7 @@ const BabyCarousel = (props) => {
   
   return (
     <Box sx={{ width: "100%" }}>
-      {props.babyRecord ? <Carousel
+      {url ? <Carousel
         showArrows={true}
         centerMode={true}
         centerSlidePercentage={10}
