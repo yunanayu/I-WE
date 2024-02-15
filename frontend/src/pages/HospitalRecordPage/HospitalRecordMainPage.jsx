@@ -23,7 +23,7 @@ var queryParams = new URLSearchParams(queryString);
 var data = queryParams.get('data');
 
 // 추출된 데이터를 사용합니다.
-console.log(data);
+// console.log(data);
 
 
 
@@ -51,7 +51,6 @@ const HospitalRecordMainPage = () => {
   const bornBabyList = babyList.filter((baby) => baby.status);
   const [babyrecord, setBabyrecord] = useState([])
   const [momrecord, setMomrecord] = useState([])
-  console.log(babyrecord)
   useEffect(() => {
     setInitState([...babyrecord,...momrecord])
   }, [momrecord,babyrecord])
@@ -69,7 +68,6 @@ const HospitalRecordMainPage = () => {
   bornBabyList.map((baby) => {
       axios.get(`api/hospital/baby/${baby.num}`)
       .then((res) => {
-        console.log(res.data)
         setBabyrecord((prevRecords) => [...prevRecords, ...res.data]);
         // setBabyrecord([...babyrecord,...res.data])
         // setBabyrecord(res.data)

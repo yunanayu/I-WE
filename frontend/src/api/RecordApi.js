@@ -69,6 +69,7 @@ export const updateComplete = async (data) => {
 
 
 export const changeComplete = (targetNum, essentialNum, target, isComplete) => {
+  console.log(targetNum)
   axios({
     method: 'put',
     url: `/api/check/complete`,
