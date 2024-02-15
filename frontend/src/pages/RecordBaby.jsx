@@ -59,13 +59,19 @@ function Info(props) {
   const pregnancyDate = new Date(props.pregnancyDate);
   const tmp = new Date(pregnancyDate);
   const [percentile, setPercentile] = useState();
+
   useEffect(() => {
     if (props.percentile) {
       setPercentile(props.percentile);
     } else {
       setPercentile();
     }
-  }, [props.percentile]);
+    if(!props.recentRecord){
+      setPercentile();
+    } else if(props.recentRecord.babyNum !== props.babyNum) {
+      setPercentile();
+    }
+  }, [props.percentile, props.babyNum, props.recentRecord]);
 
   tmp.setMonth(tmp.getMonth() - 3);
   tmp.setFullYear(tmp.getFullYear() + 1);
@@ -96,8 +102,7 @@ function Info(props) {
           <>
             <Typography fontSize={34}>임신 {props.targetTime} 주차</Typography>
             <Typography fontSize={28} textAlign={"center"}>
-              {" "}
-              D-{pBirth}{" "}
+              D-{pBirth}
             </Typography>
           </>
         )}
@@ -151,7 +156,6 @@ function RecordBaby() {
   const pregnancyDate = useMemberStore((state) => state.babyList[babyIndex].pregnancyDate);
   const birthDate = useMemberStore((state) => state.babyList[babyIndex].birth);
   const gender = useMemberStore((state) => state.babyList[babyIndex].gender);
-
   const [recentRecordMonth, setRecentRecordMonth] = useState();
   const [born, setBorn] = useState(false);
   const [babyRecord, setBabyRecord] = useState(null);
@@ -169,30 +173,34 @@ function RecordBaby() {
         return (d.getFullYear() - b.getFullYear()) * 12 + d.getMonth() - b.getMonth() + 1;
       });
     }
-  }, [recentRecord]);
+  }, [recentRecord, birthDate]);
 
   useEffect(() => {
-    if (recentRecordMonth) {
+    if (recentRecordMonth && recentRecordMonth < 200) {
       if (status === "A") {
         setBorn(true);
         console.log("recent record: \n" + JSON.stringify(recentRecord));
         const init2 = async () => {
           await axios
-            .get(`/api/growth/${gender + 1}/${recentRecordMonth}/${recentRecord.height}/${recentRecord.weight}/${recentRecord.circumference}`)
+            .get(`/api/growth/${gender}/${recentRecordMonth}/${recentRecord.height}/${recentRecord.weight}/${recentRecord.circumference}`)
             .then((response) => {
               const data = response.data;
               setPercentileRecord(data);
             })
             .catch((error) => {
+              setRecentRecord();
+              setRecentRecordMonth();
+              setPercentileRecord();
               console.log(error);
             });
         };
         init2();
       } else {
-        setBorn(false);
-      }
+          setBorn(false);
+        }
+      console.log(born);
     }
-  }, [status, recentRecord, recentRecordMonth, babyNum]);
+  }, [status, recentRecord, babyNum, recentRecordMonth]);
 
   useEffect(() => {
     const init = async () => {
@@ -205,11 +213,11 @@ function RecordBaby() {
           // console.log(JSON.stringify(response.data));
         })
         .catch((error) => {
-          console.log("GET BABY RECORD ERROR\n" + error);
           setBabyRecord();
           setRecentRecord();
           setRecentRecordMonth();
           setPercentileRecord();
+          console.log("GET BABY RECORD ERROR\n" + error);
         });
     };
     init();
@@ -316,6 +324,7 @@ function RecordBaby() {
               pregnancyDate={pregnancyDate}
               birthDate={birthDate}
               percentile={percentileRecord}
+              babyNum={babyNum}
             />
           }
         </Box>
@@ -367,7 +376,7 @@ function RecordBaby() {
                           <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
                         </Stack>
                       </Typography>
-                      <BabyForm data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
+                      <BabyForm gender={gender} data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
                     </Box>
                   </LocalizationProvider>
                 </Box>
@@ -427,6 +436,7 @@ function RecordBaby() {
                   ...setCenter,
                   borderRadius: 3,
                   height: 400,
+                  mb: 15
                 }}
               >
                 <HeadChart headRecord={headRecord} percentile={percentileRecord} month={recentRecordMonth} />
@@ -463,13 +473,13 @@ function RecordBaby() {
                           <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
                         </Stack>
                       </Typography>
-                      <BabyForm data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
+                      <BabyForm gender={gender} data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
                     </Box>
                   </LocalizationProvider>
                 </Box>
               </Modal>
             </Box>
-            <Box maxWidth="md" sx={{ ...setCenter, ...commonStyles, borderRadius: 3 }}>
+            <Box maxWidth="md" sx={{ ...setCenter, ...commonStyles, borderRadius: 3, mb: 15 }}>
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 {babyName}의 사진
               </Typography>
