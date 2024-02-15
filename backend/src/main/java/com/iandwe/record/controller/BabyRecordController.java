@@ -38,9 +38,9 @@ public class BabyRecordController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestPart(value = "files", required = false) List<MultipartFile> files,
+    public ResponseEntity<BabyRecordReadResponseDto> update(@RequestPart(value = "files", required = false) List<MultipartFile> files,
                                     @RequestPart(value = "dto") BabyRecordUpdateRequestDto dto) {
-        babyRecordService.update(dto, files);
-        return new ResponseEntity<>(HttpStatus.OK);
+        BabyRecordReadResponseDto responseDto = babyRecordService.update(dto, files);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
