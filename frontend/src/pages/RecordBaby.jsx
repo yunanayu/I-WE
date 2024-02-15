@@ -243,18 +243,25 @@ function RecordBaby() {
     }
   }, [babyRecord]);
 
-  const submitFunction = (data) => {
-    let arr = [];
-    if (babyRecord) {
-      arr = [...babyRecord];
-    }
-    if (recentRecord) {
-      arr.pop();
-      arr.push(data);
-    }
-    setRecentRecord(data);
-    arr.push(data);
-    setBabyRecord([...arr]);
+  const submitFunction = async () => {
+    const init = async () => {
+      await axios
+        .get(`/api/babyRecord/${babyNum}`)
+        .then((response) => {
+          setBabyRecord(response.data);
+          const recent = response.data[response.data.length - 1];
+          setRecentRecord(recent);
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log("GET BABY RECORD ERROR\n" + error);
+          setBabyRecord();
+          setRecentRecord();
+          setRecentRecordMonth();
+          setPercentileRecord();
+        });
+    };
+    await init();
     recordClose();
   };
 
