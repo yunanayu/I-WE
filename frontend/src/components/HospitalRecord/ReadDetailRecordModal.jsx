@@ -26,9 +26,9 @@ const ReadDetailRecordModal = (props) => {
 
   return (
     <Container sx={{}}>
-      <Typography variant='h5'>{checkupDate} 검진기록</Typography>
-      <Typography variant='h6'>기본정보</Typography>
-      <Box sx={{display:'flex', mb:3}}>
+      <Typography variant='h5'>{checkupDate} <br />검진기록</Typography>
+      <Typography variant='h6' sx={{mt:1}}>- 기본정보</Typography>
+      <Box sx={{display:'flex',mt:2, mb:3}}>
       <TextField
           id="standard-read-only-input"
           label="병원이름"
@@ -63,8 +63,7 @@ const ReadDetailRecordModal = (props) => {
           value={record.doctor}
         />
       </Box>
-      <Typography variant='h6'>검진내용</Typography>
-      <Box sx={{display:'flex',}}>
+      <Box sx={{display:'flex', flexDirection:'column', mb:1}}>
         <TextField
           id="standard-read-only-input"
           label="검진 내용"
@@ -73,6 +72,7 @@ const ReadDetailRecordModal = (props) => {
           }}
           variant="standard"
           value={record.content}
+          sx={{mb:1}}
         />
         <TextField
           id="standard-read-only-input"
@@ -82,6 +82,7 @@ const ReadDetailRecordModal = (props) => {
           }}
           variant="standard"
           value={record.result}
+          sx={{mb:1}}
         />
       <TextField
           id="standard-read-only-input"
@@ -91,6 +92,7 @@ const ReadDetailRecordModal = (props) => {
           }}
           variant="standard"
           value={record.comment}
+          sx={{mb:1}}
         />
       </Box>
       {/* <IconButton aria-label="delete" disabled color="primary" >
