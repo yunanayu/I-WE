@@ -60,7 +60,7 @@ const Info = (props) => {
       setWeek(props.avg[props.avg.length - 1].week);
       // eslint-disable-next-line no-useless-concat
       setMsg(`체중이 지난주보다`);
-      setMsg5(`${latestDiffData.weight}kg 증가했어요.`);
+      setMsg5(Number(latestDiffData.weight).toFixed(1) + "kg 증가했어요.");
 
       if (latestDiffData.weight >= start && latestDiffData.weight <= end) {
         setMsg2("체중이 평균 범위 내에서 증가하고 있어요.");
