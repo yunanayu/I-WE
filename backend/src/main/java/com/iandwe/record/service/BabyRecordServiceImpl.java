@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,15 +52,22 @@ public class BabyRecordServiceImpl implements BabyRecordService {
         BabyRecord babyRecord = babyRecordRepository.findByNum(dto.getNum())
                 .orElseThrow(NoRecordExistException::new);
         // files 를 string 으로 바군 후 update 진행, null 과 empty 확인
-        List<String> images = uploader.storeImages("record", files);
-        babyRecord.update(dto, images);
+        if (files != null && !files.isEmpty()) {
+            List<String> images = uploader.storeImages("record", files);
+            babyRecord.update(dto, images);
+        }
         return true;
     }
 
     @Override
     public BabyRecordReadResponseDto create(List<MultipartFile> files, BabyRecordCreateRequestDto dto) {
-        List<String> images = uploader.storeImages("record", files);
+        List<String> images = new ArrayList<>();
+        if (files != null && !files.isEmpty()) {
+            images = uploader.storeImages("record", files);
+        }
+
         BabyRecord babyRecord = dto.toEntity(images);
+
         babyRecordRepository.save(babyRecord);
         return BabyRecordReadResponseDto.from(babyRecord);
     }
