@@ -96,8 +96,7 @@ function Info(props) {
           <>
             <Typography fontSize={34}>임신 {props.targetTime} 주차</Typography>
             <Typography fontSize={28} textAlign={"center"}>
-              {" "}
-              D-{pBirth}{" "}
+              D-{pBirth}
             </Typography>
           </>
         )}
@@ -178,7 +177,7 @@ function RecordBaby() {
         console.log("recent record: \n" + JSON.stringify(recentRecord));
         const init2 = async () => {
           await axios
-            .get(`/api/growth/${gender + 1}/${recentRecordMonth}/${recentRecord.height}/${recentRecord.weight}/${recentRecord.circumference}`)
+            .get(`/api/growth/${gender}/${recentRecordMonth}/${recentRecord.height}/${recentRecord.weight}/${recentRecord.circumference}`)
             .then((response) => {
               const data = response.data;
               setPercentileRecord(data);
@@ -367,7 +366,7 @@ function RecordBaby() {
                           <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
                         </Stack>
                       </Typography>
-                      <BabyForm data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
+                      <BabyForm gender={gender} data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
                     </Box>
                   </LocalizationProvider>
                 </Box>
@@ -463,7 +462,7 @@ function RecordBaby() {
                           <ButtonDatePicker value={date} onChange={(newValue) => setDate(newValue)} format={"YYYY-MM-DD"} />
                         </Stack>
                       </Typography>
-                      <BabyForm data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
+                      <BabyForm gender={gender} data={babyRecord} recentData={recentRecord} dateSelected={date} babyNum={babyNum} isBorn={born} onSubmit={submitFunction} />
                     </Box>
                   </LocalizationProvider>
                 </Box>
