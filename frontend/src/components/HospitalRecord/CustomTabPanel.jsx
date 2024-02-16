@@ -89,6 +89,7 @@ export default function BasicTabs(props) {
         justifyContent: "center",
         textAlign: "center",
         width: "100%",
+        mb:2
       }}
     >
       <Box

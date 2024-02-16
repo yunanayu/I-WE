@@ -29,6 +29,7 @@ import UpdateHospitalRecord from "./pages/HospitalRecordPage/UpdateHospitalRecor
 import ChildList from "./components/myPage/ChildList";
 import CodeSharePage from "./pages/MyPage/CodeSharePage";
 import TestPage from './FCM/TestPage';
+import InfoFather from "./components/father/InfoFather";
 
 
 function App() {
@@ -113,6 +114,7 @@ function App() {
             <Route path="/updaterecord" element={<UpdateHospitalRecord />} />
             <Route path="/babylist" element={<ChildList />} />
             <Route path="/test" element={<TestPage />} />
+            <Route path="/fatherinfo" element={<InfoFather />} />
             <Route path="/codeshare" element={<CodeSharePage onLoginStatusChange={handleLoginStatusChange}/>} />
           </Routes>
         </div>
