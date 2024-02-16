@@ -378,12 +378,13 @@ function ChangeChart(props) {
         let startDate = new Date(arr[start].date);
         let endDate = new Date(startDate);
         endDate.setDate(startDate.getDate() - startDate.getDay());
-        // console.log(endDate);
+        console.log(endDate);
         let sum = arr[start].weight;
         let s = 1;
         for (let j = start + 1; j < start + 7; j++) {
-          if (!arr[j] || new Date(arr[j].date).getDay() >= startDate.getDay() || startDate.getDate() - new Date(arr[j].date).getDate() > 6) {
+          if (!arr[j] || new Date(arr[j].date).getDay() >= endDate.getDay() || startDate.getDate() - new Date(arr[j].date).getDate() > 6) {
             // console.log("조건 브레이크");
+            i--;
             break;
           }
           sum += arr[j].weight;
@@ -410,7 +411,7 @@ function ChangeChart(props) {
         ld.shift();
       }
       setLineData(ld);
-      // console.log("기준!!!!\n" + JSON.stringify(lineData));
+      console.log("기준!!!!\n" + JSON.stringify(lineData));
 
       for (let k = 0; k < tmp.length - 1; k++) {
         diff.push({
@@ -425,7 +426,7 @@ function ChangeChart(props) {
           date: week,
         });
       }
-      // console.log("몸무게 변화율\n" + JSON.stringify(diff));
+      console.log("몸무게 변화율\n" + JSON.stringify(diff));
       return diff;
     }
   };
