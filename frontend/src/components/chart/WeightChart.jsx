@@ -383,7 +383,7 @@ function ChangeChart(props) {
         let s = 1;
         for (let j = start + 1; j < start + 7; j++) {
           if (!arr[j] || new Date(arr[j].date).getDay() >= endDate.getDay() || startDate.getDate() - new Date(arr[j].date).getDate() > 6) {
-            // console.log("조건 브레이크");a
+            // console.log("조건 브레이크");
             i--;
             break;
           }
@@ -399,11 +399,11 @@ function ChangeChart(props) {
         // console.log("2222222222" + JSON.stringify(tmp));
         let dat;
         dat = {
-          start: recommendWeightStart[week][bmi],
-          end: recommendWeightEnd[week][bmi],
+          start: recommendWeightStart[week-w][bmi],
+          end: recommendWeightEnd[week-w][bmi],
           week: week - w,
         };
-
+        
         ld.unshift(dat);
         w++;
       }
