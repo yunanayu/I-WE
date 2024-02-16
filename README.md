@@ -1,92 +1,131 @@
-# 기획 배경
-- 초보 엄마, 아빠는 자신이 모르는게 뭔지 모를 정도로 모르는게 많다.  
-    - 아이를 위한 정보, 산모를 위한 정보, 보호자를 위한 정보등 필요한 정보가 너무 다양하다.  
-    - 첫 아이를 준비하면서 모든 과정을 일일이 챙기기 힘들다.   
-- 아이의 성장 데이터를 기록하고 싶다.  
-    - 임신부터 출산, 육아까지 장기적인 관리가 필요하다.	-> 출산 전부터 이후까지 시기별 필요정보 정보  
-    - 내 아이의 성장을 한눈에 보고싶다. -> 성장과정기록   
-    - 내 아이가 잘 자라고있는지 궁금하다. -> 상대적인 발육정도(백분위) 비교  
-- 아이뿐만 아닌 산모와 보호자를 위한 서비스가 필요하다.  
-    - 산모의 심리적인 상태 케어가 필요하다. -> 다이어리   
-    - 산모와 보호자(남편)의 소통이 중요하다. -> webRTC를 이용한 화상 통화  
-   
-# 상세기능  
-1. 회원관리  
-    - 로그인  /  회원가입 / 로그아웃 / 내정보수정 /회원 탈퇴  
-2. 정보 제공  
-    (1)사용자에 따른 맞춤형 정보 제공  
-    - 아내  
-        - ex. 숨이 자주 가빠지고 소화가 잘 안되며 소변을 자주 보게 돼요. 또 자신도 모르게 소변이 샐 수도 있습니다. 임산부용 면 팬티라이너 등을 착용하고, 꾸준한 골반 운동으로 골반 근육을 강화시켜 주세요.  
-    - 남편
-        - ex.  이 시기의 태아는 소리를 들을 수 있으므로 책을 읽어주세요. 아빠가 읽어주는 것도 임신의 즐거움을 공유할 수 있는 좋은 방법입니다.  
+# README
 
-    (2)시기에 따른 맞춤형 정보 제공  
-     - 	점점 자유롭게 움직이고, 태동이 확실해지며, 위치가 자주 변해요 !  
-     - 	이 시기는 쑥쑥이 손가락 생기는중입니다  
-     -	오감이 발달하고 있어요. 아이가 춥지 않도록 따뜻하게 보호해주세요.  
+<center>
+
+![메인](/uploads/5d33b11a4fd0d828095781558a3703a6/메인.PNG)
+
+임신부터 출산, 육아까지
+**통합 육아 도우미 서비스**
     
-    (3)접종관련 정보 제공 + 알림  
+## :baby: 프로젝트 소개
 
-    (4)건강검진 관련 정보 제공 + 알림 
+2024.01.07 ~ 2024.02.16 (6주)
+
+총 6명 (FE 3명, BE 3명)
+
+<br>
+<br>
     
-    (5)기록을 기반으로 한 시각화 및 분석 결과 제공(공유다이어리)  
-    - 산모 체중 기록, 권장 체중 시각화 및 분석 제공  
-        - ex)  최근 체중증가률이 높습니다. 체중증가 주의해주세요. 과도한 체중증가는 임신성 당뇨 발병의 위험성이 증가합니다.  
-    - 세계보건기구 발달기준과 내 아이 발달기록 시각화 및 분석 제공    
-        - ex) 현재 쑥쑥이 체중은 상위 5%입니다.
-    - 남편은 아내의 기록 다이어리를 공유받아 사용
+## 🤔 기획 의도
 
-3. 커뮤니티    
-    - 카테고리 별로 게시판을 제공(자유글, 용품추천)    
-    - 작성자의 프로필을 눌러 채팅가능                
-4. 다이어리(일기)  
-    -  산모의 기분, 산모의 감정 등을 기록  
-    -  산모의 감정을 분석하여 남편에게 추천 행동 알림 제안
-5. 기록 (산모체중, 우리아이발달기록, 병원기록)
-    - 산모 체중 기록 -> 체중 변화 측정 => 2.(5)와 연결
-    - 필수, 선택 접종 여부 기록
-    - 필수, 선택 건강검진 여부 기록
-    - 아이 발달 기록 (키, 체중, 머리둘레)
-    - 병원 검진 기록 
+무엇을 모르는지 모르는 엄마들을 위해
+어디서 찾아야할지 헤매는 아빠들을 위해
+    
+**“임신부터 출산, 육아까지”**
+    
+필요한 정보를 자동 제공해주는
 
-6. 주변 찾기(산부인과, 산후조리원 등) 
-    - 현재 접속한 위치를 기반으로 주변 필요한 인프라에 대한 정보를 KAKAO MAP API를 활용하여 제공한다.
-    - 접속 위치 정보 제공 거부 시, 가입 시 입력한 주소를 기반으로 제공한다.
+**I & WE**
 
-7. 가족과의 영상통화 기능
-    - 산모, 보호자들 간의 영상통화 기능 제공
-    - 산모 데이터 활용 보호자의 케어 유도 ex) 지금은 우울증에 걸리기 쉬운 시기에요. 아내에게 따뜻한 영상통화 어떠세요?
+    
+<br><br><br>
+    
+## ⚙ 개발 환경
+**FE**
 
-8. 마이페이지
-    - 아이, 산모, 보호자 정보수정
-    - 아이, 보호자 추가
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
+<img src="https://img.shields.io/badge/ZUSTAND-764ABC?style=for-the-badge&logo=zustand&logoColor=white">
+<img src="https://img.shields.io/badge/StyledComponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">
+<img src="https://img.shields.io/badge/pwa-FF6F00?style=for-the-badge&logo=pwa&logoColor=white">
 
-# Commit Convention
+**BE**
 
-#### [태그] 제목의 형태이며, [태그]뒤에만 space가 있음에 유의한다.
-> [feat] 새로운 기능 추가  
-> [fix] 버그 수정  
-[docs] 문서 수정  
-[style] 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우  
-[refactor] 코드 리펙토링  
-[test] 테스트 코드, 리펙토링 테스트 코드 추가  
-[chore] 빌드 업무 수정, 패키지 매니저 수정
-  
-# Jira Convention
-#### 머릿말에 [BE], [FE], [Design], [Extra]를 달아서 분류한다.
-#### Story Point를 꼭 달기!!  
-  
-# Entity Relationship Diagram
-![image-1.png](./image-1.png)  
+<img src="https://img.shields.io/badge/IntellijIdea-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
+<img src="https://img.shields.io/badge/Springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+<img src="https://img.shields.io/badge/AmazonEC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+<img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white"/> 
 
-# 기록 화면정의서 작성
-![image.png](병원기록.PNG)
-![image.png](체중기록.PNG)
-![image.png](/접종기록.PNG)  
-![asdasd.PNG](./asdasd.PNG)
+**DevOps**
 
-# 로그인 화면정의서 작성
-![image](/uploads/5913d766364d26d02e94cff71fcea454/image.png)
-![image.png](/회원메인.PNG)
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+<img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"/> 
+<img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"/>
+    
+**협업**
+
+<img src="https://img.shields.io/badge/GitLab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">
+<img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">
+<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+<br>
+<br>
+    <br>
+<br>
+
+## 💾 기술 스택
+
+![기술스택](/uploads/51f74be05b8e16453484b168f0a7109f/기술스택.PNG)
+
+<br>
+<br>
+    
+    
+## :pick: CI / CD 파이프라인
+
+![파이프라인](/uploads/85f36869e1089cd98c60f6ac7bef3f01/파이프라인.PNG)
+
+<br>
+<br>
+<br>
+    
+## :department_store: ER 다이어그램
+![erd](/uploads/c0c3c5b05896f6ae881ae815ff037b25/erd.png)
+
+<br></br>
+<br></br>
+
+## :handshake: API 명세서
+
+![apiㅁㅇㅅ](/uploads/7cdbb7f655231a75b2bd77f952590664/apiㅁㅇㅅ.PNG)
+
+<br></br>
+<br></br>
+    
+
+## :desktop_computer: 화면 정의서
+
+![화면정의](/uploads/1294e40cb387592cff6798c70249c403/화면정의.PNG)
+
+<br><br>
+
+## :robot_face: 주요 기능 및 화면
+
+### 시기에 따른 정보 알람 제공
+
+![알람](/uploads/abcb094517a633c23eec20656a5087c3/알람.PNG)
+
+<br><br>
+
+### 필수 검사, 검진, 접종 여부 체크
 
 
+
+### 아이 성장 데이터 백분위 제공
+
+![애기백분위](/uploads/73f02dbfd257e2eb3d39dc3b0832e8ba/애기백분위.PNG)
+
+### 남편, 아내에 따른 데이터 제공
+
+![아빠아내별](/uploads/2a3812667e1d557ad9c55f42b1feb1e2/아빠아내별.PNG)  
+
+
+## :family:  팀원소개
+
+**Front End** 
+정유나, 전승혜, 김무준
+
+**Back End**
+서지현, 예준성, 윤지현
+
+</center>
