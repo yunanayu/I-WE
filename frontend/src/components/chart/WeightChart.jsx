@@ -383,7 +383,7 @@ function ChangeChart(props) {
         let s = 1;
         for (let j = start + 1; j < start + 7; j++) {
           if (!arr[j] || new Date(arr[j].date).getDay() >= endDate.getDay() || startDate.getDate() - new Date(arr[j].date).getDate() > 6) {
-            // console.log("조건 브레이크");a
+            // console.log("조건 브레이크");
             i--;
             break;
           }
