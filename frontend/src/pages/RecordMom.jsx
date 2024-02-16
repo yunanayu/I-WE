@@ -236,7 +236,7 @@ function RecordMom() {
           </RadioGroup>
         </FormControl>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
-          {<Info record={momRecord} avg={avgData} diff={diffData} />}
+          {<Info record={momRecord} avg={avgData} diff={diffData} babyNum={babyNum} />}
         </Box>
         <Box maxWidth="md" sx={{ ...commonStyles, ...setCenter, borderRadius: 3 }}>
           <MomForm babyNum={babyNum} data={recentRecord} recentUpdate={onUpdateRecent} onPostSuccess={updateChartData} />
