@@ -205,23 +205,10 @@ const BabyForm = React.forwardRef((props, ref) => {
     if (recentData) {
       // console.log("최근 데이터 " + JSON.stringify(recentData));
       const recentDate = new Date(recentData.recordDate);
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-      if (recentDate.getDay() === today.getDay() && recentDate.getMonth() === today.getMonth() && recentDate.getFullYear() === today.getFullYear()) {
-=======
-      const sel = new Date(dateSelected);
-      if (
-        recentDate.getDay() === sel.getDay() &&
-        recentDate.getMonth() === sel.getMonth() &&
-        recentDate.getFullYear() === sel.getFullYear()
-      ) {
->>>>>>> Stashed changes
-=======
       const sel = new Date(dateSelected);
       console.log(today.getDate());
       console.log(recentDate);
       if (recentDate.getDate() === today.getDate() && recentDate.getMonth() === today.getMonth() && recentDate.getFullYear() === today.getFullYear()) {
->>>>>>> e56d1698f161dabf83951367739ce8da6e7101ae
         setUpdate(true);
         setWeight(recentData.weight);
         setHeight(recentData.height);
@@ -232,19 +219,6 @@ const BabyForm = React.forwardRef((props, ref) => {
   }, [recentData, dateSelected]);
 
   useEffect(() => {
-<<<<<<< HEAD
-    if(data && dateSelected) {
-      const idx = data.findIndex((record) => {
-        const r = new Date(record.recordDate);
-        const d = new Date(dateSelected)
-        return (r.getDay() === d.getDay() &&
-        r.getMonth() === d.getMonth() &&
-        r.getFullYear() === d.getFullYear())
-      });
-      console.log(idx);
-    }
-  })
-=======
     if (data && dateSelected) {
       const idx = data.findIndex((record) => {
         const r = new Date(record.recordDate);
@@ -267,7 +241,6 @@ const BabyForm = React.forwardRef((props, ref) => {
       }
     }
   }, [dateSelected]);
->>>>>>> e56d1698f161dabf83951367739ce8da6e7101ae
 
   useEffect(() => {});
 
