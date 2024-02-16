@@ -399,11 +399,11 @@ function ChangeChart(props) {
         // console.log("2222222222" + JSON.stringify(tmp));
         let dat;
         dat = {
-          start: recommendWeightStart[week][bmi],
-          end: recommendWeightEnd[week][bmi],
+          start: recommendWeightStart[week-w][bmi],
+          end: recommendWeightEnd[week-w][bmi],
           week: week - w,
         };
-
+        
         ld.unshift(dat);
         w++;
       }
