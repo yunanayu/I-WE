@@ -18,6 +18,7 @@ import Radio from "@mui/joy/Radio";
 import RadioGroup from "@mui/joy/RadioGroup";
 import Sheet from "@mui/joy/Sheet";
 import heart2 from '../../images/heart2.png';
+import blueheart2 from '../../images/blueheart2.png'
 
 const theme = createTheme({
   typography: {
@@ -29,6 +30,7 @@ export default function InfoMain() {
   const babyList = useMemberStore((state) => state.babyList);
   // date = `A${months}`의 형태
   const [date, setDate] = useState(0); // 선택한 tab의 값
+  console.log(date)
   const handleChange = (event, value) => {
     setDate(value);
   };
@@ -160,6 +162,51 @@ export default function InfoMain() {
       return null;
     }
   };
+
+  // const getBabyBodyInfothree = () => {
+  //   if (date === 0) {
+  //     // 0 주 탭 선택 시 표시할 정보
+  //     return <Box>{/* 0 주에 해당하는 정보 표시 */}</Box>;
+  //   } else if (typeof date === "string" && date.startsWith("B")) {
+  //     const week = parseInt(date.substring(1));
+  //     if (week === 33) {
+  //       // 33주일 때는 아이를 위한 정보를 숨기고 아빠를 위한 정보를 보여줌
+  //       return (
+  //         <Box>
+  //           {/* 아빠를 위한 정보 출력 */}
+  //           <Typography>
+  //             출산 시기가 다가오면 부부 관계를 조심히 유지하는 것이 중요합니다. 출산 후 아내와의 오붓한 시간을 즐기기 위해 지금이 적기입니다.
+  //           </Typography>
+  //         </Box>
+  //       );
+  //     } else {
+  //       const selectedBabybodyInfo = babybodyInfo
+  //         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
+  //         .map((info, i) => (
+  //           <div key={i}>
+  //             - {info.content} <br />
+  //             <br />
+  //           </div>
+  //         ));
+  //       return <Box key={week}>{selectedBabybodyInfo}</Box>;
+  //     }
+  //   } else if (typeof date === "string" && date.startsWith("A")) {
+  //     const month = parseInt(date.substring(1));
+  //     const selectedBabybodyInfo = babybodyInfo
+  //       .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
+  //       .map((info, i) => (
+  //         <div key={i}>
+  //           - {info.content} <br />
+  //           <br />
+  //         </div>
+  //       ));
+  //     return <Box key={month}>{selectedBabybodyInfo}</Box>;
+  //   } else {
+  //     return null;
+  //   }
+  // };
+  
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -369,19 +416,61 @@ export default function InfoMain() {
     if (date === 0) {
       // 0 주 탭 선택 시 표시할 정보
       return <Box>{/* 0 주에 해당하는 정보 표시 */}</Box>;
-    } else if (typeof date === "string" && date.startsWith("B")) {
+    } 
+    else if (typeof date === "string" && date.startsWith("B")) {
       const week = parseInt(date.substring(1));
-      const selectedMomsugInfo = momsugInfo
-        .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
-        .map((info, i) => (
-          <div key={i}>
-            - {info.content} <br />
+      if (week === 33) {
+        // 33주일 때는 아이를 위한 정보를 숨기고 아빠를 위한 정보를 보여줌
+        return (
+          <Box>
+            {/* 아빠를 위한 정보 출력 */}
+            <Typography>
+              -만삭이 되고, 출산 후 아기를 키우게 되면 남편과의 오붓한 시간을 가지기란 거의 불가능합니다. 한동안 누리지 못하게 될 부부만의 시간을 잘 간직하기 위해 지금이 부부만의 오붓한 시간을 가질 적기입니다.
+            </Typography>
             <br />
-          </div>
-        ));
-      return <Box key={week}>{selectedMomsugInfo}</Box>;
-    } else if (typeof date === "string" && date.startsWith("A")) {
+            <Typography>
+            - 부부 관계가 너무 잦으면 조산의 위험이 생기므로 부부 관계를 줄이고 정액이 닿지 않도록 조심합니다.
+            </Typography>
+            <br />
+            <Typography>
+            - 이제 출산 시기가 점점 다가오고 있습니다. 이때쯤에는 무엇을 해두어야 하는지 점검해 보세요. 진통이 오는 아내를 어떻게 병원에 데려갈 것인가? 출산 후에는 아내에게 무엇을 해주어야 하는가? 아내가 집을 비우는 동안 내가 해야 할 것은 무엇인가? 등 미리미리 점검해두세요.
+            </Typography>
+          </Box>
+        );
+      }
+        else {
+        const selectedMomsugInfo = momsugInfo
+          .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
+          .map((info, i) => (
+            <div key={i}>
+              - {info.content} <br />
+              <br />
+            </div>
+          ));
+        return <Box key={week}>{selectedMomsugInfo}</Box>;
+          }
+    } 
+    else if (typeof date === "string" && date.startsWith("A")) {
       const month = parseInt(date.substring(1));
+      if (month === 7) {
+        return (
+          <Box>
+            {/* 아빠를 위한 정보 출력 */}
+            <Typography>
+              - 많이 기어다녀야 다리와 허리 근육이 튼튼해져서 다음 발달에 힘이 돼요. 잘 움직여보도록 안전한 환경을 만들어주세요.
+            </Typography>
+            <br />
+            <Typography>
+            - 아기가 심심해 하지는 않나요? 낮에 다 같이 산책을 나가면 아이의 뇌 내 신경망에 좋은 자극을 줄 수 있어요.
+            </Typography>
+            <br />
+            <Typography>
+            - 아기도 스트레스를 받고 그럴 때 크게 울 수 있어요. 하지만 그렇다고 과잉 보호는 금물이에요. 아기가 스트레스를 잘 풀 수 있도록 관심을 돌릴 만한 장난감과 놀이를 준비해주세요.
+            </Typography>
+          </Box>
+        );
+      }
+      else {
       const selectedMomsugInfo = momsugInfo
         .filter((info, i) => i < 3) // 최대 3개의 요소만 추출
         .map((info, i) => (
@@ -391,6 +480,7 @@ export default function InfoMain() {
           </div>
         ));
       return <Box key={month}>{selectedMomsugInfo}</Box>;
+    }
     } else {
       return null;
     }
@@ -627,14 +717,27 @@ export default function InfoMain() {
             padding: "0px 0 40px",
           }}
         >
+          {
+          (parentType === 'FATHER' && (date === 'B33' || date === 'A7')) ? 
+          // (date === 'B33' || date === 'A7') ? 
           <Typography
             variant="h6"
             component="div"
             sx={{ fontWeight: "bold", mb: "20px" }}
           >
-            아이를 위해서는요!
-            <img src={heart2} width="40" height="30" alt="하트 이미지" />
+            엄마와 아이를 위해서는요!
+            <img src={blueheart2} width="40" height="30" alt="하트 이미지" />
           </Typography>
+          :
+          <Typography
+          variant="h6"
+          component="div"
+          sx={{ fontWeight: "bold", mb: "20px" }}
+        >
+          아이를 위해서는요!
+          <img src={heart2} width="40" height="30" alt="하트 이미지" />
+        </Typography>
+        }
           <Card
             sx={{
               display: "flex",
@@ -650,7 +753,7 @@ export default function InfoMain() {
                 <Button
                   onClick={handleClickOpen("infomore")}
                   size="small"
-                  style={{ backgroundColor: "#FBBBB8", color: "white" }}
+                  style={{ backgroundColor: parentType !== "FATHER" ? "#FBBBB8" : "#53acdb", color: "white" }}
                 >
                   궁금해요!
                 </Button>

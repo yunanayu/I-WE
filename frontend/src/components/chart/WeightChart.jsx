@@ -403,7 +403,7 @@ function ChangeChart(props) {
           end: recommendWeightEnd[week-w][bmi] - recommendWeightEnd[week-w-1][bmi],
           week: week - w,
         };
-        
+
         ld.unshift(dat);
         w++;
       }
