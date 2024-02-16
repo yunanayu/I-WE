@@ -9,7 +9,7 @@ const useMemberStore = create(
     (set) => ({
   userNum : 0,  // 엄마 num
   parentType : null,
-  userName : "joon",
+  userName : " ",
   profileImage : null,
   setUserNum : (num) => set({ userNum: num}),
   setUserName : (name) => set({ userName: name}),

@@ -67,6 +67,7 @@ const Main = ({ onLoginStatusChange }) => {
 
   const [babyName, setBabyName] = useState([]);
   const [date, setDate] = useState(0) //선택한 아기의 날짜
+  const [status, setStatus] = useState('')
   // 임신 시
   const [daysSincePregnancy, setDaysSincePregnancy] = useState(null);
   const [daysSinceBirth, setDaysSinceBirth] = useState(null);
@@ -84,7 +85,9 @@ const Main = ({ onLoginStatusChange }) => {
       try {
         const info = babyList
         const babyname = info[babyNum].name
+        const babystatus = info[babyNum].status
         setBabyName(babyname);
+        setStatus(babystatus)
         const pregnancyDate = moment(info[babyNum].pregnancyDate, 'YYYY-MM-DD');
         const birthDate = moment(info[babyNum].birth, 'YYYY-MM-DD');
         const today = moment();
@@ -249,10 +252,13 @@ const Main = ({ onLoginStatusChange }) => {
                 {babyList.map((baby, index) => (
                   <SwiperSlide key={index}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      {daysSincePregnancy ? <div style={{ textAlign: 'center' }}>D - {daysBeforeBirth}</div> : daysSinceBirth ? <div style={{ textAlign: 'center' }}>D + {daysAfterBirth}</div> : ''}
+                      {baby.status === false ? <div style={{ textAlign: 'center' }}>D - {daysBeforeBirth}</div> : baby.status === true ? <div style={{ textAlign: 'center' }}>D + {daysAfterBirth}</div> : ''}
                       {baby.gender === 1 ? <img src={b2} alt={baby.name} style={{ borderRadius: '50%' }} /> : baby.gender === 2 ? <img src={b1} alt={baby.name} style={{ borderRadius: '50%' }} /> : null}
-                      <div style={{ textAlign: 'center' }}>{baby.pregnancyDate}</div>
+                      {baby.status === false ? <div style={{ textAlign: 'center' }}>{baby.pregnancyDate}</div> : baby.status === true ? <div style={{ textAlign: 'center' }}>{baby.birth}</div> : null}
+                      {/* <div style={{ textAlign: 'center' }}>{baby.pregnancyDate}</div>
                       <div style={{ textAlign: 'center' }}>{baby.birth}</div>
+                      <div style={{ textAlign: 'center' }}>{baby.status}</div> */}
+
                       <div style={{ textAlign: 'center' }}>{baby.name}</div>
                     </div>
 
@@ -273,10 +279,10 @@ const Main = ({ onLoginStatusChange }) => {
                 <Typography margin="10px" theme={wordtheme} variant="h6" align="center" sx={{ mt: 4, mb: 2, color: 'gray', fontWeight:'bold' }}>
                   {particle}
                 </Typography>
-                <Typography margin="10px" theme={wordtheme} variant="h4" align="center" sx={{ mt: 2, mb: 2, color: 'gray', fontWeight:'bold' }}>
-                  {daysSincePregnancy ? (
+                <Typography margin="10px" theme={wordtheme} variant="h4" align="center" sx={{ mt: 2, mb: 2, color: 'gray', fontWeight:'bold' }}>                  
+                  {status === false ? (
                     `${daysSincePregnancy} 주차`
-                    ) : ( daysSinceBirth ? `${monthSinceBirth}개월` : ''
+                    ) : ( status === true ? `${monthSinceBirth}개월` : ''
                   )}
                                   
                 </Typography>
